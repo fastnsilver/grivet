@@ -13,7 +13,7 @@
 	<groupId>com.fns</groupId>
 	<artifactId>grivet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>Grivet</name>
 	<description>A micro-service capable of self-service modeling and persistence.</description>
@@ -83,9 +83,11 @@
 	</repositories>
 	
 	<properties>
+		<!-- Java -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		
+		<!-- Third-party library versions -->
 		<commons-lang3.version>3.4</commons-lang3.version>
 		<guava.version>18.0</guava.version>
 		<json.version>20141113</json.version>
@@ -96,12 +98,18 @@
 		<vaadin-bom.version>7.4.5</vaadin-bom.version>
 		<vaadin-spring-boot-starter.version>1.0.0.beta3</vaadin-spring-boot-starter.version>
 		
+		<!-- Github -->
 		<github.global.host>github.com</github.global.host>
         <github.global.server>github</github.global.server>
         <github.site.noJekyll>true</github.site.noJekyll>
         
+        <!-- Docker -->
+        <grivet.image>fans/${project.artifactId}:${project.version}</grivet.image>
+        <grivet.port>8080</grivet.port>
+        		
         <!-- Maven -->
         <apiviz.version>1.3.2.GA</apiviz.version>
+        <docker-maven-plugin.version>0.13.2</docker-maven-plugin.version>
         <downloads-maven-plugin.version>0.6</downloads-maven-plugin.version>
         <doxia-module-markdown.version>1.6</doxia-module-markdown.version>
         <findbugs-maven-plugin.version>3.0.1</findbugs-maven-plugin.version>
@@ -151,6 +159,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-redis</artifactId>
@@ -160,6 +169,7 @@
 			<artifactId>vaadin-spring-boot-starter</artifactId>
 			<version>${vaadin-spring-boot-starter.version}</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -407,6 +417,60 @@
 			    <version>${plan-maven-plugin.version}</version>
 			</plugin>
 			
+			<plugin>
+   				<groupId>org.jolokia</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>${docker-maven-plugin.version}</version>
+				<configuration>
+					<images>
+						<image>
+							<name>${grivet.image}</name>
+							<build>
+								<from>relateiq/oracle-java8</from>
+								<maintainer>fastnsilver@gmail.com</maintainer>
+								<tags>
+									<tag>latest</tag>
+									<tag>${project.version}</tag>
+								</tags>
+								<ports>
+									<port>8080</port>
+								</ports>
+								<entryPoint>
+									<exec>
+						    			<arg>java</arg>
+						      			<arg>-jar</arg>
+						      			<arg>/maven/${project.artifactId}.jar</arg>
+									</exec>
+								</entryPoint>
+                				<assembly>
+                					<mode>dir</mode>
+                  					<descriptor>assembly.xml</descriptor>
+                				</assembly>
+              				</build>
+							<run>
+				                <ports>
+				                  	<!-- Port mappings: Container internal port (which must be exposed) will be
+				                 	dynamically mapped and this (random) port will be assigned to the Maven variable
+				                 	${grivet.port}. Multiple port mappings can be specified here-->
+				                  	<port>grivet.port:8080</port>
+				                </ports>
+				                <wait>
+				                  	<!-- The plugin waits until this URL is reachable via HTTP ... -->
+				                  	<log>Server startup</log>
+				                  	<url>http://${docker.host.address}:${grivet.port}/</url>
+				                  	<time>480000</time>
+				                  	<shutdown>500</shutdown>
+				                </wait>
+				                <log>
+				                  	<enabled>true</enabled>
+				                  	<color>red</color>
+				              	</log>
+			              	</run>
+						</image>
+					</images>
+				</configuration>
+    		</plugin>
+    		
 		</plugins>
 	</build>
 

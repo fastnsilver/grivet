@@ -19,9 +19,7 @@ import org.h2.server.web.WebServlet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -30,15 +28,10 @@ import org.springframework.context.annotation.Bean;
  * @author Chris Phillipson
  */
 @SpringBootApplication
-public class App extends SpringBootServletInitializer {
+public class App {
     
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
-    }
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(App.class);
     }
 
     @Bean

@@ -179,6 +179,8 @@ $ mvn clean install
 
 ## How to run
 
+### with Spring Boot
+
 ```
 $ mvn spring-boot:run
 ```
@@ -194,7 +196,7 @@ where `<profile-name>` could be replaced with `h2` or `mysql`
 Or 
 
 ```
-$ java -jar grivet-x.x.x.war
+$ java -jar grivet-x.x.x.jar
 ```
 
 where `x.x.x` is a version like `0.0.1-SNAPSHOT`
@@ -202,10 +204,54 @@ where `x.x.x` is a version like `0.0.1-SNAPSHOT`
 Or
 
 ```
-$ java -jar grivet-x.x.x.war -Dspring.profiles.active=<profile-name>
+$ java -jar grivet-x.x.x.jar -Dspring.profiles.active=<profile-name>
 ```
 
 likewise replacing `<profile-name>`
+
+
+### with Docker
+
+Assuming you have installed Docker...
+
+#### Build image
+
+```
+mvn package docker:build
+```
+
+#### Run image
+
+```
+mvn docker:start
+```
+
+Or
+
+```
+docker run -i -t fans/grivet:latest /bin/bash
+```
+
+Visit `192.168.59.103:8080` in a browser
+
+Caveats: 
+
+* Docker image currently bootstraps against an H2 back-end
+* [Bug] Observed to take up to 6 minutes to start the app on Mac OS 10.10.3 running VirtualBox 4.3.30 r101610 and boot2docker 1.7.1
+
+
+#### Stop image (and remove)
+
+```
+mvn docker:stop
+```
+
+Or
+
+```
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+```
 
 
 ## Supported Types
@@ -337,6 +383,7 @@ returns `TestType` records that match on either `datetime` `OR` `varchar` attrib
 - [x] Link JSON Schema with a registered type; on subsequent store requests for type, type will be validated against schema before attempt to persist
 - [ ] Documentation authored and published inc. API, [Javadoc](http://fastnsilver.github.io/grivet/apidocs/index.html), [Maven Site](http://fastnsilver.github.io/grivet/) to Github Pages
 - [x] Continuous integration builds configured on [Shippable](http://docs.shippable.com/)
+- [x] Docker container (app w/ H2 back-end)
 
 ## 0.0.2
 
@@ -349,7 +396,7 @@ returns `TestType` records that match on either `datetime` `OR` `varchar` attrib
 ## 0.0.3
 
 - [ ] Implement Vaadin-based administrative UI
-- [ ] Docker container (app w/ MySQL back-end)
+- [ ] Docker Compose; launch variant Docker image(s) sharing a single data-store (e.g., MySQL)
 
 ## Footnote
 
