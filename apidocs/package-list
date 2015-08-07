@@ -1,0 +1,6 @@
+com.fns.grivet
+com.fns.grivet.controller
+com.fns.grivet.model
+com.fns.grivet.query
+com.fns.grivet.repo
+com.fns.grivet.service

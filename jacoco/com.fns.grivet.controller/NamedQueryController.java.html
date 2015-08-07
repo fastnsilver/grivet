@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>NamedQueryController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.controller</a> &gt; <span class="el_source">NamedQueryController.java</span></div><h1>NamedQueryController.java</h1><pre class="source lang-java linenums">package com.fns.grivet.controller;
+
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.fns.grivet.query.NamedQuery;
+import com.fns.grivet.query.QueryType;
+import com.fns.grivet.service.NamedQueryService;
+
+
+@RestController
+@RequestMapping(&quot;/query&quot;)
+public class NamedQueryController {
+
+    private final NamedQueryService namedQueryService;
+    
+    @Autowired
+<span class="fc" id="L30">    public NamedQueryController(NamedQueryService namedQueryService) {</span>
+<span class="fc" id="L31">        this.namedQueryService = namedQueryService;</span>
+<span class="fc" id="L32">    }</span>
+    
+    @RequestMapping(method=RequestMethod.POST, 
+            consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity&lt;?&gt; create(@RequestBody NamedQuery query) {
+<span class="nc" id="L37">        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();</span>
+<span class="nc" id="L38">        Assert.isTrue(StringUtils.isNotBlank(query.getName()), &quot;Query name must not be null, empty or blank.&quot;);</span>
+<span class="nc" id="L39">        Assert.notNull(query.getQuery(), &quot;Query string must not be null!&quot;);</span>
+<span class="nc" id="L40">        Assert.isTrue(isSupportedQuery(query), &quot;Query must start with either CALL or SELECT&quot;);</span>
+        // check for named parameters; but only if they exist
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (!query.getParams().isEmpty()) {</span>
+<span class="nc" id="L43">            query.getParams().keySet()</span>
+<span class="nc" id="L44">                .forEach(k -&gt; Assert.isTrue(query.getQuery().contains(String.format(&quot;:%s&quot;, k)), String.format(&quot;Query must contain named parameter [%s]&quot;, k)));</span>
+        }
+<span class="nc" id="L46">        namedQueryService.create(query);</span>
+<span class="nc" id="L47">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        if (query.getParams().isEmpty()) {</span>
+<span class="nc" id="L49">            result = ResponseEntity.created(ucb.path(&quot;/query/{name}&quot;).buildAndExpand(query.getName()).toUri()).build();</span>
+        } else {
+<span class="nc" id="L51">            result = ResponseEntity.noContent().build(); </span>
+        }
+<span class="nc" id="L53">        return result;</span>
+    }
+    
+    @RequestMapping(value=&quot;/{name}&quot;, produces=MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity&lt;?&gt; get(@PathVariable(&quot;name&quot;) String name, @RequestParam MultiValueMap&lt;String, ?&gt; parameters) {
+<span class="nc" id="L58">        return ResponseEntity.ok(namedQueryService.get(name, parameters));</span>
+    }
+    
+    @RequestMapping(value=&quot;&quot;, produces=MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity&lt;?&gt; all(@RequestParam(&quot;showAll&quot;) String showAll) {
+<span class="nc" id="L63">        JSONArray payload = namedQueryService.all();</span>
+<span class="nc" id="L64">        return ResponseEntity.ok(payload.toString());</span>
+    }
+    
+    private boolean isSupportedQuery(NamedQuery query) {
+<span class="nc" id="L68">        boolean result = false;</span>
+<span class="nc bnc" id="L69" title="All 4 branches missed.">        if ((query.getQuery().toUpperCase().startsWith(&quot;SELECT&quot;) &amp;&amp; query.getType().equals(QueryType.SELECT)) </span>
+<span class="nc bnc" id="L70" title="All 4 branches missed.">                || (query.getQuery().toUpperCase().startsWith(&quot;CALL&quot;) &amp;&amp; query.getType().equals(QueryType.SPROC))) {</span>
+<span class="nc" id="L71">            result = true;</span>
+        }
+<span class="nc" id="L73">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

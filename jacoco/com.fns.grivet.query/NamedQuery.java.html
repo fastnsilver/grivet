@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>NamedQuery.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.query</a> &gt; <span class="el_source">NamedQuery.java</span></div><h1>NamedQuery.java</h1><pre class="source lang-java linenums">
+package com.fns.grivet.query;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.MultiValueMap;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fns.grivet.model.AttributeType;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonPropertyOrder({
+    &quot;name&quot;,
+    &quot;type&quot;,
+    &quot;query&quot;,
+    &quot;params&quot;
+})
+@Entity
+public class NamedQuery implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    
+    @JsonIgnore
+    @Id
+    @GeneratedValue
+    private Integer id;
+    
+    @JsonProperty(&quot;name&quot;)
+    @Size(max=255)
+    @Column(nullable=false, unique=true)
+    private String name;
+    
+    @JsonProperty(&quot;type&quot;)
+    @Enumerated(EnumType.STRING)
+    private QueryType type;
+    
+    @JsonProperty(&quot;query&quot;)
+    @Size(max=2000)
+    @Column(length=2000, nullable=false)
+    private String query;
+    
+    @JsonProperty(&quot;params&quot;)
+    @Valid
+    @ElementCollection(fetch=FetchType.EAGER)
+    @CollectionTable(name=&quot;named_query_parameter&quot;, joinColumns=@JoinColumn(name=&quot;id&quot;))
+    @MapKeyColumn(name=&quot;parameter_name&quot;)
+    @Column(name=&quot;parameter_type&quot;, nullable=false)
+    private Map&lt;String, String&gt; params;
+    
+    @Column(nullable=false)
+    private LocalDateTime createdTime;
+
+<span class="fc" id="L84">    protected NamedQuery() {</span>
+        // no-args constructor required by JPA spec
+        // this one is protected since it shouldn't be used directly
+<span class="fc" id="L87">    }</span>
+    
+    @JsonCreator
+<span class="fc" id="L90">    public NamedQuery(@JsonProperty(&quot;name&quot;) String name, @JsonProperty(&quot;type&quot;) QueryType type, @JsonProperty(&quot;query&quot;) String query, @JsonProperty(&quot;params&quot;) Map&lt;String, String&gt; params) {</span>
+<span class="fc" id="L91">        this.name = name;</span>
+<span class="fc" id="L92">        this.query = query;</span>
+<span class="fc" id="L93">        setType(type);</span>
+<span class="fc" id="L94">        this.params = params;</span>
+<span class="fc" id="L95">        this.createdTime = LocalDateTime.now();</span>
+<span class="fc" id="L96">    }</span>
+    
+    public Integer getId() {
+<span class="fc" id="L99">        return id;</span>
+    }
+
+    public String getName() {
+<span class="nc" id="L103">        return name;</span>
+    }
+    
+    private void setType(QueryType type) {
+<span class="fc bfc" id="L107" title="All 2 branches covered.">       if (type == null) {</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">           if (query.toUpperCase().startsWith(&quot;SELECT&quot;)) {</span>
+<span class="fc" id="L109">               this.type = QueryType.SELECT;</span>
+           }
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">           if (query.toUpperCase().startsWith(&quot;CALL&quot;)) {</span>
+<span class="nc" id="L112">               this.type = QueryType.SPROC;</span>
+           }
+       } else {
+<span class="fc" id="L115">           this.type = type;</span>
+       }
+<span class="fc" id="L117">    }</span>
+    
+    public QueryType getType() {
+<span class="fc" id="L120">        return type;</span>
+    }
+
+    public String getQuery() {
+<span class="fc" id="L124">        return query;</span>
+    }
+
+    public Map&lt;String, String&gt; getParams() {
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (params == null) {</span>
+<span class="nc" id="L129">            params = new HashMap&lt;String, String&gt;();</span>
+        }
+<span class="fc" id="L131">        return params;</span>
+    }
+
+    public LocalDateTime getCreatedTime() {
+<span class="nc" id="L135">        return createdTime;</span>
+    }
+    
+    // only when parameter values are not null, empty, or blank 
+    // and parameter definition for named query is not empty
+    // will a MapSqlParameterSource be constructed
+    public MapSqlParameterSource asParameterSource(MultiValueMap&lt;String, ?&gt; parameterValues) {
+<span class="fc" id="L142">        MapSqlParameterSource paramSource = null;</span>
+<span class="pc bpc" id="L143" title="1 of 4 branches missed.">        if (!CollectionUtils.isEmpty(parameterValues) &amp;&amp; !getParams().isEmpty()) {</span>
+<span class="fc" id="L144">            paramSource = new MapSqlParameterSource();</span>
+<span class="fc" id="L145">            Set&lt;Entry&lt;String, String&gt;&gt; paramNameToParamTypeEntries = getParams().entrySet();</span>
+<span class="fc" id="L146">            List&lt;?&gt; values = null; </span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">            for (Entry&lt;String, String&gt; entry: paramNameToParamTypeEntries) {</span>
+<span class="fc" id="L148">                values = parameterValues.get(entry.getKey());</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">                if (!CollectionUtils.isEmpty(values)) {</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">                    if (values.size() == 1) {</span>
+<span class="fc" id="L151">                        paramSource.addValue(entry.getKey(), parameterValues.getFirst(entry.getKey()), AttributeType.toSqlType(entry.getValue()));</span>
+                    } else {
+<span class="nc" id="L153">                        paramSource.addValue(entry.getKey(), values);</span>
+                    }
+                }
+<span class="fc" id="L156">            }</span>
+        }
+<span class="fc" id="L158">        return paramSource;</span>
+    }
+    
+    // only when parameter values are not null, empty, or blank 
+    // and parameter definition for named query is not empty
+    // will a List&lt;SqlParameter&gt; be constructed
+    public List&lt;SqlParameter&gt; asSqlParameters(MultiValueMap&lt;String, ?&gt; parameterValues) {
+<span class="fc" id="L165">        List&lt;SqlParameter&gt; sqlParams = null;</span>
+<span class="pc bpc" id="L166" title="2 of 4 branches missed.">        if (!CollectionUtils.isEmpty(parameterValues) &amp;&amp; !getParams().isEmpty()) {</span>
+<span class="fc" id="L167">            sqlParams = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L168">            Set&lt;Entry&lt;String, String&gt;&gt; paramNameToParamTypeEntries = getParams().entrySet();</span>
+<span class="fc" id="L169">            List&lt;?&gt; values = null; </span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">            for (Entry&lt;String, String&gt; entry: paramNameToParamTypeEntries) {</span>
+<span class="fc" id="L171">                values = parameterValues.get(entry.getKey());</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">                if (!CollectionUtils.isEmpty(values)) {</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">                    if (values.size() == 1) {</span>
+<span class="fc" id="L174">                        sqlParams.add(new SqlParameter(entry.getKey(), AttributeType.toSqlType(entry.getValue())));</span>
+                    } else {
+<span class="nc" id="L176">                        throw new IllegalArgumentException(String.format(&quot;Stored Procedure cannot be executed! Parameter [%s] is not a scalar value!&quot;, entry.getKey()));</span>
+                    }
+                }
+<span class="fc" id="L179">            }</span>
+        }
+<span class="fc" id="L181">        return sqlParams;</span>
+    }
+    
+    @Override
+    public String toString() {
+<span class="nc" id="L186">        return ToStringBuilder.reflectionToString(this);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L191">        return new HashCodeBuilder().append(id).append(name).append(type).append(query).append(params).append(createdTime).toHashCode();</span>
+    }
+
+    @Override
+    public boolean equals(Object other) {
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        if (other == this) {</span>
+<span class="fc" id="L197">            return true;</span>
+        }
+<span class="nc bnc" id="L199" title="All 2 branches missed.">        if ((other instanceof NamedQuery) == false) {</span>
+<span class="nc" id="L200">            return false;</span>
+        }
+<span class="nc" id="L202">        NamedQuery rhs = ((NamedQuery) other);</span>
+<span class="nc" id="L203">        return new EqualsBuilder().append(id, rhs.id).append(name, rhs.name).append(type, rhs.type).append(query, rhs.query).append(params, rhs.params).append(createdTime, rhs.createdTime).isEquals();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20150806" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Grivet &#x2013; About</title>
+    <title>Grivet &#x2013; Dependency Information</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.4.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -74,12 +74,10 @@
         Dependencies</a>
             </li>
                     
-      <li>
+      <li class="active">
   
-                          <a href="dependency-info.html" title="Dependency Information">
-          <span class="none"></span>
-        Dependency Information</a>
-            </li>
+            <a href="#"><span class="none"></span>Dependency Information</a>
+          </li>
                     
       <li>
   
@@ -95,10 +93,12 @@
         Distribution Management</a>
             </li>
                     
-      <li class="active">
+      <li>
   
-            <a href="#"><span class="none"></span>About</a>
-          </li>
+                          <a href="index.html" title="About">
+          <span class="none"></span>
+        About</a>
+            </li>
                     
       <li>
   
@@ -185,8 +185,37 @@
         <div id="bodyColumn"  class="span10" >
                                   
             <div class="section">
-<h2><a name="About_Grivet"></a>About Grivet</h2><a name="About_Grivet"></a>
-<p>A micro-service capable of self-service modeling and persistence.</p></div>
+<h2><a name="Dependency_Information"></a>Dependency Information</h2><a name="Dependency_Information"></a>
+<div class="section">
+<h3><a name="Apache_Maven"></a>Apache Maven</h3><a name="Apache_Maven"></a>
+<div class="source"><pre class="prettyprint">&lt;dependency&gt;
+  &lt;groupId&gt;com.fns&lt;/groupId&gt;
+  &lt;artifactId&gt;grivet&lt;/artifactId&gt;
+  &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+  &lt;type&gt;war&lt;/type&gt;
+&lt;/dependency&gt;</pre></div></div>
+<div class="section">
+<h3><a name="Apache_Buildr"></a>Apache Buildr</h3><a name="Apache_Buildr"></a>
+<div class="source"><pre class="prettyprint">'com.fns:grivet:war:0.0.1-SNAPSHOT'</pre></div></div>
+<div class="section">
+<h3><a name="Apache_Ivy"></a>Apache Ivy</h3><a name="Apache_Ivy"></a>
+<div class="source"><pre class="prettyprint">&lt;dependency org=&quot;com.fns&quot; name=&quot;grivet&quot; rev=&quot;0.0.1-SNAPSHOT&quot;&gt;
+  &lt;artifact name=&quot;grivet&quot; type=&quot;war&quot; /&gt;
+&lt;/dependency&gt;</pre></div></div>
+<div class="section">
+<h3><a name="Groovy_Grape"></a>Groovy Grape</h3><a name="Groovy_Grape"></a>
+<div class="source"><pre class="prettyprint">@Grapes(
+@Grab(group='com.fns', module='grivet', version='0.0.1-SNAPSHOT')
+)</pre></div></div>
+<div class="section">
+<h3><a name="Grails"></a>Grails</h3><a name="Grails"></a>
+<div class="source"><pre class="prettyprint">compile 'com.fns:grivet:0.0.1-SNAPSHOT'</pre></div></div>
+<div class="section">
+<h3><a name="Leiningen"></a>Leiningen</h3><a name="Leiningen"></a>
+<div class="source"><pre class="prettyprint">[com.fns/grivet &quot;0.0.1-SNAPSHOT&quot;]</pre></div></div>
+<div class="section">
+<h3><a name="SBT"></a>SBT</h3><a name="SBT"></a>
+<div class="source"><pre class="prettyprint">libraryDependencies += &quot;com.fns&quot; % &quot;grivet&quot; % &quot;0.0.1-SNAPSHOT&quot;</pre></div></div></div>
                   </div>
             </div>
           </div>

@@ -1,0 +1,34 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Grivet,com.fns.grivet.repo,JdbcEntityRepository.EAVComparator,0,9,0,0,0,2,0,2,0,2
+Grivet,com.fns.grivet.repo,JdbcEntityRepository,57,224,2,4,8,23,3,6,1,5
+Grivet,com.fns.grivet.repo,AttributeTypeRepository,0,40,0,0,0,5,0,8,0,8
+Grivet,com.fns.grivet.query,Constraint,20,65,2,6,7,15,3,7,1,5
+Grivet,com.fns.grivet.query,QueryType,5,33,0,0,0,3,1,3,1,3
+Grivet,com.fns.grivet.query,Operator,5,186,0,0,0,21,1,7,1,7
+Grivet,com.fns.grivet.query,Conjunction,5,70,0,0,0,10,1,6,1,6
+Grivet,com.fns.grivet.query,DynamicQuery.new Object() {...},10,69,0,0,0,2,0,1,0,1
+Grivet,com.fns.grivet.query,DynamicQuery,92,390,25,33,21,71,21,23,1,10
+Grivet,com.fns.grivet.query,QueryBuilder,93,326,3,19,15,68,6,17,3,9
+Grivet,com.fns.grivet.query,NamedQuery,81,204,12,20,11,47,14,16,3,11
+Grivet,com.fns.grivet.controller,ClassRegistryController,249,6,20,0,47,3,18,1,8,1
+Grivet,com.fns.grivet.controller,GlobalControllerExceptionHandler,70,8,4,0,5,2,3,1,1,1
+Grivet,com.fns.grivet.controller,EntityController,190,10,20,0,32,5,14,2,4,2
+Grivet,com.fns.grivet.controller,MetricsAspect,42,6,0,0,9,3,1,1,1,1
+Grivet,com.fns.grivet.controller,NamedQueryController,122,6,12,0,21,3,11,1,5,1
+Grivet,com.fns.grivet.model,ClassAttribute,3,27,0,0,1,11,1,5,1,5
+Grivet,com.fns.grivet.model,EntityAttributeValue,3,30,0,0,1,11,1,5,1,5
+Grivet,com.fns.grivet.model,Class,10,46,0,0,4,19,3,10,3,10
+Grivet,com.fns.grivet.model,ValueHelper.new Object() {...},7,47,0,0,0,1,0,1,0,1
+Grivet,com.fns.grivet.model,ClassAttributePK,58,3,0,0,11,1,6,1,6,1
+Grivet,com.fns.grivet.model,Attribute,10,18,0,0,4,8,3,4,3,4
+Grivet,com.fns.grivet.model,AttributeType,5,191,0,2,0,22,1,11,1,10
+Grivet,com.fns.grivet.model,LocalDateTimeConverter,0,9,0,0,0,3,0,3,0,3
+Grivet,com.fns.grivet.model,ValueHelper,8,109,6,18,3,40,7,14,1,2
+Grivet,com.fns.grivet.service,SchemaValidationException,5,0,0,0,2,0,1,0,1,0
+Grivet,com.fns.grivet.service,NamedQueryService,96,243,11,15,23,52,10,12,1,7
+Grivet,com.fns.grivet.service,NamedQueryService.new CallableStatementCallback() {...},0,26,0,0,0,3,0,2,0,2
+Grivet,com.fns.grivet.service,NamedQueryService.new Object() {...},2,17,0,0,0,1,0,1,0,1
+Grivet,com.fns.grivet.service,EntityService,8,282,1,9,1,56,1,8,0,4
+Grivet,com.fns.grivet.service,SchemaValidator,14,67,0,0,2,13,0,2,0,2
+Grivet,com.fns.grivet.service,ClassRegistryService,49,370,11,11,12,77,8,11,1,7
+Grivet,com.fns.grivet,App,14,22,0,0,3,4,2,2,2,2
