@@ -239,6 +239,12 @@ links a JSON Schema with a pre-registered type; subsequent `/store/{type}` reque
 
 Sample POST request [TestTypeSchema.json](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/TestTypeSchema.json)
 
+* DELETE `/register/{type}`
+
+deletes a registered type; default configuration has cascading deletes enabled which means that any persistent data from prior POST `/store/{type}` requests will also be deleted; so use with caution!
+
+However, if `spring.profiles.active` is set to `mysql` then when a DELETE request is made only the Class from the `class` table is deleted which orphans entries in other tables
+
 
 ### Type Storage and Retrieval
 

@@ -24,6 +24,11 @@ import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * Bootstraps the application
+ * 
+ * @author Chris Phillipson
+ */
 @SpringBootApplication
 public class App extends SpringBootServletInitializer {
     
