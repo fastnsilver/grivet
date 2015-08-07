@@ -1,5 +1,5 @@
 # Grivet 
-![Build status](https://api.shippable.com/projects/55a44b1aedd7f2c0526b1c42/badge/master "Build status")
+![Build status](https://api.shippable.com/projects/55c406bcedd7f2c05298e9c8/badge/master "Build status")
 
 A micro-service capable of self-service modeling and persistence.
 
