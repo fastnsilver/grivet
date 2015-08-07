@@ -167,7 +167,6 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>${json.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -237,6 +236,19 @@
 	</dependencyManagement>
 	
 	<build>
+		<resources>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>filtered/**</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources/filtered</directory>
+            </resource>
+        </resources>
 		<pluginManagement>
             <plugins>
                 <plugin>
@@ -321,6 +333,13 @@
         </pluginManagement>
         
         <plugins>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <configuration>
+                    <dateFormat>yyyyMMdd-HHmmss</dateFormat>
+                </configuration>
+            </plugin>
             
             <!-- Build test-jar artifact so that we can share test resources and implementation if required -->
             <plugin>
