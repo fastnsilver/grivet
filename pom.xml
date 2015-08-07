@@ -11,14 +11,14 @@
 	</parent>
 	
 	<groupId>com.fns</groupId>
-	<artifactId>globaldb</artifactId>
+	<artifactId>grivet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>GlobalDB</name>
+	<name>Grivet</name>
 	<description>A micro-service capable of self-service modeling and persistence.</description>
 	<inceptionYear>2015</inceptionYear>
-	<url>https://github.com/fastnsilver/globaldb</url>
+	<url>https://github.com/fastnsilver/grivet</url>
     
     <organization>
         <name>FNS</name>
@@ -26,7 +26,7 @@
     </organization>
     
     <issueManagement>
-		<url>https://github.com/fastnsilver/globaldb/issues</url>
+		<url>https://github.com/fastnsilver/grivet/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
 	
@@ -38,9 +38,9 @@
     </licenses>
     
     <scm>
-		<url>https://github.com/fastnsilver/globaldb</url>
-		<connection>scm:git:git://github.com/fastnsilver/globaldb.git</connection>
-		<developerConnection>scm:git:git@github.com:fastnsilver/globaldb.git</developerConnection>
+		<url>https://github.com/fastnsilver/grivet</url>
+		<connection>scm:git:git://github.com/fastnsilver/grivet.git</connection>
+		<developerConnection>scm:git:git@github.com:fastnsilver/grivet.git</developerConnection>
 	</scm>
 	
 	<developers>
@@ -57,7 +57,7 @@
         <site>
             <id>github</id>
             <name>Deployment through Maven's SCM Publish Plugin</name>
-            <url>scm:git:git@github.com:fastnsilver/globaldb.git</url>
+            <url>scm:git:git@github.com:fastnsilver/grivet.git</url>
         </site>
 	</distributionManagement>
 	

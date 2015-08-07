@@ -1,4 +1,4 @@
-# globaldb 
+# Grivet 
 ![Build status](https://api.shippable.com/projects/55a44b1aedd7f2c0526b1c42/badge/master "Build status")
 
 A micro-service capable of self-service modeling and persistence.
@@ -6,7 +6,7 @@ A micro-service capable of self-service modeling and persistence.
 
 # Motivation
 
-Maintaining and growing a database schema to store and retrieve domain objects is tedious. Yes, there are options like: ORM via JPA, JDO or jOOQ; or document object stores like Couchbase or Mongo.  Without having you jump through too many hoops, `globaldb` provides a simple API backed by a RDBMS-based abstraction for type registry, storage and retrieval. 
+Maintaining and growing a database schema to store and retrieve domain objects is tedious. Yes, there are options like: ORM via JPA, JDO or jOOQ; or document object stores like Couchbase or Mongo.  Without having you jump through too many hoops, `grivet` provides a simple API backed by a RDBMS-based abstraction for type registry, storage and retrieval. 
 
 Make it easy to query types.  E.g., when querying...
 
@@ -161,14 +161,14 @@ curl -H "Content-Type: application/json" "http://localhost:8080/store/Album" | p
 
 This is a Spring Boot application.  It is initialized with:
 
-[GlobalDbApplication](https://github.com/fastnsilver/globaldb/blob/master/src/main/java/com/fns/globaldb/GlobalDbApplication.java)
+[App.java](https://github.com/fastnsilver/grivet/blob/master/src/main/java/com/fns/grivet/App.java)
 
 
 ## Prerequisites
 
 * Java JDK 1.8.0_45
 * Maven 3.3.3
-* an RDBMS (H2 is the default w/ no additional configuration); see [application.yml](https://github.com/fastnsilver/globaldb/blob/master/src/main/resources/application.yml) for details
+* an RDBMS (H2 is the default w/ no additional configuration); see [application.yml](https://github.com/fastnsilver/grivet/blob/master/src/main/resources/application.yml) for details
 
 
 ## How to build
@@ -194,7 +194,7 @@ where `<profile-name>` could be replaced with `h2` or `mysql`
 Or 
 
 ```
-$ java -jar globaldb-x.x.x.war
+$ java -jar grivet-x.x.x.war
 ```
 
 where `x.x.x` is a version like `0.0.1-SNAPSHOT`
@@ -202,7 +202,7 @@ where `x.x.x` is a version like `0.0.1-SNAPSHOT`
 Or
 
 ```
-$ java -jar globaldb-x.x.x.war -Dspring.profiles.active=<profile-name>
+$ java -jar grivet-x.x.x.war -Dspring.profiles.active=<profile-name>
 ```
 
 likewise replacing `<profile-name>`
@@ -210,7 +210,7 @@ likewise replacing `<profile-name>`
 
 ## Supported Types
 
-See [AttributeType.java](https://github.com/fastnsilver/globaldb/blob/master/src/main/java/com/fns/globaldb/model/AttributeType.java) for supported attribute types
+See [AttributeType.java](https://github.com/fastnsilver/grivet/blob/master/src/main/java/com/fns/grivet/model/AttributeType.java) for supported attribute types
 
 
 ## Endpoints
@@ -231,20 +231,20 @@ unlinks existing JSON Schema from a pre-registered type; subsequent `/store/{typ
 
 * POST `/register`
 
-Sample POST request [TestType.json](https://github.com/fastnsilver/globaldb/blob/master/src/test/resources/TestType.json)
+Sample POST request [TestType.json](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/TestType.json)
 
 * POST `/register?linkSchema`
 
 links a JSON Schema with a pre-registered type; subsequent `/store/{type}` requests will be validated against schema
 
-Sample POST request [TestTypeSchema.json](https://github.com/fastnsilver/globaldb/blob/master/src/test/resources/TestTypeSchema.json)
+Sample POST request [TestTypeSchema.json](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/TestTypeSchema.json)
 
 
 ### Type Storage and Retrieval
 
 * POST `/store/{type}`
 
-Sample POST request [TestTypeData.json](https://github.com/fastnsilver/globaldb/blob/master/src/test/resources/TestTypeData.json)
+Sample POST request [TestTypeData.json](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/TestTypeData.json)
 
 * GET `/store/{type}`
 
@@ -263,10 +263,10 @@ You may wish to review the ER diagram below to fully leverage this feature.  Cur
 
 Sample POST requests:
 
-* [SELECT](https://github.com/fastnsilver/globaldb/blob/master/src/test/resources/TestSelectQuery.json)
-* [CALL](https://github.com/fastnsilver/globaldb/blob/master/src/test/resources/TestSprocQuery.json)
+* [SELECT](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/TestSelectQuery.json)
+* [CALL](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/TestSprocQuery.json)
 
-Consult this [Stored Procedure](https://github.com/fastnsilver/globaldb/blob/master/src/test/resources/db/hsqldb/V1_1__add_test_sproc.sql) example for a sample HSQLDB based implementation
+Consult this [Stored Procedure](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/db/hsqldb/V1_1__add_test_sproc.sql) example for a sample HSQLDB based implementation
 
 * GET `/query?showAll`
 
@@ -303,9 +303,9 @@ where
 
 * `<constraint_key>` may be `c` or `constraint`
 * `<attribute_name>` is a registered attribute of the type
-* `<operator>` is one of [Operator](https://github.com/fastnsilver/globaldb/blob/master/src/main/java/com/fns/globaldb/query/Operator.java)
+* `<operator>` is one of [Operator](https://github.com/fastnsilver/grivet/blob/master/src/main/java/com/fns/grivet/query/Operator.java)
 * `value` is (depending upon the `operator`) either a single value or a comma-separated list of values
-* `conjunction` is one of [Conjunction](https://github.com/fastnsilver/globaldb/blob/master/src/main/java/com/fns/globaldb/query/Conjunction.java); this value is optional and if not defined then (for more than one constraint) each constraint is `OR`ed. 
+* `conjunction` is one of [Conjunction](https://github.com/fastnsilver/grivet/blob/master/src/main/java/com/fns/grivet/query/Conjunction.java); this value is optional and if not defined then (for more than one constraint) each constraint is `OR`ed. 
 
 Note: all conjunctions must be homogenously defined!
 
@@ -329,7 +329,7 @@ returns `TestType` records that match on either `datetime` `OR` `varchar` attrib
 - [x] Dynamic query support
 - [x] Named query support via /query end-point; both SELECT queries and CALLs to stored procedures
 - [x] Link JSON Schema with a registered type; on subsequent store requests for type, type will be validated against schema before attempt to persist
-- [ ] Documentation authored and published inc. API, [Javadoc](http://fastnsilver.github.io/globaldb/apidocs/index.html), [Maven Site](http://fastnsilver.github.io/globaldb/) to Github Pages
+- [ ] Documentation authored and published inc. API, [Javadoc](http://fastnsilver.github.io/grivet/apidocs/index.html), [Maven Site](http://fastnsilver.github.io/grivet/) to Github Pages
 - [x] Continuous integration builds configured on [Shippable](http://docs.shippable.com/)
 
 ## 0.0.2
