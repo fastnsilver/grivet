@@ -19,29 +19,27 @@ import org.h2.server.web.WebServlet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * Bootstraps the application
+ * 
+ * @author Chris Phillipson
+ */
 @SpringBootApplication
-<span class="fc" id="L28">public class App extends SpringBootServletInitializer {</span>
+<span class="fc" id="L31">public class App {</span>
     
     public static void main(String[] args) {
-<span class="nc" id="L31">        SpringApplication.run(App.class, args);</span>
-<span class="nc" id="L32">    }</span>
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-<span class="nc" id="L36">        return application.sources(App.class);</span>
-    }
+<span class="nc" id="L34">        SpringApplication.run(App.class, args);</span>
+<span class="nc" id="L35">    }</span>
 
     @Bean
     @ConditionalOnProperty(name=&quot;spring.datasource.driver-class-name&quot;, havingValue=&quot;org.h2.Driver&quot;, matchIfMissing=false)
     ServletRegistrationBean h2servletRegistration(){
-<span class="fc" id="L42">        ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());</span>
-<span class="fc" id="L43">        registrationBean.addUrlMappings(&quot;/h2/console/*&quot;);</span>
-<span class="fc" id="L44">        return registrationBean;</span>
+<span class="fc" id="L40">        ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());</span>
+<span class="fc" id="L41">        registrationBean.addUrlMappings(&quot;/h2/console/*&quot;);</span>
+<span class="fc" id="L42">        return registrationBean;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

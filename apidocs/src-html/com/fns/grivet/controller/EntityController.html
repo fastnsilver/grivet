@@ -6,105 +6,125 @@
 </head>
 <body>
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package com.fns.grivet.controller;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>import java.io.IOException;<a name="line.3"></a>
-<span class="sourceLineNo">004</span>import java.time.LocalDateTime;<a name="line.4"></a>
-<span class="sourceLineNo">005</span>import java.time.temporal.ChronoUnit;<a name="line.5"></a>
-<span class="sourceLineNo">006</span><a name="line.6"></a>
-<span class="sourceLineNo">007</span>import javax.servlet.http.HttpServletRequest;<a name="line.7"></a>
-<span class="sourceLineNo">008</span><a name="line.8"></a>
-<span class="sourceLineNo">009</span>import org.apache.commons.io.IOUtils;<a name="line.9"></a>
-<span class="sourceLineNo">010</span>import org.json.JSONArray;<a name="line.10"></a>
-<span class="sourceLineNo">011</span>import org.json.JSONObject;<a name="line.11"></a>
-<span class="sourceLineNo">012</span>import org.springframework.beans.factory.annotation.Autowired;<a name="line.12"></a>
-<span class="sourceLineNo">013</span>import org.springframework.http.HttpHeaders;<a name="line.13"></a>
-<span class="sourceLineNo">014</span>import org.springframework.http.HttpStatus;<a name="line.14"></a>
-<span class="sourceLineNo">015</span>import org.springframework.http.MediaType;<a name="line.15"></a>
-<span class="sourceLineNo">016</span>import org.springframework.http.ResponseEntity;<a name="line.16"></a>
-<span class="sourceLineNo">017</span>import org.springframework.util.Assert;<a name="line.17"></a>
-<span class="sourceLineNo">018</span>import org.springframework.web.bind.annotation.PathVariable;<a name="line.18"></a>
-<span class="sourceLineNo">019</span>import org.springframework.web.bind.annotation.RequestMapping;<a name="line.19"></a>
-<span class="sourceLineNo">020</span>import org.springframework.web.bind.annotation.RequestMethod;<a name="line.20"></a>
-<span class="sourceLineNo">021</span>import org.springframework.web.bind.annotation.RequestParam;<a name="line.21"></a>
-<span class="sourceLineNo">022</span>import org.springframework.web.bind.annotation.RestController;<a name="line.22"></a>
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright 2015 - Chris Phillipson<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * <a name="line.3"></a>
+<span class="sourceLineNo">004</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * you may not use this file except in compliance with the License.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> *<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * You may obtain a copy of the License at<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.8"></a>
+<span class="sourceLineNo">009</span> *<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Unless required by applicable law or agreed to in writing, software<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * distributed under the License is distributed on an "AS IS" BASIS,<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * See the License for the specific language governing permissions and<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * limitations under the License.<a name="line.14"></a>
+<span class="sourceLineNo">015</span> */<a name="line.15"></a>
+<span class="sourceLineNo">016</span>package com.fns.grivet.controller;<a name="line.16"></a>
+<span class="sourceLineNo">017</span><a name="line.17"></a>
+<span class="sourceLineNo">018</span>import java.io.IOException;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>import java.time.LocalDateTime;<a name="line.19"></a>
+<span class="sourceLineNo">020</span>import java.time.temporal.ChronoUnit;<a name="line.20"></a>
+<span class="sourceLineNo">021</span><a name="line.21"></a>
+<span class="sourceLineNo">022</span>import javax.servlet.http.HttpServletRequest;<a name="line.22"></a>
 <span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>import com.codahale.metrics.MetricRegistry;<a name="line.24"></a>
-<span class="sourceLineNo">025</span>import com.fasterxml.jackson.core.JsonProcessingException;<a name="line.25"></a>
-<span class="sourceLineNo">026</span>import com.fns.grivet.service.EntityService;<a name="line.26"></a>
-<span class="sourceLineNo">027</span><a name="line.27"></a>
-<span class="sourceLineNo">028</span><a name="line.28"></a>
-<span class="sourceLineNo">029</span>@RestController<a name="line.29"></a>
-<span class="sourceLineNo">030</span>@RequestMapping("/store")<a name="line.30"></a>
-<span class="sourceLineNo">031</span>public class EntityController {<a name="line.31"></a>
-<span class="sourceLineNo">032</span><a name="line.32"></a>
-<span class="sourceLineNo">033</span>    private final EntityService entityService;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>    private MetricRegistry metricRegistry;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>    <a name="line.35"></a>
-<span class="sourceLineNo">036</span>    @Autowired<a name="line.36"></a>
-<span class="sourceLineNo">037</span>    public EntityController(EntityService entityService) {<a name="line.37"></a>
-<span class="sourceLineNo">038</span>        this.entityService = entityService;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>    }<a name="line.39"></a>
-<span class="sourceLineNo">040</span>    <a name="line.40"></a>
-<span class="sourceLineNo">041</span>    @Autowired<a name="line.41"></a>
-<span class="sourceLineNo">042</span>    public void setMetricRegistry(MetricRegistry metricRegistry) {<a name="line.42"></a>
-<span class="sourceLineNo">043</span>        this.metricRegistry = metricRegistry;<a name="line.43"></a>
-<span class="sourceLineNo">044</span>    }<a name="line.44"></a>
-<span class="sourceLineNo">045</span><a name="line.45"></a>
-<span class="sourceLineNo">046</span>    @RequestMapping(value="/{type}", method=RequestMethod.POST, <a name="line.46"></a>
-<span class="sourceLineNo">047</span>            consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)<a name="line.47"></a>
-<span class="sourceLineNo">048</span>    public ResponseEntity&lt;?&gt; create(@PathVariable("type") String type, HttpServletRequest request) throws IOException {<a name="line.48"></a>
-<span class="sourceLineNo">049</span>        String json = IOUtils.toString(request.getInputStream(), "UTF-8");<a name="line.49"></a>
-<span class="sourceLineNo">050</span>        Assert.isTrue(json.startsWith("{") || json.startsWith("["), "Store requests must be valid JSON starting with either a { or [!");<a name="line.50"></a>
-<span class="sourceLineNo">051</span>        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();<a name="line.51"></a>
-<span class="sourceLineNo">052</span>        if (json.startsWith("{")) {<a name="line.52"></a>
-<span class="sourceLineNo">053</span>            result = createSingleType(type, json);<a name="line.53"></a>
-<span class="sourceLineNo">054</span>        }<a name="line.54"></a>
-<span class="sourceLineNo">055</span>        if (json.startsWith("[")) {<a name="line.55"></a>
-<span class="sourceLineNo">056</span>            result = createMultipleTypes(type, json);<a name="line.56"></a>
-<span class="sourceLineNo">057</span>        }<a name="line.57"></a>
-<span class="sourceLineNo">058</span>        return result;<a name="line.58"></a>
+<span class="sourceLineNo">024</span>import org.apache.commons.io.IOUtils;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import org.json.JSONArray;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import org.json.JSONObject;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import org.springframework.beans.factory.annotation.Autowired;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import org.springframework.http.HttpHeaders;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import org.springframework.http.HttpStatus;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import org.springframework.http.MediaType;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import org.springframework.http.ResponseEntity;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.springframework.util.Assert;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.springframework.web.bind.annotation.PathVariable;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import org.springframework.web.bind.annotation.RequestMapping;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import org.springframework.web.bind.annotation.RequestMethod;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import org.springframework.web.bind.annotation.RequestParam;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import org.springframework.web.bind.annotation.RestController;<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>import com.codahale.metrics.MetricRegistry;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import com.fasterxml.jackson.core.JsonProcessingException;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import com.fns.grivet.service.EntityService;<a name="line.41"></a>
+<span class="sourceLineNo">042</span><a name="line.42"></a>
+<span class="sourceLineNo">043</span><a name="line.43"></a>
+<span class="sourceLineNo">044</span>/**<a name="line.44"></a>
+<span class="sourceLineNo">045</span> * Provides end-points for type storage and retrieval<a name="line.45"></a>
+<span class="sourceLineNo">046</span> * <a name="line.46"></a>
+<span class="sourceLineNo">047</span> * @author Chris Phillipson<a name="line.47"></a>
+<span class="sourceLineNo">048</span> */<a name="line.48"></a>
+<span class="sourceLineNo">049</span>@RestController<a name="line.49"></a>
+<span class="sourceLineNo">050</span>@RequestMapping("/store")<a name="line.50"></a>
+<span class="sourceLineNo">051</span>public class EntityController {<a name="line.51"></a>
+<span class="sourceLineNo">052</span><a name="line.52"></a>
+<span class="sourceLineNo">053</span>    private final EntityService entityService;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    private MetricRegistry metricRegistry;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>    <a name="line.55"></a>
+<span class="sourceLineNo">056</span>    @Autowired<a name="line.56"></a>
+<span class="sourceLineNo">057</span>    public EntityController(EntityService entityService) {<a name="line.57"></a>
+<span class="sourceLineNo">058</span>        this.entityService = entityService;<a name="line.58"></a>
 <span class="sourceLineNo">059</span>    }<a name="line.59"></a>
 <span class="sourceLineNo">060</span>    <a name="line.60"></a>
-<span class="sourceLineNo">061</span>    private ResponseEntity&lt;?&gt; createSingleType(String type, String json) {<a name="line.61"></a>
-<span class="sourceLineNo">062</span>        entityService.create(type, new JSONObject(json));<a name="line.62"></a>
-<span class="sourceLineNo">063</span>        metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();<a name="line.63"></a>
-<span class="sourceLineNo">064</span>        return ResponseEntity.noContent().build();<a name="line.64"></a>
-<span class="sourceLineNo">065</span>    }<a name="line.65"></a>
-<span class="sourceLineNo">066</span>    <a name="line.66"></a>
-<span class="sourceLineNo">067</span>    private ResponseEntity&lt;?&gt; createMultipleTypes(String type, String json) {<a name="line.67"></a>
-<span class="sourceLineNo">068</span>        JSONArray jsonArray = new JSONArray(json);<a name="line.68"></a>
-<span class="sourceLineNo">069</span>        int numberOfTypesToCreate = jsonArray.length();<a name="line.69"></a>
-<span class="sourceLineNo">070</span>        int errorCount = 0;<a name="line.70"></a>
-<span class="sourceLineNo">071</span>        JSONObject jsonObject = null;<a name="line.71"></a>
-<span class="sourceLineNo">072</span>        HttpHeaders headers = new HttpHeaders();<a name="line.72"></a>
-<span class="sourceLineNo">073</span>        // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing<a name="line.73"></a>
-<span class="sourceLineNo">074</span>        for (int i = 0; i &lt; numberOfTypesToCreate; i++) {<a name="line.74"></a>
-<span class="sourceLineNo">075</span>            jsonObject = jsonArray.getJSONObject(i);<a name="line.75"></a>
-<span class="sourceLineNo">076</span>            try {<a name="line.76"></a>
-<span class="sourceLineNo">077</span>                entityService.create(type, jsonObject);<a name="line.77"></a>
-<span class="sourceLineNo">078</span>                metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();<a name="line.78"></a>
-<span class="sourceLineNo">079</span>            } catch (Exception e) {<a name="line.79"></a>
-<span class="sourceLineNo">080</span>                if (numberOfTypesToCreate == 1) {<a name="line.80"></a>
-<span class="sourceLineNo">081</span>                    throw e;<a name="line.81"></a>
-<span class="sourceLineNo">082</span>                }<a name="line.82"></a>
-<span class="sourceLineNo">083</span>                headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());<a name="line.83"></a>
-<span class="sourceLineNo">084</span>                errorCount++;<a name="line.84"></a>
-<span class="sourceLineNo">085</span>            }<a name="line.85"></a>
-<span class="sourceLineNo">086</span>        }<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        HttpStatus status = (errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED;<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        return new ResponseEntity&lt;&gt;(headers, status);<a name="line.88"></a>
-<span class="sourceLineNo">089</span>    }<a name="line.89"></a>
-<span class="sourceLineNo">090</span>    <a name="line.90"></a>
-<span class="sourceLineNo">091</span>    @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)<a name="line.91"></a>
-<span class="sourceLineNo">092</span>    public ResponseEntity&lt;?&gt; get(@PathVariable("type") String type, @RequestParam(value="createdTimeStart", required=false) String createdTimeStart, @RequestParam(value="createdTimeEnd", required=false) String createdTimeEnd, HttpServletRequest request) throws JsonProcessingException {<a name="line.92"></a>
-<span class="sourceLineNo">093</span>        LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);<a name="line.93"></a>
-<span class="sourceLineNo">094</span>        LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);<a name="line.94"></a>
-<span class="sourceLineNo">095</span>        Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, "Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");<a name="line.95"></a>
-<span class="sourceLineNo">096</span>        return ResponseEntity.ok(entityService.get(type, start, end, request.getParameterMap().entrySet()));<a name="line.96"></a>
-<span class="sourceLineNo">097</span>    }<a name="line.97"></a>
-<span class="sourceLineNo">098</span>    <a name="line.98"></a>
-<span class="sourceLineNo">099</span>}<a name="line.99"></a>
+<span class="sourceLineNo">061</span>    @Autowired<a name="line.61"></a>
+<span class="sourceLineNo">062</span>    public void setMetricRegistry(MetricRegistry metricRegistry) {<a name="line.62"></a>
+<span class="sourceLineNo">063</span>        this.metricRegistry = metricRegistry;<a name="line.63"></a>
+<span class="sourceLineNo">064</span>    }<a name="line.64"></a>
+<span class="sourceLineNo">065</span><a name="line.65"></a>
+<span class="sourceLineNo">066</span>    @RequestMapping(value="/{type}", method=RequestMethod.POST, <a name="line.66"></a>
+<span class="sourceLineNo">067</span>            consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)<a name="line.67"></a>
+<span class="sourceLineNo">068</span>    public ResponseEntity&lt;?&gt; create(@PathVariable("type") String type, HttpServletRequest request) throws IOException {<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        String json = IOUtils.toString(request.getInputStream(), "UTF-8");<a name="line.69"></a>
+<span class="sourceLineNo">070</span>        Assert.isTrue(json.startsWith("{") || json.startsWith("["), "Store requests must be valid JSON starting with either a { or [!");<a name="line.70"></a>
+<span class="sourceLineNo">071</span>        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();<a name="line.71"></a>
+<span class="sourceLineNo">072</span>        if (json.startsWith("{")) {<a name="line.72"></a>
+<span class="sourceLineNo">073</span>            result = createSingleType(type, json);<a name="line.73"></a>
+<span class="sourceLineNo">074</span>        }<a name="line.74"></a>
+<span class="sourceLineNo">075</span>        if (json.startsWith("[")) {<a name="line.75"></a>
+<span class="sourceLineNo">076</span>            result = createMultipleTypes(type, json);<a name="line.76"></a>
+<span class="sourceLineNo">077</span>        }<a name="line.77"></a>
+<span class="sourceLineNo">078</span>        return result;<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    }<a name="line.79"></a>
+<span class="sourceLineNo">080</span>    <a name="line.80"></a>
+<span class="sourceLineNo">081</span>    private ResponseEntity&lt;?&gt; createSingleType(String type, String json) {<a name="line.81"></a>
+<span class="sourceLineNo">082</span>        entityService.create(type, new JSONObject(json));<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();<a name="line.83"></a>
+<span class="sourceLineNo">084</span>        return ResponseEntity.noContent().build();<a name="line.84"></a>
+<span class="sourceLineNo">085</span>    }<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    <a name="line.86"></a>
+<span class="sourceLineNo">087</span>    private ResponseEntity&lt;?&gt; createMultipleTypes(String type, String json) {<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        JSONArray jsonArray = new JSONArray(json);<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        int numberOfTypesToCreate = jsonArray.length();<a name="line.89"></a>
+<span class="sourceLineNo">090</span>        int errorCount = 0;<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        JSONObject jsonObject = null;<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        HttpHeaders headers = new HttpHeaders();<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        for (int i = 0; i &lt; numberOfTypesToCreate; i++) {<a name="line.94"></a>
+<span class="sourceLineNo">095</span>            jsonObject = jsonArray.getJSONObject(i);<a name="line.95"></a>
+<span class="sourceLineNo">096</span>            try {<a name="line.96"></a>
+<span class="sourceLineNo">097</span>                entityService.create(type, jsonObject);<a name="line.97"></a>
+<span class="sourceLineNo">098</span>                metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();<a name="line.98"></a>
+<span class="sourceLineNo">099</span>            } catch (Exception e) {<a name="line.99"></a>
+<span class="sourceLineNo">100</span>                if (numberOfTypesToCreate == 1) {<a name="line.100"></a>
+<span class="sourceLineNo">101</span>                    throw e;<a name="line.101"></a>
+<span class="sourceLineNo">102</span>                }<a name="line.102"></a>
+<span class="sourceLineNo">103</span>                headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());<a name="line.103"></a>
+<span class="sourceLineNo">104</span>                errorCount++;<a name="line.104"></a>
+<span class="sourceLineNo">105</span>            }<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        }<a name="line.106"></a>
+<span class="sourceLineNo">107</span>        HttpStatus status = (errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED;<a name="line.107"></a>
+<span class="sourceLineNo">108</span>        return new ResponseEntity&lt;&gt;(headers, status);<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    }<a name="line.109"></a>
+<span class="sourceLineNo">110</span>    <a name="line.110"></a>
+<span class="sourceLineNo">111</span>    @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)<a name="line.111"></a>
+<span class="sourceLineNo">112</span>    public ResponseEntity&lt;?&gt; get(@PathVariable("type") String type, @RequestParam(value="createdTimeStart", required=false) String createdTimeStart, @RequestParam(value="createdTimeEnd", required=false) String createdTimeEnd, HttpServletRequest request) throws JsonProcessingException {<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);<a name="line.114"></a>
+<span class="sourceLineNo">115</span>        Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, "Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");<a name="line.115"></a>
+<span class="sourceLineNo">116</span>        return ResponseEntity.ok(entityService.get(type, start, end, request.getParameterMap().entrySet()));<a name="line.116"></a>
+<span class="sourceLineNo">117</span>    }<a name="line.117"></a>
+<span class="sourceLineNo">118</span>    <a name="line.118"></a>
+<span class="sourceLineNo">119</span>}<a name="line.119"></a>
 
 
 
