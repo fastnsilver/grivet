@@ -72,13 +72,6 @@
          	<name>MireDot Releases</name>
          	<url>http://nexus.qmino.com/content/repositories/miredot</url>
       	</pluginRepository>
-      	<pluginRepository>
-            <id>mvnplugins.fusesource.org</id>
-            <url>http://mvnplugins.fusesource.org/repo/release</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </pluginRepository>
 	</pluginRepositories>
 	
 	<repositories>
@@ -129,7 +122,6 @@
         <maven-changelog-plugin.version>2.3</maven-changelog-plugin.version>
         <maven-checkstyle-plugin.version>2.15</maven-checkstyle-plugin.version>
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-        <maven-graph-plugin.version>1.38</maven-graph-plugin.version>
         <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
         <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
         <maven-plugin-plugin.version>3.4</maven-plugin-plugin.version>
@@ -560,12 +552,6 @@
 				</configuration>
 			</plugin>
 			
-			<plugin>
-                <groupId>org.fusesource.mvnplugins</groupId>
-                <artifactId>maven-graph-plugin</artifactId>
-                <version>${maven-graph-plugin.version}</version>
-            </plugin>
-            
             <plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
