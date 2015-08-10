@@ -100,10 +100,14 @@
 		<json.version>20141113</json.version>
 		<json-unit.version>1.5.5</json-unit.version>
 		<json-schema-validator.version>2.2.6</json-schema-validator.version>
-		<spring.version>4.2.0.RC3</spring.version>
+		<spring.version>4.2.0.RELEASE</spring.version>
 		<spring-data-releasetrain.version>Fowler-SR2</spring-data-releasetrain.version>
+		
+		<!-- Vaadin -->
+		<!--
 		<vaadin-bom.version>7.4.5</vaadin-bom.version>
 		<vaadin-spring-boot-starter.version>1.0.0.beta3</vaadin-spring-boot-starter.version>
+		-->
 		
 		<!-- Github -->
 		<github.global.host>github.com</github.global.host>
@@ -152,6 +156,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
 		<dependency>
@@ -161,10 +169,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-integration</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<!--
 		<dependency>
@@ -181,6 +185,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-devtools</artifactId>
+    	</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
@@ -240,6 +248,7 @@
 		</dependency>
 	</dependencies>
 	
+	<!--
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -251,6 +260,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	-->
 	
 	<build>
 		<resources>
