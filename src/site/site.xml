@@ -15,6 +15,9 @@
 	    </fluidoSkin>
   	</custom>
   	<body>
+  		<menu name="Overview">
+            <item name="API" href="restdocs/index.html" />
+        </menu>
     	<menu ref="modules" />
     	<menu ref="reports" />
   	</body>
