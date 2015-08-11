@@ -5,3 +5,5 @@ jdk:
 
 after_success:
   - mvn clean package
+
+cache: true
