@@ -67,11 +67,6 @@
 	        <name>SpringSource Milestone Plugin Repository</name>
 	        <url>http://repo.springsource.org/milestone</url>
     	</pluginRepository>
-    	<pluginRepository>
-         	<id>miredot</id>
-         	<name>MireDot Releases</name>
-         	<url>http://nexus.qmino.com/content/repositories/miredot</url>
-      	</pluginRepository>
 	</pluginRepositories>
 	
 	<repositories>
@@ -427,54 +422,6 @@
 			</plugin>
 			
 			<plugin>
-				<groupId>com.qmino</groupId>
-				<artifactId>miredot-plugin</artifactId>
-				<version>${miredot-plugin.version}</version>
-				<dependencies>
-					<dependency>
-				    	<groupId>org.springframework</groupId>
-				     	<artifactId>spring-core</artifactId>
-				    	<version>${spring.version}</version>
-				    </dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>publish-restdocs</id>
-						<goals>
-							<goal>restdoc</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<licence>
-						${miredot.license.key}
-					</licence>
-					<restModel>
-						<restFramework> 
-							<name>spring-mvc</name>
-						</restFramework>
-						<fieldVisibility>
-                            <GETTER>PUBLIC_ONLY</GETTER>
-                            <IS_GETTER>PUBLIC_ONLY</IS_GETTER>
-                            <SETTER>NON_PRIVATE</SETTER>
-                            <CREATOR>PUBLIC_ONLY</CREATOR>
-                            <FIELD>PUBLIC_ONLY</FIELD>
-                        </fieldVisibility>
-                        <titleNamingStrategies>
-                            <strategy>tag: summary</strategy>
-                            <strategy>tag: title</strategy>
-                            <strategy>firstsentence</strategy>
-                        </titleNamingStrategies>
-					</restModel>
-					<output>
-						<html>
-				        	<location>${project.build.directory}/site/restdocs</location>
-				        </html>
-				    </output>
-				</configuration>
-			</plugin>
-						
-			<plugin>
    				<groupId>org.jolokia</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>${docker-maven-plugin.version}</version>
@@ -533,6 +480,13 @@
 	<profiles>
 		<profile>
 			<id>documentation</id>
+			<pluginRepositories>
+		    	<pluginRepository>
+		         	<id>miredot</id>
+		         	<name>MireDot Releases</name>
+		         	<url>http://nexus.qmino.com/content/repositories/miredot</url>
+		      	</pluginRepository>
+			</pluginRepositories>
 			<build>
 				<pluginManagement>
 					<plugins>
@@ -567,6 +521,54 @@
 					</plugins>
 				</pluginManagement>
 				<plugins>
+					<plugin>
+						<groupId>com.qmino</groupId>
+						<artifactId>miredot-plugin</artifactId>
+						<version>${miredot-plugin.version}</version>
+						<dependencies>
+							<dependency>
+						    	<groupId>org.springframework</groupId>
+						     	<artifactId>spring-core</artifactId>
+						    	<version>${spring.version}</version>
+						    </dependency>
+						</dependencies>
+						<executions>
+							<execution>
+								<id>publish-restdocs</id>
+								<phase>pre-site</phase>
+								<goals>
+									<goal>restdoc</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<licence>
+								${miredot.license.key}
+							</licence>
+							<restModel>
+								<restFramework> 
+									<name>spring-mvc</name>
+								</restFramework>
+								<fieldVisibility>
+		                            <GETTER>PUBLIC_ONLY</GETTER>
+		                            <IS_GETTER>PUBLIC_ONLY</IS_GETTER>
+		                            <SETTER>NON_PRIVATE</SETTER>
+		                            <CREATOR>PUBLIC_ONLY</CREATOR>
+		                            <FIELD>PUBLIC_ONLY</FIELD>
+		                        </fieldVisibility>
+		                        <titleNamingStrategies>
+		                            <strategy>tag: summary</strategy>
+		                            <strategy>tag: title</strategy>
+		                            <strategy>firstsentence</strategy>
+		                        </titleNamingStrategies>
+							</restModel>
+							<output>
+								<html>
+						        	<location>${project.build.directory}/site/restdocs</location>
+						        </html>
+						    </output>
+						</configuration>
+					</plugin>
 					<plugin>
 				        <groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-site-plugin</artifactId>
