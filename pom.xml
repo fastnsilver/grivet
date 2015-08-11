@@ -348,35 +348,6 @@
                         </execution>
                     </executions>
                 </plugin>
-                
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>${maven-site-plugin.version}</version>
-                    <configuration>
-                        <locales>en</locales>
-                        <port>9000</port>
-                        <skipDeploy>true</skipDeploy>
-                        <tempWebappDirectory>${basedir}/target/site/tempdir</tempWebappDirectory>
-                        <relativizeDecorationLinks>false</relativizeDecorationLinks>
-                    </configuration>
-                    <dependencies>
-                        <dependency>
-                            <!--
-                            | allows markdown syntax for site generation. To use it place files below
-                            | src/site/markdown/[filename].md
-                            -->
-                            <groupId>org.apache.maven.doxia</groupId>
-                            <artifactId>doxia-module-markdown</artifactId>
-                            <version>${doxia-module-markdown.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.apache.maven.wagon</groupId>
-                            <artifactId>wagon-webdav-jackrabbit</artifactId>
-                            <version>${wagon-webdav-jackrabbit.version}</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
             </plugins>
         </pluginManagement>
         
@@ -597,243 +568,280 @@
 		</plugins>
 	</build>
 	
-	<reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
-                <configuration>
-                    <!-- Default configuration for all reports -->
-                    <detectOfflineLinks>true</detectOfflineLinks>
-                    <!-- <detectLinks>true</detectLinks> -->
-                    <detectJavaApiLink>true</detectJavaApiLink>
-                    <linksource>true</linksource>
-                    <useStandardDocletOptions>true</useStandardDocletOptions>
-                    <breakiterator>true</breakiterator>
-                    <javadocVersion>${compileSource}</javadocVersion>
-                    <version>true</version>
-                    <author>true</author>
-                    <keywords>true</keywords>
-                    <minmemory>128m</minmemory>
-                    <maxmemory>512m</maxmemory>
-                    <doclet>org.jboss.apiviz.APIviz</doclet>
-                    <docletArtifact>
-                        <groupId>org.jboss.apiviz</groupId>
-                        <artifactId>apiviz</artifactId>
-                        <version>${apiviz.version}</version>
-                    </docletArtifact>
-                    <additionalparam>
-                        -charset UTF-8
-                        -docencoding UTF-8
-                        -version
-                        -author
-                        -breakiterator
-                        -linksource
-                        -sourcetab 4
-                        -windowtitle "${project.name} ${project.version} API Reference"
-                        -doctitle "${project.name} ${project.version} API Reference"
-                        -link https://docs.oracle.com/javase/8/docs/api/
-                        -link http://jsr311.java.net/nonav/releases/1.1
-                        -Xdoclint:none
-                    </additionalparam>
-                </configuration>
-                <reportSets>
-                    <reportSet>
-                        <id>non-aggregate</id>
-                        <configuration>
-                            <!-- Specific configuration for the non aggregate report -->
-                            <doclet>org.jboss.apiviz.APIviz</doclet>
-                            <docletArtifact>
-                                <groupId>org.jboss.apiviz</groupId>
-                                <artifactId>apiviz</artifactId>
-                                <version>${apiviz.version}</version>
-                            </docletArtifact>
-                            <additionalparam>
-                                -charset UTF-8
-                                -docencoding UTF-8
-                                -version
-                                -author
-                                -breakiterator
-                                -linksource
-                                -sourcetab 4
-                                -windowtitle "${project.name} ${project.version} API Reference"
-                                -doctitle "${project.name} ${project.version} API Reference"
-                                -link https://docs.oracle.com/javase/8/docs/api/
-                                -link http://jsr311.java.net/nonav/releases/1.1
-                                -sourceclasspath ${project.build.outputDirectory}
-                            </additionalparam>
-                        </configuration>
-                        <reports>
-                            <report>javadoc</report>
-                        </reports>
-                    </reportSet>
-                    <reportSet>
-                        <id>aggregate</id>
-                        <configuration>
-                            <!-- Specific configuration for the aggregate report -->
-                            <doclet>org.jboss.apiviz.APIviz</doclet>
-                            <docletArtifact>
-                                <groupId>org.jboss.apiviz</groupId>
-                                <artifactId>apiviz</artifactId>
-                                <version>${apiviz.version}</version>
-                            </docletArtifact>
-                            <additionalparam>
-                                -charset UTF-8
-                                -docencoding UTF-8
-                                -version
-                                -author
-                                -breakiterator
-                                -linksource
-                                -sourcetab 4
-                                -windowtitle "${project.name} ${project.version} API Reference"
-                                -doctitle "${project.name} ${project.version} API Reference"
-                                -link https://docs.oracle.com/javase/8/docs/api/
-                                -link http://jsr311.java.net/nonav/releases/1.1
-                            </additionalparam>
-                        </configuration>
-                        <reports>
-                            <report>aggregate</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>${maven-jxr-plugin.version}</version>
-                <configuration>
-                    <linkJavadoc>true</linkJavadoc>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <meminitial>128m</meminitial>
-                    <maxmem>512m</maxmem>
-                    <!-- Allows non-ascii characters in source code -->
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-plugin-plugin</artifactId>
-                <version>${maven-plugin-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>${maven-project-info-reports-plugin.version}</version>
-                <configuration>
-                    <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-                    <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>${maven-surefire-report-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>${maven-surefire-report-plugin.version}</version>
-                <reportSets>
-                    <reportSet>
-                        <id>integration-tests</id>
-                        <reports>
-                            <report>report-only</report>
-                        </reports>
-                        <configuration>
-                            <outputName>failsafe-report</outputName>
-                            <reportsDirectories>
-                                <reportsDirectory>${project.build.directory}/failsafe-reports</reportsDirectory>
-                            </reportsDirectories>
-                        </configuration>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>taglist-maven-plugin</artifactId>
-                <version>${taglist-maven-plugin.version}</version>
-                <configuration>
-                    <tagListOptions>
-                        <tagClasses>
-                            <tagClass>
-                                <displayName>To Do</displayName>
-                                <tags>
-                                    <tag>
-                                        <matchString>TODO</matchString>
-                                        <matchType>exact</matchType>
-                                    </tag>
-                                </tags>
-                            </tagClass>
-                            <tagClass>
-                                <displayName>To Fix</displayName>
-                                <tags>
-                                    <tag>
-                                        <matchString>FIXME</matchString>
-                                        <matchType>exact</matchType>
-                                    </tag>
-                                    <tag>
-                                        <matchString>DEBT</matchString>
-                                        <matchType>exact</matchType>
-                                    </tag>
-                                    <tag>
-                                        <matchString>deprecated</matchString>
-                                        <matchType>ignoreCase</matchType>
-                                    </tag>
-                                </tags>
-                            </tagClass>
-                            <tagClass>
-                                <displayName>Optional</displayName>
-                                <tags>
-                                    <tag>
-                                        <matchString>XXX</matchString>
-                                        <matchType>exact</matchType>
-                                    </tag>
-                                </tags>
-                            </tagClass>
-                        </tagClasses>
-                    </tagListOptions>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-changes-plugin</artifactId>
-                <version>${maven-changes-plugin.version}</version>
-                <configuration>
-                    <githubAPIScheme>https</githubAPIScheme>
-  					<githubAPIPort>443</githubAPIPort>
-                </configuration>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>changes-report</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-changelog-plugin</artifactId>
-                <version>${maven-changelog-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin.version}</version>
-            </plugin>
-        </plugins>
-    </reporting>
-
 	<profiles>
+		<profile>
+			<id>documentation</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+		                    <groupId>org.apache.maven.plugins</groupId>
+		                    <artifactId>maven-site-plugin</artifactId>
+		                    <version>${maven-site-plugin.version}</version>
+		                    <configuration>
+		                        <locales>en</locales>
+		                        <port>9000</port>
+		                        <skipDeploy>true</skipDeploy>
+		                        <tempWebappDirectory>${basedir}/target/site/tempdir</tempWebappDirectory>
+		                        <relativizeDecorationLinks>false</relativizeDecorationLinks>
+		                    </configuration>
+		                    <dependencies>
+		                        <dependency>
+		                            <!--
+		                            | allows markdown syntax for site generation. To use it place files below
+		                            | src/site/markdown/[filename].md
+		                            -->
+		                            <groupId>org.apache.maven.doxia</groupId>
+		                            <artifactId>doxia-module-markdown</artifactId>
+		                            <version>${doxia-module-markdown.version}</version>
+		                        </dependency>
+		                        <dependency>
+		                            <groupId>org.apache.maven.wagon</groupId>
+		                            <artifactId>wagon-webdav-jackrabbit</artifactId>
+		                            <version>${wagon-webdav-jackrabbit.version}</version>
+		                        </dependency>
+		                    </dependencies>
+		                </plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+			<reporting>
+		        <plugins>
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-javadoc-plugin</artifactId>
+		                <version>${maven-javadoc-plugin.version}</version>
+		                <configuration>
+		                    <!-- Default configuration for all reports -->
+		                    <detectOfflineLinks>true</detectOfflineLinks>
+		                    <!-- <detectLinks>true</detectLinks> -->
+		                    <detectJavaApiLink>true</detectJavaApiLink>
+		                    <linksource>true</linksource>
+		                    <useStandardDocletOptions>true</useStandardDocletOptions>
+		                    <breakiterator>true</breakiterator>
+		                    <javadocVersion>${compileSource}</javadocVersion>
+		                    <version>true</version>
+		                    <author>true</author>
+		                    <keywords>true</keywords>
+		                    <minmemory>128m</minmemory>
+		                    <maxmemory>512m</maxmemory>
+		                    <doclet>org.jboss.apiviz.APIviz</doclet>
+		                    <docletArtifact>
+		                        <groupId>org.jboss.apiviz</groupId>
+		                        <artifactId>apiviz</artifactId>
+		                        <version>${apiviz.version}</version>
+		                    </docletArtifact>
+		                    <additionalparam>
+		                        -charset UTF-8
+		                        -docencoding UTF-8
+		                        -version
+		                        -author
+		                        -breakiterator
+		                        -linksource
+		                        -sourcetab 4
+		                        -windowtitle "${project.name} ${project.version} API Reference"
+		                        -doctitle "${project.name} ${project.version} API Reference"
+		                        -link https://docs.oracle.com/javase/8/docs/api/
+		                        -link http://jsr311.java.net/nonav/releases/1.1
+		                        -Xdoclint:none
+		                    </additionalparam>
+		                </configuration>
+		                <reportSets>
+		                    <reportSet>
+		                        <id>non-aggregate</id>
+		                        <configuration>
+		                            <!-- Specific configuration for the non aggregate report -->
+		                            <doclet>org.jboss.apiviz.APIviz</doclet>
+		                            <docletArtifact>
+		                                <groupId>org.jboss.apiviz</groupId>
+		                                <artifactId>apiviz</artifactId>
+		                                <version>${apiviz.version}</version>
+		                            </docletArtifact>
+		                            <additionalparam>
+		                                -charset UTF-8
+		                                -docencoding UTF-8
+		                                -version
+		                                -author
+		                                -breakiterator
+		                                -linksource
+		                                -sourcetab 4
+		                                -windowtitle "${project.name} ${project.version} API Reference"
+		                                -doctitle "${project.name} ${project.version} API Reference"
+		                                -link https://docs.oracle.com/javase/8/docs/api/
+		                                -link http://jsr311.java.net/nonav/releases/1.1
+		                                -sourceclasspath ${project.build.outputDirectory}
+		                            </additionalparam>
+		                        </configuration>
+		                        <reports>
+		                            <report>javadoc</report>
+		                        </reports>
+		                    </reportSet>
+		                    <reportSet>
+		                        <id>aggregate</id>
+		                        <configuration>
+		                            <!-- Specific configuration for the aggregate report -->
+		                            <doclet>org.jboss.apiviz.APIviz</doclet>
+		                            <docletArtifact>
+		                                <groupId>org.jboss.apiviz</groupId>
+		                                <artifactId>apiviz</artifactId>
+		                                <version>${apiviz.version}</version>
+		                            </docletArtifact>
+		                            <additionalparam>
+		                                -charset UTF-8
+		                                -docencoding UTF-8
+		                                -version
+		                                -author
+		                                -breakiterator
+		                                -linksource
+		                                -sourcetab 4
+		                                -windowtitle "${project.name} ${project.version} API Reference"
+		                                -doctitle "${project.name} ${project.version} API Reference"
+		                                -link https://docs.oracle.com/javase/8/docs/api/
+		                                -link http://jsr311.java.net/nonav/releases/1.1
+		                            </additionalparam>
+		                        </configuration>
+		                        <reports>
+		                            <report>aggregate</report>
+		                        </reports>
+		                    </reportSet>
+		                </reportSets>
+		            </plugin>
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-jxr-plugin</artifactId>
+		                <version>${maven-jxr-plugin.version}</version>
+		                <configuration>
+		                    <linkJavadoc>true</linkJavadoc>
+		                </configuration>
+		            </plugin>
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-compiler-plugin</artifactId>
+		                <version>${maven-compiler-plugin.version}</version>
+		                <configuration>
+		                    <source>${java.version}</source>
+		                    <target>${java.version}</target>
+		                    <meminitial>128m</meminitial>
+		                    <maxmem>512m</maxmem>
+		                    <!-- Allows non-ascii characters in source code -->
+		                    <encoding>UTF-8</encoding>
+		                </configuration>
+		            </plugin>
+		
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-plugin-plugin</artifactId>
+		                <version>${maven-plugin-plugin.version}</version>
+		            </plugin>
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-project-info-reports-plugin</artifactId>
+		                <version>${maven-project-info-reports-plugin.version}</version>
+		                <configuration>
+		                    <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+		                    <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+		                </configuration>
+		            </plugin>
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-surefire-report-plugin</artifactId>
+		                <version>${maven-surefire-report-plugin.version}</version>
+		            </plugin>
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-surefire-report-plugin</artifactId>
+		                <version>${maven-surefire-report-plugin.version}</version>
+		                <reportSets>
+		                    <reportSet>
+		                        <id>integration-tests</id>
+		                        <reports>
+		                            <report>report-only</report>
+		                        </reports>
+		                        <configuration>
+		                            <outputName>failsafe-report</outputName>
+		                            <reportsDirectories>
+		                                <reportsDirectory>${project.build.directory}/failsafe-reports</reportsDirectory>
+		                            </reportsDirectories>
+		                        </configuration>
+		                    </reportSet>
+		                </reportSets>
+		            </plugin>
+		            <plugin>
+		                <groupId>org.codehaus.mojo</groupId>
+		                <artifactId>taglist-maven-plugin</artifactId>
+		                <version>${taglist-maven-plugin.version}</version>
+		                <configuration>
+		                    <tagListOptions>
+		                        <tagClasses>
+		                            <tagClass>
+		                                <displayName>To Do</displayName>
+		                                <tags>
+		                                    <tag>
+		                                        <matchString>TODO</matchString>
+		                                        <matchType>exact</matchType>
+		                                    </tag>
+		                                </tags>
+		                            </tagClass>
+		                            <tagClass>
+		                                <displayName>To Fix</displayName>
+		                                <tags>
+		                                    <tag>
+		                                        <matchString>FIXME</matchString>
+		                                        <matchType>exact</matchType>
+		                                    </tag>
+		                                    <tag>
+		                                        <matchString>DEBT</matchString>
+		                                        <matchType>exact</matchType>
+		                                    </tag>
+		                                    <tag>
+		                                        <matchString>deprecated</matchString>
+		                                        <matchType>ignoreCase</matchType>
+		                                    </tag>
+		                                </tags>
+		                            </tagClass>
+		                            <tagClass>
+		                                <displayName>Optional</displayName>
+		                                <tags>
+		                                    <tag>
+		                                        <matchString>XXX</matchString>
+		                                        <matchType>exact</matchType>
+		                                    </tag>
+		                                </tags>
+		                            </tagClass>
+		                        </tagClasses>
+		                    </tagListOptions>
+		                </configuration>
+		            </plugin>
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-changes-plugin</artifactId>
+		                <version>${maven-changes-plugin.version}</version>
+		                <configuration>
+		                    <githubAPIScheme>https</githubAPIScheme>
+		  					<githubAPIPort>443</githubAPIPort>
+		                </configuration>
+		                <reportSets>
+		                    <reportSet>
+		                        <reports>
+		                            <report>changes-report</report>
+		                        </reports>
+		                    </reportSet>
+		                </reportSets>
+		            </plugin>
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-changelog-plugin</artifactId>
+		                <version>${maven-changelog-plugin.version}</version>
+		            </plugin>
+		            <plugin>
+		                <groupId>org.jacoco</groupId>
+		                <artifactId>jacoco-maven-plugin</artifactId>
+		                <version>${jacoco-maven-plugin.version}</version>
+		            </plugin>
+		        </plugins>
+		    </reporting>
+		</profile>
+		
         <profile>
             <id>with-dev-report</id>
             <reporting>
