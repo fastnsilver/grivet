@@ -23,6 +23,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 
+/**
+ * A {@code ClassAttribute} expresses a three-way relationship between a {@link Class#id}, an
+ * {@link Attribute#id} and an {@link AttributeType#id}.  A {@code Class} typically has one or more
+ * {@code ClassAttribute}.
+ * 
+ * @author Chris Phillipson
+ */
 @Entity
 @IdClass(ClassAttributePK.class)
 public class ClassAttribute implements Serializable {
@@ -34,15 +41,20 @@ public class ClassAttribute implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
+    
+    /** A {@code Class} identifier */
     @Id
     private Integer cid;
 
+    /** A {@code Attribute} identifier */
     @Id
     private Integer aid;
     
+    /** A {@code AttributeType} identifier */
     @Id
     private Integer tid;
     
+    /** The time this {@code ClassAttribute} was created */
     @Column(nullable=false)
     private LocalDateTime createdTime;
 

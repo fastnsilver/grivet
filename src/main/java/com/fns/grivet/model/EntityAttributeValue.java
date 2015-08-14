@@ -18,6 +18,15 @@ package com.fns.grivet.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.annotation.concurrent.Immutable;
+
+
+/**
+ * An {@code EntityAttributeValue} is the reification of a {@code ClassAttribute} plus a value.
+ * 
+ * @author Chris Phillipson
+ */
+@Immutable
 public class EntityAttributeValue implements Serializable {
 
     /** 

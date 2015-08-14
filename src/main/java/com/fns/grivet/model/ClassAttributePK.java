@@ -17,9 +17,16 @@ package com.fns.grivet.model;
 
 import java.io.Serializable;
 
+import javax.annotation.concurrent.Immutable;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+/**
+ * A {@code ClassAttributePK} defines the primary key for an instance of {@link ClassAttribute}.
+ * @author Chris Phillipson
+ */
+@Immutable
 public class ClassAttributePK implements Serializable {
 
     /** 
