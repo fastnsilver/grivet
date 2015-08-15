@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,6 +49,8 @@ import com.fns.grivet.service.ClassRegistryService;
 @RequestMapping("/register")
 public class ClassRegistryController {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     private final ClassRegistryService classRegistryService;
     
     @Autowired
@@ -76,17 +80,22 @@ public class ClassRegistryController {
     
     private ResponseEntity<?> linkSchema(String json) {
         String id = classRegistryService.linkSchema(new JSONObject(json)).getName();
-        return ResponseEntity.ok(String.format("JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!", id));
+        String message = String.format("JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!", id);
+        log.info(message);
+        return ResponseEntity.ok(message);
     }
     
     private ResponseEntity<?> unlinkSchema(String type) {
         classRegistryService.unlinkSchema(type);
-        return ResponseEntity.ok(String.format("JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!", type));
+        String message = String.format("JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!", type);
+        log.info(message);
+        return ResponseEntity.ok(message);
     }
     
     private ResponseEntity<?> registerSingleType(String json) {
         String type = classRegistryService.register(new JSONObject(json));
         UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
+        log.info("Type [{}] successfully registered!", type);
         return ResponseEntity.created(ucb.path("/register/{type}").buildAndExpand(type).toUri()).build();
     }
     
@@ -110,7 +119,10 @@ public class ClassRegistryController {
                 } else {
                     headers.set(String.format("Location[%s]",String.valueOf(i+1)), location.toASCIIString());
                 }
+                log.info("Type [{}] successfully registered!", type);
             } catch (Exception e) {
+                String message = LogUtil.toLog(jsonObject, String.format("Problems registering type! Portion of payload @ index[%d]\n", i+1));
+                log.error(message, e);
                 if (numberOfTypesToRegister == 1) {
                     throw e;
                 }
@@ -125,12 +137,15 @@ public class ClassRegistryController {
     @RequestMapping(value="/{type}", method=RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> delete(@PathVariable("type") String type) {
         classRegistryService.deregister(type);
+        log.info("Type [{}] successfully deregistered!", type);
         return ResponseEntity.noContent().build();
     }
     
     @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> get(@PathVariable("type") String type) {
         JSONObject payload = classRegistryService.get(type);
+        String message = LogUtil.toLog(payload, String.format("Successfully retrieved type [%s]\n", type));
+        log.info(message);
         return ResponseEntity.ok(payload.toString());
     }
     

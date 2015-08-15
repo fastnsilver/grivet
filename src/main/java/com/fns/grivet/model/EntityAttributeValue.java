@@ -36,10 +36,15 @@ public class EntityAttributeValue implements Serializable {
      */
     private static final long serialVersionUID = 1L;
     
+    /** An entity identifier */
     private final Long id;
+    /** An {@code Attribute} identifier */
     private final Integer attributeId;
+    /** An {@code Attribute} name */
     private final String attributeName;
+    /** A value */
     private final Object attributeValue;
+    /** The time this {@code EntityAttributeValue} was created */
     private final LocalDateTime createdTime;
     
     public EntityAttributeValue(Long id, Integer attributeId, String attributeName, Object attributeValue, LocalDateTime createdTime) {

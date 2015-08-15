@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -50,6 +52,8 @@ import com.fns.grivet.service.EntityService;
 @RequestMapping("/store")
 public class EntityController {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     private final EntityService entityService;
     private MetricRegistry metricRegistry;
     
@@ -81,6 +85,7 @@ public class EntityController {
     private ResponseEntity<?> createSingleType(String type, String json) {
         entityService.create(type, new JSONObject(json));
         metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();
+        log.info("Successfully stored type [{}]", type);
         return ResponseEntity.noContent().build();
     }
     
@@ -96,7 +101,10 @@ public class EntityController {
             try {
                 entityService.create(type, jsonObject);
                 metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();
+                log.info("Successfully stored type [{}]", type);
             } catch (Exception e) {
+                String message = LogUtil.toLog(jsonObject, String.format("Problems storing type! Portion of payload @ index[%d]\n", i+1));
+                log.error(message, e);
                 if (numberOfTypesToCreate == 1) {
                     throw e;
                 }
@@ -113,7 +121,8 @@ public class EntityController {
         LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);
         LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);
         Assert.isTrue(ChronoUnit.SECONDS.between(start, end) >= 0, "Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");
-        return ResponseEntity.ok(entityService.get(type, start, end, request.getParameterMap().entrySet()));
+        String result = entityService.get(type, start, end, request.getParameterMap().entrySet());
+        return ResponseEntity.ok(result);
     }
     
 }
