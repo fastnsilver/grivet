@@ -57,7 +57,7 @@ public class Class implements Serializable {
     @Column
     private String description;
     
-    /** The time this class was created. */
+    /** The time this {@code Class} was created. */
     @Column(nullable=false)
     private LocalDateTime createdTime;
     

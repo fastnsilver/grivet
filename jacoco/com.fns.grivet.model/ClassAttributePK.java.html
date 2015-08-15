@@ -17,9 +17,16 @@ package com.fns.grivet.model;
 
 import java.io.Serializable;
 
+import javax.annotation.concurrent.Immutable;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+/**
+ * A {@code ClassAttributePK} defines the primary key for an instance of {@link ClassAttribute}.
+ * @author Chris Phillipson
+ */
+@Immutable
 public class ClassAttributePK implements Serializable {
 
     /** 
@@ -33,35 +40,35 @@ public class ClassAttributePK implements Serializable {
     private Integer aid;
     private Integer tid;
 
-<span class="fc" id="L36">    protected ClassAttributePK() {}</span>
+<span class="fc" id="L43">    protected ClassAttributePK() {}</span>
     
-<span class="nc" id="L38">    public ClassAttributePK(Integer cid, Integer aid, Integer tid) {</span>
-<span class="nc" id="L39">        this.cid = cid;</span>
-<span class="nc" id="L40">        this.aid = aid;</span>
-<span class="nc" id="L41">        this.tid = tid;</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L45">    public ClassAttributePK(Integer cid, Integer aid, Integer tid) {</span>
+<span class="nc" id="L46">        this.cid = cid;</span>
+<span class="nc" id="L47">        this.aid = aid;</span>
+<span class="nc" id="L48">        this.tid = tid;</span>
+<span class="nc" id="L49">    }</span>
     
     public Integer getCid() {
-<span class="nc" id="L45">        return cid;</span>
+<span class="nc" id="L52">        return cid;</span>
     }
 
     public Integer getAid() {
-<span class="nc" id="L49">        return aid;</span>
+<span class="nc" id="L56">        return aid;</span>
     }
 
     public Integer getTid() {
-<span class="nc" id="L53">        return tid;</span>
+<span class="nc" id="L60">        return tid;</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L58">        return new HashCodeBuilder().append(cid).append(aid).append(tid).toHashCode();</span>
+<span class="nc" id="L65">        return new HashCodeBuilder().append(cid).append(aid).append(tid).toHashCode();</span>
     }
 
     @Override
     public boolean equals(Object obj) {
-<span class="nc" id="L63">        ClassAttributePK rhs = (ClassAttributePK) obj;</span>
-<span class="nc" id="L64">        return new EqualsBuilder().append(cid, rhs.cid).append(aid, rhs.aid).append(tid, rhs.tid).isEquals();</span>
+<span class="nc" id="L70">        ClassAttributePK rhs = (ClassAttributePK) obj;</span>
+<span class="nc" id="L71">        return new EqualsBuilder().append(cid, rhs.cid).append(aid, rhs.aid).append(tid, rhs.tid).isEquals();</span>
     }
 
 }

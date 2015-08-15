@@ -23,9 +23,9 @@ import java.util.stream.Collectors;
 import org.springframework.util.Assert;
 
 /**
- * An {@code AttributeType} specifies the type of an {@link Attribute} defined in a {@link Class}.
+ * An {@code AttributeType} specifies the type of an {@link Attribute} defined in a {@link ClassAttribute}.
  * It may be declared independent from an {@code Attribute} participating 
- * in multiple {@code Class} instances. Mediates between Java and SQL types. 
+ * in multiple {@code ClassAttribute} instances. Mediates between Java and SQL types. 
  * 
  * @author Chris Phillipson
  */

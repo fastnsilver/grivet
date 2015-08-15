@@ -17,6 +17,8 @@ package com.fns.grivet.controller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,53 +46,56 @@ import com.fns.grivet.service.NamedQueryService;
 @RequestMapping(&quot;/query&quot;)
 public class NamedQueryController {
 
+<span class="fc" id="L49">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+    
     private final NamedQueryService namedQueryService;
     
     @Autowired
-<span class="fc" id="L50">    public NamedQueryController(NamedQueryService namedQueryService) {</span>
-<span class="fc" id="L51">        this.namedQueryService = namedQueryService;</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L54">    public NamedQueryController(NamedQueryService namedQueryService) {</span>
+<span class="fc" id="L55">        this.namedQueryService = namedQueryService;</span>
+<span class="fc" id="L56">    }</span>
     
     @RequestMapping(method=RequestMethod.POST, 
             consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity&lt;?&gt; create(@RequestBody NamedQuery query) {
-<span class="nc" id="L57">        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();</span>
-<span class="nc" id="L58">        Assert.isTrue(StringUtils.isNotBlank(query.getName()), &quot;Query name must not be null, empty or blank.&quot;);</span>
-<span class="nc" id="L59">        Assert.notNull(query.getQuery(), &quot;Query string must not be null!&quot;);</span>
-<span class="nc" id="L60">        Assert.isTrue(isSupportedQuery(query), &quot;Query must start with either CALL or SELECT&quot;);</span>
+<span class="nc" id="L61">        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();</span>
+<span class="nc" id="L62">        Assert.isTrue(StringUtils.isNotBlank(query.getName()), &quot;Query name must not be null, empty or blank.&quot;);</span>
+<span class="nc" id="L63">        Assert.notNull(query.getQuery(), &quot;Query string must not be null!&quot;);</span>
+<span class="nc" id="L64">        Assert.isTrue(isSupportedQuery(query), &quot;Query must start with either CALL or SELECT&quot;);</span>
         // check for named parameters; but only if they exist
-<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (!query.getParams().isEmpty()) {</span>
-<span class="nc" id="L63">            query.getParams().keySet()</span>
-<span class="nc" id="L64">                .forEach(k -&gt; Assert.isTrue(query.getQuery().contains(String.format(&quot;:%s&quot;, k)), String.format(&quot;Query must contain named parameter [%s]&quot;, k)));</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (!query.getParams().isEmpty()) {</span>
+<span class="nc" id="L67">            query.getParams().keySet()</span>
+<span class="nc" id="L68">                .forEach(k -&gt; Assert.isTrue(query.getQuery().contains(String.format(&quot;:%s&quot;, k)), String.format(&quot;Query must contain named parameter [%s]&quot;, k)));</span>
         }
-<span class="nc" id="L66">        namedQueryService.create(query);</span>
-<span class="nc" id="L67">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
-<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (query.getParams().isEmpty()) {</span>
-<span class="nc" id="L69">            result = ResponseEntity.created(ucb.path(&quot;/query/{name}&quot;).buildAndExpand(query.getName()).toUri()).build();</span>
+<span class="nc" id="L70">        namedQueryService.create(query);</span>
+<span class="nc" id="L71">        log.info(&quot;Named Query \n\n{}\n\n successfully registered!&quot;, query);</span>
+<span class="nc" id="L72">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (query.getParams().isEmpty()) {</span>
+<span class="nc" id="L74">            result = ResponseEntity.created(ucb.path(&quot;/query/{name}&quot;).buildAndExpand(query.getName()).toUri()).build();</span>
         } else {
-<span class="nc" id="L71">            result = ResponseEntity.noContent().build(); </span>
+<span class="nc" id="L76">            result = ResponseEntity.noContent().build(); </span>
         }
-<span class="nc" id="L73">        return result;</span>
+<span class="nc" id="L78">        return result;</span>
     }
     
     @RequestMapping(value=&quot;/{name}&quot;, produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity&lt;?&gt; get(@PathVariable(&quot;name&quot;) String name, @RequestParam MultiValueMap&lt;String, ?&gt; parameters) {
-<span class="nc" id="L78">        return ResponseEntity.ok(namedQueryService.get(name, parameters));</span>
+<span class="nc" id="L83">        return ResponseEntity.ok(namedQueryService.get(name, parameters));</span>
     }
     
     @RequestMapping(value=&quot;&quot;, produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity&lt;?&gt; all(@RequestParam(&quot;showAll&quot;) String showAll) {
-<span class="nc" id="L83">        JSONArray payload = namedQueryService.all();</span>
-<span class="nc" id="L84">        return ResponseEntity.ok(payload.toString());</span>
+<span class="nc" id="L88">        JSONArray payload = namedQueryService.all();</span>
+<span class="nc" id="L89">        return ResponseEntity.ok(payload.toString());</span>
     }
     
     private boolean isSupportedQuery(NamedQuery query) {
-<span class="nc" id="L88">        boolean result = false;</span>
-<span class="nc bnc" id="L89" title="All 4 branches missed.">        if ((query.getQuery().toUpperCase().startsWith(&quot;SELECT&quot;) &amp;&amp; query.getType().equals(QueryType.SELECT)) </span>
-<span class="nc bnc" id="L90" title="All 4 branches missed.">                || (query.getQuery().toUpperCase().startsWith(&quot;CALL&quot;) &amp;&amp; query.getType().equals(QueryType.SPROC))) {</span>
-<span class="nc" id="L91">            result = true;</span>
+<span class="nc" id="L93">        boolean result = false;</span>
+<span class="nc bnc" id="L94" title="All 4 branches missed.">        if ((query.getQuery().toUpperCase().startsWith(&quot;SELECT&quot;) &amp;&amp; query.getType().equals(QueryType.SELECT)) </span>
+<span class="nc bnc" id="L95" title="All 4 branches missed.">                || (query.getQuery().toUpperCase().startsWith(&quot;CALL&quot;) &amp;&amp; query.getType().equals(QueryType.SPROC))) {</span>
+<span class="nc" id="L96">            result = true;</span>
         }
-<span class="nc" id="L93">        return result;</span>
+<span class="nc" id="L98">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

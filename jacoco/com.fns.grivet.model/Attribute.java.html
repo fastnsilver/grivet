@@ -54,7 +54,7 @@ public class Attribute implements Serializable {
     @Column
     private String description;
     
-    /** The time this attribute was created. */
+    /** The time this {@code Attribute} was created. */
     @Column(nullable=false)
     private LocalDateTime createdTime;
 

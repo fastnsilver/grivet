@@ -18,6 +18,15 @@ package com.fns.grivet.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.annotation.concurrent.Immutable;
+
+
+/**
+ * An {@code EntityAttributeValue} is the reification of a {@code ClassAttribute} plus a value.
+ * 
+ * @author Chris Phillipson
+ */
+@Immutable
 public class EntityAttributeValue implements Serializable {
 
     /** 
@@ -27,38 +36,43 @@ public class EntityAttributeValue implements Serializable {
      */
     private static final long serialVersionUID = 1L;
     
+    /** An entity identifier */
     private final Long id;
+    /** An {@code Attribute} identifier */
     private final Integer attributeId;
+    /** An {@code Attribute} name */
     private final String attributeName;
+    /** A value */
     private final Object attributeValue;
+    /** The time this {@code EntityAttributeValue} was created */
     private final LocalDateTime createdTime;
     
-<span class="fc" id="L36">    public EntityAttributeValue(Long id, Integer attributeId, String attributeName, Object attributeValue, LocalDateTime createdTime) {</span>
-<span class="fc" id="L37">        this.id = id;</span>
-<span class="fc" id="L38">        this.attributeId = attributeId;</span>
-<span class="fc" id="L39">        this.attributeName = attributeName;</span>
-<span class="fc" id="L40">        this.attributeValue = attributeValue;</span>
-<span class="fc" id="L41">        this.createdTime = createdTime;</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L50">    public EntityAttributeValue(Long id, Integer attributeId, String attributeName, Object attributeValue, LocalDateTime createdTime) {</span>
+<span class="fc" id="L51">        this.id = id;</span>
+<span class="fc" id="L52">        this.attributeId = attributeId;</span>
+<span class="fc" id="L53">        this.attributeName = attributeName;</span>
+<span class="fc" id="L54">        this.attributeValue = attributeValue;</span>
+<span class="fc" id="L55">        this.createdTime = createdTime;</span>
+<span class="fc" id="L56">    }</span>
 
     public Long getId() {
-<span class="fc" id="L45">        return id;</span>
+<span class="fc" id="L59">        return id;</span>
     }
     
     public Integer getAttributeId() {
-<span class="fc" id="L49">        return attributeId;</span>
+<span class="fc" id="L63">        return attributeId;</span>
     }
 
     public String getAttributeName() {
-<span class="fc" id="L53">        return attributeName;</span>
+<span class="fc" id="L67">        return attributeName;</span>
     }
 
     public Object getAttributeValue() {
-<span class="fc" id="L57">        return attributeValue;</span>
+<span class="fc" id="L71">        return attributeValue;</span>
     }
 
     public LocalDateTime getCreatedTime() {
-<span class="nc" id="L61">        return createdTime;</span>
+<span class="nc" id="L75">        return createdTime;</span>
     }
 
 }

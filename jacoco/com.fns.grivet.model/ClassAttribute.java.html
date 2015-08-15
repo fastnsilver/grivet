@@ -23,6 +23,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 
+/**
+ * A {@code ClassAttribute} expresses a three-way relationship between a {@link Class#id}, an
+ * {@link Attribute#id} and an {@link AttributeType#id}.  A {@code Class} typically has one or more
+ * {@code ClassAttribute}.
+ * 
+ * @author Chris Phillipson
+ */
 @Entity
 @IdClass(ClassAttributePK.class)
 public class ClassAttribute implements Serializable {
@@ -34,42 +41,47 @@ public class ClassAttribute implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
+    
+    /** A {@code Class} identifier */
     @Id
     private Integer cid;
 
+    /** A {@code Attribute} identifier */
     @Id
     private Integer aid;
     
+    /** A {@code AttributeType} identifier */
     @Id
     private Integer tid;
     
+    /** The time this {@code ClassAttribute} was created */
     @Column(nullable=false)
     private LocalDateTime createdTime;
 
-<span class="fc" id="L49">    protected ClassAttribute() {</span>
+<span class="fc" id="L61">    protected ClassAttribute() {</span>
         // no-args constructor required by JPA spec
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L63">    }</span>
     
-<span class="fc" id="L53">    public ClassAttribute(Integer cid, Integer aid, Integer tid) {</span>
-<span class="fc" id="L54">        this.cid = cid;</span>
-<span class="fc" id="L55">        this.aid = aid;</span>
-<span class="fc" id="L56">        this.tid = tid;</span>
-<span class="fc" id="L57">        this.createdTime = LocalDateTime.now();</span>
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L65">    public ClassAttribute(Integer cid, Integer aid, Integer tid) {</span>
+<span class="fc" id="L66">        this.cid = cid;</span>
+<span class="fc" id="L67">        this.aid = aid;</span>
+<span class="fc" id="L68">        this.tid = tid;</span>
+<span class="fc" id="L69">        this.createdTime = LocalDateTime.now();</span>
+<span class="fc" id="L70">    }</span>
 
     public Integer getCid() {
-<span class="fc" id="L61">        return cid;</span>
+<span class="fc" id="L73">        return cid;</span>
     }
     
     public Integer getAid() {
-<span class="fc" id="L65">        return aid;</span>
+<span class="fc" id="L77">        return aid;</span>
     }
     public Integer getTid() {
-<span class="fc" id="L68">        return tid;</span>
+<span class="fc" id="L80">        return tid;</span>
     }
 
     public LocalDateTime getCreatedTime() {
-<span class="nc" id="L72">        return createdTime;</span>
+<span class="nc" id="L84">        return createdTime;</span>
     }
 
 }
