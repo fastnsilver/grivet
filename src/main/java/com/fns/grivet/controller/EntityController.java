@@ -43,6 +43,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fns.grivet.service.EntityService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 
 /**
@@ -72,6 +75,13 @@ public class EntityController {
 
     @RequestMapping(value="/{type}", method=RequestMethod.POST, 
             consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = "POST", notes = "Store one or more type.", value = "/store/{type}")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 204, message = "Successfully store type(s)."),
+            @ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
+            @ApiResponse(code = 400, message = "Bad request."),
+            @ApiResponse(code = 500, message = "Internal server error.")
+            })
     public ResponseEntity<?> create(@PathVariable("type") String type, HttpServletRequest request) throws IOException {
         String json = IOUtils.toString(request.getInputStream(), "UTF-8");
         Assert.isTrue(json.startsWith("{") || json.startsWith("["), "Store requests must be valid JSON starting with either a { or [!");
@@ -120,6 +130,12 @@ public class EntityController {
     }
     
     @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = "GET", notes = "Retrieve type matching criteria.", value = "/store/{type}")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Successfully retrieve type matching criteria."),
+            @ApiResponse(code = 400, message = "Bad request."),
+            @ApiResponse(code = 500, message = "Internal server error.")
+            })
     public ResponseEntity<?> get(@PathVariable("type") String type, @RequestParam(value="createdTimeStart", required=false) String createdTimeStart, @RequestParam(value="createdTimeEnd", required=false) String createdTimeEnd, HttpServletRequest request) throws JsonProcessingException {
         LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);
         LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);

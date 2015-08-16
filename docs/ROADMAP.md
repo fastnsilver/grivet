@@ -10,9 +10,11 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Dynamic query support
 - [x] Named query support via /query end-point; both SELECT queries and CALLs to stored procedures
 - [x] Link JSON Schema with a registered type; on subsequent store requests for type, type will be validated against schema before attempt to persist
-- [ ] Documentation authored and published inc. API, [Javadoc](http://fastnsilver.github.io/grivet/apidocs/index.html), [Maven Site](http://fastnsilver.github.io/grivet/) to Github Pages
+- [x] Documentation authored and published inc. API, [Javadoc](http://fastnsilver.github.io/grivet/apidocs/index.html), Maven Site to Github [Pages](http://fastnsilver.github.io/grivet/)
 - [x] Continuous integration builds configured on [Shippable](http://docs.shippable.com/)
 - [x] Docker container (app w/ H2 back-end)
+- [ ] Publish artifact to Maven Central
+- [ ] Publish Docker container to DockerHub
 
 ## 0.0.2
 
@@ -25,4 +27,4 @@ This project will remain humble in its design and has no aspirations to match th
 ## 0.0.3
 
 - [ ] Implement Vaadin-based administrative UI
-- [ ] Docker Compose; launch variant Docker image(s) sharing a single data-store (e.g., MySQL)
+- [ ] Docker Compose (or Kubernetes enable?); launch variant Docker image(s) sharing a single data-store (e.g., MySQL)

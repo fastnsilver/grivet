@@ -68,6 +68,14 @@ public class ClassRegistryController {
     
     @RequestMapping(method=RequestMethod.POST, 
             consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = "POST", notes = "Register one or more types. Optionally link a JSON Schema.", value = "/register/{type}")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Successfully link JSON Schema to registered type."),
+            @ApiResponse(code = 201, message = "Successfully registered type(s)."),
+            @ApiResponse(code = 202, message = "Partial success. Location info for registered type(s). Error details for type(s) that could not be registered."),
+            @ApiResponse(code = 400, message = "Bad request."),
+            @ApiResponse(code = 500, message = "Internal server error.")
+            })
     public ResponseEntity<?> register(HttpServletRequest request) throws IOException {
         String json = IOUtils.toString(request.getInputStream(), "UTF-8");
         Assert.isTrue(json.startsWith("{") || json.startsWith("["), "Registration requests must be valid JSON starting with either a { or [!");
@@ -144,7 +152,14 @@ public class ClassRegistryController {
     
     @RequestMapping(value="/{type}", method=RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "DELETE", notes = "Delete the registered type.", value = "/register/{type}")
-    public ResponseEntity<?> delete(@PathVariable("type") String type) {
+    @ApiResponses(value = { 
+            @ApiResponse(code = 204, message = "Successfully deleted a registered type."),
+            @ApiResponse(code = 400, message = "Bad request."),
+            @ApiResponse(code = 500, message = "Internal server error.")
+            })
+    public ResponseEntity<?> delete(
+            @ApiParam(value = "Type name", required = true)
+            @PathVariable("type") String type) {
         classRegistryService.deregister(type);
         log.info("Type [{}] successfully deregistered!", type);
         return ResponseEntity.noContent().build();
@@ -152,7 +167,14 @@ public class ClassRegistryController {
     
     @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Retrieve the registered type.", value = "/register/{type}")
-    public ResponseEntity<?> get(@PathVariable("type") String type) {
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Successfully retrieved a registered type."),
+            @ApiResponse(code = 400, message = "Bad request."),
+            @ApiResponse(code = 500, message = "Internal server error.")
+            })
+    public ResponseEntity<?> get(
+            @ApiParam(value = "Type name", required = true)
+            @PathVariable("type") String type) {
         JSONObject payload = classRegistryService.get(type);
         String message = LogUtil.toLog(payload, String.format("Successfully retrieved type [%s]\n", type));
         log.info(message);
@@ -161,8 +183,16 @@ public class ClassRegistryController {
     
     @RequestMapping(value="/{type}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "PUT", notes = "Unlink JSON Schema from type.", value = "/register/{type}")
-    public ResponseEntity<?> unlinkSchema(@PathVariable("type") String type, HttpServletRequest request) {
-        Assert.isTrue(request.getParameterMap().containsKey("unlinkSchema"), "Operation not supported!"); 
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Unlinked JSON Schema from type."),
+            @ApiResponse(code = 400, message = "Bad request."),
+            @ApiResponse(code = 500, message = "Internal server error.")
+            })
+    public ResponseEntity<?> unlinkSchema(
+            @ApiParam(value = "Type name", required = true)
+            @PathVariable("type") String type, 
+            @ApiParam(value = "Unlink JSON Schema from registered type?", required = true)
+            @RequestParam("unlinkSchema") String unlinkSchema) {
         return unlinkSchema(type);
     }
     
