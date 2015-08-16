@@ -1,18 +1,40 @@
 <project xmlns="http://maven.apache.org/DECORATION/1.6.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.6.0 http://maven.apache.org/xsd/decoration-1.6.0.xsd">
 	<skin>
-    	<groupId>org.apache.maven.skins</groupId>
-    	<artifactId>maven-fluido-skin</artifactId>
-    	<version>1.4</version>
+	    <groupId>lt.velykis.maven.skins</groupId>
+	    <artifactId>reflow-maven-skin</artifactId>
+	    <version>1.1.1</version>
   	</skin>
   	<custom>
-	    <fluidoSkin>
-	      	<topBarEnabled>false</topBarEnabled>
-	      	<sideBarEnabled>true</sideBarEnabled>
-	      	<googleSearch>
-        		<sitesearch/>
-      		</googleSearch>
-      		<breadcrumbDivider>»</breadcrumbDivider>
-	    </fluidoSkin>
+	    <reflowSkin>
+	    	<theme>bootswatch-cerulean</theme>
+	      	<highlightJs>true</highlightJs>
+	      	<brand>
+	        	<name>Grivet</name>
+	        	<href>https://github.com/fastnsilver/grivet</href>
+	      	</brand>
+	      	<bottomNav>
+		        <column>Overview|User</column>
+		        <column>Developer</column>
+		        <column>Stats</column>
+	      	</bottomNav>
+	      	<pages>
+	        	<index project="project-id">
+	          		<shortTitle>Welcome</shortTitle>
+	          		<breadcrumbs>false</breadcrumbs>
+	          		<toc>false</toc>
+	          		<sections>
+	            		<carousel />
+	            		<thumbs>2</thumbs>
+	            		<body />
+	            		<sidebar />
+	            		<columns>3</columns>
+	          		</sections>
+	        	</index>
+	        	<developer-info>
+	          		<toc>sidebar</toc>
+	        	</developer-info>
+	      	</pages>
+	    </reflowSkin>
   	</custom>
   	<body>
     	<menu name="Overview">
@@ -29,7 +51,6 @@
             <item name="Issue Tracking" href="issue-tracking.html" />
             <item name="Project Team" href="team-list.html" />
             <item name="Tag List" href="taglist.html" />
-            <item name="Dependency Convergence" href="dependency-convergence.html" />
             <item name="Dependency Information" href="dependency-info.html" />
             <item name="Dependency Management" href="dependency-management.html" />
             <item name="Plugin Management" href="plugin-management.html" />

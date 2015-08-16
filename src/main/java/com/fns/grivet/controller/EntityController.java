@@ -42,6 +42,8 @@ import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fns.grivet.service.EntityService;
 
+import io.swagger.annotations.Api;
+
 
 /**
  * Provides end-points for type storage and retrieval
@@ -50,6 +52,7 @@ import com.fns.grivet.service.EntityService;
  */
 @RestController
 @RequestMapping("/store")
+@Api(value = "store", produces = "application/json")
 public class EntityController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());

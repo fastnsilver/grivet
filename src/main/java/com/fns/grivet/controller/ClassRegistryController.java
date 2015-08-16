@@ -39,6 +39,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fns.grivet.service.ClassRegistryService;
 
+import io.swagger.annotations.Api;
+
 
 /**
  * Provides end-points for type registration and verification
@@ -47,6 +49,7 @@ import com.fns.grivet.service.ClassRegistryService;
  */
 @RestController
 @RequestMapping("/register")
+@Api(value = "register", produces = "application/json")
 public class ClassRegistryController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());

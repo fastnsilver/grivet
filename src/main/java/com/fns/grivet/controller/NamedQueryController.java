@@ -36,6 +36,8 @@ import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.query.QueryType;
 import com.fns.grivet.service.NamedQueryService;
 
+import io.swagger.annotations.Api;
+
 
 /**
  * Provides end-points for registration, verification and execution of named queries
@@ -44,6 +46,7 @@ import com.fns.grivet.service.NamedQueryService;
  */
 @RestController
 @RequestMapping("/query")
+@Api(value = "query", produces = "application/json")
 public class NamedQueryController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
