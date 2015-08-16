@@ -37,6 +37,10 @@ import com.fns.grivet.query.QueryType;
 import com.fns.grivet.service.NamedQueryService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 
 /**
@@ -60,7 +64,16 @@ public class NamedQueryController {
     
     @RequestMapping(method=RequestMethod.POST, 
             consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> create(@RequestBody NamedQuery query) {
+    @ApiOperation(httpMethod = "POST", notes = "Register a Named Query.", value = "/query")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 201, message = "Successfully registered Named Query requiring no parameters."),
+            @ApiResponse(code = 204, message = "Successfully registered Named Query that requires parameters."),
+            @ApiResponse(code = 400, message = "Bad request."),
+            @ApiResponse(code = 500, message = "Internal server error.")
+            })
+    public ResponseEntity<?> create(
+            @ApiParam(value = "Named Query payload", required = true)
+            @RequestBody NamedQuery query) {
         ResponseEntity<?> result = ResponseEntity.unprocessableEntity().build();
         Assert.isTrue(StringUtils.isNotBlank(query.getName()), "Query name must not be null, empty or blank.");
         Assert.notNull(query.getQuery(), "Query string must not be null!");
@@ -82,12 +95,30 @@ public class NamedQueryController {
     }
     
     @RequestMapping(value="/{name}", produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> get(@PathVariable("name") String name, @RequestParam MultiValueMap<String, ?> parameters) {
+    @ApiOperation(httpMethod = "GET", notes = "Execute a Named Query.", value = "/query/{name}")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Successfully executed Named Query request."),
+            @ApiResponse(code = 400, message = "Bad request."),
+            @ApiResponse(code = 500, message = "Internal server error.")
+            })
+    public ResponseEntity<?> get(
+            @ApiParam(value = "The name of the query to execute", required = true)
+            @PathVariable("name") String name, 
+            @ApiParam(value = "Named Query parameters (key-value pairs)", required = false)
+            @RequestParam MultiValueMap<String, ?> parameters) {
         return ResponseEntity.ok(namedQueryService.get(name, parameters));
     }
     
     @RequestMapping(value="", produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> all(@RequestParam("showAll") String showAll) {
+    @ApiOperation(httpMethod = "GET", notes = "Available Named Queries.", value = "/query")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "List available Named Queries."),
+            @ApiResponse(code = 400, message = "Bad request."),
+            @ApiResponse(code = 500, message = "Internal server error.")
+            })
+    public ResponseEntity<?> all(
+            @ApiParam(value = "Show all registered queries?", required = true)
+            @RequestParam(value = "showAll", required = true) String showAll) {
         JSONArray payload = namedQueryService.all();
         return ResponseEntity.ok(payload.toString());
     }

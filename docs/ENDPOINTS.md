@@ -2,7 +2,7 @@
 
 ### Type Registration
 
-* GET `/register/`
+* GET `/register?showAll`
 
 returns all registered types
 

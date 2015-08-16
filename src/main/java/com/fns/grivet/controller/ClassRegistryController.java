@@ -34,12 +34,17 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fns.grivet.service.ClassRegistryService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 
 /**
@@ -138,6 +143,7 @@ public class ClassRegistryController {
     }
     
     @RequestMapping(value="/{type}", method=RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = "DELETE", notes = "Delete the registered type.", value = "/register/{type}")
     public ResponseEntity<?> delete(@PathVariable("type") String type) {
         classRegistryService.deregister(type);
         log.info("Type [{}] successfully deregistered!", type);
@@ -145,6 +151,7 @@ public class ClassRegistryController {
     }
     
     @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = "GET", notes = "Retrieve the registered type.", value = "/register/{type}")
     public ResponseEntity<?> get(@PathVariable("type") String type) {
         JSONObject payload = classRegistryService.get(type);
         String message = LogUtil.toLog(payload, String.format("Successfully retrieved type [%s]\n", type));
@@ -153,13 +160,22 @@ public class ClassRegistryController {
     }
     
     @RequestMapping(value="/{type}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = "PUT", notes = "Unlink JSON Schema from type.", value = "/register/{type}")
     public ResponseEntity<?> unlinkSchema(@PathVariable("type") String type, HttpServletRequest request) {
         Assert.isTrue(request.getParameterMap().containsKey("unlinkSchema"), "Operation not supported!"); 
         return unlinkSchema(type);
     }
     
-    @RequestMapping(value="/", produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> all() {
+    @RequestMapping(value="", produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = "GET", notes = "All registered types.", value = "/register")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "List all registered types."),
+            @ApiResponse(code = 400, message = "Bad request."),
+            @ApiResponse(code = 500, message = "Internal server error.")
+            })
+    public ResponseEntity<?> all(
+            @ApiParam(value = "Show all registered types?", required = true)
+            @RequestParam(value = "showAll", required = true) String showAll) {
         JSONArray payload = classRegistryService.all();
         return ResponseEntity.ok(payload.toString());
     }
