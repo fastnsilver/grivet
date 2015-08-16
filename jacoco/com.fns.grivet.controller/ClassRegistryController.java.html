@@ -34,10 +34,17 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fns.grivet.service.ClassRegistryService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 
 /**
@@ -47,118 +54,160 @@ import com.fns.grivet.service.ClassRegistryService;
  */
 @RestController
 @RequestMapping(&quot;/register&quot;)
+@Api(value = &quot;register&quot;, produces = &quot;application/json&quot;)
 public class ClassRegistryController {
 
-<span class="fc" id="L52">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+<span class="fc" id="L60">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
     
     private final ClassRegistryService classRegistryService;
     
     @Autowired
-<span class="fc" id="L57">    public ClassRegistryController(ClassRegistryService classRegistryService) {</span>
-<span class="fc" id="L58">        this.classRegistryService = classRegistryService;</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L65">    public ClassRegistryController(ClassRegistryService classRegistryService) {</span>
+<span class="fc" id="L66">        this.classRegistryService = classRegistryService;</span>
+<span class="fc" id="L67">    }</span>
     
     @RequestMapping(method=RequestMethod.POST, 
             consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = &quot;POST&quot;, notes = &quot;Register one or more types. Optionally link a JSON Schema.&quot;, value = &quot;/register/{type}&quot;)
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = &quot;Successfully link JSON Schema to registered type.&quot;),
+            @ApiResponse(code = 201, message = &quot;Successfully registered type(s).&quot;),
+            @ApiResponse(code = 202, message = &quot;Partial success. Location info for registered type(s). Error details for type(s) that could not be registered.&quot;),
+            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
+            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
+            })
     public ResponseEntity&lt;?&gt; register(HttpServletRequest request) throws IOException {
-<span class="nc" id="L64">        String json = IOUtils.toString(request.getInputStream(), &quot;UTF-8&quot;);</span>
-<span class="nc bnc" id="L65" title="All 4 branches missed.">        Assert.isTrue(json.startsWith(&quot;{&quot;) || json.startsWith(&quot;[&quot;), &quot;Registration requests must be valid JSON starting with either a { or [!&quot;);</span>
-<span class="nc" id="L66">        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();</span>
-<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (json.startsWith(&quot;{&quot;)) {</span>
-<span class="nc bnc" id="L68" title="All 2 branches missed.">            if (request.getParameterMap().containsKey(&quot;linkSchema&quot;) </span>
-<span class="nc bnc" id="L69" title="All 2 branches missed.">                    &amp;&amp; classRegistryService.isJsonSchema(new JSONObject(json))) {</span>
-<span class="nc" id="L70">                result = linkSchema(json);</span>
+<span class="nc" id="L80">        String json = IOUtils.toString(request.getInputStream(), &quot;UTF-8&quot;);</span>
+<span class="nc bnc" id="L81" title="All 4 branches missed.">        Assert.isTrue(json.startsWith(&quot;{&quot;) || json.startsWith(&quot;[&quot;), &quot;Registration requests must be valid JSON starting with either a { or [!&quot;);</span>
+<span class="nc" id="L82">        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (json.startsWith(&quot;{&quot;)) {</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (request.getParameterMap().containsKey(&quot;linkSchema&quot;) </span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">                    &amp;&amp; classRegistryService.isJsonSchema(new JSONObject(json))) {</span>
+<span class="nc" id="L86">                result = linkSchema(json);</span>
             } else {
-<span class="nc" id="L72">                result = registerSingleType(json);</span>
+<span class="nc" id="L88">                result = registerSingleType(json);</span>
             }
         }
-<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (json.startsWith(&quot;[&quot;)) {</span>
-<span class="nc" id="L76">            result = registerMultipleTypes(json);</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (json.startsWith(&quot;[&quot;)) {</span>
+<span class="nc" id="L92">            result = registerMultipleTypes(json);</span>
         }
-<span class="nc" id="L78">        return result;</span>
+<span class="nc" id="L94">        return result;</span>
     }
     
     private ResponseEntity&lt;?&gt; linkSchema(String json) {
-<span class="nc" id="L82">        String id = classRegistryService.linkSchema(new JSONObject(json)).getName();</span>
-<span class="nc" id="L83">        String message = String.format(&quot;JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!&quot;, id);</span>
-<span class="nc" id="L84">        log.info(message);</span>
-<span class="nc" id="L85">        return ResponseEntity.ok(message);</span>
+<span class="nc" id="L98">        String id = classRegistryService.linkSchema(new JSONObject(json)).getName();</span>
+<span class="nc" id="L99">        String message = String.format(&quot;JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!&quot;, id);</span>
+<span class="nc" id="L100">        log.info(message);</span>
+<span class="nc" id="L101">        return ResponseEntity.ok(message);</span>
     }
     
     private ResponseEntity&lt;?&gt; unlinkSchema(String type) {
-<span class="nc" id="L89">        classRegistryService.unlinkSchema(type);</span>
-<span class="nc" id="L90">        String message = String.format(&quot;JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!&quot;, type);</span>
-<span class="nc" id="L91">        log.info(message);</span>
-<span class="nc" id="L92">        return ResponseEntity.ok(message);</span>
+<span class="nc" id="L105">        classRegistryService.unlinkSchema(type);</span>
+<span class="nc" id="L106">        String message = String.format(&quot;JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!&quot;, type);</span>
+<span class="nc" id="L107">        log.info(message);</span>
+<span class="nc" id="L108">        return ResponseEntity.ok(message);</span>
     }
     
     private ResponseEntity&lt;?&gt; registerSingleType(String json) {
-<span class="nc" id="L96">        String type = classRegistryService.register(new JSONObject(json));</span>
-<span class="nc" id="L97">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
-<span class="nc" id="L98">        log.info(&quot;Type [{}] successfully registered!&quot;, type);</span>
-<span class="nc" id="L99">        return ResponseEntity.created(ucb.path(&quot;/register/{type}&quot;).buildAndExpand(type).toUri()).build();</span>
+<span class="nc" id="L112">        String type = classRegistryService.register(new JSONObject(json));</span>
+<span class="nc" id="L113">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
+<span class="nc" id="L114">        log.info(&quot;Type [{}] successfully registered!&quot;, type);</span>
+<span class="nc" id="L115">        return ResponseEntity.created(ucb.path(&quot;/register/{type}&quot;).buildAndExpand(type).toUri()).build();</span>
     }
     
     private ResponseEntity&lt;?&gt; registerMultipleTypes(String json) {
-<span class="nc" id="L103">        JSONArray jsonArray = new JSONArray(json);</span>
-<span class="nc" id="L104">        JSONObject jsonObject = null;</span>
-<span class="nc" id="L105">        String type = null;</span>
-<span class="nc" id="L106">        HttpHeaders headers = new HttpHeaders();</span>
-<span class="nc" id="L107">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
-<span class="nc" id="L108">        int numberOfTypesToRegister = jsonArray.length();</span>
-<span class="nc" id="L109">        URI location = null;</span>
-<span class="nc" id="L110">        int errorCount = 0;</span>
+<span class="nc" id="L119">        JSONArray jsonArray = new JSONArray(json);</span>
+<span class="nc" id="L120">        JSONObject jsonObject = null;</span>
+<span class="nc" id="L121">        String type = null;</span>
+<span class="nc" id="L122">        HttpHeaders headers = new HttpHeaders();</span>
+<span class="nc" id="L123">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
+<span class="nc" id="L124">        int numberOfTypesToRegister = jsonArray.length();</span>
+<span class="nc" id="L125">        URI location = null;</span>
+<span class="nc" id="L126">        int errorCount = 0;</span>
         // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
-<span class="nc bnc" id="L112" title="All 2 branches missed.">        for (int i = 0; i &lt; numberOfTypesToRegister; i++) {</span>
-<span class="nc" id="L113">            jsonObject = jsonArray.getJSONObject(i);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        for (int i = 0; i &lt; numberOfTypesToRegister; i++) {</span>
+<span class="nc" id="L129">            jsonObject = jsonArray.getJSONObject(i);</span>
             try {
-<span class="nc" id="L115">                type = classRegistryService.register(jsonObject);</span>
-<span class="nc" id="L116">                location = ucb.path(&quot;/register/{type}&quot;).buildAndExpand(type).toUri();</span>
-<span class="nc bnc" id="L117" title="All 2 branches missed.">                if (numberOfTypesToRegister == 1) {</span>
-<span class="nc" id="L118">                    headers.setLocation(location); </span>
+<span class="nc" id="L131">                type = classRegistryService.register(jsonObject);</span>
+<span class="nc" id="L132">                location = ucb.path(&quot;/register/{type}&quot;).buildAndExpand(type).toUri();</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">                if (numberOfTypesToRegister == 1) {</span>
+<span class="nc" id="L134">                    headers.setLocation(location); </span>
                 } else {
-<span class="nc" id="L120">                    headers.set(String.format(&quot;Location[%s]&quot;,String.valueOf(i+1)), location.toASCIIString());</span>
+<span class="nc" id="L136">                    headers.set(String.format(&quot;Location[%s]&quot;,String.valueOf(i+1)), location.toASCIIString());</span>
                 }
-<span class="nc" id="L122">                log.info(&quot;Type [{}] successfully registered!&quot;, type);</span>
-<span class="nc" id="L123">            } catch (Exception e) {</span>
-<span class="nc" id="L124">                String message = LogUtil.toLog(jsonObject, String.format(&quot;Problems registering type! Portion of payload @ index[%d]\n&quot;, i+1));</span>
-<span class="nc" id="L125">                log.error(message, e);</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">                if (numberOfTypesToRegister == 1) {</span>
-<span class="nc" id="L127">                    throw e;</span>
+<span class="nc" id="L138">                log.info(&quot;Type [{}] successfully registered!&quot;, type);</span>
+<span class="nc" id="L139">            } catch (Exception e) {</span>
+<span class="nc" id="L140">                String message = LogUtil.toLog(jsonObject, String.format(&quot;Problems registering type! Portion of payload @ index[%d]\n&quot;, i+1));</span>
+<span class="nc" id="L141">                log.error(message, e);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                if (numberOfTypesToRegister == 1) {</span>
+<span class="nc" id="L143">                    throw e;</span>
                 }
-<span class="nc" id="L129">                headers.set(String.format(&quot;Error[%s]&quot;, String.valueOf(i+1)), e.getMessage());</span>
-<span class="nc" id="L130">                errorCount++;</span>
-<span class="nc" id="L131">            }</span>
+<span class="nc" id="L145">                headers.set(String.format(&quot;Error[%s]&quot;, String.valueOf(i+1)), e.getMessage());</span>
+<span class="nc" id="L146">                errorCount++;</span>
+<span class="nc" id="L147">            }</span>
         }
-<span class="nc bnc" id="L133" title="All 2 branches missed.">        HttpStatus status = (errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED;</span>
-<span class="nc" id="L134">        return new ResponseEntity&lt;&gt;(headers, status);</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">        HttpStatus status = (errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED;</span>
+<span class="nc" id="L150">        return new ResponseEntity&lt;&gt;(headers, status);</span>
     }
     
     @RequestMapping(value=&quot;/{type}&quot;, method=RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity&lt;?&gt; delete(@PathVariable(&quot;type&quot;) String type) {
-<span class="nc" id="L139">        classRegistryService.deregister(type);</span>
-<span class="nc" id="L140">        log.info(&quot;Type [{}] successfully deregistered!&quot;, type);</span>
-<span class="nc" id="L141">        return ResponseEntity.noContent().build();</span>
+    @ApiOperation(httpMethod = &quot;DELETE&quot;, notes = &quot;Delete the registered type.&quot;, value = &quot;/register/{type}&quot;)
+    @ApiResponses(value = { 
+            @ApiResponse(code = 204, message = &quot;Successfully deleted a registered type.&quot;),
+            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
+            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
+            })
+    public ResponseEntity&lt;?&gt; delete(
+            @ApiParam(value = &quot;Type name&quot;, required = true)
+            @PathVariable(&quot;type&quot;) String type) {
+<span class="nc" id="L163">        classRegistryService.deregister(type);</span>
+<span class="nc" id="L164">        log.info(&quot;Type [{}] successfully deregistered!&quot;, type);</span>
+<span class="nc" id="L165">        return ResponseEntity.noContent().build();</span>
     }
     
     @RequestMapping(value=&quot;/{type}&quot;, produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity&lt;?&gt; get(@PathVariable(&quot;type&quot;) String type) {
-<span class="nc" id="L146">        JSONObject payload = classRegistryService.get(type);</span>
-<span class="nc" id="L147">        String message = LogUtil.toLog(payload, String.format(&quot;Successfully retrieved type [%s]\n&quot;, type));</span>
-<span class="nc" id="L148">        log.info(message);</span>
-<span class="nc" id="L149">        return ResponseEntity.ok(payload.toString());</span>
+    @ApiOperation(httpMethod = &quot;GET&quot;, notes = &quot;Retrieve the registered type.&quot;, value = &quot;/register/{type}&quot;)
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = &quot;Successfully retrieved a registered type.&quot;),
+            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
+            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
+            })
+    public ResponseEntity&lt;?&gt; get(
+            @ApiParam(value = &quot;Type name&quot;, required = true)
+            @PathVariable(&quot;type&quot;) String type) {
+<span class="nc" id="L178">        JSONObject payload = classRegistryService.get(type);</span>
+<span class="nc" id="L179">        String message = LogUtil.toLog(payload, String.format(&quot;Successfully retrieved type [%s]\n&quot;, type));</span>
+<span class="nc" id="L180">        log.info(message);</span>
+<span class="nc" id="L181">        return ResponseEntity.ok(payload.toString());</span>
     }
     
     @RequestMapping(value=&quot;/{type}&quot;, method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity&lt;?&gt; unlinkSchema(@PathVariable(&quot;type&quot;) String type, HttpServletRequest request) {
-<span class="nc" id="L154">        Assert.isTrue(request.getParameterMap().containsKey(&quot;unlinkSchema&quot;), &quot;Operation not supported!&quot;); </span>
-<span class="nc" id="L155">        return unlinkSchema(type);</span>
+    @ApiOperation(httpMethod = &quot;PUT&quot;, notes = &quot;Unlink JSON Schema from type.&quot;, value = &quot;/register/{type}&quot;)
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = &quot;Unlinked JSON Schema from type.&quot;),
+            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
+            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
+            })
+    public ResponseEntity&lt;?&gt; unlinkSchema(
+            @ApiParam(value = &quot;Type name&quot;, required = true)
+            @PathVariable(&quot;type&quot;) String type, 
+            @ApiParam(value = &quot;Unlink JSON Schema from registered type?&quot;, required = true)
+            @RequestParam(&quot;unlinkSchema&quot;) String unlinkSchema) {
+<span class="nc" id="L196">        return unlinkSchema(type);</span>
     }
     
-    @RequestMapping(value=&quot;/&quot;, produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity&lt;?&gt; all() {
-<span class="nc" id="L160">        JSONArray payload = classRegistryService.all();</span>
-<span class="nc" id="L161">        return ResponseEntity.ok(payload.toString());</span>
+    @RequestMapping(value=&quot;&quot;, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = &quot;GET&quot;, notes = &quot;All registered types.&quot;, value = &quot;/register&quot;)
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = &quot;List all registered types.&quot;),
+            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
+            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
+            })
+    public ResponseEntity&lt;?&gt; all(
+            @ApiParam(value = &quot;Show all registered types?&quot;, required = true)
+            @RequestParam(value = &quot;showAll&quot;, required = true) String showAll) {
+<span class="nc" id="L209">        JSONArray payload = classRegistryService.all();</span>
+<span class="nc" id="L210">        return ResponseEntity.ok(payload.toString());</span>
     }
         
 }

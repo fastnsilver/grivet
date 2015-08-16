@@ -42,6 +42,11 @@ import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fns.grivet.service.EntityService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 
 /**
  * Provides end-points for type storage and retrieval
@@ -50,79 +55,93 @@ import com.fns.grivet.service.EntityService;
  */
 @RestController
 @RequestMapping(&quot;/store&quot;)
+@Api(value = &quot;store&quot;, produces = &quot;application/json&quot;)
 public class EntityController {
 
-<span class="fc" id="L55">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+<span class="fc" id="L61">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
     
     private final EntityService entityService;
     private MetricRegistry metricRegistry;
     
     @Autowired
-<span class="fc" id="L61">    public EntityController(EntityService entityService) {</span>
-<span class="fc" id="L62">        this.entityService = entityService;</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L67">    public EntityController(EntityService entityService) {</span>
+<span class="fc" id="L68">        this.entityService = entityService;</span>
+<span class="fc" id="L69">    }</span>
     
     @Autowired
     public void setMetricRegistry(MetricRegistry metricRegistry) {
-<span class="fc" id="L67">        this.metricRegistry = metricRegistry;</span>
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L73">        this.metricRegistry = metricRegistry;</span>
+<span class="fc" id="L74">    }</span>
 
     @RequestMapping(value=&quot;/{type}&quot;, method=RequestMethod.POST, 
             consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = &quot;POST&quot;, notes = &quot;Store one or more type.&quot;, value = &quot;/store/{type}&quot;)
+    @ApiResponses(value = { 
+            @ApiResponse(code = 204, message = &quot;Successfully store type(s).&quot;),
+            @ApiResponse(code = 202, message = &quot;Partial success. Error details for type(s) that could not be registered.&quot;),
+            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
+            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
+            })
     public ResponseEntity&lt;?&gt; create(@PathVariable(&quot;type&quot;) String type, HttpServletRequest request) throws IOException {
-<span class="nc" id="L73">        String json = IOUtils.toString(request.getInputStream(), &quot;UTF-8&quot;);</span>
-<span class="nc bnc" id="L74" title="All 4 branches missed.">        Assert.isTrue(json.startsWith(&quot;{&quot;) || json.startsWith(&quot;[&quot;), &quot;Store requests must be valid JSON starting with either a { or [!&quot;);</span>
-<span class="nc" id="L75">        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();</span>
-<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (json.startsWith(&quot;{&quot;)) {</span>
-<span class="nc" id="L77">            result = createSingleType(type, json);</span>
+<span class="nc" id="L86">        String json = IOUtils.toString(request.getInputStream(), &quot;UTF-8&quot;);</span>
+<span class="nc bnc" id="L87" title="All 4 branches missed.">        Assert.isTrue(json.startsWith(&quot;{&quot;) || json.startsWith(&quot;[&quot;), &quot;Store requests must be valid JSON starting with either a { or [!&quot;);</span>
+<span class="nc" id="L88">        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (json.startsWith(&quot;{&quot;)) {</span>
+<span class="nc" id="L90">            result = createSingleType(type, json);</span>
         }
-<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (json.startsWith(&quot;[&quot;)) {</span>
-<span class="nc" id="L80">            result = createMultipleTypes(type, json);</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (json.startsWith(&quot;[&quot;)) {</span>
+<span class="nc" id="L93">            result = createMultipleTypes(type, json);</span>
         }
-<span class="nc" id="L82">        return result;</span>
+<span class="nc" id="L95">        return result;</span>
     }
     
     private ResponseEntity&lt;?&gt; createSingleType(String type, String json) {
-<span class="nc" id="L86">        entityService.create(type, new JSONObject(json));</span>
-<span class="nc" id="L87">        metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, type, &quot;count&quot;)).inc();</span>
-<span class="nc" id="L88">        log.info(&quot;Successfully stored type [{}]&quot;, type);</span>
-<span class="nc" id="L89">        return ResponseEntity.noContent().build();</span>
+<span class="nc" id="L99">        entityService.create(type, new JSONObject(json));</span>
+<span class="nc" id="L100">        metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="nc" id="L101">        log.info(&quot;Successfully stored type [{}]&quot;, type);</span>
+<span class="nc" id="L102">        return ResponseEntity.noContent().build();</span>
     }
     
     private ResponseEntity&lt;?&gt; createMultipleTypes(String type, String json) {
-<span class="nc" id="L93">        JSONArray jsonArray = new JSONArray(json);</span>
-<span class="nc" id="L94">        int numberOfTypesToCreate = jsonArray.length();</span>
-<span class="nc" id="L95">        int errorCount = 0;</span>
-<span class="nc" id="L96">        JSONObject jsonObject = null;</span>
-<span class="nc" id="L97">        HttpHeaders headers = new HttpHeaders();</span>
+<span class="nc" id="L106">        JSONArray jsonArray = new JSONArray(json);</span>
+<span class="nc" id="L107">        int numberOfTypesToCreate = jsonArray.length();</span>
+<span class="nc" id="L108">        int errorCount = 0;</span>
+<span class="nc" id="L109">        JSONObject jsonObject = null;</span>
+<span class="nc" id="L110">        HttpHeaders headers = new HttpHeaders();</span>
         // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
-<span class="nc bnc" id="L99" title="All 2 branches missed.">        for (int i = 0; i &lt; numberOfTypesToCreate; i++) {</span>
-<span class="nc" id="L100">            jsonObject = jsonArray.getJSONObject(i);</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        for (int i = 0; i &lt; numberOfTypesToCreate; i++) {</span>
+<span class="nc" id="L113">            jsonObject = jsonArray.getJSONObject(i);</span>
             try {
-<span class="nc" id="L102">                entityService.create(type, jsonObject);</span>
-<span class="nc" id="L103">                metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, type, &quot;count&quot;)).inc();</span>
-<span class="nc" id="L104">                log.info(&quot;Successfully stored type [{}]&quot;, type);</span>
-<span class="nc" id="L105">            } catch (Exception e) {</span>
-<span class="nc" id="L106">                String message = LogUtil.toLog(jsonObject, String.format(&quot;Problems storing type! Portion of payload @ index[%d]\n&quot;, i+1));</span>
-<span class="nc" id="L107">                log.error(message, e);</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">                if (numberOfTypesToCreate == 1) {</span>
-<span class="nc" id="L109">                    throw e;</span>
+<span class="nc" id="L115">                entityService.create(type, jsonObject);</span>
+<span class="nc" id="L116">                metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="nc" id="L117">                log.info(&quot;Successfully stored type [{}]&quot;, type);</span>
+<span class="nc" id="L118">            } catch (Exception e) {</span>
+<span class="nc" id="L119">                String message = LogUtil.toLog(jsonObject, String.format(&quot;Problems storing type! Portion of payload @ index[%d]\n&quot;, i+1));</span>
+<span class="nc" id="L120">                log.error(message, e);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">                if (numberOfTypesToCreate == 1) {</span>
+<span class="nc" id="L122">                    throw e;</span>
                 }
-<span class="nc" id="L111">                headers.set(String.format(&quot;Error[%s]&quot;, String.valueOf(i+1)), e.getMessage());</span>
-<span class="nc" id="L112">                errorCount++;</span>
-<span class="nc" id="L113">            }</span>
+<span class="nc" id="L124">                headers.set(String.format(&quot;Error[%s]&quot;, String.valueOf(i+1)), e.getMessage());</span>
+<span class="nc" id="L125">                errorCount++;</span>
+<span class="nc" id="L126">            }</span>
         }
-<span class="nc bnc" id="L115" title="All 2 branches missed.">        HttpStatus status = (errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED;</span>
-<span class="nc" id="L116">        return new ResponseEntity&lt;&gt;(headers, status);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        HttpStatus status = (errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED;</span>
+<span class="nc" id="L129">        return new ResponseEntity&lt;&gt;(headers, status);</span>
     }
     
     @RequestMapping(value=&quot;/{type}&quot;, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = &quot;GET&quot;, notes = &quot;Retrieve type matching criteria.&quot;, value = &quot;/store/{type}&quot;)
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = &quot;Successfully retrieve type matching criteria.&quot;),
+            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
+            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
+            })
     public ResponseEntity&lt;?&gt; get(@PathVariable(&quot;type&quot;) String type, @RequestParam(value=&quot;createdTimeStart&quot;, required=false) String createdTimeStart, @RequestParam(value=&quot;createdTimeEnd&quot;, required=false) String createdTimeEnd, HttpServletRequest request) throws JsonProcessingException {
-<span class="nc bnc" id="L121" title="All 2 branches missed.">        LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);</span>
-<span class="nc bnc" id="L122" title="All 2 branches missed.">        LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);</span>
-<span class="nc bnc" id="L123" title="All 2 branches missed.">        Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, &quot;Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!&quot;);</span>
-<span class="nc" id="L124">        String result = entityService.get(type, start, end, request.getParameterMap().entrySet());</span>
-<span class="nc" id="L125">        return ResponseEntity.ok(result);</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, &quot;Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!&quot;);</span>
+<span class="nc" id="L143">        String result = entityService.get(type, start, end, request.getParameterMap().entrySet());</span>
+<span class="nc" id="L144">        return ResponseEntity.ok(result);</span>
     }
     
 }

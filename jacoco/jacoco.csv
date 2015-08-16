@@ -10,7 +10,7 @@ Grivet,com.fns.grivet.query,DynamicQuery.new Object() {...},10,69,0,0,0,2,0,1,0,
 Grivet,com.fns.grivet.query,DynamicQuery,92,390,25,33,21,71,21,23,1,10
 Grivet,com.fns.grivet.query,QueryBuilder,93,326,3,19,15,68,6,17,3,9
 Grivet,com.fns.grivet.query,NamedQuery,81,204,12,20,11,47,14,16,3,11
-Grivet,com.fns.grivet.controller,ClassRegistryController,327,11,20,0,60,4,19,1,9,1
+Grivet,com.fns.grivet.controller,ClassRegistryController,321,11,20,0,59,4,19,1,9,1
 Grivet,com.fns.grivet.controller,GlobalControllerExceptionHandler,70,8,4,0,5,2,3,1,1,1
 Grivet,com.fns.grivet.controller,EntityController,226,15,20,0,37,6,14,2,4,2
 Grivet,com.fns.grivet.controller,MetricsAspect,42,6,0,0,9,3,1,1,1,1
@@ -32,4 +32,5 @@ Grivet,com.fns.grivet.service,NamedQueryService.new Object() {...},2,17,0,0,0,1,
 Grivet,com.fns.grivet.service,EntityService,8,282,1,9,1,56,1,8,0,4
 Grivet,com.fns.grivet.service,SchemaValidator,14,67,0,0,2,13,0,2,0,2
 Grivet,com.fns.grivet.service,ClassRegistryService,49,370,11,11,12,77,8,11,1,7
+Grivet,com.fns.grivet.api,SwaggerConfig,0,71,0,0,0,19,0,3,0,3
 Grivet,com.fns.grivet,App,5,3,0,0,2,1,1,1,1,1

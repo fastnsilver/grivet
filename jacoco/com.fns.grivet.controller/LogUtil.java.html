@@ -35,9 +35,9 @@ import org.json.JSONObject;
 <span class="nc bnc" id="L35" title="All 4 branches missed.">        if (args != null &amp;&amp; args.length &gt; 0) {</span>
 <span class="nc" id="L36">            Arrays.stream(args).forEach(a -&gt; sb.append(a));</span>
         }
-<span class="nc" id="L38">        sb.append(&quot;---\n&quot;);</span>
+<span class="nc" id="L38">        sb.append(&quot;--\n&quot;);</span>
 <span class="nc" id="L39">        sb.append(jsonObject.toString());</span>
-<span class="nc" id="L40">        sb.append(&quot;---\n&quot;);</span>
+<span class="nc" id="L40">        sb.append(&quot;--\n&quot;);</span>
 <span class="nc" id="L41">        String message = sb.toString();</span>
 <span class="nc" id="L42">        return message;</span>
     }
@@ -47,9 +47,9 @@ import org.json.JSONObject;
 <span class="nc bnc" id="L47" title="All 4 branches missed.">        if (args != null &amp;&amp; args.length &gt; 0) {</span>
 <span class="nc" id="L48">            Arrays.stream(args).forEach(a -&gt; sb.append(a));</span>
         }
-<span class="nc" id="L50">        sb.append(&quot;---\n&quot;);</span>
+<span class="nc" id="L50">        sb.append(&quot;--\n&quot;);</span>
 <span class="nc" id="L51">        sb.append(request.getParameterMap().toString());</span>
-<span class="nc" id="L52">        sb.append(&quot;---\n&quot;);</span>
+<span class="nc" id="L52">        sb.append(&quot;--\n&quot;);</span>
 <span class="nc" id="L53">        String message = sb.toString();</span>
 <span class="nc" id="L54">        return message;</span>
     }

@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GlobalControllerExceptionHandler.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.controller</a> &gt; <span class="el_source">GlobalControllerExceptionHandler.java</span></div><h1>GlobalControllerExceptionHandler.java</h1><pre class="source lang-java linenums">package com.fns.grivet.controller;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GlobalControllerExceptionHandler.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.controller</a> &gt; <span class="el_source">GlobalControllerExceptionHandler.java</span></div><h1>GlobalControllerExceptionHandler.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2015 - Chris Phillipson
+ * 
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.fns.grivet.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -17,19 +32,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.fns.grivet.service.SchemaValidationException;
 
 @ControllerAdvice
-<span class="fc" id="L20">class GlobalControllerExceptionHandler {</span>
+<span class="fc" id="L35">class GlobalControllerExceptionHandler {</span>
 
-<span class="fc" id="L22">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+<span class="fc" id="L37">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
     
     @ExceptionHandler({ IOException.class, IllegalArgumentException.class, DataAccessException.class, DateTimeParseException.class, NumberFormatException.class, JSONException.class, SQLException.class, SchemaValidationException.class })
     protected ResponseEntity&lt;?&gt; badRequest(Exception e, HttpServletRequest hsr) {
-<span class="nc" id="L26">        String queryString = hsr.getQueryString();</span>
-<span class="nc bnc" id="L27" title="All 4 branches missed.">        if (queryString != null &amp;&amp; !queryString.isEmpty()) {</span>
-<span class="nc" id="L28">            log.error(String.format(&quot;Request Method: %s, Request URI: %s, Query string: %s, Error: %s&quot;, hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(), e.getMessage()));</span>
+<span class="nc" id="L41">        String queryString = hsr.getQueryString();</span>
+<span class="nc bnc" id="L42" title="All 4 branches missed.">        if (queryString != null &amp;&amp; !queryString.isEmpty()) {</span>
+<span class="nc" id="L43">            log.error(String.format(&quot;Request\n-- Method: %s\n-- URI: %s\n-- Query string: %s\n-- Error: %s&quot;, hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(), e.getMessage()));</span>
         } else {
-<span class="nc" id="L30">            log.error(String.format(&quot;Request Method: %s, Request URI: %s, Error: %s&quot;, hsr.getMethod(), hsr.getRequestURI(), e.getMessage()));</span>
+<span class="nc" id="L45">            log.error(String.format(&quot;Request\n-- Method: %s\n-- Request URI: %s\n-- Error: %s&quot;, hsr.getMethod(), hsr.getRequestURI(), e.getMessage()));</span>
         }
-<span class="nc" id="L32">        return ResponseEntity.badRequest().body(String.format(&quot;Error: %s&quot;, e.getMessage()));</span>
+<span class="nc" id="L47">        return ResponseEntity.badRequest().body(String.format(&quot;Error: %s&quot;, e.getMessage()));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

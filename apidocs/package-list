@@ -1,4 +1,5 @@
 com.fns.grivet
+com.fns.grivet.api
 com.fns.grivet.controller
 com.fns.grivet.model
 com.fns.grivet.query
