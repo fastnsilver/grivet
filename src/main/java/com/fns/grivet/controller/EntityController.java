@@ -104,6 +104,7 @@ public class EntityController {
     
     private ResponseEntity<?> createMultipleTypes(String type, String json) {
         JSONArray jsonArray = new JSONArray(json);
+        Assert.isTrue(jsonArray.length() <= 100, String.format("The total number of entries in a request must not exceed 100! The number of entries in your store request was [%d].", jsonArray.length()));
         int numberOfTypesToCreate = jsonArray.length();
         int errorCount = 0;
         JSONObject jsonObject = null;

@@ -117,6 +117,7 @@ public class ClassRegistryController {
     
     private ResponseEntity<?> registerMultipleTypes(String json) {
         JSONArray jsonArray = new JSONArray(json);
+        Assert.isTrue(jsonArray.length() <= 100, String.format("The total number of entries in a request must not exceed 100! The number of entries in your registration request was [%d].", jsonArray.length()));
         JSONObject jsonObject = null;
         String type = null;
         HttpHeaders headers = new HttpHeaders();
