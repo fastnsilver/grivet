@@ -197,7 +197,7 @@ public class ClassRegistryController {
     }
     
     @RequestMapping(value="", produces=MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "GET", notes = "All registered types.", value = "/register")
+    @ApiOperation(httpMethod = "GET", notes = "All registered types.", value = "/register?showAll")
     @ApiResponses(value = { 
             @ApiResponse(code = 200, message = "List all registered types."),
             @ApiResponse(code = 400, message = "Bad request."),

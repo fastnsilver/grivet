@@ -110,7 +110,7 @@ public class NamedQueryController {
     }
     
     @RequestMapping(value="", produces=MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "GET", notes = "Available Named Queries.", value = "/query")
+    @ApiOperation(httpMethod = "GET", notes = "Available Named Queries.", value = "/query?showAll")
     @ApiResponses(value = { 
             @ApiResponse(code = 200, message = "List available Named Queries."),
             @ApiResponse(code = 400, message = "Bad request."),
