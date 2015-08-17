@@ -151,22 +151,22 @@ public class NamedQueryService {
     
     @Transactional(readOnly=true)
     public JSONArray all() {
-<span class="nc" id="L154">        JSONArray result = new JSONArray();</span>
-<span class="nc" id="L155">        Iterable&lt;NamedQuery&gt; iterable = namedQueryRepository.findAll();</span>
-<span class="nc" id="L156">        Assert.notNull(iterable, &quot;No named queries are registered!&quot;);</span>
-<span class="nc" id="L157">        Iterator&lt;NamedQuery&gt; it = iterable.iterator();</span>
-<span class="nc" id="L158">        NamedQuery nq = null;</span>
-<span class="nc" id="L159">        JSONObject jo = null;</span>
-<span class="nc" id="L160">        JsonNode jn = null;</span>
-<span class="nc bnc" id="L161" title="All 2 branches missed.">        while(it.hasNext()) {</span>
-<span class="nc" id="L162">           nq = it.next();</span>
-<span class="nc" id="L163">           jn = mapper.valueToTree(nq);</span>
-<span class="nc" id="L164">           jo = new JSONObject(jn.toString());</span>
-<span class="nc" id="L165">           jo.remove(&quot;id&quot;);</span>
-<span class="nc" id="L166">           jo.remove(&quot;createdTime&quot;);</span>
-<span class="nc" id="L167">           result.put(jo);</span>
+<span class="fc" id="L154">        JSONArray result = new JSONArray();</span>
+<span class="fc" id="L155">        Iterable&lt;NamedQuery&gt; iterable = namedQueryRepository.findAll();</span>
+<span class="fc" id="L156">        Assert.notNull(iterable, &quot;No named queries are registered!&quot;);</span>
+<span class="fc" id="L157">        Iterator&lt;NamedQuery&gt; it = iterable.iterator();</span>
+<span class="fc" id="L158">        NamedQuery nq = null;</span>
+<span class="fc" id="L159">        JSONObject jo = null;</span>
+<span class="fc" id="L160">        JsonNode jn = null;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        while(it.hasNext()) {</span>
+<span class="fc" id="L162">           nq = it.next();</span>
+<span class="fc" id="L163">           jn = mapper.valueToTree(nq);</span>
+<span class="fc" id="L164">           jo = new JSONObject(jn.toString());</span>
+<span class="fc" id="L165">           jo.remove(&quot;id&quot;);</span>
+<span class="fc" id="L166">           jo.remove(&quot;createdTime&quot;);</span>
+<span class="fc" id="L167">           result.put(jo);</span>
         }
-<span class="nc" id="L169">        return result;</span>
+<span class="fc" id="L169">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

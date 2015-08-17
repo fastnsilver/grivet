@@ -38,13 +38,13 @@ import com.fns.grivet.service.SchemaValidationException;
     
     @ExceptionHandler({ IOException.class, IllegalArgumentException.class, DataAccessException.class, DateTimeParseException.class, NumberFormatException.class, JSONException.class, SQLException.class, SchemaValidationException.class })
     protected ResponseEntity&lt;?&gt; badRequest(Exception e, HttpServletRequest hsr) {
-<span class="nc" id="L41">        String queryString = hsr.getQueryString();</span>
-<span class="nc bnc" id="L42" title="All 4 branches missed.">        if (queryString != null &amp;&amp; !queryString.isEmpty()) {</span>
+<span class="fc" id="L41">        String queryString = hsr.getQueryString();</span>
+<span class="pc bpc" id="L42" title="3 of 4 branches missed.">        if (queryString != null &amp;&amp; !queryString.isEmpty()) {</span>
 <span class="nc" id="L43">            log.error(String.format(&quot;Request\n-- Method: %s\n-- URI: %s\n-- Query string: %s\n-- Error: %s&quot;, hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(), e.getMessage()));</span>
         } else {
-<span class="nc" id="L45">            log.error(String.format(&quot;Request\n-- Method: %s\n-- Request URI: %s\n-- Error: %s&quot;, hsr.getMethod(), hsr.getRequestURI(), e.getMessage()));</span>
+<span class="fc" id="L45">            log.error(String.format(&quot;Request\n-- Method: %s\n-- Request URI: %s\n-- Error: %s&quot;, hsr.getMethod(), hsr.getRequestURI(), e.getMessage()));</span>
         }
-<span class="nc" id="L47">        return ResponseEntity.badRequest().body(String.format(&quot;Error: %s&quot;, e.getMessage()));</span>
+<span class="fc" id="L47">        return ResponseEntity.badRequest().body(String.format(&quot;Error: %s&quot;, e.getMessage()));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

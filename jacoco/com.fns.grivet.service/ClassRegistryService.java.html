@@ -126,18 +126,18 @@ public class ClassRegistryService {
     }
     
     public boolean isJsonSchema(JSONObject payload) {
-<span class="nc" id="L129">        boolean result = false;</span>
-<span class="nc" id="L130">        String schema = payload.optString(SCHEMA);</span>
-<span class="nc" id="L131">        String type = payload.optString(TYPE);</span>
-<span class="nc" id="L132">        String id = payload.optString(ID);</span>
-<span class="nc" id="L133">        String props = payload.optString(PROPERTIES);</span>
-<span class="nc bnc" id="L134" title="All 2 branches missed.">        if (schema.equals(&quot;http://json-schema.org/draft-04/schema#&quot;) </span>
-<span class="nc bnc" id="L135" title="All 2 branches missed.">                &amp;&amp; type.equals(&quot;object&quot;) </span>
-<span class="nc bnc" id="L136" title="All 2 branches missed.">                &amp;&amp; StringUtils.isNotBlank(id) </span>
-<span class="nc bnc" id="L137" title="All 2 branches missed.">                &amp;&amp; StringUtils.isNotBlank(props)) {</span>
-<span class="nc" id="L138">            result = true;</span>
+<span class="fc" id="L129">        boolean result = false;</span>
+<span class="fc" id="L130">        String schema = payload.optString(SCHEMA);</span>
+<span class="fc" id="L131">        String type = payload.optString(TYPE);</span>
+<span class="fc" id="L132">        String id = payload.optString(ID);</span>
+<span class="fc" id="L133">        String props = payload.optString(PROPERTIES);</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (schema.equals(&quot;http://json-schema.org/draft-04/schema#&quot;) </span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">                &amp;&amp; type.equals(&quot;object&quot;) </span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">                &amp;&amp; StringUtils.isNotBlank(id) </span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">                &amp;&amp; StringUtils.isNotBlank(props)) {</span>
+<span class="fc" id="L138">            result = true;</span>
         }
-<span class="nc" id="L140">        return result;</span>
+<span class="fc" id="L140">        return result;</span>
     }
 
     @Transactional

@@ -118,7 +118,7 @@
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>     }
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>     
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>     @RequestMapping(value=<span class="jxr_string">""</span>, produces=MediaType.APPLICATION_JSON_VALUE)
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>     @ApiOperation(httpMethod = <span class="jxr_string">"GET"</span>, notes = <span class="jxr_string">"Available Named Queries."</span>, value = <span class="jxr_string">"/query"</span>)
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>     @ApiOperation(httpMethod = <span class="jxr_string">"GET"</span>, notes = <span class="jxr_string">"Available Named Queries."</span>, value = <span class="jxr_string">"/query?showAll"</span>)
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     @ApiResponses(value = { 
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>             @ApiResponse(code = 200, message = <span class="jxr_string">"List available Named Queries."</span>),
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>             @ApiResponse(code = 400, message = <span class="jxr_string">"Bad request."</span>),
@@ -131,15 +131,30 @@
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>         <strong class="jxr_keyword">return</strong> ResponseEntity.ok(payload.toString());
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>     }
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>     
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isSupportedQuery(<a href="../../../../com/fns/grivet/query/NamedQuery.html">NamedQuery</a> query) {
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>         <strong class="jxr_keyword">boolean</strong> result = false;
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>         <strong class="jxr_keyword">if</strong> ((query.getQuery().toUpperCase().startsWith(<span class="jxr_string">"SELECT"</span>) &amp;&amp; query.getType().equals(QueryType.SELECT)) 
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>                 || (query.getQuery().toUpperCase().startsWith(<span class="jxr_string">"CALL"</span>) &amp;&amp; query.getType().equals(QueryType.SPROC))) {
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>             result = <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>         }
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>         <strong class="jxr_keyword">return</strong> result;
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>     }
-<a class="jxr_linenumber" name="L134" href="#L134">134</a> }
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>     @RequestMapping(value=<span class="jxr_string">"/{name}"</span>, method=RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE)
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>     @ApiOperation(httpMethod = <span class="jxr_string">"DELETE"</span>, notes = <span class="jxr_string">"Delete the named query."</span>, value = <span class="jxr_string">"/query/{name}"</span>)
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>     @ApiResponses(value = { 
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>             @ApiResponse(code = 204, message = <span class="jxr_string">"Successfully deleted a Named Query."</span>),
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>             @ApiResponse(code = 400, message = <span class="jxr_string">"Bad request."</span>),
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>             @ApiResponse(code = 500, message = <span class="jxr_string">"Internal server error."</span>)
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>             })
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>     <strong class="jxr_keyword">public</strong> ResponseEntity&lt;?&gt; delete(
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>             @ApiParam(value = <span class="jxr_string">"The name of the query to delete"</span>, required = <strong class="jxr_keyword">true</strong>)
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>             @PathVariable(<span class="jxr_string">"name"</span>) String name) {
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         namedQueryService.delete(name);
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         log.info(<span class="jxr_string">"Query with name [{}] successfully deleted!"</span>, name);
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         <strong class="jxr_keyword">return</strong> ResponseEntity.noContent().build();
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>     }
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>     
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isSupportedQuery(<a href="../../../../com/fns/grivet/query/NamedQuery.html">NamedQuery</a> query) {
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>         <strong class="jxr_keyword">boolean</strong> result = false;
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         <strong class="jxr_keyword">if</strong> ((query.getQuery().toUpperCase().startsWith(<span class="jxr_string">"SELECT"</span>) &amp;&amp; query.getType().equals(QueryType.SELECT)) 
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>                 || (query.getQuery().toUpperCase().startsWith(<span class="jxr_string">"CALL"</span>) &amp;&amp; query.getType().equals(QueryType.SPROC))) {
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>             result = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>         }
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>         <strong class="jxr_keyword">return</strong> result;
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>     }
+<a class="jxr_linenumber" name="L149" href="#L149">149</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2015 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>

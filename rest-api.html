@@ -425,10 +425,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_paths">Paths</a>
 <ul class="sectlevel2">
+<li><a href="#__query_showall">/query?showAll</a></li>
 <li><a href="#__query">/query</a></li>
-<li><a href="#__query_2">/query</a></li>
 <li><a href="#__query_name">/query/{name}</a></li>
-<li><a href="#__register">/register</a></li>
+<li><a href="#__query_name_2">/query/{name}</a></li>
+<li><a href="#__register_showall">/register?showAll</a></li>
 <li><a href="#__register_type">/register/{type}</a></li>
 <li><a href="#__register_type_2">/register/{type}</a></li>
 <li><a href="#__register_type_3">/register/{type}</a></li>
@@ -504,7 +505,7 @@ BasePath: /</p>
 <h2 id="_paths">Paths</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="__query">/query</h3>
+<h3 id="__query_showall">/query?showAll</h3>
 <div class="listingblock">
 <div class="content">
 <pre>GET /query</pre>
@@ -630,7 +631,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__query_2">/query</h3>
+<h3 id="__query">/query</h3>
 <div class="listingblock">
 <div class="content">
 <pre>POST /query</pre>
@@ -900,20 +901,146 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__register">/register</h3>
+<h3 id="__query_name_2">/query/{name}</h3>
+<div class="listingblock">
+<div class="content">
+<pre>DELETE /query/{name}</pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_description_4">Description</h4>
+<div class="paragraph">
+<p>Delete the named query.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_parameters_4">Parameters</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Schema</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PathParameter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the query to delete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_responses_4">Responses</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">HTTP Code</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Schema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">200</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bad request.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">401</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unauthorized</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal server error.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">204</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully deleted a Named Query.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">403</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Forbidden</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_consumes_4">Consumes</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>application/json</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_produces_4">Produces</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>application/json</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_tags_5">Tags</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>query</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__register_showall">/register?showAll</h3>
 <div class="listingblock">
 <div class="content">
 <pre>GET /register</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_description_4">Description</h4>
+<h4 id="_description_5">Description</h4>
 <div class="paragraph">
 <p>All registered types.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_parameters_4">Parameters</h4>
+<h4 id="_parameters_5">Parameters</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 16%;">
@@ -946,7 +1073,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_responses_4">Responses</h4>
+<h4 id="_responses_5">Responses</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33%;">
@@ -995,7 +1122,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_consumes_4">Consumes</h4>
+<h4 id="_consumes_5">Consumes</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1005,7 +1132,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_produces_4">Produces</h4>
+<h4 id="_produces_5">Produces</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1015,7 +1142,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_tags_5">Tags</h4>
+<h4 id="_tags_6">Tags</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1033,13 +1160,13 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_description_5">Description</h4>
+<h4 id="_description_6">Description</h4>
 <div class="paragraph">
 <p>Register one or more types. Optionally link a JSON Schema.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_responses_5">Responses</h4>
+<h4 id="_responses_6">Responses</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33%;">
@@ -1098,7 +1225,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_consumes_5">Consumes</h4>
+<h4 id="_consumes_6">Consumes</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1108,7 +1235,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_produces_5">Produces</h4>
+<h4 id="_produces_6">Produces</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1118,7 +1245,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_tags_6">Tags</h4>
+<h4 id="_tags_7">Tags</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1136,13 +1263,13 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_description_6">Description</h4>
+<h4 id="_description_7">Description</h4>
 <div class="paragraph">
 <p>Retrieve the registered type.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_parameters_5">Parameters</h4>
+<h4 id="_parameters_6">Parameters</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 16%;">
@@ -1175,7 +1302,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_responses_6">Responses</h4>
+<h4 id="_responses_7">Responses</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33%;">
@@ -1224,7 +1351,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_consumes_6">Consumes</h4>
+<h4 id="_consumes_7">Consumes</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1234,7 +1361,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_produces_6">Produces</h4>
+<h4 id="_produces_7">Produces</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1244,7 +1371,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_tags_7">Tags</h4>
+<h4 id="_tags_8">Tags</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1262,13 +1389,13 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_description_7">Description</h4>
+<h4 id="_description_8">Description</h4>
 <div class="paragraph">
 <p>Unlink JSON Schema from type.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_parameters_6">Parameters</h4>
+<h4 id="_parameters_7">Parameters</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 16%;">
@@ -1309,7 +1436,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_responses_7">Responses</h4>
+<h4 id="_responses_8">Responses</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33%;">
@@ -1363,7 +1490,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_consumes_7">Consumes</h4>
+<h4 id="_consumes_8">Consumes</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1373,7 +1500,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_produces_7">Produces</h4>
+<h4 id="_produces_8">Produces</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1383,7 +1510,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_tags_8">Tags</h4>
+<h4 id="_tags_9">Tags</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1401,13 +1528,13 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_description_8">Description</h4>
+<h4 id="_description_9">Description</h4>
 <div class="paragraph">
 <p>Delete the registered type.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_parameters_7">Parameters</h4>
+<h4 id="_parameters_8">Parameters</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 16%;">
@@ -1440,7 +1567,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_responses_8">Responses</h4>
+<h4 id="_responses_9">Responses</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33%;">
@@ -1489,7 +1616,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_consumes_8">Consumes</h4>
+<h4 id="_consumes_9">Consumes</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1499,7 +1626,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_produces_8">Produces</h4>
+<h4 id="_produces_9">Produces</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1509,7 +1636,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_tags_9">Tags</h4>
+<h4 id="_tags_10">Tags</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1527,13 +1654,13 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_description_9">Description</h4>
+<h4 id="_description_10">Description</h4>
 <div class="paragraph">
 <p>Retrieve type matching criteria.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_parameters_8">Parameters</h4>
+<h4 id="_parameters_9">Parameters</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 16%;">
@@ -1582,7 +1709,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_responses_9">Responses</h4>
+<h4 id="_responses_10">Responses</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33%;">
@@ -1631,7 +1758,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_consumes_9">Consumes</h4>
+<h4 id="_consumes_10">Consumes</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1641,7 +1768,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_produces_9">Produces</h4>
+<h4 id="_produces_10">Produces</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1651,7 +1778,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_tags_10">Tags</h4>
+<h4 id="_tags_11">Tags</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1669,13 +1796,13 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_description_10">Description</h4>
+<h4 id="_description_11">Description</h4>
 <div class="paragraph">
 <p>Store one or more type.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_parameters_9">Parameters</h4>
+<h4 id="_parameters_10">Parameters</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 16%;">
@@ -1708,7 +1835,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_responses_10">Responses</h4>
+<h4 id="_responses_11">Responses</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33%;">
@@ -1772,7 +1899,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_consumes_10">Consumes</h4>
+<h4 id="_consumes_11">Consumes</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1782,7 +1909,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_produces_10">Produces</h4>
+<h4 id="_produces_11">Produces</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1792,7 +1919,7 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_tags_11">Tags</h4>
+<h4 id="_tags_12">Tags</h4>
 <div class="ulist">
 <ul>
 <li>

@@ -83,23 +83,23 @@ public class EntityController {
             @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
             })
     public ResponseEntity&lt;?&gt; create(@PathVariable(&quot;type&quot;) String type, HttpServletRequest request) throws IOException {
-<span class="nc" id="L86">        String json = IOUtils.toString(request.getInputStream(), &quot;UTF-8&quot;);</span>
-<span class="nc bnc" id="L87" title="All 4 branches missed.">        Assert.isTrue(json.startsWith(&quot;{&quot;) || json.startsWith(&quot;[&quot;), &quot;Store requests must be valid JSON starting with either a { or [!&quot;);</span>
-<span class="nc" id="L88">        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();</span>
-<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (json.startsWith(&quot;{&quot;)) {</span>
-<span class="nc" id="L90">            result = createSingleType(type, json);</span>
+<span class="fc" id="L86">        String json = IOUtils.toString(request.getInputStream(), &quot;UTF-8&quot;);</span>
+<span class="pc bpc" id="L87" title="3 of 4 branches missed.">        Assert.isTrue(json.startsWith(&quot;{&quot;) || json.startsWith(&quot;[&quot;), &quot;Store requests must be valid JSON starting with either a { or [!&quot;);</span>
+<span class="fc" id="L88">        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        if (json.startsWith(&quot;{&quot;)) {</span>
+<span class="fc" id="L90">            result = createSingleType(type, json);</span>
         }
-<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (json.startsWith(&quot;[&quot;)) {</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (json.startsWith(&quot;[&quot;)) {</span>
 <span class="nc" id="L93">            result = createMultipleTypes(type, json);</span>
         }
-<span class="nc" id="L95">        return result;</span>
+<span class="fc" id="L95">        return result;</span>
     }
     
     private ResponseEntity&lt;?&gt; createSingleType(String type, String json) {
-<span class="nc" id="L99">        entityService.create(type, new JSONObject(json));</span>
-<span class="nc" id="L100">        metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, type, &quot;count&quot;)).inc();</span>
-<span class="nc" id="L101">        log.info(&quot;Successfully stored type [{}]&quot;, type);</span>
-<span class="nc" id="L102">        return ResponseEntity.noContent().build();</span>
+<span class="fc" id="L99">        entityService.create(type, new JSONObject(json));</span>
+<span class="fc" id="L100">        metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="fc" id="L101">        log.info(&quot;Successfully stored type [{}]&quot;, type);</span>
+<span class="fc" id="L102">        return ResponseEntity.noContent().build();</span>
     }
     
     private ResponseEntity&lt;?&gt; createMultipleTypes(String type, String json) {
@@ -137,11 +137,11 @@ public class EntityController {
             @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
             })
     public ResponseEntity&lt;?&gt; get(@PathVariable(&quot;type&quot;) String type, @RequestParam(value=&quot;createdTimeStart&quot;, required=false) String createdTimeStart, @RequestParam(value=&quot;createdTimeEnd&quot;, required=false) String createdTimeEnd, HttpServletRequest request) throws JsonProcessingException {
-<span class="nc bnc" id="L140" title="All 2 branches missed.">        LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">        LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">        Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, &quot;Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!&quot;);</span>
-<span class="nc" id="L143">        String result = entityService.get(type, start, end, request.getParameterMap().entrySet());</span>
-<span class="nc" id="L144">        return ResponseEntity.ok(result);</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">        Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, &quot;Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!&quot;);</span>
+<span class="fc" id="L143">        String result = entityService.get(type, start, end, request.getParameterMap().entrySet());</span>
+<span class="fc" id="L144">        return ResponseEntity.ok(result);</span>
     }
     
 }
