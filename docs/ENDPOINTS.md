@@ -59,6 +59,10 @@ Sample POST requests:
 
 Consult this [Stored Procedure](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/db/hsqldb/V1_1__add_test_sproc.sql) example for a sample HSQLDB based implementation
 
+* DELETE `/query/{name}`
+
+deletes the named query
+
 * GET `/query?showAll`
 
 returns all named queries; displays: name, type, query, and parameters

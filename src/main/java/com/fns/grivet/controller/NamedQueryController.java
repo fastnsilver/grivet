@@ -123,6 +123,21 @@ public class NamedQueryController {
         return ResponseEntity.ok(payload.toString());
     }
     
+    @RequestMapping(value="/{name}", method=RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = "DELETE", notes = "Delete the named query.", value = "/query/{name}")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 204, message = "Successfully deleted a Named Query."),
+            @ApiResponse(code = 400, message = "Bad request."),
+            @ApiResponse(code = 500, message = "Internal server error.")
+            })
+    public ResponseEntity<?> delete(
+            @ApiParam(value = "The name of the query to delete", required = true)
+            @PathVariable("name") String name) {
+        namedQueryService.delete(name);
+        log.info("Query with name [{}] successfully deleted!", name);
+        return ResponseEntity.noContent().build();
+    }
+    
     private boolean isSupportedQuery(NamedQuery query) {
         boolean result = false;
         if ((query.getQuery().toUpperCase().startsWith("SELECT") && query.getType().equals(QueryType.SELECT)) 

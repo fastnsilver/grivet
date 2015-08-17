@@ -21,7 +21,10 @@ import static org.hamcrest.Matchers.equalTo;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.joda.time.LocalDateTime;
 import org.json.JSONArray;
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -108,4 +111,47 @@ public class GrivetApiClientTest {
         JsonAssert.assertJsonEquals(type, result.get(0).toString());
         deregisterType();
     }
+    
+    @Test
+    public void testAllRegisteredNamedQueries_happyPath() throws IOException {
+        Resource r = resolver.getResource("classpath:TestSelectQuery.json");
+        String select = FileUtils.readFileToString(r.getFile());
+        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(204)).when().post("/query"); 
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/query?showAll");
+        JSONArray result = new JSONArray(response.body().asString());
+        Assert.assertEquals(1, result.length()); 
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/query/getAttributesCreatedBefore");
+    }
+    
+    @Test
+    public void testNamedQueryRegistrationAndRetrieval_select_happyPath() throws IOException {
+        registerTestType();
+        Resource r = resolver.getResource("classpath:TestSelectQuery.json");
+        String select = FileUtils.readFileToString(r.getFile());
+        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(204)).when().post("/query");
+        LocalDateTime now = LocalDateTime.now();
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/query/getAttributesCreatedBefore?createdTime=" + now.toString());
+        JSONArray result = new JSONArray(response.body().asString());
+        Assert.assertEquals(7, result.length());
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/query/getAttributesCreatedBefore");
+        deregisterType();
+    }
+    
+    
+    @Test
+    @Ignore("Cannot test w/ H2")
+    public void testNamedQueryRegistrationAndRetrieval_sproc_happyPath() throws IOException {
+        registerTestType();
+        Resource r = resolver.getResource("classpath:TestSprocQuery.json");
+        String sproc = FileUtils.readFileToString(r.getFile());
+        given().contentType("application/json").request().body(sproc).then().expect().statusCode(equalTo(204)).when().post("/query");
+        LocalDateTime now = LocalDateTime.now();
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/query/sproc.getAttributesCreatedBefore?createdTime=" + now.toString());
+        JSONArray result = new JSONArray(response.body().asString());
+        Assert.assertEquals(7, result.length());
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/query/sproc.getAttributesCreatedBefore");
+        deregisterType();
+    }
+    
+    // TODO More testing; unhappy path cases
 }
