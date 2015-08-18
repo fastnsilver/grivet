@@ -12,7 +12,7 @@
 	
 	<groupId>com.fns</groupId>
 	<artifactId>grivet</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>Grivet</name>
@@ -101,7 +101,7 @@
         <github.site.noJekyll>true</github.site.noJekyll>
         
         <!-- Docker -->
-        <grivet.image>fans/${project.artifactId}:${project.version}</grivet.image>
+        <grivet.image>fastnsilver/${project.artifactId}:${project.version}</grivet.image>
         <grivet.port>8080</grivet.port>
         		
         <!-- Maven -->

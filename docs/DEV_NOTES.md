@@ -58,6 +58,9 @@ Assuming you have installed Docker...
 
 #### Build image
 
+If you choose `docker-maven-plugin` integration, you must have installed `boot2docker`.  
+`mvn` commands below DO NOT work with `docker-machine`... yet!
+
 ```
 mvn package docker:build
 ```

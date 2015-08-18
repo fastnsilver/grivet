@@ -1,5 +1,6 @@
 # Grivet 
 ![Build status](https://api.shippable.com/projects/55c406bcedd7f2c05298e9c8/badge/master "Build status")
+[![endorse](https://api.coderwall.com/fastnsilver/endorsecount.png)](https://coderwall.com/fastnsilver)
 
 A micro-service capable of self-service modeling and persistence.
 

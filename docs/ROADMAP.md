@@ -13,8 +13,7 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Documentation authored and published inc. API, [Javadoc](http://fastnsilver.github.io/grivet/apidocs/index.html), Maven Site to Github [Pages](http://fastnsilver.github.io/grivet/)
 - [x] Continuous integration builds configured on [Shippable](http://docs.shippable.com/)
 - [x] Docker container (app w/ H2 back-end)
-- [ ] Publish artifact to Maven Central
-- [ ] Publish Docker container to DockerHub
+- [x] Publish Docker [image](https://hub.docker.com/r/fastnsilver/grivet/) to DockerHub
 
 ## 0.0.2
 
