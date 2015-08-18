@@ -10,9 +10,9 @@ Grivet,com.fns.grivet.query,DynamicQuery.new Object() {...},10,69,0,0,0,2,0,1,0,
 Grivet,com.fns.grivet.query,DynamicQuery,92,390,24,34,21,71,20,24,1,10
 Grivet,com.fns.grivet.query,QueryBuilder,93,326,3,19,15,68,6,17,3,9
 Grivet,com.fns.grivet.query,NamedQuery,75,210,12,20,9,49,12,18,1,13
-Grivet,com.fns.grivet.controller,ClassRegistryController,140,192,12,8,27,36,9,11,1,9
+Grivet,com.fns.grivet.controller,ClassRegistryController,158,192,14,8,28,36,10,11,1,9
 Grivet,com.fns.grivet.controller,GlobalControllerExceptionHandler,31,47,3,1,1,6,2,2,0,2
-Grivet,com.fns.grivet.controller,EntityController,127,114,14,6,21,22,11,5,1,5
+Grivet,com.fns.grivet.controller,EntityController,145,114,16,6,22,22,12,5,1,5
 Grivet,com.fns.grivet.controller,MetricsAspect,42,6,0,0,9,3,1,1,1,1
 Grivet,com.fns.grivet.controller,LogUtil,41,37,6,2,9,8,7,2,3,2
 Grivet,com.fns.grivet.controller,NamedQueryController,27,123,8,4,2,27,6,7,0,7

@@ -112,47 +112,48 @@
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>     
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">private</strong> ResponseEntity&lt;?&gt; createMultipleTypes(String type, String json) {
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         JSONArray jsonArray = <strong class="jxr_keyword">new</strong> JSONArray(json);
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>         <strong class="jxr_keyword">int</strong> numberOfTypesToCreate = jsonArray.length();
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>         <strong class="jxr_keyword">int</strong> errorCount = 0;
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>         JSONObject jsonObject = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>         HttpHeaders headers = <strong class="jxr_keyword">new</strong> HttpHeaders();
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>         <em class="jxr_comment">// allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing</em>
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; numberOfTypesToCreate; i++) {
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>             jsonObject = jsonArray.getJSONObject(i);
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>             <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>                 entityService.create(type, jsonObject);
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>                 metricRegistry.counter(MetricRegistry.name(<span class="jxr_string">"store"</span>, type, <span class="jxr_string">"count"</span>)).inc();
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>                 log.info(<span class="jxr_string">"Successfully stored type [{}]"</span>, type);
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>             } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>                 String message = LogUtil.toLog(jsonObject, String.format(<span class="jxr_string">"Problems storing type! Portion of payload @ index[%d]\n"</span>, i+1));
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>                 log.error(message, e);
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>                 <strong class="jxr_keyword">if</strong> (numberOfTypesToCreate == 1) {
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>                     <strong class="jxr_keyword">throw</strong> e;
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>                 }
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>                 headers.set(String.format(<span class="jxr_string">"Error[%s]"</span>, String.valueOf(i+1)), e.getMessage());
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>                 errorCount++;
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>             }
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>         }
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>         HttpStatus status = (errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED;
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ResponseEntity&lt;&gt;(headers, status);
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>     }
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>     
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>     @RequestMapping(value=<span class="jxr_string">"/{type}"</span>, produces=MediaType.APPLICATION_JSON_VALUE)
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>     @ApiOperation(httpMethod = <span class="jxr_string">"GET"</span>, notes = <span class="jxr_string">"Retrieve type matching criteria."</span>, value = <span class="jxr_string">"/store/{type}"</span>)
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>     @ApiResponses(value = { 
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>             @ApiResponse(code = 200, message = <span class="jxr_string">"Successfully retrieve type matching criteria."</span>),
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>             @ApiResponse(code = 400, message = <span class="jxr_string">"Bad request."</span>),
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>             @ApiResponse(code = 500, message = <span class="jxr_string">"Internal server error."</span>)
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>             })
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>     <strong class="jxr_keyword">public</strong> ResponseEntity&lt;?&gt; get(@PathVariable(<span class="jxr_string">"type"</span>) String type, @RequestParam(value=<span class="jxr_string">"createdTimeStart"</span>, required=false) String createdTimeStart, @RequestParam(value=<span class="jxr_string">"createdTimeEnd"</span>, required=false) String createdTimeEnd, HttpServletRequest request) <strong class="jxr_keyword">throws</strong> JsonProcessingException {
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>         LocalDateTime start = createdTimeStart == <strong class="jxr_keyword">null</strong> ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>         LocalDateTime end = createdTimeEnd == <strong class="jxr_keyword">null</strong> ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>         Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, <span class="jxr_string">"Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!"</span>);
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>         String result = entityService.get(type, start, end, request.getParameterMap().entrySet());
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>         <strong class="jxr_keyword">return</strong> ResponseEntity.ok(result);
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>     }
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>     
-<a class="jxr_linenumber" name="L147" href="#L147">147</a> }
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>         Assert.isTrue(jsonArray.length() &lt;= 100, String.format(<span class="jxr_string">"The total number of entries in a request must not exceed 100! The number of entries in your store request was [%d]."</span>, jsonArray.length()));
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>         <strong class="jxr_keyword">int</strong> numberOfTypesToCreate = jsonArray.length();
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>         <strong class="jxr_keyword">int</strong> errorCount = 0;
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>         JSONObject jsonObject = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         HttpHeaders headers = <strong class="jxr_keyword">new</strong> HttpHeaders();
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <em class="jxr_comment">// allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing</em>
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; numberOfTypesToCreate; i++) {
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>             jsonObject = jsonArray.getJSONObject(i);
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>                 entityService.create(type, jsonObject);
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>                 metricRegistry.counter(MetricRegistry.name(<span class="jxr_string">"store"</span>, type, <span class="jxr_string">"count"</span>)).inc();
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>                 log.info(<span class="jxr_string">"Successfully stored type [{}]"</span>, type);
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>             } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>                 String message = LogUtil.toLog(jsonObject, String.format(<span class="jxr_string">"Problems storing type! Portion of payload @ index[%d]\n"</span>, i+1));
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>                 log.error(message, e);
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>                 <strong class="jxr_keyword">if</strong> (numberOfTypesToCreate == 1) {
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>                     <strong class="jxr_keyword">throw</strong> e;
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>                 }
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>                 headers.set(String.format(<span class="jxr_string">"Error[%s]"</span>, String.valueOf(i+1)), e.getMessage());
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>                 errorCount++;
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>             }
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>         }
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>         HttpStatus status = (errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED;
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ResponseEntity&lt;&gt;(headers, status);
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>     }
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>     
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>     @RequestMapping(value=<span class="jxr_string">"/{type}"</span>, produces=MediaType.APPLICATION_JSON_VALUE)
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>     @ApiOperation(httpMethod = <span class="jxr_string">"GET"</span>, notes = <span class="jxr_string">"Retrieve type matching criteria."</span>, value = <span class="jxr_string">"/store/{type}"</span>)
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>     @ApiResponses(value = { 
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>             @ApiResponse(code = 200, message = <span class="jxr_string">"Successfully retrieve type matching criteria."</span>),
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>             @ApiResponse(code = 400, message = <span class="jxr_string">"Bad request."</span>),
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>             @ApiResponse(code = 500, message = <span class="jxr_string">"Internal server error."</span>)
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>             })
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>     <strong class="jxr_keyword">public</strong> ResponseEntity&lt;?&gt; get(@PathVariable(<span class="jxr_string">"type"</span>) String type, @RequestParam(value=<span class="jxr_string">"createdTimeStart"</span>, required=false) String createdTimeStart, @RequestParam(value=<span class="jxr_string">"createdTimeEnd"</span>, required=false) String createdTimeEnd, HttpServletRequest request) <strong class="jxr_keyword">throws</strong> JsonProcessingException {
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>         LocalDateTime start = createdTimeStart == <strong class="jxr_keyword">null</strong> ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>         LocalDateTime end = createdTimeEnd == <strong class="jxr_keyword">null</strong> ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, <span class="jxr_string">"Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!"</span>);
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>         String result = entityService.get(type, start, end, request.getParameterMap().entrySet());
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>         <strong class="jxr_keyword">return</strong> ResponseEntity.ok(result);
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>     }
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>     
+<a class="jxr_linenumber" name="L148" href="#L148">148</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2015 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>

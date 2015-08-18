@@ -112,47 +112,48 @@
 <span class="sourceLineNo">104</span>    <a name="line.104"></a>
 <span class="sourceLineNo">105</span>    private ResponseEntity&lt;?&gt; createMultipleTypes(String type, String json) {<a name="line.105"></a>
 <span class="sourceLineNo">106</span>        JSONArray jsonArray = new JSONArray(json);<a name="line.106"></a>
-<span class="sourceLineNo">107</span>        int numberOfTypesToCreate = jsonArray.length();<a name="line.107"></a>
-<span class="sourceLineNo">108</span>        int errorCount = 0;<a name="line.108"></a>
-<span class="sourceLineNo">109</span>        JSONObject jsonObject = null;<a name="line.109"></a>
-<span class="sourceLineNo">110</span>        HttpHeaders headers = new HttpHeaders();<a name="line.110"></a>
-<span class="sourceLineNo">111</span>        // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing<a name="line.111"></a>
-<span class="sourceLineNo">112</span>        for (int i = 0; i &lt; numberOfTypesToCreate; i++) {<a name="line.112"></a>
-<span class="sourceLineNo">113</span>            jsonObject = jsonArray.getJSONObject(i);<a name="line.113"></a>
-<span class="sourceLineNo">114</span>            try {<a name="line.114"></a>
-<span class="sourceLineNo">115</span>                entityService.create(type, jsonObject);<a name="line.115"></a>
-<span class="sourceLineNo">116</span>                metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();<a name="line.116"></a>
-<span class="sourceLineNo">117</span>                log.info("Successfully stored type [{}]", type);<a name="line.117"></a>
-<span class="sourceLineNo">118</span>            } catch (Exception e) {<a name="line.118"></a>
-<span class="sourceLineNo">119</span>                String message = LogUtil.toLog(jsonObject, String.format("Problems storing type! Portion of payload @ index[%d]\n", i+1));<a name="line.119"></a>
-<span class="sourceLineNo">120</span>                log.error(message, e);<a name="line.120"></a>
-<span class="sourceLineNo">121</span>                if (numberOfTypesToCreate == 1) {<a name="line.121"></a>
-<span class="sourceLineNo">122</span>                    throw e;<a name="line.122"></a>
-<span class="sourceLineNo">123</span>                }<a name="line.123"></a>
-<span class="sourceLineNo">124</span>                headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());<a name="line.124"></a>
-<span class="sourceLineNo">125</span>                errorCount++;<a name="line.125"></a>
-<span class="sourceLineNo">126</span>            }<a name="line.126"></a>
-<span class="sourceLineNo">127</span>        }<a name="line.127"></a>
-<span class="sourceLineNo">128</span>        HttpStatus status = (errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED;<a name="line.128"></a>
-<span class="sourceLineNo">129</span>        return new ResponseEntity&lt;&gt;(headers, status);<a name="line.129"></a>
-<span class="sourceLineNo">130</span>    }<a name="line.130"></a>
-<span class="sourceLineNo">131</span>    <a name="line.131"></a>
-<span class="sourceLineNo">132</span>    @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)<a name="line.132"></a>
-<span class="sourceLineNo">133</span>    @ApiOperation(httpMethod = "GET", notes = "Retrieve type matching criteria.", value = "/store/{type}")<a name="line.133"></a>
-<span class="sourceLineNo">134</span>    @ApiResponses(value = { <a name="line.134"></a>
-<span class="sourceLineNo">135</span>            @ApiResponse(code = 200, message = "Successfully retrieve type matching criteria."),<a name="line.135"></a>
-<span class="sourceLineNo">136</span>            @ApiResponse(code = 400, message = "Bad request."),<a name="line.136"></a>
-<span class="sourceLineNo">137</span>            @ApiResponse(code = 500, message = "Internal server error.")<a name="line.137"></a>
-<span class="sourceLineNo">138</span>            })<a name="line.138"></a>
-<span class="sourceLineNo">139</span>    public ResponseEntity&lt;?&gt; get(@PathVariable("type") String type, @RequestParam(value="createdTimeStart", required=false) String createdTimeStart, @RequestParam(value="createdTimeEnd", required=false) String createdTimeEnd, HttpServletRequest request) throws JsonProcessingException {<a name="line.139"></a>
-<span class="sourceLineNo">140</span>        LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);<a name="line.140"></a>
-<span class="sourceLineNo">141</span>        LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);<a name="line.141"></a>
-<span class="sourceLineNo">142</span>        Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, "Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");<a name="line.142"></a>
-<span class="sourceLineNo">143</span>        String result = entityService.get(type, start, end, request.getParameterMap().entrySet());<a name="line.143"></a>
-<span class="sourceLineNo">144</span>        return ResponseEntity.ok(result);<a name="line.144"></a>
-<span class="sourceLineNo">145</span>    }<a name="line.145"></a>
-<span class="sourceLineNo">146</span>    <a name="line.146"></a>
-<span class="sourceLineNo">147</span>}<a name="line.147"></a>
+<span class="sourceLineNo">107</span>        Assert.isTrue(jsonArray.length() &lt;= 100, String.format("The total number of entries in a request must not exceed 100! The number of entries in your store request was [%d].", jsonArray.length()));<a name="line.107"></a>
+<span class="sourceLineNo">108</span>        int numberOfTypesToCreate = jsonArray.length();<a name="line.108"></a>
+<span class="sourceLineNo">109</span>        int errorCount = 0;<a name="line.109"></a>
+<span class="sourceLineNo">110</span>        JSONObject jsonObject = null;<a name="line.110"></a>
+<span class="sourceLineNo">111</span>        HttpHeaders headers = new HttpHeaders();<a name="line.111"></a>
+<span class="sourceLineNo">112</span>        // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        for (int i = 0; i &lt; numberOfTypesToCreate; i++) {<a name="line.113"></a>
+<span class="sourceLineNo">114</span>            jsonObject = jsonArray.getJSONObject(i);<a name="line.114"></a>
+<span class="sourceLineNo">115</span>            try {<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                entityService.create(type, jsonObject);<a name="line.116"></a>
+<span class="sourceLineNo">117</span>                metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();<a name="line.117"></a>
+<span class="sourceLineNo">118</span>                log.info("Successfully stored type [{}]", type);<a name="line.118"></a>
+<span class="sourceLineNo">119</span>            } catch (Exception e) {<a name="line.119"></a>
+<span class="sourceLineNo">120</span>                String message = LogUtil.toLog(jsonObject, String.format("Problems storing type! Portion of payload @ index[%d]\n", i+1));<a name="line.120"></a>
+<span class="sourceLineNo">121</span>                log.error(message, e);<a name="line.121"></a>
+<span class="sourceLineNo">122</span>                if (numberOfTypesToCreate == 1) {<a name="line.122"></a>
+<span class="sourceLineNo">123</span>                    throw e;<a name="line.123"></a>
+<span class="sourceLineNo">124</span>                }<a name="line.124"></a>
+<span class="sourceLineNo">125</span>                headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());<a name="line.125"></a>
+<span class="sourceLineNo">126</span>                errorCount++;<a name="line.126"></a>
+<span class="sourceLineNo">127</span>            }<a name="line.127"></a>
+<span class="sourceLineNo">128</span>        }<a name="line.128"></a>
+<span class="sourceLineNo">129</span>        HttpStatus status = (errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED;<a name="line.129"></a>
+<span class="sourceLineNo">130</span>        return new ResponseEntity&lt;&gt;(headers, status);<a name="line.130"></a>
+<span class="sourceLineNo">131</span>    }<a name="line.131"></a>
+<span class="sourceLineNo">132</span>    <a name="line.132"></a>
+<span class="sourceLineNo">133</span>    @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)<a name="line.133"></a>
+<span class="sourceLineNo">134</span>    @ApiOperation(httpMethod = "GET", notes = "Retrieve type matching criteria.", value = "/store/{type}")<a name="line.134"></a>
+<span class="sourceLineNo">135</span>    @ApiResponses(value = { <a name="line.135"></a>
+<span class="sourceLineNo">136</span>            @ApiResponse(code = 200, message = "Successfully retrieve type matching criteria."),<a name="line.136"></a>
+<span class="sourceLineNo">137</span>            @ApiResponse(code = 400, message = "Bad request."),<a name="line.137"></a>
+<span class="sourceLineNo">138</span>            @ApiResponse(code = 500, message = "Internal server error.")<a name="line.138"></a>
+<span class="sourceLineNo">139</span>            })<a name="line.139"></a>
+<span class="sourceLineNo">140</span>    public ResponseEntity&lt;?&gt; get(@PathVariable("type") String type, @RequestParam(value="createdTimeStart", required=false) String createdTimeStart, @RequestParam(value="createdTimeEnd", required=false) String createdTimeEnd, HttpServletRequest request) throws JsonProcessingException {<a name="line.140"></a>
+<span class="sourceLineNo">141</span>        LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);<a name="line.141"></a>
+<span class="sourceLineNo">142</span>        LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);<a name="line.142"></a>
+<span class="sourceLineNo">143</span>        Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, "Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");<a name="line.143"></a>
+<span class="sourceLineNo">144</span>        String result = entityService.get(type, start, end, request.getParameterMap().entrySet());<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        return ResponseEntity.ok(result);<a name="line.145"></a>
+<span class="sourceLineNo">146</span>    }<a name="line.146"></a>
+<span class="sourceLineNo">147</span>    <a name="line.147"></a>
+<span class="sourceLineNo">148</span>}<a name="line.148"></a>
 
 
 

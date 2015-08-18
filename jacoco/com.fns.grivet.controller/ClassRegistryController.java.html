@@ -117,37 +117,38 @@ public class ClassRegistryController {
     
     private ResponseEntity&lt;?&gt; registerMultipleTypes(String json) {
 <span class="nc" id="L119">        JSONArray jsonArray = new JSONArray(json);</span>
-<span class="nc" id="L120">        JSONObject jsonObject = null;</span>
-<span class="nc" id="L121">        String type = null;</span>
-<span class="nc" id="L122">        HttpHeaders headers = new HttpHeaders();</span>
-<span class="nc" id="L123">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
-<span class="nc" id="L124">        int numberOfTypesToRegister = jsonArray.length();</span>
-<span class="nc" id="L125">        URI location = null;</span>
-<span class="nc" id="L126">        int errorCount = 0;</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        Assert.isTrue(jsonArray.length() &lt;= 100, String.format(&quot;The total number of entries in a request must not exceed 100! The number of entries in your registration request was [%d].&quot;, jsonArray.length()));</span>
+<span class="nc" id="L121">        JSONObject jsonObject = null;</span>
+<span class="nc" id="L122">        String type = null;</span>
+<span class="nc" id="L123">        HttpHeaders headers = new HttpHeaders();</span>
+<span class="nc" id="L124">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
+<span class="nc" id="L125">        int numberOfTypesToRegister = jsonArray.length();</span>
+<span class="nc" id="L126">        URI location = null;</span>
+<span class="nc" id="L127">        int errorCount = 0;</span>
         // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
-<span class="nc bnc" id="L128" title="All 2 branches missed.">        for (int i = 0; i &lt; numberOfTypesToRegister; i++) {</span>
-<span class="nc" id="L129">            jsonObject = jsonArray.getJSONObject(i);</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        for (int i = 0; i &lt; numberOfTypesToRegister; i++) {</span>
+<span class="nc" id="L130">            jsonObject = jsonArray.getJSONObject(i);</span>
             try {
-<span class="nc" id="L131">                type = classRegistryService.register(jsonObject);</span>
-<span class="nc" id="L132">                location = ucb.path(&quot;/register/{type}&quot;).buildAndExpand(type).toUri();</span>
-<span class="nc bnc" id="L133" title="All 2 branches missed.">                if (numberOfTypesToRegister == 1) {</span>
-<span class="nc" id="L134">                    headers.setLocation(location); </span>
+<span class="nc" id="L132">                type = classRegistryService.register(jsonObject);</span>
+<span class="nc" id="L133">                location = ucb.path(&quot;/register/{type}&quot;).buildAndExpand(type).toUri();</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">                if (numberOfTypesToRegister == 1) {</span>
+<span class="nc" id="L135">                    headers.setLocation(location); </span>
                 } else {
-<span class="nc" id="L136">                    headers.set(String.format(&quot;Location[%s]&quot;,String.valueOf(i+1)), location.toASCIIString());</span>
+<span class="nc" id="L137">                    headers.set(String.format(&quot;Location[%s]&quot;,String.valueOf(i+1)), location.toASCIIString());</span>
                 }
-<span class="nc" id="L138">                log.info(&quot;Type [{}] successfully registered!&quot;, type);</span>
-<span class="nc" id="L139">            } catch (Exception e) {</span>
-<span class="nc" id="L140">                String message = LogUtil.toLog(jsonObject, String.format(&quot;Problems registering type! Portion of payload @ index[%d]\n&quot;, i+1));</span>
-<span class="nc" id="L141">                log.error(message, e);</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">                if (numberOfTypesToRegister == 1) {</span>
-<span class="nc" id="L143">                    throw e;</span>
+<span class="nc" id="L139">                log.info(&quot;Type [{}] successfully registered!&quot;, type);</span>
+<span class="nc" id="L140">            } catch (Exception e) {</span>
+<span class="nc" id="L141">                String message = LogUtil.toLog(jsonObject, String.format(&quot;Problems registering type! Portion of payload @ index[%d]\n&quot;, i+1));</span>
+<span class="nc" id="L142">                log.error(message, e);</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                if (numberOfTypesToRegister == 1) {</span>
+<span class="nc" id="L144">                    throw e;</span>
                 }
-<span class="nc" id="L145">                headers.set(String.format(&quot;Error[%s]&quot;, String.valueOf(i+1)), e.getMessage());</span>
-<span class="nc" id="L146">                errorCount++;</span>
-<span class="nc" id="L147">            }</span>
+<span class="nc" id="L146">                headers.set(String.format(&quot;Error[%s]&quot;, String.valueOf(i+1)), e.getMessage());</span>
+<span class="nc" id="L147">                errorCount++;</span>
+<span class="nc" id="L148">            }</span>
         }
-<span class="nc bnc" id="L149" title="All 2 branches missed.">        HttpStatus status = (errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED;</span>
-<span class="nc" id="L150">        return new ResponseEntity&lt;&gt;(headers, status);</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        HttpStatus status = (errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED;</span>
+<span class="nc" id="L151">        return new ResponseEntity&lt;&gt;(headers, status);</span>
     }
     
     @RequestMapping(value=&quot;/{type}&quot;, method=RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -160,9 +161,9 @@ public class ClassRegistryController {
     public ResponseEntity&lt;?&gt; delete(
             @ApiParam(value = &quot;Type name&quot;, required = true)
             @PathVariable(&quot;type&quot;) String type) {
-<span class="fc" id="L163">        classRegistryService.deregister(type);</span>
-<span class="fc" id="L164">        log.info(&quot;Type [{}] successfully deregistered!&quot;, type);</span>
-<span class="fc" id="L165">        return ResponseEntity.noContent().build();</span>
+<span class="fc" id="L164">        classRegistryService.deregister(type);</span>
+<span class="fc" id="L165">        log.info(&quot;Type [{}] successfully deregistered!&quot;, type);</span>
+<span class="fc" id="L166">        return ResponseEntity.noContent().build();</span>
     }
     
     @RequestMapping(value=&quot;/{type}&quot;, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -175,10 +176,10 @@ public class ClassRegistryController {
     public ResponseEntity&lt;?&gt; get(
             @ApiParam(value = &quot;Type name&quot;, required = true)
             @PathVariable(&quot;type&quot;) String type) {
-<span class="fc" id="L178">        JSONObject payload = classRegistryService.get(type);</span>
-<span class="fc" id="L179">        String message = LogUtil.toLog(payload, String.format(&quot;Successfully retrieved type [%s]\n&quot;, type));</span>
-<span class="fc" id="L180">        log.info(message);</span>
-<span class="fc" id="L181">        return ResponseEntity.ok(payload.toString());</span>
+<span class="fc" id="L179">        JSONObject payload = classRegistryService.get(type);</span>
+<span class="fc" id="L180">        String message = LogUtil.toLog(payload, String.format(&quot;Successfully retrieved type [%s]\n&quot;, type));</span>
+<span class="fc" id="L181">        log.info(message);</span>
+<span class="fc" id="L182">        return ResponseEntity.ok(payload.toString());</span>
     }
     
     @RequestMapping(value=&quot;/{type}&quot;, method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -193,7 +194,7 @@ public class ClassRegistryController {
             @PathVariable(&quot;type&quot;) String type, 
             @ApiParam(value = &quot;Unlink JSON Schema from registered type?&quot;, required = true)
             @RequestParam(&quot;unlinkSchema&quot;) String unlinkSchema) {
-<span class="fc" id="L196">        return unlinkSchema(type);</span>
+<span class="fc" id="L197">        return unlinkSchema(type);</span>
     }
     
     @RequestMapping(value=&quot;&quot;, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -206,8 +207,8 @@ public class ClassRegistryController {
     public ResponseEntity&lt;?&gt; all(
             @ApiParam(value = &quot;Show all registered types?&quot;, required = true)
             @RequestParam(value = &quot;showAll&quot;, required = true) String showAll) {
-<span class="fc" id="L209">        JSONArray payload = classRegistryService.all();</span>
-<span class="fc" id="L210">        return ResponseEntity.ok(payload.toString());</span>
+<span class="fc" id="L210">        JSONArray payload = classRegistryService.all();</span>
+<span class="fc" id="L211">        return ResponseEntity.ok(payload.toString());</span>
     }
         
 }
