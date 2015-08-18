@@ -18,12 +18,15 @@ package com.fns.grivet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import de.codecentric.boot.admin.config.EnableAdminServer;
+
 /**
  * Bootstraps the application
  * 
  * @author Chris Phillipson
  */
 @SpringBootApplication
+@EnableAdminServer
 public class App {
     
     public static void main(String[] args) {

@@ -17,6 +17,7 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 0.0.2
 
+- [x] Spring Boot [Admin](https://github.com/codecentric/spring-boot-admin#spring-boot-admin) available
 - [ ] Introduce OAuth2 security
 - [ ] Define roles to limit access to administrators for registering new types and queries
 - [ ] All writes are audited (user is associated with record)
