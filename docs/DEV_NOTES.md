@@ -56,13 +56,17 @@ likewise replacing `<profile-name>`
 
 Assuming you have installed Docker...
 
-#### Build image
 
-If you choose `docker-maven-plugin` integration, you must have installed `boot2docker`.  
-`mvn` commands below DO NOT work with `docker-machine`... yet!
+#### Build image
 
 ```
 mvn package docker:build
+```
+
+#### Pull image
+
+```
+docker pull fastnsilver/grivet:latest
 ```
 
 #### Run image
@@ -74,7 +78,7 @@ mvn docker:start
 Or
 
 ```
-docker run -i -t fans/grivet:latest /bin/bash
+docker run -i -t -p 8080:8080 fastnsilver/grivet:latest /bin/bash
 ```
 
 Visit `192.168.59.103:8080` in a browser
