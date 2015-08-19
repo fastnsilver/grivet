@@ -1,3 +1,5 @@
+info:
+  version: @project.version@
 spring:
   application:
     name: @project.artifactId@

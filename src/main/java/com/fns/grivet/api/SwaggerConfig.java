@@ -21,6 +21,7 @@ import static springfox.documentation.schema.AlternateTypeRules.newRule;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
+    @Value("${info.version}")
+    private String version;
+    
     @Autowired
     private TypeResolver typeResolver;
 
@@ -65,7 +69,7 @@ public class SwaggerConfig {
                 .description(
                         "This is a comprehensive list of the APIs for Grivet.\nAdditional help is provided in this project's http://fastnsilver.github.io/grivet/[Maven Site].")
                 .contact("fastnsilver@gmail.com")
-                .version("0.0.1")
+                .version(version)
                 .build();
     }
 }
