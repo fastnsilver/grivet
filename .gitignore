@@ -1,3 +1,5 @@
+# Maven #
+#########
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -6,3 +8,36 @@ pom.xml.next
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
+.apt_generated/
+
+# Eclipse #
+###########
+.settings/
+.classpath
+.project
+.springBeans
+.factorypath
+
+# IntelliJ #
+############
+/.idea/
+*.iml
+
+# OS #
+######
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Application #
+###############
+logs/
+
+# Overrides #
+#############
+/src/main/resources/config/
