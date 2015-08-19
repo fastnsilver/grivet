@@ -18,17 +18,20 @@ package com.fns.grivet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import de.codecentric.boot.admin.config.EnableAdminServer;
+
 /**
  * Bootstraps the application
  * 
  * @author Chris Phillipson
  */
 @SpringBootApplication
-<span class="fc" id="L27">public class App {</span>
+@EnableAdminServer
+<span class="fc" id="L30">public class App {</span>
     
     public static void main(String[] args) {
-<span class="nc" id="L30">        SpringApplication.run(App.class, args);</span>
-<span class="nc" id="L31">    }</span>
+<span class="nc" id="L33">        SpringApplication.run(App.class, args);</span>
+<span class="nc" id="L34">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
