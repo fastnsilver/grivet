@@ -1,8 +1,8 @@
 info:
-  version: @project.version@
+  version: ${project.version}
 spring:
   application:
-    name: @project.artifactId@
+    name: ${project.artifactId}
   boot:
     admin:
       url: http://localhost:8080
@@ -11,7 +11,7 @@ spring:
       uri: ${SPRING_CONFIG_URI:http://localhost:8888}
       enabled: false
   profiles:
-    active: h2
+    active: h2,insecure
   jpa:
     hibernate:
       ddl-auto: none
@@ -33,7 +33,7 @@ flyway:
     preamble:
     varcharQualifier: 
     createTableSuffix:
-     
+    
 ---
 
 spring:
@@ -76,7 +76,8 @@ flyway:
 ---
 
 spring:
-  profiles: mysql
+  profiles: mysql 
+  profiles.include: oauth2,https
   datasource:
     url: jdbc:mysql://localhost:3306/globaldb
     driver-class-name: com.mysql.jdbc.Driver
@@ -84,7 +85,7 @@ spring:
     password: jackal#3
 
 flyway:
-  locations: classpath:db/with_partitions
+  locations: classpath:db/with_partitions, classpath:db/users
   placeholders:
     preamble: |
       /*!40101 SET character_set_client = utf8 */;
@@ -96,3 +97,29 @@ flyway:
     longTextColumnType: LONGTEXT
     varcharQualifier: CHARACTER SET utf8 COLLATE utf8_bin
     createTableSuffix: ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC
+
+---
+
+spring:
+  profiles: insecure
+
+management:
+  security:
+    enabled: false
+    
+security:
+  basic:
+    enabled: false
+    
+---
+
+spring:
+  profiles: https
+
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:keystore.jks
+    key-store-password: password
+    key-password: password
+  

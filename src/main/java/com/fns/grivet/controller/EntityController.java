@@ -31,6 +31,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +57,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("/store")
 @Api(value = "store", produces = "application/json")
+@Secured(value = { "ROLE_ADMIN", "ROLE_USER" })
 public class EntityController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());

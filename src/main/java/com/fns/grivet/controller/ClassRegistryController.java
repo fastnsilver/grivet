@@ -30,6 +30,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,6 +67,7 @@ public class ClassRegistryController {
         this.classRegistryService = classRegistryService;
     }
     
+    @Secured("ROLE_ADMIN")
     @RequestMapping(method=RequestMethod.POST, 
             consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Register one or more types. Optionally link a JSON Schema.", value = "/register/{type}")
@@ -151,6 +153,7 @@ public class ClassRegistryController {
         return new ResponseEntity<>(headers, status);
     }
     
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/{type}", method=RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "DELETE", notes = "Delete the registered type.", value = "/register/{type}")
     @ApiResponses(value = { 
@@ -166,6 +169,7 @@ public class ClassRegistryController {
         return ResponseEntity.noContent().build();
     }
     
+    @Secured(value = { "ROLE_ADMIN", "ROLE_USER" })
     @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Retrieve the registered type.", value = "/register/{type}")
     @ApiResponses(value = { 
@@ -182,6 +186,7 @@ public class ClassRegistryController {
         return ResponseEntity.ok(payload.toString());
     }
     
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/{type}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "PUT", notes = "Unlink JSON Schema from type.", value = "/register/{type}")
     @ApiResponses(value = { 
@@ -197,6 +202,7 @@ public class ClassRegistryController {
         return unlinkSchema(type);
     }
     
+    @Secured(value = { "ROLE_ADMIN", "ROLE_USER" })
     @RequestMapping(value="", produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "All registered types.", value = "/register?showAll")
     @ApiResponses(value = { 
