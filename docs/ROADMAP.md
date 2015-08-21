@@ -18,6 +18,7 @@ This project will remain humble in its design and has no aspirations to match th
 ## 0.0.2
 
 - [x] Spring Boot [Admin](https://github.com/codecentric/spring-boot-admin#spring-boot-admin) available
+- [x] Upgrade to HikariCP for connection pooling
 - [x] Introduce OAuth2 security
 - [x] Enable HTTPS 
 - [x] Define roles to limit access to administrators for registering new types and queries
