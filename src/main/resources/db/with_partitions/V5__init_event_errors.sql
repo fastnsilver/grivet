@@ -1,12 +1,12 @@
 -- Table for storing any errors reported by the MySQL Events (see v4__init_events.sql)
-CREATE TABLE `EventErrors` (
+CREATE TABLE `event_errors` (
   `id` MEDIUMINT NOT NULL AUTO_INCREMENT,
-  `errorDate` DATETIME NOT NULL,
-  `sqlState` VARCHAR(256) NOT NULL,
-  `errorMessage` VARCHAR(256) NOT NULL,
-  `errorNo` VARCHAR(25) NOT NULL,
-  `schemaName` VARCHAR(256) NULL,
-  `tableName` VARCHAR(256) NULL,
-  `eventName` VARCHAR(256) NOT NULL,
-  PRIMARY KEY (`id`, `errorDate`)
+  `error_date` DATETIME NOT NULL,
+  `sql_state` VARCHAR(256) NOT NULL,
+  `error_message` VARCHAR(256) NOT NULL,
+  `error_no` VARCHAR(25) NOT NULL,
+  `schema_name` VARCHAR(256) NULL,
+  `table_name` VARCHAR(256) NULL,
+  `event_name` VARCHAR(256) NOT NULL,
+  PRIMARY KEY (`id`, `error_date`)
 ) ${createTableSuffix};
