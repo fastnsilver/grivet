@@ -33,6 +33,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Role implements GrantedAuthority {
 
+    /** 
+     * Version number used during deserialization to verify that the sender and receiver 
+     * of this serialized object have loaded classes for this object that 
+     * are compatible with respect to serialization. 
+     */
     private static final long serialVersionUID = 1L;
 
     @Id

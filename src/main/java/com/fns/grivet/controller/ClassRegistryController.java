@@ -169,7 +169,7 @@ public class ClassRegistryController {
         return ResponseEntity.noContent().build();
     }
     
-    @Secured(value = { "ROLE_ADMIN", "ROLE_USER" })
+    @Secured(value = { "ROLE_ADMIN", "ROLE_USER", "ROLE_READONLY" })
     @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Retrieve the registered type.", value = "/register/{type}")
     @ApiResponses(value = { 
@@ -202,7 +202,7 @@ public class ClassRegistryController {
         return unlinkSchema(type);
     }
     
-    @Secured(value = { "ROLE_ADMIN", "ROLE_USER" })
+    @Secured(value = { "ROLE_ADMIN", "ROLE_USER", "ROLE_READONLY" })
     @RequestMapping(value="", produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "All registered types.", value = "/register?showAll")
     @ApiResponses(value = { 

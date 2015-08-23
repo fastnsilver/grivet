@@ -57,7 +57,6 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("/store")
 @Api(value = "store", produces = "application/json")
-@Secured(value = { "ROLE_ADMIN", "ROLE_USER" })
 public class EntityController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -75,6 +74,7 @@ public class EntityController {
         this.metricRegistry = metricRegistry;
     }
 
+    @Secured(value = { "ROLE_ADMIN", "ROLE_USER" })
     @RequestMapping(value="/{type}", method=RequestMethod.POST, 
             consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Store one or more type.", value = "/store/{type}")
@@ -132,6 +132,7 @@ public class EntityController {
         return new ResponseEntity<>(headers, status);
     }
     
+    @Secured(value = { "ROLE_ADMIN", "ROLE_USER", "ROLE_READONLY" })
     @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Retrieve type matching criteria.", value = "/store/{type}")
     @ApiResponses(value = { 

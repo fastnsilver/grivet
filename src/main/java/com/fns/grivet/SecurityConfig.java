@@ -18,6 +18,7 @@ package com.fns.grivet;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -79,6 +80,13 @@ public class SecurityConfig {
     protected static class OAuth2Config extends
             AuthorizationServerConfigurerAdapter {
 
+        @Value("${oauth2.resource-id:oauth2-resource}")
+        private String resourceId;
+        
+        @Value("${oauth2.token-validity:60}")
+        private int tokenValidity;
+        
+        
         @Autowired
         private AuthenticationManager auth;
 
@@ -113,26 +121,26 @@ public class SecurityConfig {
             // @formatter:off
             clients.jdbc(dataSource)
                 .passwordEncoder(passwordEncoder)
-                .withClient("my-trusted-client")
-                    .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
-                    .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
+                .withClient("admin-client")
+                    .authorizedGrantTypes("password", "refresh_token")
+                    .authorities("ADMIN", "USER")
                     .scopes("read", "write", "trust")
-                    .resourceIds("oauth2-resource")
-                    .accessTokenValiditySeconds(60)
+                    .resourceIds(resourceId)
+                    .accessTokenValiditySeconds(tokenValidity)
             .and()
-                .withClient("my-client-with-registered-redirect")
-                    .authorizedGrantTypes("authorization_code")
-                    .authorities("ROLE_CLIENT")
-                    .scopes("read", "trust")
-                    .resourceIds("oauth2-resource")
-                    .redirectUris("http://anywhere?key=value")
+                .withClient("user-client")
+                    .authorizedGrantTypes("password", "refresh_token")
+                    .authorities("USER")
+                    .scopes("read", "write")
+                    .resourceIds(resourceId)
+                    .accessTokenValiditySeconds(tokenValidity)
             .and()
-                .withClient("my-client-with-secret")
-                    .authorizedGrantTypes("client_credentials", "password")
-                    .authorities("ROLE_CLIENT")
+                .withClient("readonly-client")
+                    .authorizedGrantTypes("password", "refresh_token")
+                    .authorities("READONLY")
                     .scopes("read")
-                    .resourceIds("oauth2-resource")
-                    .secret("secret");
+                    .resourceIds(resourceId)
+                    .accessTokenValiditySeconds(tokenValidity);
             // @formatter:on
         }
 

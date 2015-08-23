@@ -91,7 +91,8 @@ public class JdbcEntityRepository implements EntityRepository {
         SqlRowSet rowSet = jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), values.toArray(new Object[values.size()]));
         return mapRows(rowSet);
     }
-        
+     
+    // FIXME figure out how to get other {@code Audited} info in here!
     private List<EntityAttributeValue> mapRows(SqlRowSet rowSet) {
         List<EntityAttributeValue> result = new ArrayList<>();
         EntityAttributeValue eav = null;

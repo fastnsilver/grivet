@@ -15,9 +15,6 @@
  */
 package com.fns.grivet.model;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +31,7 @@ import javax.validation.constraints.Size;
  * @author Chris Phillipson
  */
 @Entity
-public class Class implements Serializable {
+public class Class extends Audited {
 
     /** 
      * Version number used during deserialization to verify that the sender and receiver 
@@ -56,15 +53,7 @@ public class Class implements Serializable {
     /** The description of the attribute. Optional, but must be less than equal to 1000 characters. */
     @Column
     private String description;
-    
-    /** The time this {@code Class} was created. */
-    @Column(nullable=false)
-    private LocalDateTime createdTime;
-    
-    /** The time this class was updated. */
-    @Column(nullable=false)
-    private LocalDateTime updatedTime;
-    
+        
     /** Whether or not an object (JSON payload) should be validated before being persisted.  Default is false. */
     @Column
     private boolean validatable;
@@ -77,7 +66,7 @@ public class Class implements Serializable {
      * For internal use only! Instantiates a new class.
      */
     protected Class() {
-        // no-args constructor required by JPA spec
+        super();
     }
     
     /**
@@ -89,10 +78,9 @@ public class Class implements Serializable {
      *            the description
      */
     public Class(String name, String description) {
+        super();
         this.name = name;
         this.description = description;
-        this.updatedTime = LocalDateTime.now();
-        this.createdTime = updatedTime;
     }
     
     /**
@@ -169,33 +157,4 @@ public class Class implements Serializable {
         this.jsonSchema = jsonSchema;
     }
     
-    /**
-     * Gets the updated time.
-     *
-     * @return the updated time; a date-time without a time-zone in the ISO-8601 calendar system
-     */
-    public LocalDateTime getUpdatedTime() {
-        return updatedTime;
-    }
-
-    /**
-     * Sets the updated time.
-     *
-     * @param updatedTime
-     *            the new time this class was updated; 
-     *            a date-time without a time-zone in the ISO-8601 calendar system
-     */
-    public void setUpdatedTime(LocalDateTime updatedTime) {
-        this.updatedTime = updatedTime;
-    }
-
-    /**
-     * Gets the created time.
-     *
-     * @return the created time; 
-     *         a date-time without a time-zone in the ISO-8601 calendar system
-     */
-    public LocalDateTime getCreatedTime() {
-        return createdTime;
-    }
 }

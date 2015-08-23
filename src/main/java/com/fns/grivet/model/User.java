@@ -15,6 +15,7 @@
  */
 package com.fns.grivet.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,13 +28,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class User {
+@Table(name="users")
+public class User implements Serializable {
+
+    /** 
+     * Version number used during deserialization to verify that the sender and receiver 
+     * of this serialized object have loaded classes for this object that 
+     * are compatible with respect to serialization. 
+     */
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,10 +54,12 @@ public class User {
     private String name;
 
     @NotEmpty
+    @Size(min=4, max=75)
     @Column(unique = true, nullable = false)
     private String login;
 
     @NotEmpty
+    @Size(min=4, max=75)
     private String password;
 
     @JsonIgnore
@@ -54,11 +67,13 @@ public class User {
     @JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> roles = new HashSet<Role>();
 
-    public User() {
+    /**
+     * For internal use only! Instantiates a new user.
+     */
+    protected User() {
     }
 
     public User(User user) {
-        super();
         this.id = user.getId();
         this.name = user.getName();
         this.login = user.getLogin();

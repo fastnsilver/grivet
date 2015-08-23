@@ -15,10 +15,6 @@
  */
 package com.fns.grivet.model;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -32,7 +28,7 @@ import javax.persistence.IdClass;
  */
 @Entity
 @IdClass(ClassAttributePK.class)
-public class ClassAttribute implements Serializable {
+public class ClassAttribute extends Audited {
 
     /** 
      * Version number used during deserialization to verify that the sender and receiver 
@@ -54,19 +50,15 @@ public class ClassAttribute implements Serializable {
     @Id
     private Integer tid;
     
-    /** The time this {@code ClassAttribute} was created */
-    @Column(nullable=false)
-    private LocalDateTime createdTime;
-
     protected ClassAttribute() {
-        // no-args constructor required by JPA spec
+        super();
     }
     
     public ClassAttribute(Integer cid, Integer aid, Integer tid) {
+        super();
         this.cid = cid;
         this.aid = aid;
         this.tid = tid;
-        this.createdTime = LocalDateTime.now();
     }
 
     public Integer getCid() {
@@ -78,10 +70,6 @@ public class ClassAttribute implements Serializable {
     }
     public Integer getTid() {
         return tid;
-    }
-
-    public LocalDateTime getCreatedTime() {
-        return createdTime;
     }
 
 }
