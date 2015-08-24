@@ -179,6 +179,8 @@ public class ClassRegistryService {
         c.setValidatable(false);
         c.setJsonSchema(null);
         c.setUpdatedTime(LocalDateTime.now());
+        User user = securityFacade != null ? securityFacade.getCurrentUser(): null;
+        c.setUpdater(user);
         classRepository.save(c);
         return c;
     }
