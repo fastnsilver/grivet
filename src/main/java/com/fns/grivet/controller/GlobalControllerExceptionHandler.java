@@ -36,13 +36,19 @@ class GlobalControllerExceptionHandler {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     
-    @ExceptionHandler({ IOException.class, IllegalArgumentException.class, DataAccessException.class, DateTimeParseException.class, NumberFormatException.class, JSONException.class, SQLException.class, SchemaValidationException.class })
+    @ExceptionHandler({ 
+        IOException.class, IllegalArgumentException.class, DataAccessException.class, 
+        DateTimeParseException.class, NumberFormatException.class, JSONException.class, 
+        SQLException.class, SchemaValidationException.class 
+    })
     protected ResponseEntity<?> badRequest(Exception e, HttpServletRequest hsr) {
         String queryString = hsr.getQueryString();
         if (queryString != null && !queryString.isEmpty()) {
-            log.error(String.format("Request\n-- Method: %s\n-- URI: %s\n-- Query string: %s\n-- Error: %s", hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(), e.getMessage()));
+            log.error(String.format("Request\n-- Method: %s\n-- URI: %s\n-- Query string: %s\n-- Error: %s", 
+                    hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(), e.getMessage()));
         } else {
-            log.error(String.format("Request\n-- Method: %s\n-- Request URI: %s\n-- Error: %s", hsr.getMethod(), hsr.getRequestURI(), e.getMessage()));
+            log.error(String.format("Request\n-- Method: %s\n-- Request URI: %s\n-- Error: %s", 
+                    hsr.getMethod(), hsr.getRequestURI(), e.getMessage()));
         }
         return ResponseEntity.badRequest().body(String.format("Error: %s", e.getMessage()));
     }

@@ -13,17 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fns.grivet.repo;
+package com.fns.grivet.service;
 
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 import com.fns.grivet.model.User;
 
 @Profile("oauth2")
-@Repository
-public interface UserRepository extends CrudRepository<User, Long> {
+@Component
+public class SecurityFacade {
 
-    User findByLogin(String login);
+    public User getCurrentUser() {
+        User result = null;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && !(auth instanceof AnonymousAuthenticationToken)) {
+           result = (User) auth.getPrincipal(); 
+        }
+        return result;
+    }
 }

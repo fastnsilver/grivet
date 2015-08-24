@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015 - Chris Phillipson
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.fns.grivet.service;
 
 import java.time.LocalDateTime;
@@ -17,6 +32,7 @@ import org.springframework.util.Assert;
 import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.ClassAttribute;
+import com.fns.grivet.model.User;
 import com.fns.grivet.repo.AttributeRepository;
 import com.fns.grivet.repo.AttributeTypeRepository;
 import com.fns.grivet.repo.ClassAttributeRepository;
@@ -36,6 +52,9 @@ public class ClassRegistryService {
     private final AttributeTypeRepository attributeTypeRepository;
     private final ClassRepository classRepository;
     private final ClassAttributeRepository classAttributeRepository;
+    
+    @Autowired(required=false)
+    private SecurityFacade securityFacade;
     
     @Autowired
     public ClassRegistryService(AttributeRepository attributeRepository,
@@ -61,8 +80,9 @@ public class ClassRegistryService {
         String type = payload.getString(TYPE);
         String description = payload.optString(DESCRIPTION);
         com.fns.grivet.model.Class c = classRepository.findByName(type);
+        User user = securityFacade != null ? securityFacade.getCurrentUser(): null;
         if (c == null) {
-            c = classRepository.save(new com.fns.grivet.model.Class(type, description));
+            c = classRepository.save(new com.fns.grivet.model.Class(type, description, user));
             JSONObject attributes = payload.getJSONObject(ATTRIBUTES);
             Set<String> attributeNames = attributes.keySet();
             Assert.notEmpty(attributeNames, String.format("[%s] must declare at least one attribute in registration request!", type));
@@ -73,13 +93,13 @@ public class ClassRegistryService {
             for (String attributeName: attributeNames) {
                 a = attributeRepository.findByName(attributeName);
                 if (a == null) {
-                    a = attributeRepository.save(new Attribute(attributeName));
+                    a = attributeRepository.save(new Attribute(attributeName, user));
                 }
                 at = attributes.getString(attributeName);
                 Assert.notNull(at, String.format("[%s].[%s] must declare an attribute type in registration request!", type, attributeName));
                 attributeType = attributeTypeRepository.findByType(at);
                 Assert.notNull(attributeType, String.format("Attribute type [%s] is not supported!", at));
-                classAttributeRepository.save(new ClassAttribute(c.getId(), a.getId(), attributeType.getId()));
+                classAttributeRepository.save(new ClassAttribute(c.getId(), a.getId(), attributeType.getId(), user));
             }
         } else {
             throw new DuplicateKeyException(String.format("Type [%s] already registered!", type));

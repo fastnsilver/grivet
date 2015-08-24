@@ -21,6 +21,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.fns.grivet.query.NamedQuery;
+
 /**
  * An {@code Attribute} participates in the definition of a property in a {@link ClassAttribute}.
  * One or more {@code ClassAttribute} may share an {@code Attribute}.
@@ -63,9 +69,12 @@ public class Attribute extends Audited {
      *
      * @param name
      *            the name
+     * 
+     * @param user
+     *            the currently authenticated principal
      */
-    public Attribute(String name) {
-        super();
+    public Attribute(String name, User user) {
+        super(user);
         this.name = name;
     }
 
@@ -103,6 +112,29 @@ public class Attribute extends Audited {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().appendSuper(super.hashCode()).append(id).append(name).append(description).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if ((other instanceof NamedQuery) == false) {
+            return false;
+        }
+        Attribute rhs = ((Attribute) other);
+        return new EqualsBuilder().appendSuper(true).append(id, rhs.id).append(name, rhs.name)
+                .append(description, rhs.description).isEquals();
     }
 
 }

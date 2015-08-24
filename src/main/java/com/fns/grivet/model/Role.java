@@ -25,10 +25,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fns.grivet.query.NamedQuery;
 
 @Entity
 public class Role implements GrantedAuthority {
@@ -78,6 +82,29 @@ public class Role implements GrantedAuthority {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+    
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id).append(name).append(users).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if ((other instanceof NamedQuery) == false) {
+            return false;
+        }
+        Role rhs = ((Role) other);
+        return new EqualsBuilder().append(id, rhs.id).append(name, rhs.name)
+                .append(users, rhs.users).isEquals();
     }
 
 }
