@@ -96,7 +96,7 @@ public class NamedQueryController {
         return result;
     }
     
-    @Secured(value = { "ROLE_ADMIN", "ROLE_USER", "ROLE_READONLY" })
+    @Secured(value = { "ROLE_ADMIN", "ROLE_USER" })
     @RequestMapping(value="/{name}", produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Execute a Named Query.", value = "/query/{name}")
     @ApiResponses(value = { 
@@ -112,7 +112,7 @@ public class NamedQueryController {
         return ResponseEntity.ok(namedQueryService.get(name, parameters));
     }
     
-    @Secured(value = { "ROLE_ADMIN", "ROLE_USER", "ROLE_READONLY" })
+    @Secured(value = { "ROLE_ADMIN", "ROLE_USER" })
     @RequestMapping(value="", produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Available Named Queries.", value = "/query?showAll")
     @ApiResponses(value = { 

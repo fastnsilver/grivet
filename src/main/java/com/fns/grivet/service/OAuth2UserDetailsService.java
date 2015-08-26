@@ -30,12 +30,12 @@ import com.fns.grivet.repo.UserRepository;
 
 @Profile("oauth2")
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class OAuth2UserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public CustomUserDetailsService(UserRepository userRepository) {
+    public OAuth2UserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -45,14 +45,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User %s does not exist!", username));
         }
-        return new UserRepositoryUserDetails(user);
+        return new OAuth2User(user);
     }
 
-    private final static class UserRepositoryUserDetails extends User implements UserDetails {
+    private final static class OAuth2User extends User implements UserDetails {
 
         private static final long serialVersionUID = 1L;
 
-        private UserRepositoryUserDetails(User user) {
+        private OAuth2User(User user) {
             super(user);
         }
 

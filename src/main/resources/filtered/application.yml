@@ -21,13 +21,14 @@ flyway:
     preamble:
     varcharQualifier: 
     createTableSuffix:
+    longVarBinary:
     
 ---
 
 spring:
   profiles: hsqldb
   datasource:
-    url: jdbc:hsqldb:mem:globaldb
+    url: jdbc:hsqldb:mem:grivetdb
     driver-class-name: org.hsqldb.jdbcDriver
     data-source-class-name: org.hsqldb.jdbc.JDBCDataSource
     username: sa
@@ -44,13 +45,14 @@ flyway:
     dateTimeFormatFn: TO_CHAR(val, 'YYYY-MM-DD"T"HH24:MI:SS')
     textColumnType: VARCHAR(4000)
     longTextColumnType: VARCHAR(8000)
+    longVarBinary: LONGVARBINARY
     
 ---
 
 spring:
   profiles: h2
   datasource:
-    url: jdbc:h2:mem:globaldb;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    url: jdbc:h2:mem:grivetdb;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
     driver-class-name: org.h2.Driver
     data-source-class-name: org.h2.jdbcx.JdbcDataSource
     username: sa
@@ -63,21 +65,24 @@ flyway:
     dateTimeFormatFn: CONCAT(FORMATDATETIME(val, 'yyyy-MM-dd'), 'T', FORMATDATETIME(val, 'HH:mm:ss'))
     textColumnType: TEXT
     longTextColumnType: LONGTEXT
+    longVarBinary: LONGBLOB
     
 ---
 
 spring:
-  profiles: mysql 
-  profiles.include: oauth2,https
+  profiles: mysql
+  profiles.include: oauth2
+  #profiles.include: https
+  #profiles.include: oauth2,https
   datasource:
-    url: jdbc:mysql://localhost:3306/globaldb
+    url: jdbc:mysql://localhost:3306/grivetdb
     driver-class-name: com.mysql.jdbc.Driver
     data-source-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
     username: root
     password: jackal#3
 
 flyway:
-  locations: classpath:db/with_partitions, classpath:db/users
+  locations: classpath:db/with_partitions, classpath:db/users, classpath:db/oauth2
   placeholders:
     preamble: |
       /*!40101 SET character_set_client = utf8 */;
@@ -87,6 +92,7 @@ flyway:
     dateTimeFormatFn: DATE_FORMAT(val, '%Y-%m-%dT%T')
     textColumnType: TEXT
     longTextColumnType: LONGTEXT
+    longVarBinary: LONGBLOB
     varcharQualifier: CHARACTER SET utf8 COLLATE utf8_bin
     createTableSuffix: ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC
 

@@ -21,7 +21,7 @@ DO
       ROLLBACK;
       GET DIAGNOSTICS condition 1
       @p1 = MESSAGE_TEXT,
-      @p2 = RETURNED_SQL_STATE,
+      @p2 = RETURNED_SQLSTATE,
       @p3 = MYSQL_ERRNO,
       @p4 = SCHEMA_NAME,
       @p5 = TABLE_NAME;
@@ -43,7 +43,7 @@ DO
       ROLLBACK;
       GET DIAGNOSTICS condition 1
       @p1 = MESSAGE_TEXT,
-      @p2 = RETURNED_SQL_STATE,
+      @p2 = RETURNED_SQLSTATE,
       @p3 = MYSQL_ERRNO,
       @p4 = SCHEMA_NAME,
       @p5 = TABLE_NAME;
@@ -64,7 +64,7 @@ DO
       ROLLBACK;
       GET DIAGNOSTICS condition 1
       @p1 = MESSAGE_TEXT,
-      @p2 = RETURNED_SQL_STATE,
+      @p2 = RETURNED_SQLSTATE,
       @p3 = MYSQL_ERRNO,
       @p4 = SCHEMA_NAME,
       @p5 = TABLE_NAME;
@@ -85,7 +85,7 @@ DO
       ROLLBACK;
       GET DIAGNOSTICS condition 1
       @p1 = MESSAGE_TEXT,
-      @p2 = RETURNED_SQL_STATE,
+      @p2 = RETURNED_SQLSTATE,
       @p3 = MYSQL_ERRNO,
       @p4 = SCHEMA_NAME,
       @p5 = TABLE_NAME;
@@ -106,7 +106,7 @@ DO
       ROLLBACK;
       GET DIAGNOSTICS condition 1
       @p1 = MESSAGE_TEXT,
-      @p2 = RETURNED_SQL_STATE,
+      @p2 = RETURNED_SQLSTATE,
       @p3 = MYSQL_ERRNO,
       @p4 = SCHEMA_NAME,
       @p5 = TABLE_NAME;
@@ -127,7 +127,7 @@ DO
       ROLLBACK;
       GET DIAGNOSTICS condition 1
       @p1 = MESSAGE_TEXT,
-      @p2 = RETURNED_SQL_STATE,
+      @p2 = RETURNED_SQLSTATE,
       @p3 = MYSQL_ERRNO,
       @p4 = SCHEMA_NAME,
       @p5 = TABLE_NAME;
@@ -148,7 +148,7 @@ DO
       ROLLBACK;
       GET DIAGNOSTICS condition 1
       @p1 = MESSAGE_TEXT,
-      @p2 = RETURNED_SQL_STATE,
+      @p2 = RETURNED_SQLSTATE,
       @p3 = MYSQL_ERRNO,
       @p4 = SCHEMA_NAME,
       @p5 = TABLE_NAME;
@@ -169,7 +169,7 @@ DO
       ROLLBACK;
       GET DIAGNOSTICS condition 1
       @p1 = MESSAGE_TEXT,
-      @p2 = RETURNED_SQL_STATE,
+      @p2 = RETURNED_SQLSTATE,
       @p3 = MYSQL_ERRNO,
       @p4 = SCHEMA_NAME,
       @p5 = TABLE_NAME;

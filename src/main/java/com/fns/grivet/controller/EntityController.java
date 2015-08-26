@@ -136,7 +136,7 @@ public class EntityController {
         return new ResponseEntity<>(headers, status);
     }
     
-    @Secured(value = { "ROLE_ADMIN", "ROLE_USER", "ROLE_READONLY" })
+    @Secured(value = { "ROLE_ADMIN", "ROLE_USER" })
     @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Retrieve type matching criteria.", value = "/store/{type}")
     @ApiResponses(value = { 
