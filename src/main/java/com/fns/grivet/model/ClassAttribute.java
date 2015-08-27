@@ -19,12 +19,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.fns.grivet.query.NamedQuery;
-
 /**
  * A {@code ClassAttribute} expresses a three-way relationship between a
  * {@link Class#id}, an {@link Attribute#id} and an {@link AttributeType#id}. A
@@ -78,27 +72,4 @@ public class ClassAttribute extends Audited {
         return tid;
     }
     
-    @Override
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this);
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().appendSuper(super.hashCode()).append(cid).append(aid).append(tid).toHashCode();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if ((other instanceof NamedQuery) == false) {
-            return false;
-        }
-        ClassAttribute rhs = ((ClassAttribute) other);
-        return new EqualsBuilder().appendSuper(true).append(cid, rhs.cid).append(aid, rhs.aid)
-                .append(tid, rhs.tid).isEquals();
-    }
-
 }

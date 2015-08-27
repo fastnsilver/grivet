@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fns.grivet.config;
+package com.fns.grivet.security.oauth2;
 
 import javax.sql.DataSource;
 
@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -55,8 +56,7 @@ import org.springframework.security.oauth2.provider.request.DefaultOAuth2Request
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
-import com.fns.grivet.controller.oauth2.GrivetUserApprovalHandler;
-import com.fns.grivet.service.OAuth2UserDetailsService;
+import com.fns.grivet.service.CustomUserDetailsService;
 
 @Profile("oauth2")
 @Configuration
@@ -87,12 +87,11 @@ public class SecurityConfig {
             .and()
                 .requestMatchers().antMatchers("/oauth/users/**", "/oauth/clients/**")
             .and()
-                .authorizeRequests().antMatchers("/login").permitAll()
-            .and()
             // default protection for all resources (including /oauth/authorize)
                 .authorizeRequests()
+                    .antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
                     .anyRequest().hasRole("USER");
-            // ... more configuration, e.g. for form login
+            // ... more configuration
         }
 
     }
@@ -113,7 +112,7 @@ public class SecurityConfig {
         private int refreshTokenValiditySeconds;
         
         @Autowired
-        private OAuth2UserDetailsService userDetailsService;
+        private CustomUserDetailsService userDetailsService;
         
         @Autowired
         @Qualifier("authenticationManagerBean")
@@ -159,17 +158,9 @@ public class SecurityConfig {
             clients.jdbc(dataSource)
                 .passwordEncoder(passwordEncoder)
                 .withClient("admin-client")
-                    .authorizedGrantTypes("password", "refresh_token")
+                    .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
                     .authorities("ROLE_ADMIN", "ROLE_USER")
                     .scopes("read", "write", "trust")
-                    .resourceIds(resourceId)
-                    .accessTokenValiditySeconds(accessTokenValiditySeconds)
-                    .refreshTokenValiditySeconds(refreshTokenValiditySeconds)
-            .and()
-                .withClient("user-client")
-                    .authorizedGrantTypes("password", "refresh_token")
-                    .authorities("ROLE_USER")
-                    .scopes("read", "write")
                     .resourceIds(resourceId)
                     .accessTokenValiditySeconds(accessTokenValiditySeconds)
                     .refreshTokenValiditySeconds(refreshTokenValiditySeconds);
@@ -228,7 +219,7 @@ public class SecurityConfig {
     
     @Profile("oauth2")
     @Configuration
-    @EnableGlobalMethodSecurity(securedEnabled = true, proxyTargetClass = true)
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
     protected static class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
         
         @Override

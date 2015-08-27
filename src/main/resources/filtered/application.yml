@@ -71,7 +71,8 @@ flyway:
 
 spring:
   profiles: mysql
-  profiles.include: oauth2
+  profiles.include: basic
+  #profiles.include: oauth2
   #profiles.include: https
   #profiles.include: oauth2,https
   datasource:
@@ -95,6 +96,13 @@ flyway:
     longVarBinary: LONGBLOB
     varcharQualifier: CHARACTER SET utf8 COLLATE utf8_bin
     createTableSuffix: ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC
+
+---
+
+spring:
+  profiles: basic
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration
 
 ---
 

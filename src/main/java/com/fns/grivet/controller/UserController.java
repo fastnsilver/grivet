@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fns.grivet.controller.oauth2;
+package com.fns.grivet.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fns.grivet.model.User;
 import com.fns.grivet.repo.UserRepository;
 
-@Profile("oauth2")
 @RestController
 public class UserController {
 
@@ -34,6 +33,7 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
     @RequestMapping("/users")
     public Iterable<User> getUsers() {
         return userRepository.findAll();

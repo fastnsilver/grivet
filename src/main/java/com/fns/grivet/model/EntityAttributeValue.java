@@ -20,12 +20,6 @@ import java.time.LocalDateTime;
 
 import javax.annotation.concurrent.Immutable;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.fns.grivet.query.NamedQuery;
-
 
 /**
  * An {@code EntityAttributeValue} is the reification of a {@code ClassAttribute} plus a value.
@@ -91,28 +85,4 @@ public class EntityAttributeValue implements Serializable {
         return createdBy;
     }
     
-    @Override
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this);
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id).append(attributeId).append(attributeName)
-                .append(attributeValue).append(createdTime).append(createdBy).toHashCode();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if ((other instanceof NamedQuery) == false) {
-            return false;
-        }
-        EntityAttributeValue rhs = ((EntityAttributeValue) other);
-        return new EqualsBuilder().append(id, rhs.id).append(attributeId, rhs.attributeId).append(attributeName, rhs.attributeName)
-                .append(attributeValue, rhs.attributeValue).append(createdTime, rhs.createdTime).append(createdBy, rhs.createdBy).isEquals();
-    }
-
 }

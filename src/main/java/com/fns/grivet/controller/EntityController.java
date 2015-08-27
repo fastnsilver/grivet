@@ -32,7 +32,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,9 +78,9 @@ public class EntityController {
         this.metricRegistry = metricRegistry;
     }
 
-    @Secured(value = { "ROLE_ADMIN", "ROLE_USER" })
-    @RequestMapping(value="/{type}", method=RequestMethod.POST, 
-            consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @RequestMapping(value = "/{type}", method = RequestMethod.POST, 
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Store one or more type.", value = "/store/{type}")
     @ApiResponses(value = { 
             @ApiResponse(code = 204, message = "Successfully store type(s)."),
@@ -136,15 +136,15 @@ public class EntityController {
         return new ResponseEntity<>(headers, status);
     }
     
-    @Secured(value = { "ROLE_ADMIN", "ROLE_USER" })
-    @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @RequestMapping(value = "/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Retrieve type matching criteria.", value = "/store/{type}")
     @ApiResponses(value = { 
             @ApiResponse(code = 200, message = "Successfully retrieve type matching criteria."),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 500, message = "Internal server error.")
             })
-    public ResponseEntity<?> get(@PathVariable("type") String type, @RequestParam(value="createdTimeStart", required=false) String createdTimeStart, @RequestParam(value="createdTimeEnd", required=false) String createdTimeEnd, HttpServletRequest request) throws JsonProcessingException {
+    public ResponseEntity<?> get(@PathVariable("type") String type, @RequestParam(value = "createdTimeStart", required=false) String createdTimeStart, @RequestParam(value = "createdTimeEnd", required=false) String createdTimeEnd, HttpServletRequest request) throws JsonProcessingException {
         LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);
         LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);
         Assert.isTrue(ChronoUnit.SECONDS.between(start, end) >= 0, "Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");

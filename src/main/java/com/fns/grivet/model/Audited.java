@@ -20,11 +20,6 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.fns.grivet.query.NamedQuery;
-
 @MappedSuperclass
 public abstract class Audited implements Auditable<Integer>{
 
@@ -121,23 +116,6 @@ public abstract class Audited implements Auditable<Integer>{
     @Override
     public void setUpdatedTime(LocalDateTime updatedTime) {
         this.updatedTime = updatedTime;
-    }
-    
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(createdBy).append(createdTime).append(updatedBy).append(updatedTime).toHashCode();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if ((other instanceof NamedQuery) == false) {
-            return false;
-        }
-        Audited rhs = ((Audited) other);
-        return new EqualsBuilder().append(createdBy, rhs.createdBy).append(createdTime, rhs.createdTime).append(updatedBy, rhs.updatedBy).append(updatedTime, rhs.updatedTime).isEquals();
     }
     
 }

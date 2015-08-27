@@ -21,12 +21,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.fns.grivet.query.NamedQuery;
-
 /**
  * A {@code Class} is akin to an abstract base {@link java.lang.Class} 
  * but is constrained to the definition of member variables. A {@code Class} 
@@ -162,29 +156,6 @@ public class Class extends Audited {
      */
     public void setJsonSchema(String jsonSchema) {
         this.jsonSchema = jsonSchema;
-    }
-    
-    @Override
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this);
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().appendSuper(super.hashCode()).append(id).append(name).append(description).append(validatable).append(jsonSchema).toHashCode();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if ((other instanceof NamedQuery) == false) {
-            return false;
-        }
-        Class rhs = ((Class) other);
-        return new EqualsBuilder().appendSuper(true).append(id, rhs.id).append(name, rhs.name)
-                .append(description, rhs.description).append(validatable, rhs.validatable).append(jsonSchema, rhs.jsonSchema).isEquals();
     }
     
 }

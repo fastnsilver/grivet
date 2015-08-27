@@ -18,7 +18,6 @@ package com.fns.grivet.service;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,14 +27,13 @@ import org.springframework.stereotype.Service;
 import com.fns.grivet.model.User;
 import com.fns.grivet.repo.UserRepository;
 
-@Profile("oauth2")
 @Service
-public class OAuth2UserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public OAuth2UserDetailsService(UserRepository userRepository) {
+    public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -45,14 +43,14 @@ public class OAuth2UserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User %s does not exist!", username));
         }
-        return new OAuth2User(user);
+        return new GrivetUser(user);
     }
 
-    private final static class OAuth2User extends User implements UserDetails {
+    private final static class GrivetUser extends User implements UserDetails {
 
         private static final long serialVersionUID = 1L;
 
-        private OAuth2User(User user) {
+        private GrivetUser(User user) {
             super(user);
         }
 

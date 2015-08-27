@@ -31,13 +31,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fns.grivet.query.NamedQuery;
 
 @Entity
 @Table(name="users")
@@ -125,27 +121,4 @@ public class User implements Serializable {
         this.roles = roles;
     }
     
-    @Override
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this);
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id).append(name).append(login).append(password)
-                .append(roles).toHashCode();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if ((other instanceof NamedQuery) == false) {
-            return false;
-        }
-        User rhs = ((User) other);
-        return new EqualsBuilder().append(id, rhs.id).append(name, rhs.name).append(login, rhs.login)
-                .append(password, rhs.password).append(roles, rhs.roles).isEquals();
-    }
 }
