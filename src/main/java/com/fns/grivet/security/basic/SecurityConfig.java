@@ -18,9 +18,11 @@ package com.fns.grivet.security.basic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,39 +40,21 @@ import com.fns.grivet.service.CustomUserDetailsService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
-    
-    /**
-     * This section defines the user accounts which can be used for authentication as well as the roles each user has.
-     * 
-     * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)
-     */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .userDetailsService(userDetailsService)
-            .passwordEncoder(new BCryptPasswordEncoder());
+    @Profile("basic")
+    @Configuration
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    protected static class AuthenticationSecurity extends GlobalAuthenticationConfigurerAdapter {
+        
+        @Autowired
+        private CustomUserDetailsService userDetailsService;
+        
+        @Override
+        public void init(AuthenticationManagerBuilder auth) throws Exception {
+            auth
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(new BCryptPasswordEncoder());
+        }
+        
     }
-    
-    /**
-     * This section defines the security policy for this app.
-     * <p>
-     * <ul>
-     * <li>BASIC authentication is supported (enough for this REST-based demo).</li>
-     * <li>CSRF headers are disabled since we are only testing the REST interface, not a web one.</li>
-     * </ul>
-     *
-     * @param http
-     * @throws Exception
-     * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
-     */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-        http
-            .httpBasic()
-            .and()
-                .csrf().disable();
-    }
+        
 }
