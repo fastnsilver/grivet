@@ -44,16 +44,14 @@
     
     <build>
         <plugins>
-            <!--
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
                 <configuration>
-                    <dotGitDirectory>${session.executionRootDirectory} /.git</dotGitDirectory>
+                    <dotGitDirectory>${session.executionRootDirectory}/.git</dotGitDirectory>
                     <dateFormat>yyyyMMdd-HHmmss</dateFormat>
                 </configuration>
             </plugin>
-            -->
 
             <plugin>
                 <groupId>org.springframework.boot</groupId>

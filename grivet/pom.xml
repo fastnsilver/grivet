@@ -125,7 +125,6 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
 		</dependency>
 		
 		<!-- Metrics -->
@@ -287,16 +286,14 @@
         </pluginManagement>
         
         <plugins>
-            <!--
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
                 <configuration>
-                    <dotGitDirectory>${session.executionRootDirectory} /.git</dotGitDirectory>
+                    <dotGitDirectory>${session.executionRootDirectory}/.git</dotGitDirectory>
                     <dateFormat>yyyyMMdd-HHmmss</dateFormat>
                 </configuration>
             </plugin>
-            -->
             
             <!-- Build test-jar artifact so that we can share test resources and implementation if required -->
             <plugin>

@@ -10,7 +10,6 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>com.fns</groupId>
 	<artifactId>grivet-gatling-tests</artifactId>
 	<packaging>jar</packaging>
 
