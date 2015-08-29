@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.fns</groupId>
+		<artifactId>grivet-parent</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+		<relativePath>../parent-pom/pom.xml</relativePath>
+	</parent>
+	
+	<artifactId>grivet</artifactId>
+	<packaging>jar</packaging>
+
+	<name>Grivet</name>
+	<description>A micro-service capable of self-service modeling and persistence.</description>
+	<inceptionYear>2015</inceptionYear>
+	<url>https://github.com/fastnsilver/grivet</url>
+    
+    
+	<properties>
+		<!-- Third-party library versions -->
+		<commons-lang3.version>3.4</commons-lang3.version>
+		<guava.version>18.0</guava.version>
+		<hikaricp.version>2.4.0</hikaricp.version>
+		<json.version>20141113</json.version>
+		<json-unit.version>1.5.5</json-unit.version>
+		<json-schema-validator.version>2.2.6</json-schema-validator.version>
+		<jsr305.version>3.0.0</jsr305.version>
+		<rest-assured.version>2.5.0</rest-assured.version>
+		<spring-data-releasetrain.version>Gosling-RC1</spring-data-releasetrain.version>
+		<springfox.version>2.1.2</springfox.version>
+		<swagger2markup.version>0.7.1</swagger2markup.version>
+        
+        <!-- Docker -->
+        <grivet.image>fastnsilver/${project.artifactId}:${project.version}</grivet.image>
+        <grivet.port>8080</grivet.port>
+	</properties>
+
+	<dependencies>
+		<!-- JSR-305 -->
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>${jsr305.version}</version>
+		</dependency>
+		
+		<!-- Spring Boot -->
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-integration</artifactId>
+		</dependency>
+		<dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-devtools</artifactId>
+    	</dependency>
+    	<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Connection Pooling -->
+		<dependency>
+  			<groupId>com.zaxxer</groupId>
+  			<artifactId>HikariCP</artifactId>
+		</dependency>
+    	
+    	<!-- JSON -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.fge</groupId>
+			<artifactId>json-schema-validator</artifactId>
+			<version>${json-schema-validator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.javacrumbs.json-unit</groupId>
+			<artifactId>json-unit</artifactId>
+			<version>${json-unit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Apache Commons -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		
+		<!-- Guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+		
+		<!-- Metrics -->
+		<dependency>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-core</artifactId>
+		</dependency>
+		
+		<!-- Flyway -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+		
+		<!-- JDBC Drivers -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- Swagger -->
+        <dependency>
+            <groupId>io.github.robwin</groupId>
+            <artifactId>swagger2markup</artifactId>
+            <version>${swagger2markup.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-staticdocs</artifactId>
+            <version>${springfox.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Rest Assured -->
+        <dependency>
+		      <groupId>com.jayway.restassured</groupId>
+		      <artifactId>rest-assured</artifactId>
+		      <version>${rest-assured.version}</version>
+		      <scope>test</scope>
+		</dependency>
+		<dependency>
+		      <groupId>com.jayway.restassured</groupId>
+		      <artifactId>spring-mock-mvc</artifactId>
+		      <version>${rest-assured.version}</version>
+		      <scope>test</scope>
+		</dependency>
+	</dependencies>
+		
+	<build>
+		<resources>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>filtered/**</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources/filtered</directory>
+            </resource>
+        </resources>
+		<pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
+                    <executions>
+                        <!--
+                            Prepares the property pointing to the JaCoCo runtime agent which
+                            is passed as VM argument when Maven the Surefire plugin is executed.
+                        -->
+                        <execution>
+                            <id>pre-unit-test</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution data. -->
+                                <destFile>${project.build.directory}/jacoco.exec</destFile>
+                                <!--
+                                    Sets the name of the property containing the settings
+                                    for JaCoCo runtime agent.
+                                -->
+                                <propertyName>surefireArgLine</propertyName>
+                            </configuration>
+                        </execution>
+                        <!--
+                            Ensures that the code coverage report for unit tests is created after
+                            unit tests have been run.
+                        -->
+                        <execution>
+                            <id>post-unit-test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution data. -->
+                                <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+                            </configuration>
+                        </execution>
+    
+                        <!-- The Executions required by unit tests are omitted. -->
+                        <!--
+                            Prepares the property pointing to the JaCoCo runtime agent which
+                            is passed as VM argument when Maven the Failsafe plugin is executed.
+                        -->
+                        <execution>
+                            <id>pre-integration-test</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution data. -->
+                                <destFile>${project.build.directory}/jacoco-it.exec</destFile>
+                                <!--
+                                    Sets the name of the property containing the settings
+                                    for JaCoCo runtime agent.
+                                -->
+                                <propertyName>failsafeArgLine</propertyName>
+                            </configuration>
+                        </execution>
+                        <!--
+                            Ensures that the code coverage report for integration tests after
+                            integration tests have been run.
+                        -->
+                        <execution>
+                            <id>post-integration-test</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution data. -->
+                                <dataFile>${project.build.directory}/jacoco-it.exec</dataFile>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        
+        <plugins>
+            <!--
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <configuration>
+                    <dotGitDirectory>${session.executionRootDirectory} /.git</dotGitDirectory>
+                    <dateFormat>yyyyMMdd-HHmmss</dateFormat>
+                </configuration>
+            </plugin>
+            -->
+            
+            <!-- Build test-jar artifact so that we can share test resources and implementation if required -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- Sets the VM argument line used when unit tests are run. -->
+                    <argLine>${surefireArgLine}</argLine>
+                    <!-- Skips unit tests if the value of skip.unit.tests property is true -->
+                    <skipTests>${skip.unit.tests}</skipTests>
+                    <!-- Excludes integration tests when unit tests are run. -->
+                    <excludes>
+                        <exclude>**/IT*.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <!-- Sets the VM argument line used when integration tests are run. -->
+                    <argLine>${failsafeArgLine}</argLine>
+                    <!--
+                        Skips integration tests if the value of skip.integration.tests property
+                        is true
+                    -->
+                    <skipTests>${skip.integration.tests}</skipTests>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+			</plugin>
+			
+			<plugin>
+   				<groupId>org.jolokia</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>${docker-maven-plugin.version}</version>
+				<configuration>
+					<images>
+						<image>
+							<name>${grivet.image}</name>
+							<build>
+								<from>relateiq/oracle-java8</from>
+								<maintainer>fastnsilver@gmail.com</maintainer>
+								<tags>
+									<tag>latest</tag>
+									<tag>${project.version}</tag>
+								</tags>
+								<ports>
+									<port>8080</port>
+								</ports>
+								<entryPoint>
+									<exec>
+						    			<arg>java</arg>
+						      			<arg>-jar</arg>
+						      			<arg>-Djava.security.egd=file:/dev/./urandom</arg>
+						      			<arg>/maven/${project.artifactId}.jar</arg>
+									</exec>
+								</entryPoint>
+                				<assembly>
+                					<mode>dir</mode>
+                  					<descriptor>assembly.xml</descriptor>
+                				</assembly>
+              				</build>
+							<run>
+				                <ports>
+				                  	<!-- Port mappings: Container internal port (which must be exposed) will be
+				                 	dynamically mapped and this (random) port will be assigned to the Maven variable
+				                 	${grivet.port}. Multiple port mappings can be specified here-->
+				                  	<port>grivet.port:8080</port>
+				                </ports>
+				                <wait>
+				                  	<!-- The plugin waits until this URL is reachable via HTTP ... -->
+				                  	<log>Server startup</log>
+				                  	<url>http://${docker.host.address}:${grivet.port}/</url>
+				                  	<time>480000</time>
+				                  	<shutdown>500</shutdown>
+				                </wait>
+				                <log>
+				                  	<enabled>true</enabled>
+				                  	<color>red</color>
+				              	</log>
+			              	</run>
+						</image>
+					</images>
+				</configuration>
+    		</plugin>
+    		<plugin>
+                 <groupId>org.asciidoctor</groupId>
+                 <artifactId>asciidoctor-maven-plugin</artifactId>
+                 <version>${asciidoctor-maven-plugin.version}</version>
+                 <executions>
+                     <execution>
+                         <id>generate-docs</id>
+                         <phase>package</phase>
+                         <goals>
+                             <goal>process-asciidoc</goal>
+                         </goals>
+                         <configuration>
+                             <backend>html</backend>
+                             <attributes>
+                                 <toclevels>2</toclevels>
+                                 <toc>left</toc>
+                                 <doctype>book</doctype>
+                                 <generated>${project.build.directory}/docs/asciidoc/generated</generated>
+                             </attributes>
+                             <outputDirectory>${project.build.directory}/site</outputDirectory>
+                         </configuration>
+                     </execution>
+                 </executions>
+            </plugin>
+		</plugins>
+	</build>
+	
+</project>
