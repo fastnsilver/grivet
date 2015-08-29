@@ -15,33 +15,28 @@
  */
 package com.fns.grivet.model;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 
 /**
- * A {@code ClassAttribute} expresses a three-way relationship between a {@link Class#id}, an
- * {@link Attribute#id} and an {@link AttributeType#id}.  A {@code Class} typically has one or more
- * {@code ClassAttribute}.
+ * A {@code ClassAttribute} expresses a three-way relationship between a
+ * {@link Class#id}, an {@link Attribute#id} and an {@link AttributeType#id}. A
+ * {@code Class} typically has one or more {@code ClassAttribute}.
  * 
  * @author Chris Phillipson
  */
 @Entity
 @IdClass(ClassAttributePK.class)
-public class ClassAttribute implements Serializable {
+public class ClassAttribute extends Audited {
 
-    /** 
-     * Version number used during deserialization to verify that the sender and receiver 
-     * of this serialized object have loaded classes for this object that 
-     * are compatible with respect to serialization. 
+    /**
+     * Version number used during deserialization to verify that the sender and
+     * receiver of this serialized object have loaded classes for this object
+     * that are compatible with respect to serialization.
      */
     private static final long serialVersionUID = 1L;
 
-    
     /** A {@code Class} identifier */
     @Id
     private Integer cid;
@@ -49,39 +44,32 @@ public class ClassAttribute implements Serializable {
     /** A {@code Attribute} identifier */
     @Id
     private Integer aid;
-    
+
     /** A {@code AttributeType} identifier */
     @Id
     private Integer tid;
-    
-    /** The time this {@code ClassAttribute} was created */
-    @Column(nullable=false)
-    private LocalDateTime createdTime;
 
     protected ClassAttribute() {
-        // no-args constructor required by JPA spec
+        super();
     }
-    
-    public ClassAttribute(Integer cid, Integer aid, Integer tid) {
+
+    public ClassAttribute(Integer cid, Integer aid, Integer tid, User user) {
+        super(user);
         this.cid = cid;
         this.aid = aid;
         this.tid = tid;
-        this.createdTime = LocalDateTime.now();
     }
 
     public Integer getCid() {
         return cid;
     }
-    
+
     public Integer getAid() {
         return aid;
     }
+
     public Integer getTid() {
         return tid;
     }
-
-    public LocalDateTime getCreatedTime() {
-        return createdTime;
-    }
-
+    
 }

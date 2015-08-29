@@ -47,12 +47,18 @@ public class EntityAttributeValue implements Serializable {
     /** The time this {@code EntityAttributeValue} was created */
     private final LocalDateTime createdTime;
     
-    public EntityAttributeValue(Long id, Integer attributeId, String attributeName, Object attributeValue, LocalDateTime createdTime) {
+    private Integer createdBy;
+    
+    public EntityAttributeValue(Long id, Integer attributeId, String attributeName, Object attributeValue, 
+            LocalDateTime createdTime, User user) {
         this.id = id;
         this.attributeId = attributeId;
         this.attributeName = attributeName;
         this.attributeValue = attributeValue;
         this.createdTime = createdTime;
+        if (user != null) {
+            this.createdBy = user.getId();
+        }
     }
 
     public Long getId() {
@@ -74,5 +80,9 @@ public class EntityAttributeValue implements Serializable {
     public LocalDateTime getCreatedTime() {
         return createdTime;
     }
-
+    
+    public Integer getCreatedBy() {
+        return createdBy;
+    }
+    
 }

@@ -39,9 +39,11 @@ import org.springframework.util.Assert;
 import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.EntityAttributeValue;
+import com.fns.grivet.model.User;
 import com.fns.grivet.model.ValueHelper;
 import com.fns.grivet.query.DynamicQuery;
 import com.fns.grivet.query.QueryBuilder;
+import com.fns.grivet.service.SecurityFacade;
 import com.google.common.collect.ImmutableMap;
 
 @Repository
@@ -50,6 +52,9 @@ public class JdbcEntityRepository implements EntityRepository {
     private final Logger log = LoggerFactory.getLogger(getClass());
     
     private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired(required=false)
+    private SecurityFacade securityFacade;
     
     @Autowired
     public JdbcEntityRepository(JdbcTemplate jdbcTemplate) {
@@ -91,13 +96,15 @@ public class JdbcEntityRepository implements EntityRepository {
         SqlRowSet rowSet = jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), values.toArray(new Object[values.size()]));
         return mapRows(rowSet);
     }
-        
+     
+    // FIXME figure out how to get other {@code Audited} info in here!
     private List<EntityAttributeValue> mapRows(SqlRowSet rowSet) {
         List<EntityAttributeValue> result = new ArrayList<>();
         EntityAttributeValue eav = null;
         if (rowSet != null) {
+            User user = securityFacade != null ? securityFacade.getCurrentUser(): null;
             while(rowSet.next()) {
-                eav = new EntityAttributeValue((Long) rowSet.getObject("eid"), (Integer) rowSet.getObject("attribute_id"), (String) rowSet.getObject("attribute_name"), rowSet.getObject("attribute_value"), ((Timestamp) rowSet.getObject("created_time")).toLocalDateTime());
+                eav = new EntityAttributeValue((Long) rowSet.getObject("eid"), (Integer) rowSet.getObject("attribute_id"), (String) rowSet.getObject("attribute_name"), rowSet.getObject("attribute_value"), ((Timestamp) rowSet.getObject("created_time")).toLocalDateTime(), user);
                 result.add(eav);
             }
         }

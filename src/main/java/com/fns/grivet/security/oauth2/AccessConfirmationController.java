@@ -1,0 +1,85 @@
+/*
+ * Copyright 2015 - Chris Phillipson
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.fns.grivet.security.oauth2;
+
+import java.security.Principal;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.common.util.OAuth2Utils;
+import org.springframework.security.oauth2.provider.AuthorizationRequest;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.approval.Approval;
+import org.springframework.security.oauth2.provider.approval.Approval.ApprovalStatus;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+/**
+ * Controller for retrieving the model for and displaying the confirmation page for access to a protected resource.
+ * 
+ * @author Chris Phillipson
+ */
+@Profile("oauth2")
+@RestController
+@SessionAttributes("authorizationRequest")
+public class AccessConfirmationController {
+
+    private ClientDetailsService clientDetailsService;
+
+    private ApprovalStore approvalStore;
+
+    @RequestMapping("/oauth/confirm_access")
+    public ResponseEntity<?> getAccessConfirmation(Map<String, Object> model, Principal principal) throws Exception {
+        AuthorizationRequest clientAuth = (AuthorizationRequest) model.remove("authorizationRequest");
+        ClientDetails client = clientDetailsService.loadClientByClientId(clientAuth.getClientId());
+        model.put("auth_request", clientAuth);
+        model.put("client", client);
+        Map<String, String> scopes = new LinkedHashMap<String, String>();
+        for (String scope : clientAuth.getScope()) {
+            scopes.put(OAuth2Utils.SCOPE_PREFIX + scope, "false");
+        }
+        for (Approval approval : approvalStore.getApprovals(principal.getName(), client.getClientId())) {
+            if (clientAuth.getScope().contains(approval.getScope())) {
+                scopes.put(OAuth2Utils.SCOPE_PREFIX + approval.getScope(),
+                        approval.getStatus() == ApprovalStatus.APPROVED ? "true" : "false");
+            }
+        }
+        model.put("scopes", scopes);
+        return ResponseEntity.ok(model);
+    }
+
+    @RequestMapping("/oauth/error")
+    public ResponseEntity<?> handleError(Map<String, Object> model) throws Exception {
+        // We can add more stuff to the model here for JSP rendering. If the client was a machine then
+        // the JSON will already have been rendered.
+        model.put("message", "There was a problem with the OAuth2 protocol");
+        return ResponseEntity.badRequest().body(model);
+    }
+
+    public void setClientDetailsService(ClientDetailsService clientDetailsService) {
+        this.clientDetailsService = clientDetailsService;
+    }
+
+    public void setApprovalStore(ApprovalStore approvalStore) {
+        this.approvalStore = approvalStore;
+    }
+
+}

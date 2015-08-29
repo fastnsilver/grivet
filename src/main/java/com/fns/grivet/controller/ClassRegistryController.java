@@ -26,10 +26,12 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,6 +61,9 @@ public class ClassRegistryController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     
+    @Value("${grivet.register.batch-size:100}")
+    private int batchSize;
+    
     private final ClassRegistryService classRegistryService;
     
     @Autowired
@@ -66,8 +71,9 @@ public class ClassRegistryController {
         this.classRegistryService = classRegistryService;
     }
     
-    @RequestMapping(method=RequestMethod.POST, 
-            consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @RequestMapping(method = RequestMethod.POST, 
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Register one or more types. Optionally link a JSON Schema.", value = "/register/{type}")
     @ApiResponses(value = { 
             @ApiResponse(code = 200, message = "Successfully link JSON Schema to registered type."),
@@ -117,7 +123,7 @@ public class ClassRegistryController {
     
     private ResponseEntity<?> registerMultipleTypes(String json) {
         JSONArray jsonArray = new JSONArray(json);
-        Assert.isTrue(jsonArray.length() <= 100, String.format("The total number of entries in a request must not exceed 100! The number of entries in your registration request was [%d].", jsonArray.length()));
+        Assert.isTrue(jsonArray.length() <= batchSize, String.format("The total number of entries in a request must not exceed %d! The number of entries in your registration request was [%d].", batchSize, jsonArray.length()));
         JSONObject jsonObject = null;
         String type = null;
         HttpHeaders headers = new HttpHeaders();
@@ -151,7 +157,8 @@ public class ClassRegistryController {
         return new ResponseEntity<>(headers, status);
     }
     
-    @RequestMapping(value="/{type}", method=RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/{type}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "DELETE", notes = "Delete the registered type.", value = "/register/{type}")
     @ApiResponses(value = { 
             @ApiResponse(code = 204, message = "Successfully deleted a registered type."),
@@ -166,7 +173,8 @@ public class ClassRegistryController {
         return ResponseEntity.noContent().build();
     }
     
-    @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @RequestMapping(value = "/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Retrieve the registered type.", value = "/register/{type}")
     @ApiResponses(value = { 
             @ApiResponse(code = 200, message = "Successfully retrieved a registered type."),
@@ -182,7 +190,8 @@ public class ClassRegistryController {
         return ResponseEntity.ok(payload.toString());
     }
     
-    @RequestMapping(value="/{type}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/{type}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "PUT", notes = "Unlink JSON Schema from type.", value = "/register/{type}")
     @ApiResponses(value = { 
             @ApiResponse(code = 200, message = "Unlinked JSON Schema from type."),
@@ -197,7 +206,8 @@ public class ClassRegistryController {
         return unlinkSchema(type);
     }
     
-    @RequestMapping(value="", produces=MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "All registered types.", value = "/register?showAll")
     @ApiResponses(value = { 
             @ApiResponse(code = 200, message = "List all registered types."),

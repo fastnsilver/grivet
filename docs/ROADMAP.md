@@ -15,16 +15,19 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Docker container (app w/ H2 back-end)
 - [x] Publish Docker [image](https://hub.docker.com/r/fastnsilver/grivet/) to DockerHub
 
-## 0.0.2
+## 0.1.0
 
+- [ ] Re-org project structure; introduce Spring Cloud and Netflix OSS for cloud-native infrastructure
+- [ ] Docker Compose; launch variant Docker image(s) sharing a single data-store (e.g., MySQL)
 - [x] Spring Boot [Admin](https://github.com/codecentric/spring-boot-admin#spring-boot-admin) available
-- [ ] Introduce OAuth2 security
-- [ ] Define roles to limit access to administrators for registering new types and queries
+- [x] Upgrade to HikariCP for connection pooling
+- [ ] Introduce OAuth2/SSO security
+- [ ] Enable HTTPS 
+- [x] Define roles to limit access to administrators for registering new types and queries
 - [ ] All writes are audited (user is associated with record)
 - [ ] Improve test coverage
-- [ ] Run JMeter tests and publish performance metrics for a) write-intensive and b) read-intensive application
+- [ ] Run Gatling tests and publish performance metrics for a) write-intensive and b) read-intensive application
 
-## 0.0.3
+## 0.2.0
 
 - [ ] Implement Vaadin-based administrative UI
-- [ ] Docker Compose (or Kubernetes enable?); launch variant Docker image(s) sharing a single data-store (e.g., MySQL)

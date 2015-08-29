@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015 - Chris Phillipson
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.fns.grivet.service;
 
 import java.sql.CallableStatement;
@@ -28,6 +43,7 @@ import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fns.grivet.model.User;
 import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.repo.NamedQueryRepository;
 
@@ -41,6 +57,9 @@ public class NamedQueryService {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final ObjectMapper mapper;
     
+    @Autowired(required=false)
+    private SecurityFacade securityFacade;
+    
     @Autowired
     public NamedQueryService(NamedQueryRepository namedQueryRepository, JdbcTemplate jdbcTemplate, ObjectMapper mapper) {
         this.namedQueryRepository = namedQueryRepository;
@@ -51,6 +70,8 @@ public class NamedQueryService {
     
     @Transactional
     public void create(NamedQuery namedQuery) {
+        User user = securityFacade != null ? securityFacade.getCurrentUser(): null;
+        namedQuery.setCreator(user);
         namedQueryRepository.save(namedQuery);
     }
     

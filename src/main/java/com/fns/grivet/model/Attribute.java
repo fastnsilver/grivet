@@ -15,9 +15,6 @@
  */
 package com.fns.grivet.model;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +28,7 @@ import javax.validation.constraints.Size;
  * @author Chris Phillipson
  */
 @Entity
-public class Attribute implements Serializable {
+public class Attribute extends Audited {
 
     /** 
      * Version number used during deserialization to verify that the sender and receiver 
@@ -54,15 +51,11 @@ public class Attribute implements Serializable {
     @Column
     private String description;
     
-    /** The time this {@code Attribute} was created. */
-    @Column(nullable=false)
-    private LocalDateTime createdTime;
-
     /**
      * For internal use only! Instantiates a new attribute.
      */
     protected Attribute() {
-        // no-args constructor required by JPA spec
+        super();
     }
     
     /**
@@ -70,10 +63,13 @@ public class Attribute implements Serializable {
      *
      * @param name
      *            the name
+     * 
+     * @param user
+     *            the currently authenticated principal
      */
-    public Attribute(String name) {
+    public Attribute(String name, User user) {
+        super(user);
         this.name = name;
-        this.createdTime = LocalDateTime.now();
     }
 
     /**
@@ -111,14 +107,5 @@ public class Attribute implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    /**
-     * Gets the created time.
-     *
-     * @return the created time; a date-time without a time-zone in the ISO-8601 calendar system
-     */
-    public LocalDateTime getCreatedTime() {
-        return createdTime;
-    }
-
+    
 }
