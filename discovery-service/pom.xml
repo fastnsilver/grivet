@@ -7,14 +7,13 @@
         <groupId>com.fns</groupId>
         <artifactId>grivet-parent</artifactId>
         <version>0.1.0-SNAPSHOT</version>
-        <relativePath>../parent-pom/pom.xml</relativePath>
     </parent>
 
     <artifactId>grivet-discovery-service</artifactId>
     <packaging>jar</packaging>
 
-    <name>Grivet Discovery Service</name>
-    <description>This discovery service is powered by Eureka.  Eureka is a REST based service that is primarily used in the AWS cloud for locating services for the purpose of load balancing and failover of middle-tier servers.</description>
+    <name>Discovery Service</name>
+    <description>This discovery service is powered by Eureka.  Eureka is a REST based service that is primarily used in the AWS cloud for locating services for the purpose of load balancing and fail-over of middle-tier servers.</description>
     <inceptionYear>2015</inceptionYear>
 
     <properties>
@@ -32,15 +31,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <configuration>
-                    <dotGitDirectory>${session.executionRootDirectory}/.git</dotGitDirectory>
-                    <dateFormat>yyyyMMdd-HHmmss</dateFormat>
-                </configuration>
-            </plugin>
-            
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -106,8 +96,16 @@
                         </image>
                     </images>
                 </configuration>
+                <executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
             </plugin>
-            
         </plugins>
     </build>
 

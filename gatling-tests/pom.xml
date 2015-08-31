@@ -7,14 +7,14 @@
 		<groupId>com.fns</groupId>
 		<artifactId>grivet-parent</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath />
 	</parent>
 
 	<artifactId>grivet-gatling-tests</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Grivet Gatling Tests</name>
-	<description>Load test simulations against deployed instance of Grivet</description>
+	<name>Gatling Tests</name>
+	<description>Load test simulations run against a deployed instance of Grivet</description>
 	<inceptionYear>2015</inceptionYear>
 	
 	

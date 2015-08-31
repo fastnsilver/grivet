@@ -9,7 +9,7 @@
 	    	<theme>bootswatch-cerulean</theme>
 	      	<highlightJs>true</highlightJs>
 	      	<brand>
-	        	<name>Grivet</name>
+	        	<name>Grivet (Service)</name>
 	        	<href>https://github.com/fastnsilver/grivet/grivet</href>
 	      	</brand>
 	      	<bottomNav>
@@ -37,6 +37,7 @@
 	    </reflowSkin>
   	</custom>
   	<body>
+  		<menu ref="parent" />
     	<menu name="Overview">
             <item name="About" href="index.html" />
             <item name="Project License" href="license.html" />

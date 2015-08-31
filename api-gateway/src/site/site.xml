@@ -9,7 +9,7 @@
 	    	<theme>bootswatch-cerulean</theme>
 	      	<highlightJs>true</highlightJs>
 	      	<brand>
-	        	<name>Grivet API Gateway</name>
+	        	<name>Grivet (API Gateway)</name>
 	        	<href>https://github.com/fastnsilver/grivet/api-gateway</href>
 	      	</brand>
 	      	<bottomNav>
@@ -36,6 +36,7 @@
 	    </reflowSkin>
   	</custom>
   	<body>
+  		<menu ref="parent" />
     	<menu name="Overview">
             <item name="About" href="index.html" />
             <item name="Project License" href="license.html" />

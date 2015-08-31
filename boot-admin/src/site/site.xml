@@ -9,7 +9,7 @@
 	    	<theme>bootswatch-cerulean</theme>
 	      	<highlightJs>true</highlightJs>
 	      	<brand>
-	        	<name>Grivet Boot Admin</name>
+	        	<name>Grivet (Spring Boot Application Administration)</name>
 	        	<href>https://github.com/fastnsilver/grivet/boot-admin</href>
 	      	</brand>
 	      	<bottomNav>
@@ -36,6 +36,7 @@
 	    </reflowSkin>
   	</custom>
   	<body>
+  		<menu ref="parent" />
     	<menu name="Overview">
             <item name="About" href="index.html" />
             <item name="Project License" href="license.html" />

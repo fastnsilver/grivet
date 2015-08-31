@@ -8,14 +8,13 @@
         <groupId>com.fns</groupId>
         <artifactId>grivet-parent</artifactId>
         <version>0.1.0-SNAPSHOT</version>
-        <relativePath>../parent-pom/pom.xml</relativePath>
     </parent>
 
     <artifactId>grivet-boot-admin</artifactId>
     <packaging>jar</packaging>
     
     
-    <name>Grivet Boot Admin</name>
+    <name>Spring Boot Application Admin</name>
     <description>Provides an overview of all running Spring Boot Micro Services in Grivet environment.</description>
     <inceptionYear>2015</inceptionYear>
     
@@ -44,15 +43,6 @@
     
     <build>
         <plugins>
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <configuration>
-                    <dotGitDirectory>${session.executionRootDirectory}/.git</dotGitDirectory>
-                    <dateFormat>yyyyMMdd-HHmmss</dateFormat>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -118,6 +108,15 @@
                         </image>
                     </images>
                 </configuration>
+                <executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
             </plugin>
         </plugins>
     </build>

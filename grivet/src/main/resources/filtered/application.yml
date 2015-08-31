@@ -1,15 +1,9 @@
 info:
   version: ${project.version}
+  
 spring:
   application:
     name: ${project.artifactId}
-  boot:
-    admin:
-      url: http://localhost:8080
-  cloud:
-    config:
-      uri: ${SPRING_CONFIG_URI:http://localhost:8888}
-      enabled: false
   profiles:
     active: h2,insecure
   jpa:
@@ -22,7 +16,7 @@ flyway:
     varcharQualifier: 
     createTableSuffix:
     longVarBinary:
-    
+   
 ---
 
 spring:

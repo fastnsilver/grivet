@@ -8,14 +8,13 @@
         <groupId>com.fns</groupId>
         <artifactId>grivet-parent</artifactId>
         <version>0.1.0-SNAPSHOT</version>
-        <relativePath>../parent-pom/pom.xml</relativePath>
     </parent>
 
     <artifactId>grivet-config-server</artifactId>
     <packaging>jar</packaging>
 
-    <name>Grivet Configuration Server</name>
-    <description></description>
+    <name>Configuration Server</name>
+    <description>A central place to manage external properties for applications across all environments.</description>
 
     <properties>
         <!-- Docker -->
@@ -40,15 +39,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <configuration>
-                    <dotGitDirectory>${session.executionRootDirectory}/.git</dotGitDirectory>
-                    <dateFormat>yyyyMMdd-HHmmss</dateFormat>
-                </configuration>
-            </plugin>
-            
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -114,6 +104,15 @@
                         </image>
                     </images>
                 </configuration>
+                <executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
             </plugin>
         </plugins>
     </build>
