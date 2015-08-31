@@ -16,7 +16,7 @@ consul:
    - "8000:8000"
   net: host
 config:
-  image: fastnsilver/grivet-config-service
+  image: fastnsilver/grivet-config-server
   ports:
    - "8888:8888"
   links:
