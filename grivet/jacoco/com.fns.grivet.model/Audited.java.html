@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Audited.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Service</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.model</a> &gt; <span class="el_source">Audited.java</span></div><h1>Audited.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2015 - Chris Phillipson
+ * 
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.fns.grivet.model;
+
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
+public abstract class Audited implements Auditable&lt;Integer&gt;{
+
+    @Column
+    private Integer createdBy;
+    
+    @Column
+    private Integer updatedBy;
+    
+    /** The time this entity was created. */
+    @Column(nullable=false)
+    private LocalDateTime createdTime;
+    
+    /** The time this entity was last modified. */
+    @Column
+    private LocalDateTime updatedTime;
+    
+    /** 
+     * Version number used during deserialization to verify that the sender and receiver 
+     * of this serialized object have loaded classes for this object that 
+     * are compatible with respect to serialization. 
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * Instantiates a new entity.
+     */
+<span class="fc" id="L50">    protected Audited() {</span>
+<span class="fc" id="L51">        this.updatedTime = LocalDateTime.now();</span>
+<span class="fc" id="L52">        this.createdTime = updatedTime;</span>
+<span class="fc" id="L53">    }</span>
+    
+    /**
+     * Instantiates a new entity.
+     * 
+     * @param user
+     *          the currently authenticated principal
+     * 
+     */
+    protected Audited(User user) {
+<span class="fc" id="L63">        this();</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (user != null) {</span>
+<span class="nc" id="L65">            this.createdBy = user.getId();</span>
+        }
+<span class="fc" id="L67">    }</span>
+    
+    @Override
+    public Integer getCreatedBy() {
+<span class="fc" id="L71">        return createdBy;</span>
+    }
+
+    @Override
+    public void setCreatedBy(Integer createdBy) {
+<span class="nc" id="L76">        this.createdBy = createdBy;</span>
+<span class="nc" id="L77">    }</span>
+    
+    public void setCreator(User user) {
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (user != null) {</span>
+<span class="nc" id="L81">            this.createdBy = user.getId();</span>
+        }
+<span class="fc" id="L83">    }</span>
+
+    @Override
+    public LocalDateTime getCreatedTime() {
+<span class="fc" id="L87">        return createdTime;</span>
+    }
+
+    @Override
+    public void setCreatedTime(LocalDateTime createdTime) {
+<span class="nc" id="L92">        this.createdTime = createdTime;</span>
+<span class="nc" id="L93">    }</span>
+
+    @Override
+    public Integer getUpdatedBy() {
+<span class="fc" id="L97">        return updatedBy;</span>
+    }
+    
+    public void setUpdater(User user) {
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (user != null) {</span>
+<span class="nc" id="L102">            this.updatedBy = user.getId();</span>
+        }
+<span class="fc" id="L104">    }</span>
+
+    @Override
+    public void setUpdatedBy(Integer updatedBy) {
+<span class="nc" id="L108">        this.updatedBy = updatedBy;</span>
+<span class="nc" id="L109">    }</span>
+
+    @Override
+    public LocalDateTime getUpdatedTime() {
+<span class="fc" id="L113">        return updatedTime;</span>
+    }
+
+    @Override
+    public void setUpdatedTime(LocalDateTime updatedTime) {
+<span class="fc" id="L118">        this.updatedTime = updatedTime;</span>
+<span class="fc" id="L119">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
