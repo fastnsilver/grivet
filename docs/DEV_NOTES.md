@@ -1,14 +1,15 @@
 # Developer Notes
 
-This is a Spring Boot application.  It is initialized with:
+This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.  It is initialized with:
 
 [App.java](https://github.com/fastnsilver/grivet/blob/master/src/main/java/com/fns/grivet/App.java)
 
 
 ## Prerequisites
 
-* Java JDK 1.8.0_45
-* Maven 3.3.3
+* [Docker Toolbox](http://docs.docker.com/mac/started/); `docker`, `docker-machine` and `docker-compose` are required
+* Java [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8.0_45+
+* [Maven](https://maven.apache.org/download.cgi) 3.3.3
 * an RDBMS (H2 is the default w/ no additional configuration); see [application.yml](https://github.com/fastnsilver/grivet/blob/master/src/main/resources/application.yml) for details
 
 
@@ -60,7 +61,7 @@ Assuming you have installed Docker...
 #### Build image
 
 ```
-mvn package docker:build
+mvn package
 ```
 
 #### Pull image

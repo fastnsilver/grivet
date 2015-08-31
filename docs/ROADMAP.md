@@ -17,7 +17,7 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 0.1.0
 
-- [ ] Re-org project structure; introduce [Spring Cloud](http://projects.spring.io/spring-cloud/) and [Netflix OSS](http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html) to provide cloud-native infrastructure
+- [x] Re-org project structure; introduce [Spring Cloud](http://projects.spring.io/spring-cloud/) and [Netflix OSS](http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html) to provide cloud-native infrastructure
 - [ ] Docker [Compose](https://docs.docker.com/compose/); launch variant Docker image(s) sharing a single data-store (e.g., [MySQL](https://www.mysql.com/))
 - [x] Spring Boot [Admin](https://github.com/codecentric/spring-boot-admin#spring-boot-admin) available
 - [x] Upgrade to [HikariCP](http://brettwooldridge.github.io/HikariCP/) for connection pooling
