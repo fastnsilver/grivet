@@ -9,7 +9,7 @@ A micro-service capable of self-service modeling and persistence.
 
 # Motivation
 
-Designing, maintaining and growing a database schema to store and retrieve domain objects is tedious. Yes, there are options like: ORM via JPA, JDO or jOOQ; or document object stores like Couchbase or Mongo.  Without having you jump through too many hoops, `Grivet` provides a simple API backed by a RDBMS-based abstraction for type registry, storage and retrieval. 
+Designing, maintaining and growing a database schema to store and retrieve domain objects is tedious. Yes, there are options like: [ORM](http://www.yegor256.com/2014/12/01/orm-offensive-anti-pattern.html) via [JPA](https://jcp.org/aboutJava/communityprocess/final/jsr338/index.html), [JDO](https://jcp.org/aboutJava/communityprocess/mrel/jsr243/index3.html) or [jOOQ](http://www.jooq.org/); or document object stores like [Couchbase](http://www.couchbase.com/nosql-databases/couchbase-server) or [Mongo](https://docs.mongodb.org/manual/).  Without having you jump through too many hoops, `Grivet` provides a simple API backed by a RDBMS-based abstraction for type registry, storage and retrieval. 
 
 Make it easy to query types.  E.g., when querying...
 
