@@ -1,5 +1,6 @@
 # Grivet 
-![Build status](https://api.shippable.com/projects/55c406bcedd7f2c05298e9c8/badge/master "Build status")
+[![Build Status](https://travis-ci.org/fastnsilver/grivet.svg)](https://travis-ci.org/fastnsilver/grivet)
+[![Coverage Status](https://coveralls.io/repos/fastnsilver/grivet/badge.svg?branch=master&service=github)](https://coveralls.io/github/fastnsilver/grivet?branch=master)
 
 [![Apache License 2](https://img.shields.io/badge/license-ASF2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.txt)
 [![endorse](https://api.coderwall.com/fastnsilver/endorsecount.png)](https://coderwall.com/fastnsilver)
