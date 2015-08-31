@@ -9,12 +9,13 @@
 	    	<theme>bootswatch-cerulean</theme>
 	      	<highlightJs>true</highlightJs>
 	      	<brand>
-	        	<name>Grivet (Modules)</name>
-	        	<href>https://github.com/fastnsilver/grivet</href>
+	        	<name>Grivet (Service)</name>
+	        	<href>https://github.com/fastnsilver/grivet/grivet</href>
 	      	</brand>
 	      	<bottomNav>
-		        <column>Modules|Overview</column>
+		        <column>Overview|User</column>
 		        <column>Developer</column>
+		        <column>Stats</column>
 	      	</bottomNav>
 	      	<pages>
 	        	<index project="project-id">
@@ -36,10 +37,13 @@
 	    </reflowSkin>
   	</custom>
   	<body>
-  		<menu ref="modules" />
+  		<menu ref="parent" />
     	<menu name="Overview">
             <item name="About" href="index.html" />
             <item name="Project License" href="license.html" />
+        </menu>
+        <menu name="User">
+            <item name="API" href="rest-api.html" />
         </menu>
         <menu name="Developer">
             <item name="JavaDocs" href="apidocs/index.html" />
@@ -47,10 +51,16 @@
             <item name="Project Summary" href="project-summary.html" />
             <item name="Issue Tracking" href="issue-tracking.html" />
             <item name="Project Team" href="team-list.html" />
+            <item name="Tag List" href="taglist.html" />
             <item name="Dependency Information" href="dependency-info.html" />
             <item name="Dependency Management" href="dependency-management.html" />
             <item name="Plugin Management" href="plugin-management.html" />
             <item name="Project Plugins" href="plugins.html" />
+        </menu>
+        <menu name="Stats">
+            <item name="Change Log" href="changelog.html" />
+            <item name="Surefire Report" href="failsafe-report.html" />
+            <item name="JaCoCo Test Coverage" href="jacoco/index.html" />
         </menu>
   	</body>
 </project>
