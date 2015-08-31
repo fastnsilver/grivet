@@ -34,192 +34,202 @@
 <span class="sourceLineNo">026</span>import org.slf4j.Logger;<a name="line.26"></a>
 <span class="sourceLineNo">027</span>import org.slf4j.LoggerFactory;<a name="line.27"></a>
 <span class="sourceLineNo">028</span>import org.springframework.beans.factory.annotation.Autowired;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import org.springframework.http.HttpHeaders;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import org.springframework.http.HttpStatus;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import org.springframework.http.MediaType;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import org.springframework.http.ResponseEntity;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import org.springframework.util.Assert;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import org.springframework.web.bind.annotation.PathVariable;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import org.springframework.web.bind.annotation.RequestMapping;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import org.springframework.web.bind.annotation.RequestMethod;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import org.springframework.web.bind.annotation.RequestParam;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import org.springframework.web.bind.annotation.RestController;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import org.springframework.web.util.UriComponentsBuilder;<a name="line.39"></a>
-<span class="sourceLineNo">040</span><a name="line.40"></a>
-<span class="sourceLineNo">041</span>import com.fns.grivet.service.ClassRegistryService;<a name="line.41"></a>
+<span class="sourceLineNo">029</span>import org.springframework.beans.factory.annotation.Value;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import org.springframework.http.HttpHeaders;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import org.springframework.http.HttpStatus;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.springframework.http.MediaType;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.springframework.http.ResponseEntity;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import org.springframework.security.access.prepost.PreAuthorize;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import org.springframework.util.Assert;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import org.springframework.web.bind.annotation.PathVariable;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import org.springframework.web.bind.annotation.RequestMapping;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import org.springframework.web.bind.annotation.RequestMethod;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import org.springframework.web.bind.annotation.RequestParam;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import org.springframework.web.bind.annotation.RestController;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import org.springframework.web.util.UriComponentsBuilder;<a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
-<span class="sourceLineNo">043</span>import io.swagger.annotations.Api;<a name="line.43"></a>
-<span class="sourceLineNo">044</span>import io.swagger.annotations.ApiOperation;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>import io.swagger.annotations.ApiParam;<a name="line.45"></a>
-<span class="sourceLineNo">046</span>import io.swagger.annotations.ApiResponse;<a name="line.46"></a>
-<span class="sourceLineNo">047</span>import io.swagger.annotations.ApiResponses;<a name="line.47"></a>
-<span class="sourceLineNo">048</span><a name="line.48"></a>
-<span class="sourceLineNo">049</span><a name="line.49"></a>
-<span class="sourceLineNo">050</span>/**<a name="line.50"></a>
-<span class="sourceLineNo">051</span> * Provides end-points for type registration and verification<a name="line.51"></a>
-<span class="sourceLineNo">052</span> * <a name="line.52"></a>
-<span class="sourceLineNo">053</span> * @author Chris Phillipson<a name="line.53"></a>
-<span class="sourceLineNo">054</span> */<a name="line.54"></a>
-<span class="sourceLineNo">055</span>@RestController<a name="line.55"></a>
-<span class="sourceLineNo">056</span>@RequestMapping("/register")<a name="line.56"></a>
-<span class="sourceLineNo">057</span>@Api(value = "register", produces = "application/json")<a name="line.57"></a>
-<span class="sourceLineNo">058</span>public class ClassRegistryController {<a name="line.58"></a>
-<span class="sourceLineNo">059</span><a name="line.59"></a>
-<span class="sourceLineNo">060</span>    private final Logger log = LoggerFactory.getLogger(getClass());<a name="line.60"></a>
-<span class="sourceLineNo">061</span>    <a name="line.61"></a>
-<span class="sourceLineNo">062</span>    private final ClassRegistryService classRegistryService;<a name="line.62"></a>
+<span class="sourceLineNo">043</span>import com.fns.grivet.service.ClassRegistryService;<a name="line.43"></a>
+<span class="sourceLineNo">044</span><a name="line.44"></a>
+<span class="sourceLineNo">045</span>import io.swagger.annotations.Api;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import io.swagger.annotations.ApiOperation;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import io.swagger.annotations.ApiParam;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import io.swagger.annotations.ApiResponse;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>import io.swagger.annotations.ApiResponses;<a name="line.49"></a>
+<span class="sourceLineNo">050</span><a name="line.50"></a>
+<span class="sourceLineNo">051</span><a name="line.51"></a>
+<span class="sourceLineNo">052</span>/**<a name="line.52"></a>
+<span class="sourceLineNo">053</span> * Provides end-points for type registration and verification<a name="line.53"></a>
+<span class="sourceLineNo">054</span> * <a name="line.54"></a>
+<span class="sourceLineNo">055</span> * @author Chris Phillipson<a name="line.55"></a>
+<span class="sourceLineNo">056</span> */<a name="line.56"></a>
+<span class="sourceLineNo">057</span>@RestController<a name="line.57"></a>
+<span class="sourceLineNo">058</span>@RequestMapping("/register")<a name="line.58"></a>
+<span class="sourceLineNo">059</span>@Api(value = "register", produces = "application/json")<a name="line.59"></a>
+<span class="sourceLineNo">060</span>public class ClassRegistryController {<a name="line.60"></a>
+<span class="sourceLineNo">061</span><a name="line.61"></a>
+<span class="sourceLineNo">062</span>    private final Logger log = LoggerFactory.getLogger(getClass());<a name="line.62"></a>
 <span class="sourceLineNo">063</span>    <a name="line.63"></a>
-<span class="sourceLineNo">064</span>    @Autowired<a name="line.64"></a>
-<span class="sourceLineNo">065</span>    public ClassRegistryController(ClassRegistryService classRegistryService) {<a name="line.65"></a>
-<span class="sourceLineNo">066</span>        this.classRegistryService = classRegistryService;<a name="line.66"></a>
-<span class="sourceLineNo">067</span>    }<a name="line.67"></a>
+<span class="sourceLineNo">064</span>    @Value("${grivet.register.batch-size:100}")<a name="line.64"></a>
+<span class="sourceLineNo">065</span>    private int batchSize;<a name="line.65"></a>
+<span class="sourceLineNo">066</span>    <a name="line.66"></a>
+<span class="sourceLineNo">067</span>    private final ClassRegistryService classRegistryService;<a name="line.67"></a>
 <span class="sourceLineNo">068</span>    <a name="line.68"></a>
-<span class="sourceLineNo">069</span>    @RequestMapping(method=RequestMethod.POST, <a name="line.69"></a>
-<span class="sourceLineNo">070</span>            consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)<a name="line.70"></a>
-<span class="sourceLineNo">071</span>    @ApiOperation(httpMethod = "POST", notes = "Register one or more types. Optionally link a JSON Schema.", value = "/register/{type}")<a name="line.71"></a>
-<span class="sourceLineNo">072</span>    @ApiResponses(value = { <a name="line.72"></a>
-<span class="sourceLineNo">073</span>            @ApiResponse(code = 200, message = "Successfully link JSON Schema to registered type."),<a name="line.73"></a>
-<span class="sourceLineNo">074</span>            @ApiResponse(code = 201, message = "Successfully registered type(s)."),<a name="line.74"></a>
-<span class="sourceLineNo">075</span>            @ApiResponse(code = 202, message = "Partial success. Location info for registered type(s). Error details for type(s) that could not be registered."),<a name="line.75"></a>
-<span class="sourceLineNo">076</span>            @ApiResponse(code = 400, message = "Bad request."),<a name="line.76"></a>
-<span class="sourceLineNo">077</span>            @ApiResponse(code = 500, message = "Internal server error.")<a name="line.77"></a>
-<span class="sourceLineNo">078</span>            })<a name="line.78"></a>
-<span class="sourceLineNo">079</span>    public ResponseEntity&lt;?&gt; register(HttpServletRequest request) throws IOException {<a name="line.79"></a>
-<span class="sourceLineNo">080</span>        String json = IOUtils.toString(request.getInputStream(), "UTF-8");<a name="line.80"></a>
-<span class="sourceLineNo">081</span>        Assert.isTrue(json.startsWith("{") || json.startsWith("["), "Registration requests must be valid JSON starting with either a { or [!");<a name="line.81"></a>
-<span class="sourceLineNo">082</span>        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();<a name="line.82"></a>
-<span class="sourceLineNo">083</span>        if (json.startsWith("{")) {<a name="line.83"></a>
-<span class="sourceLineNo">084</span>            if (request.getParameterMap().containsKey("linkSchema") <a name="line.84"></a>
-<span class="sourceLineNo">085</span>                    &amp;&amp; classRegistryService.isJsonSchema(new JSONObject(json))) {<a name="line.85"></a>
-<span class="sourceLineNo">086</span>                result = linkSchema(json);<a name="line.86"></a>
-<span class="sourceLineNo">087</span>            } else {<a name="line.87"></a>
-<span class="sourceLineNo">088</span>                result = registerSingleType(json);<a name="line.88"></a>
-<span class="sourceLineNo">089</span>            }<a name="line.89"></a>
-<span class="sourceLineNo">090</span>        }<a name="line.90"></a>
-<span class="sourceLineNo">091</span>        if (json.startsWith("[")) {<a name="line.91"></a>
-<span class="sourceLineNo">092</span>            result = registerMultipleTypes(json);<a name="line.92"></a>
-<span class="sourceLineNo">093</span>        }<a name="line.93"></a>
-<span class="sourceLineNo">094</span>        return result;<a name="line.94"></a>
-<span class="sourceLineNo">095</span>    }<a name="line.95"></a>
-<span class="sourceLineNo">096</span>    <a name="line.96"></a>
-<span class="sourceLineNo">097</span>    private ResponseEntity&lt;?&gt; linkSchema(String json) {<a name="line.97"></a>
-<span class="sourceLineNo">098</span>        String id = classRegistryService.linkSchema(new JSONObject(json)).getName();<a name="line.98"></a>
-<span class="sourceLineNo">099</span>        String message = String.format("JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!", id);<a name="line.99"></a>
-<span class="sourceLineNo">100</span>        log.info(message);<a name="line.100"></a>
-<span class="sourceLineNo">101</span>        return ResponseEntity.ok(message);<a name="line.101"></a>
-<span class="sourceLineNo">102</span>    }<a name="line.102"></a>
-<span class="sourceLineNo">103</span>    <a name="line.103"></a>
-<span class="sourceLineNo">104</span>    private ResponseEntity&lt;?&gt; unlinkSchema(String type) {<a name="line.104"></a>
-<span class="sourceLineNo">105</span>        classRegistryService.unlinkSchema(type);<a name="line.105"></a>
-<span class="sourceLineNo">106</span>        String message = String.format("JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!", type);<a name="line.106"></a>
-<span class="sourceLineNo">107</span>        log.info(message);<a name="line.107"></a>
-<span class="sourceLineNo">108</span>        return ResponseEntity.ok(message);<a name="line.108"></a>
-<span class="sourceLineNo">109</span>    }<a name="line.109"></a>
-<span class="sourceLineNo">110</span>    <a name="line.110"></a>
-<span class="sourceLineNo">111</span>    private ResponseEntity&lt;?&gt; registerSingleType(String json) {<a name="line.111"></a>
-<span class="sourceLineNo">112</span>        String type = classRegistryService.register(new JSONObject(json));<a name="line.112"></a>
-<span class="sourceLineNo">113</span>        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();<a name="line.113"></a>
-<span class="sourceLineNo">114</span>        log.info("Type [{}] successfully registered!", type);<a name="line.114"></a>
-<span class="sourceLineNo">115</span>        return ResponseEntity.created(ucb.path("/register/{type}").buildAndExpand(type).toUri()).build();<a name="line.115"></a>
-<span class="sourceLineNo">116</span>    }<a name="line.116"></a>
-<span class="sourceLineNo">117</span>    <a name="line.117"></a>
-<span class="sourceLineNo">118</span>    private ResponseEntity&lt;?&gt; registerMultipleTypes(String json) {<a name="line.118"></a>
-<span class="sourceLineNo">119</span>        JSONArray jsonArray = new JSONArray(json);<a name="line.119"></a>
-<span class="sourceLineNo">120</span>        Assert.isTrue(jsonArray.length() &lt;= 100, String.format("The total number of entries in a request must not exceed 100! The number of entries in your registration request was [%d].", jsonArray.length()));<a name="line.120"></a>
-<span class="sourceLineNo">121</span>        JSONObject jsonObject = null;<a name="line.121"></a>
-<span class="sourceLineNo">122</span>        String type = null;<a name="line.122"></a>
-<span class="sourceLineNo">123</span>        HttpHeaders headers = new HttpHeaders();<a name="line.123"></a>
-<span class="sourceLineNo">124</span>        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();<a name="line.124"></a>
-<span class="sourceLineNo">125</span>        int numberOfTypesToRegister = jsonArray.length();<a name="line.125"></a>
-<span class="sourceLineNo">126</span>        URI location = null;<a name="line.126"></a>
-<span class="sourceLineNo">127</span>        int errorCount = 0;<a name="line.127"></a>
-<span class="sourceLineNo">128</span>        // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing<a name="line.128"></a>
-<span class="sourceLineNo">129</span>        for (int i = 0; i &lt; numberOfTypesToRegister; i++) {<a name="line.129"></a>
-<span class="sourceLineNo">130</span>            jsonObject = jsonArray.getJSONObject(i);<a name="line.130"></a>
-<span class="sourceLineNo">131</span>            try {<a name="line.131"></a>
-<span class="sourceLineNo">132</span>                type = classRegistryService.register(jsonObject);<a name="line.132"></a>
-<span class="sourceLineNo">133</span>                location = ucb.path("/register/{type}").buildAndExpand(type).toUri();<a name="line.133"></a>
-<span class="sourceLineNo">134</span>                if (numberOfTypesToRegister == 1) {<a name="line.134"></a>
-<span class="sourceLineNo">135</span>                    headers.setLocation(location); <a name="line.135"></a>
-<span class="sourceLineNo">136</span>                } else {<a name="line.136"></a>
-<span class="sourceLineNo">137</span>                    headers.set(String.format("Location[%s]",String.valueOf(i+1)), location.toASCIIString());<a name="line.137"></a>
-<span class="sourceLineNo">138</span>                }<a name="line.138"></a>
-<span class="sourceLineNo">139</span>                log.info("Type [{}] successfully registered!", type);<a name="line.139"></a>
-<span class="sourceLineNo">140</span>            } catch (Exception e) {<a name="line.140"></a>
-<span class="sourceLineNo">141</span>                String message = LogUtil.toLog(jsonObject, String.format("Problems registering type! Portion of payload @ index[%d]\n", i+1));<a name="line.141"></a>
-<span class="sourceLineNo">142</span>                log.error(message, e);<a name="line.142"></a>
-<span class="sourceLineNo">143</span>                if (numberOfTypesToRegister == 1) {<a name="line.143"></a>
-<span class="sourceLineNo">144</span>                    throw e;<a name="line.144"></a>
-<span class="sourceLineNo">145</span>                }<a name="line.145"></a>
-<span class="sourceLineNo">146</span>                headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());<a name="line.146"></a>
-<span class="sourceLineNo">147</span>                errorCount++;<a name="line.147"></a>
-<span class="sourceLineNo">148</span>            }<a name="line.148"></a>
-<span class="sourceLineNo">149</span>        }<a name="line.149"></a>
-<span class="sourceLineNo">150</span>        HttpStatus status = (errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED;<a name="line.150"></a>
-<span class="sourceLineNo">151</span>        return new ResponseEntity&lt;&gt;(headers, status);<a name="line.151"></a>
-<span class="sourceLineNo">152</span>    }<a name="line.152"></a>
-<span class="sourceLineNo">153</span>    <a name="line.153"></a>
-<span class="sourceLineNo">154</span>    @RequestMapping(value="/{type}", method=RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE)<a name="line.154"></a>
-<span class="sourceLineNo">155</span>    @ApiOperation(httpMethod = "DELETE", notes = "Delete the registered type.", value = "/register/{type}")<a name="line.155"></a>
-<span class="sourceLineNo">156</span>    @ApiResponses(value = { <a name="line.156"></a>
-<span class="sourceLineNo">157</span>            @ApiResponse(code = 204, message = "Successfully deleted a registered type."),<a name="line.157"></a>
-<span class="sourceLineNo">158</span>            @ApiResponse(code = 400, message = "Bad request."),<a name="line.158"></a>
-<span class="sourceLineNo">159</span>            @ApiResponse(code = 500, message = "Internal server error.")<a name="line.159"></a>
-<span class="sourceLineNo">160</span>            })<a name="line.160"></a>
-<span class="sourceLineNo">161</span>    public ResponseEntity&lt;?&gt; delete(<a name="line.161"></a>
-<span class="sourceLineNo">162</span>            @ApiParam(value = "Type name", required = true)<a name="line.162"></a>
-<span class="sourceLineNo">163</span>            @PathVariable("type") String type) {<a name="line.163"></a>
-<span class="sourceLineNo">164</span>        classRegistryService.deregister(type);<a name="line.164"></a>
-<span class="sourceLineNo">165</span>        log.info("Type [{}] successfully deregistered!", type);<a name="line.165"></a>
-<span class="sourceLineNo">166</span>        return ResponseEntity.noContent().build();<a name="line.166"></a>
-<span class="sourceLineNo">167</span>    }<a name="line.167"></a>
-<span class="sourceLineNo">168</span>    <a name="line.168"></a>
-<span class="sourceLineNo">169</span>    @RequestMapping(value="/{type}", produces=MediaType.APPLICATION_JSON_VALUE)<a name="line.169"></a>
-<span class="sourceLineNo">170</span>    @ApiOperation(httpMethod = "GET", notes = "Retrieve the registered type.", value = "/register/{type}")<a name="line.170"></a>
-<span class="sourceLineNo">171</span>    @ApiResponses(value = { <a name="line.171"></a>
-<span class="sourceLineNo">172</span>            @ApiResponse(code = 200, message = "Successfully retrieved a registered type."),<a name="line.172"></a>
-<span class="sourceLineNo">173</span>            @ApiResponse(code = 400, message = "Bad request."),<a name="line.173"></a>
-<span class="sourceLineNo">174</span>            @ApiResponse(code = 500, message = "Internal server error.")<a name="line.174"></a>
-<span class="sourceLineNo">175</span>            })<a name="line.175"></a>
-<span class="sourceLineNo">176</span>    public ResponseEntity&lt;?&gt; get(<a name="line.176"></a>
-<span class="sourceLineNo">177</span>            @ApiParam(value = "Type name", required = true)<a name="line.177"></a>
-<span class="sourceLineNo">178</span>            @PathVariable("type") String type) {<a name="line.178"></a>
-<span class="sourceLineNo">179</span>        JSONObject payload = classRegistryService.get(type);<a name="line.179"></a>
-<span class="sourceLineNo">180</span>        String message = LogUtil.toLog(payload, String.format("Successfully retrieved type [%s]\n", type));<a name="line.180"></a>
-<span class="sourceLineNo">181</span>        log.info(message);<a name="line.181"></a>
-<span class="sourceLineNo">182</span>        return ResponseEntity.ok(payload.toString());<a name="line.182"></a>
-<span class="sourceLineNo">183</span>    }<a name="line.183"></a>
-<span class="sourceLineNo">184</span>    <a name="line.184"></a>
-<span class="sourceLineNo">185</span>    @RequestMapping(value="/{type}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)<a name="line.185"></a>
-<span class="sourceLineNo">186</span>    @ApiOperation(httpMethod = "PUT", notes = "Unlink JSON Schema from type.", value = "/register/{type}")<a name="line.186"></a>
-<span class="sourceLineNo">187</span>    @ApiResponses(value = { <a name="line.187"></a>
-<span class="sourceLineNo">188</span>            @ApiResponse(code = 200, message = "Unlinked JSON Schema from type."),<a name="line.188"></a>
-<span class="sourceLineNo">189</span>            @ApiResponse(code = 400, message = "Bad request."),<a name="line.189"></a>
-<span class="sourceLineNo">190</span>            @ApiResponse(code = 500, message = "Internal server error.")<a name="line.190"></a>
-<span class="sourceLineNo">191</span>            })<a name="line.191"></a>
-<span class="sourceLineNo">192</span>    public ResponseEntity&lt;?&gt; unlinkSchema(<a name="line.192"></a>
-<span class="sourceLineNo">193</span>            @ApiParam(value = "Type name", required = true)<a name="line.193"></a>
-<span class="sourceLineNo">194</span>            @PathVariable("type") String type, <a name="line.194"></a>
-<span class="sourceLineNo">195</span>            @ApiParam(value = "Unlink JSON Schema from registered type?", required = true)<a name="line.195"></a>
-<span class="sourceLineNo">196</span>            @RequestParam("unlinkSchema") String unlinkSchema) {<a name="line.196"></a>
-<span class="sourceLineNo">197</span>        return unlinkSchema(type);<a name="line.197"></a>
-<span class="sourceLineNo">198</span>    }<a name="line.198"></a>
-<span class="sourceLineNo">199</span>    <a name="line.199"></a>
-<span class="sourceLineNo">200</span>    @RequestMapping(value="", produces=MediaType.APPLICATION_JSON_VALUE)<a name="line.200"></a>
-<span class="sourceLineNo">201</span>    @ApiOperation(httpMethod = "GET", notes = "All registered types.", value = "/register?showAll")<a name="line.201"></a>
-<span class="sourceLineNo">202</span>    @ApiResponses(value = { <a name="line.202"></a>
-<span class="sourceLineNo">203</span>            @ApiResponse(code = 200, message = "List all registered types."),<a name="line.203"></a>
-<span class="sourceLineNo">204</span>            @ApiResponse(code = 400, message = "Bad request."),<a name="line.204"></a>
-<span class="sourceLineNo">205</span>            @ApiResponse(code = 500, message = "Internal server error.")<a name="line.205"></a>
-<span class="sourceLineNo">206</span>            })<a name="line.206"></a>
-<span class="sourceLineNo">207</span>    public ResponseEntity&lt;?&gt; all(<a name="line.207"></a>
-<span class="sourceLineNo">208</span>            @ApiParam(value = "Show all registered types?", required = true)<a name="line.208"></a>
-<span class="sourceLineNo">209</span>            @RequestParam(value = "showAll", required = true) String showAll) {<a name="line.209"></a>
-<span class="sourceLineNo">210</span>        JSONArray payload = classRegistryService.all();<a name="line.210"></a>
-<span class="sourceLineNo">211</span>        return ResponseEntity.ok(payload.toString());<a name="line.211"></a>
-<span class="sourceLineNo">212</span>    }<a name="line.212"></a>
-<span class="sourceLineNo">213</span>        <a name="line.213"></a>
-<span class="sourceLineNo">214</span>}<a name="line.214"></a>
+<span class="sourceLineNo">069</span>    @Autowired<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    public ClassRegistryController(ClassRegistryService classRegistryService) {<a name="line.70"></a>
+<span class="sourceLineNo">071</span>        this.classRegistryService = classRegistryService;<a name="line.71"></a>
+<span class="sourceLineNo">072</span>    }<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    <a name="line.73"></a>
+<span class="sourceLineNo">074</span>    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")<a name="line.74"></a>
+<span class="sourceLineNo">075</span>    @RequestMapping(method = RequestMethod.POST, <a name="line.75"></a>
+<span class="sourceLineNo">076</span>            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    @ApiOperation(httpMethod = "POST", notes = "Register one or more types. Optionally link a JSON Schema.", value = "/register/{type}")<a name="line.77"></a>
+<span class="sourceLineNo">078</span>    @ApiResponses(value = { <a name="line.78"></a>
+<span class="sourceLineNo">079</span>            @ApiResponse(code = 200, message = "Successfully link JSON Schema to registered type."),<a name="line.79"></a>
+<span class="sourceLineNo">080</span>            @ApiResponse(code = 201, message = "Successfully registered type(s)."),<a name="line.80"></a>
+<span class="sourceLineNo">081</span>            @ApiResponse(code = 202, message = "Partial success. Location info for registered type(s). Error details for type(s) that could not be registered."),<a name="line.81"></a>
+<span class="sourceLineNo">082</span>            @ApiResponse(code = 400, message = "Bad request."),<a name="line.82"></a>
+<span class="sourceLineNo">083</span>            @ApiResponse(code = 500, message = "Internal server error.")<a name="line.83"></a>
+<span class="sourceLineNo">084</span>            })<a name="line.84"></a>
+<span class="sourceLineNo">085</span>    public ResponseEntity&lt;?&gt; register(HttpServletRequest request) throws IOException {<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        String json = IOUtils.toString(request.getInputStream(), "UTF-8");<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        Assert.isTrue(json.startsWith("{") || json.startsWith("["), "Registration requests must be valid JSON starting with either a { or [!");<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        if (json.startsWith("{")) {<a name="line.89"></a>
+<span class="sourceLineNo">090</span>            if (request.getParameterMap().containsKey("linkSchema") <a name="line.90"></a>
+<span class="sourceLineNo">091</span>                    &amp;&amp; classRegistryService.isJsonSchema(new JSONObject(json))) {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>                result = linkSchema(json);<a name="line.92"></a>
+<span class="sourceLineNo">093</span>            } else {<a name="line.93"></a>
+<span class="sourceLineNo">094</span>                result = registerSingleType(json);<a name="line.94"></a>
+<span class="sourceLineNo">095</span>            }<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        }<a name="line.96"></a>
+<span class="sourceLineNo">097</span>        if (json.startsWith("[")) {<a name="line.97"></a>
+<span class="sourceLineNo">098</span>            result = registerMultipleTypes(json);<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        }<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        return result;<a name="line.100"></a>
+<span class="sourceLineNo">101</span>    }<a name="line.101"></a>
+<span class="sourceLineNo">102</span>    <a name="line.102"></a>
+<span class="sourceLineNo">103</span>    private ResponseEntity&lt;?&gt; linkSchema(String json) {<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        String id = classRegistryService.linkSchema(new JSONObject(json)).getName();<a name="line.104"></a>
+<span class="sourceLineNo">105</span>        String message = String.format("JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!", id);<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        log.info(message);<a name="line.106"></a>
+<span class="sourceLineNo">107</span>        return ResponseEntity.ok(message);<a name="line.107"></a>
+<span class="sourceLineNo">108</span>    }<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    <a name="line.109"></a>
+<span class="sourceLineNo">110</span>    private ResponseEntity&lt;?&gt; unlinkSchema(String type) {<a name="line.110"></a>
+<span class="sourceLineNo">111</span>        classRegistryService.unlinkSchema(type);<a name="line.111"></a>
+<span class="sourceLineNo">112</span>        String message = String.format("JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!", type);<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        log.info(message);<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        return ResponseEntity.ok(message);<a name="line.114"></a>
+<span class="sourceLineNo">115</span>    }<a name="line.115"></a>
+<span class="sourceLineNo">116</span>    <a name="line.116"></a>
+<span class="sourceLineNo">117</span>    private ResponseEntity&lt;?&gt; registerSingleType(String json) {<a name="line.117"></a>
+<span class="sourceLineNo">118</span>        String type = classRegistryService.register(new JSONObject(json));<a name="line.118"></a>
+<span class="sourceLineNo">119</span>        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();<a name="line.119"></a>
+<span class="sourceLineNo">120</span>        log.info("Type [{}] successfully registered!", type);<a name="line.120"></a>
+<span class="sourceLineNo">121</span>        return ResponseEntity.created(ucb.path("/register/{type}").buildAndExpand(type).toUri()).build();<a name="line.121"></a>
+<span class="sourceLineNo">122</span>    }<a name="line.122"></a>
+<span class="sourceLineNo">123</span>    <a name="line.123"></a>
+<span class="sourceLineNo">124</span>    private ResponseEntity&lt;?&gt; registerMultipleTypes(String json) {<a name="line.124"></a>
+<span class="sourceLineNo">125</span>        JSONArray jsonArray = new JSONArray(json);<a name="line.125"></a>
+<span class="sourceLineNo">126</span>        Assert.isTrue(jsonArray.length() &lt;= batchSize, String.format("The total number of entries in a request must not exceed %d! The number of entries in your registration request was [%d].", batchSize, jsonArray.length()));<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        JSONObject jsonObject = null;<a name="line.127"></a>
+<span class="sourceLineNo">128</span>        String type = null;<a name="line.128"></a>
+<span class="sourceLineNo">129</span>        HttpHeaders headers = new HttpHeaders();<a name="line.129"></a>
+<span class="sourceLineNo">130</span>        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();<a name="line.130"></a>
+<span class="sourceLineNo">131</span>        int numberOfTypesToRegister = jsonArray.length();<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        URI location = null;<a name="line.132"></a>
+<span class="sourceLineNo">133</span>        int errorCount = 0;<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        for (int i = 0; i &lt; numberOfTypesToRegister; i++) {<a name="line.135"></a>
+<span class="sourceLineNo">136</span>            jsonObject = jsonArray.getJSONObject(i);<a name="line.136"></a>
+<span class="sourceLineNo">137</span>            try {<a name="line.137"></a>
+<span class="sourceLineNo">138</span>                type = classRegistryService.register(jsonObject);<a name="line.138"></a>
+<span class="sourceLineNo">139</span>                location = ucb.path("/register/{type}").buildAndExpand(type).toUri();<a name="line.139"></a>
+<span class="sourceLineNo">140</span>                if (numberOfTypesToRegister == 1) {<a name="line.140"></a>
+<span class="sourceLineNo">141</span>                    headers.setLocation(location); <a name="line.141"></a>
+<span class="sourceLineNo">142</span>                } else {<a name="line.142"></a>
+<span class="sourceLineNo">143</span>                    headers.set(String.format("Location[%s]",String.valueOf(i+1)), location.toASCIIString());<a name="line.143"></a>
+<span class="sourceLineNo">144</span>                }<a name="line.144"></a>
+<span class="sourceLineNo">145</span>                log.info("Type [{}] successfully registered!", type);<a name="line.145"></a>
+<span class="sourceLineNo">146</span>            } catch (Exception e) {<a name="line.146"></a>
+<span class="sourceLineNo">147</span>                String message = LogUtil.toLog(jsonObject, String.format("Problems registering type! Portion of payload @ index[%d]\n", i+1));<a name="line.147"></a>
+<span class="sourceLineNo">148</span>                log.error(message, e);<a name="line.148"></a>
+<span class="sourceLineNo">149</span>                if (numberOfTypesToRegister == 1) {<a name="line.149"></a>
+<span class="sourceLineNo">150</span>                    throw e;<a name="line.150"></a>
+<span class="sourceLineNo">151</span>                }<a name="line.151"></a>
+<span class="sourceLineNo">152</span>                headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());<a name="line.152"></a>
+<span class="sourceLineNo">153</span>                errorCount++;<a name="line.153"></a>
+<span class="sourceLineNo">154</span>            }<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        }<a name="line.155"></a>
+<span class="sourceLineNo">156</span>        HttpStatus status = (errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED;<a name="line.156"></a>
+<span class="sourceLineNo">157</span>        return new ResponseEntity&lt;&gt;(headers, status);<a name="line.157"></a>
+<span class="sourceLineNo">158</span>    }<a name="line.158"></a>
+<span class="sourceLineNo">159</span>    <a name="line.159"></a>
+<span class="sourceLineNo">160</span>    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")<a name="line.160"></a>
+<span class="sourceLineNo">161</span>    @RequestMapping(value = "/{type}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)<a name="line.161"></a>
+<span class="sourceLineNo">162</span>    @ApiOperation(httpMethod = "DELETE", notes = "Delete the registered type.", value = "/register/{type}")<a name="line.162"></a>
+<span class="sourceLineNo">163</span>    @ApiResponses(value = { <a name="line.163"></a>
+<span class="sourceLineNo">164</span>            @ApiResponse(code = 204, message = "Successfully deleted a registered type."),<a name="line.164"></a>
+<span class="sourceLineNo">165</span>            @ApiResponse(code = 400, message = "Bad request."),<a name="line.165"></a>
+<span class="sourceLineNo">166</span>            @ApiResponse(code = 500, message = "Internal server error.")<a name="line.166"></a>
+<span class="sourceLineNo">167</span>            })<a name="line.167"></a>
+<span class="sourceLineNo">168</span>    public ResponseEntity&lt;?&gt; delete(<a name="line.168"></a>
+<span class="sourceLineNo">169</span>            @ApiParam(value = "Type name", required = true)<a name="line.169"></a>
+<span class="sourceLineNo">170</span>            @PathVariable("type") String type) {<a name="line.170"></a>
+<span class="sourceLineNo">171</span>        classRegistryService.deregister(type);<a name="line.171"></a>
+<span class="sourceLineNo">172</span>        log.info("Type [{}] successfully deregistered!", type);<a name="line.172"></a>
+<span class="sourceLineNo">173</span>        return ResponseEntity.noContent().build();<a name="line.173"></a>
+<span class="sourceLineNo">174</span>    }<a name="line.174"></a>
+<span class="sourceLineNo">175</span>    <a name="line.175"></a>
+<span class="sourceLineNo">176</span>    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")<a name="line.176"></a>
+<span class="sourceLineNo">177</span>    @RequestMapping(value = "/{type}", produces = MediaType.APPLICATION_JSON_VALUE)<a name="line.177"></a>
+<span class="sourceLineNo">178</span>    @ApiOperation(httpMethod = "GET", notes = "Retrieve the registered type.", value = "/register/{type}")<a name="line.178"></a>
+<span class="sourceLineNo">179</span>    @ApiResponses(value = { <a name="line.179"></a>
+<span class="sourceLineNo">180</span>            @ApiResponse(code = 200, message = "Successfully retrieved a registered type."),<a name="line.180"></a>
+<span class="sourceLineNo">181</span>            @ApiResponse(code = 400, message = "Bad request."),<a name="line.181"></a>
+<span class="sourceLineNo">182</span>            @ApiResponse(code = 500, message = "Internal server error.")<a name="line.182"></a>
+<span class="sourceLineNo">183</span>            })<a name="line.183"></a>
+<span class="sourceLineNo">184</span>    public ResponseEntity&lt;?&gt; get(<a name="line.184"></a>
+<span class="sourceLineNo">185</span>            @ApiParam(value = "Type name", required = true)<a name="line.185"></a>
+<span class="sourceLineNo">186</span>            @PathVariable("type") String type) {<a name="line.186"></a>
+<span class="sourceLineNo">187</span>        JSONObject payload = classRegistryService.get(type);<a name="line.187"></a>
+<span class="sourceLineNo">188</span>        String message = LogUtil.toLog(payload, String.format("Successfully retrieved type [%s]\n", type));<a name="line.188"></a>
+<span class="sourceLineNo">189</span>        log.info(message);<a name="line.189"></a>
+<span class="sourceLineNo">190</span>        return ResponseEntity.ok(payload.toString());<a name="line.190"></a>
+<span class="sourceLineNo">191</span>    }<a name="line.191"></a>
+<span class="sourceLineNo">192</span>    <a name="line.192"></a>
+<span class="sourceLineNo">193</span>    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")<a name="line.193"></a>
+<span class="sourceLineNo">194</span>    @RequestMapping(value = "/{type}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)<a name="line.194"></a>
+<span class="sourceLineNo">195</span>    @ApiOperation(httpMethod = "PUT", notes = "Unlink JSON Schema from type.", value = "/register/{type}")<a name="line.195"></a>
+<span class="sourceLineNo">196</span>    @ApiResponses(value = { <a name="line.196"></a>
+<span class="sourceLineNo">197</span>            @ApiResponse(code = 200, message = "Unlinked JSON Schema from type."),<a name="line.197"></a>
+<span class="sourceLineNo">198</span>            @ApiResponse(code = 400, message = "Bad request."),<a name="line.198"></a>
+<span class="sourceLineNo">199</span>            @ApiResponse(code = 500, message = "Internal server error.")<a name="line.199"></a>
+<span class="sourceLineNo">200</span>            })<a name="line.200"></a>
+<span class="sourceLineNo">201</span>    public ResponseEntity&lt;?&gt; unlinkSchema(<a name="line.201"></a>
+<span class="sourceLineNo">202</span>            @ApiParam(value = "Type name", required = true)<a name="line.202"></a>
+<span class="sourceLineNo">203</span>            @PathVariable("type") String type, <a name="line.203"></a>
+<span class="sourceLineNo">204</span>            @ApiParam(value = "Unlink JSON Schema from registered type?", required = true)<a name="line.204"></a>
+<span class="sourceLineNo">205</span>            @RequestParam("unlinkSchema") String unlinkSchema) {<a name="line.205"></a>
+<span class="sourceLineNo">206</span>        return unlinkSchema(type);<a name="line.206"></a>
+<span class="sourceLineNo">207</span>    }<a name="line.207"></a>
+<span class="sourceLineNo">208</span>    <a name="line.208"></a>
+<span class="sourceLineNo">209</span>    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")<a name="line.209"></a>
+<span class="sourceLineNo">210</span>    @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)<a name="line.210"></a>
+<span class="sourceLineNo">211</span>    @ApiOperation(httpMethod = "GET", notes = "All registered types.", value = "/register?showAll")<a name="line.211"></a>
+<span class="sourceLineNo">212</span>    @ApiResponses(value = { <a name="line.212"></a>
+<span class="sourceLineNo">213</span>            @ApiResponse(code = 200, message = "List all registered types."),<a name="line.213"></a>
+<span class="sourceLineNo">214</span>            @ApiResponse(code = 400, message = "Bad request."),<a name="line.214"></a>
+<span class="sourceLineNo">215</span>            @ApiResponse(code = 500, message = "Internal server error.")<a name="line.215"></a>
+<span class="sourceLineNo">216</span>            })<a name="line.216"></a>
+<span class="sourceLineNo">217</span>    public ResponseEntity&lt;?&gt; all(<a name="line.217"></a>
+<span class="sourceLineNo">218</span>            @ApiParam(value = "Show all registered types?", required = true)<a name="line.218"></a>
+<span class="sourceLineNo">219</span>            @RequestParam(value = "showAll", required = true) String showAll) {<a name="line.219"></a>
+<span class="sourceLineNo">220</span>        JSONArray payload = classRegistryService.all();<a name="line.220"></a>
+<span class="sourceLineNo">221</span>        return ResponseEntity.ok(payload.toString());<a name="line.221"></a>
+<span class="sourceLineNo">222</span>    }<a name="line.222"></a>
+<span class="sourceLineNo">223</span>        <a name="line.223"></a>
+<span class="sourceLineNo">224</span>}<a name="line.224"></a>
 
 
 

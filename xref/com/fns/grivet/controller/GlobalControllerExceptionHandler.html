@@ -44,17 +44,23 @@
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Logger log = LoggerFactory.getLogger(getClass());
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>      
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      @ExceptionHandler({ IOException.<strong class="jxr_keyword">class</strong>, IllegalArgumentException.<strong class="jxr_keyword">class</strong>, DataAccessException.<strong class="jxr_keyword">class</strong>, DateTimeParseException.<strong class="jxr_keyword">class</strong>, NumberFormatException.<strong class="jxr_keyword">class</strong>, JSONException.<strong class="jxr_keyword">class</strong>, SQLException.<strong class="jxr_keyword">class</strong>, SchemaValidationException.<strong class="jxr_keyword">class</strong> })
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">protected</strong> ResponseEntity&lt;?&gt; badRequest(Exception e, HttpServletRequest hsr) {
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>          String queryString = hsr.getQueryString();
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>          <strong class="jxr_keyword">if</strong> (queryString != <strong class="jxr_keyword">null</strong> &amp;&amp; !queryString.isEmpty()) {
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>              log.error(String.format(<span class="jxr_string">"Request\n-- Method: %s\n-- URI: %s\n-- Query string: %s\n-- Error: %s"</span>, hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(), e.getMessage()));
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>              log.error(String.format(<span class="jxr_string">"Request\n-- Method: %s\n-- Request URI: %s\n-- Error: %s"</span>, hsr.getMethod(), hsr.getRequestURI(), e.getMessage()));
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>          }
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">return</strong> ResponseEntity.badRequest().body(String.format(<span class="jxr_string">"Error: %s"</span>, e.getMessage()));
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      }
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>  }
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      @ExceptionHandler({ 
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>          IOException.<strong class="jxr_keyword">class</strong>, IllegalArgumentException.<strong class="jxr_keyword">class</strong>, DataAccessException.<strong class="jxr_keyword">class</strong>, 
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>          DateTimeParseException.<strong class="jxr_keyword">class</strong>, NumberFormatException.<strong class="jxr_keyword">class</strong>, JSONException.<strong class="jxr_keyword">class</strong>, 
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>          SQLException.<strong class="jxr_keyword">class</strong>, SchemaValidationException.<strong class="jxr_keyword">class</strong> 
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      })
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">protected</strong> ResponseEntity&lt;?&gt; badRequest(Exception e, HttpServletRequest hsr) {
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>          String queryString = hsr.getQueryString();
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          <strong class="jxr_keyword">if</strong> (queryString != <strong class="jxr_keyword">null</strong> &amp;&amp; !queryString.isEmpty()) {
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>              log.error(String.format(<span class="jxr_string">"Request\n-- Method: %s\n-- URI: %s\n-- Query string: %s\n-- Error: %s"</span>, 
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>                      hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(), e.getMessage()));
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>              log.error(String.format(<span class="jxr_string">"Request\n-- Method: %s\n-- Request URI: %s\n-- Error: %s"</span>, 
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>                      hsr.getMethod(), hsr.getRequestURI(), e.getMessage()));
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          }
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">return</strong> ResponseEntity.badRequest().body(String.format(<span class="jxr_string">"Error: %s"</span>, e.getMessage()));
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      }
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2015 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
