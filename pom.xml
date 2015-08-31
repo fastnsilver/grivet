@@ -81,6 +81,7 @@
         <!-- Maven -->
         <apiviz.version>1.3.2.GA</apiviz.version>
         <asciidoctor-maven-plugin.version>1.5.2</asciidoctor-maven-plugin.version>
+        <coveralls-maven-plugin.version>4.0.0</coveralls-maven-plugin.version>
         <docker-maven-plugin.version>0.13.3</docker-maven-plugin.version>
         <downloads-maven-plugin.version>0.6</downloads-maven-plugin.version>
         <doxia-module-markdown.version>1.6</doxia-module-markdown.version>
@@ -703,6 +704,19 @@
                     </plugin>
                 </plugins>
             </reporting>
+        </profile>
+        
+        <profile>
+        	<id>with-coverage-report</id>
+        	<build>
+        		<plugins>
+        			<plugin>
+					    <groupId>org.eluder.coveralls</groupId>
+					    <artifactId>coveralls-maven-plugin</artifactId>
+					    <version>${coveralls-maven-plugin.version}</version>
+					</plugin>
+        		</plugins>
+        	</build>
         </profile>
     </profiles>
 </project>
