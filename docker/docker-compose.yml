@@ -26,9 +26,17 @@ gateway:
   ports:
    - "10000:10000"
   links:
+   - bootadmin
    - discovery
    - config
    - grivet
+bootadmin:
+  image: fastnsilver/grivet-boot-admin
+  ports:
+   - "5555:5555"
+  links:
+   - discovery
+   - config
 grivet:
   image: fastnsilver/grivet
   links:

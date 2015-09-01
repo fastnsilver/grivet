@@ -38,6 +38,16 @@
             <artifactId>spring-boot-admin-server-ui</artifactId>
             <version>${spring-boot-admin.version}</version>
         </dependency>
+        <dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+		
+		<!-- Jolokia -->
+    	<dependency>
+			<groupId>org.jolokia</groupId>
+			<artifactId>jolokia-core</artifactId>
+		</dependency>
     </dependencies>
 
     

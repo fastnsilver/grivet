@@ -49,6 +49,12 @@
         	<artifactId>spring-boot-configuration-processor</artifactId>
         	<optional>true</optional>
         </dependency>
+        
+        <!-- Jolokia -->
+    	<dependency>
+			<groupId>org.jolokia</groupId>
+			<artifactId>jolokia-core</artifactId>
+		</dependency>
     </dependencies>
 
     <dependencyManagement>

@@ -89,12 +89,24 @@
 			<scope>provided</scope>
 		</dependency>
 		
+		<!-- Spring Cloud -->
+		<dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+		
 		<!-- Connection Pooling -->
 		<dependency>
   			<groupId>com.zaxxer</groupId>
   			<artifactId>HikariCP</artifactId>
 		</dependency>
     	
+    	<!-- Jolokia -->
+    	<dependency>
+			<groupId>org.jolokia</groupId>
+			<artifactId>jolokia-core</artifactId>
+		</dependency>
+
     	<!-- JSON -->
 		<dependency>
 			<groupId>org.json</groupId>
