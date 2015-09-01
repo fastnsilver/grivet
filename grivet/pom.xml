@@ -101,12 +101,6 @@
   			<artifactId>HikariCP</artifactId>
 		</dependency>
     	
-    	<!-- Jolokia -->
-    	<dependency>
-			<groupId>org.jolokia</groupId>
-			<artifactId>jolokia-core</artifactId>
-		</dependency>
-
     	<!-- JSON -->
 		<dependency>
 			<groupId>org.json</groupId>

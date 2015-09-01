@@ -20,6 +20,7 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Switch to [Travis-CI](https://travis-ci.org/) plus [Coveralls](https://coveralls.io) for continuous integration and code coverage reports respectively
 - [x] Re-org project structure; introduce [Spring Cloud](http://projects.spring.io/spring-cloud/) and [Netflix OSS](http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html) to provide cloud-native infrastructure
 - [ ] Docker [Compose](https://docs.docker.com/compose/); launch variant Docker image(s) sharing a single data-store (e.g., [MySQL](https://www.mysql.com/))
+- [ ] Add Elasticsearch, Logstash, and Kibana for log management
 - [x] Spring Boot [Admin](https://github.com/codecentric/spring-boot-admin#spring-boot-admin) available
 - [x] Upgrade to [HikariCP](http://brettwooldridge.github.io/HikariCP/) for connection pooling
 - [ ] Introduce OAuth2/SSO security
