@@ -3,4 +3,4 @@ spring:
     name: grivet-consul
   cloud:
     consul:
-        host: consulagent
+        host: localhost

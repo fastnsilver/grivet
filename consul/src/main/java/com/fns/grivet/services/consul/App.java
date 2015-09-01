@@ -16,7 +16,8 @@
 
 package com.fns.grivet.services.consul;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.bus.jackson.SubtypeModule;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -91,11 +91,6 @@ public class App implements ApplicationListener<SimpleRemoteEvent> {
 	@RequestMapping("/prop")
 	public String prop() {
 		return sampleProperties().getProp();
-	}
-
-	@Bean
-	public SubtypeModule sampleSubtypeModule() {
-		return new SubtypeModule(SimpleRemoteEvent.class);
 	}
 
 	@Bean

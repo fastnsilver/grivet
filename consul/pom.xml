@@ -24,6 +24,14 @@
     </properties>
     
     <dependencies>
+    	<dependency>
+		  	<groupId>com.ecwid.consul</groupId>
+		  	<artifactId>consul-api</artifactId>
+		</dependency>
+		<dependency>
+		  	<groupId>joda-time</groupId>
+		  	<artifactId>joda-time</artifactId>
+		</dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-consul-config</artifactId>
@@ -35,6 +43,10 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-consul-bus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-bus</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -57,18 +69,6 @@
 		</dependency>
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-consul</artifactId>
-                <version>1.0.0.M1</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    
     <build>
         <plugins>
             <plugin>
