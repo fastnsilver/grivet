@@ -5,6 +5,7 @@
 
     <jmxConfigurator/>
 
+	<logger name="de.codecentric.boot.admin" level="DEBUG" /> 
 	<logger name="com.fns.grivet" level="ERROR" />
 	    
 </configuration>

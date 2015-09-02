@@ -28,7 +28,7 @@
 		<json-schema-validator.version>2.2.6</json-schema-validator.version>
 		<jsr305.version>3.0.0</jsr305.version>
 		<rest-assured.version>2.5.0</rest-assured.version>
-		<spring-data-releasetrain.version>Gosling-RC1</spring-data-releasetrain.version>
+		<spring-data-releasetrain.version>Gosling-RELEASE</spring-data-releasetrain.version>
 		<springfox.version>2.1.2</springfox.version>
 		<swagger2markup.version>0.7.1</swagger2markup.version>
         
@@ -46,10 +46,6 @@
 		</dependency>
 		
 		<!-- Spring Boot -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -74,15 +70,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-integration</artifactId>
 		</dependency>
-		<dependency>
-        	<groupId>org.springframework.boot</groupId>
-        	<artifactId>spring-boot-devtools</artifactId>
-    	</dependency>
-    	<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
     	<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
@@ -90,6 +77,10 @@
 		</dependency>
 		
 		<!-- Spring Cloud -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-client</artifactId>
+		</dependency>
 		<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka</artifactId>

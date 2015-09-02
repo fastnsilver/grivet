@@ -1,6 +1,3 @@
 spring:
   application:
     name: grivet-consul
-  cloud:
-    consul:
-        host: localhost

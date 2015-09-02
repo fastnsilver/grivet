@@ -18,6 +18,11 @@ endpoints:
 spring:
   profiles:
     active: h2,insecure
+  cloud:
+    config:
+      discovery:
+        enabled: false
+      enabled: false
   jpa:
     hibernate:
       ddl-auto: none
@@ -31,12 +36,11 @@ flyway:
  
 eureka:
   instance:
-    lease-renewal-interval-in-seconds: 5
     metadata-map:
       instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     service-url:
-        defaultZone: http://localhost:8761/eureka/  
+      defaultZone: http://localhost:8761/eureka/
         
 ---
 
