@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015 - Chris Phillipson
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.fns.grivet.service;
 
 import java.io.IOException;
@@ -30,9 +45,11 @@ class SchemaValidator {
     public ProcessingReport validate(String type, JSONObject payload) throws SchemaValidationException {
         try {
             JsonSchemaFactory factory = JsonSchemaFactory.byDefault();
-            com.fns.grivet.model.Class c = classRepository.findByName(type);
             Assert.notNull(type, String.format("Type [%s] does exist! Schema cannot be retrieved!", type));
+            com.fns.grivet.model.Class c = classRepository.findByName(type);
+            Assert.notNull(c, String.format("Persistent model for type [%s], does not exist", type));
             JsonNode schemaAsJsonNode = objectMapper.readTree(c.getJsonSchema());
+            Assert.notNull(schemaAsJsonNode);
             final JsonSchema schema = factory.getJsonSchema(schemaAsJsonNode);
             JsonNode instance = objectMapper.readTree(payload.toString());
             Assert.notNull(schema, String.format("Schema not found for type [%s]!", type));

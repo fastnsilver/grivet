@@ -97,6 +97,17 @@ public class EntityServiceTest {
         Assert.assertNull(c.getJsonSchema());
     }
     
+    @Test(expected = IllegalArgumentException.class)
+    public void testTypeNotRegistered() throws IOException {
+        JSONObject payload = new JSONObject();
+        entityService.create("TestType2", payload);
+    }
+    
+    @Test(expected = NullPointerException.class) 
+    public void testTypePayloadIsNull() {
+        entityService.create("TestType", null);
+    }
+    
     @After
     public void tearDown() {
         classRegistryService.deregister("TestType");
