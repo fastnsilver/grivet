@@ -24,7 +24,7 @@
 		<guava.version>18.0</guava.version>
 		<hikaricp.version>2.4.0</hikaricp.version>
 		<json.version>20141113</json.version>
-		<json-unit.version>1.5.5</json-unit.version>
+		<json-unit.version>1.6.1</json-unit.version>
 		<json-schema-validator.version>2.2.6</json-schema-validator.version>
 		<jsr305.version>3.0.0</jsr305.version>
 		<rest-assured.version>2.5.0</rest-assured.version>

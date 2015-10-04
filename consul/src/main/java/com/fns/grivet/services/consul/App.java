@@ -31,7 +31,6 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.consul.bus.SimpleRemoteEvent;
-import org.springframework.cloud.ui.EnableConsulUi;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -43,7 +42,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableConsulUi
 @RestController
 @EnableConfigurationProperties
 @Slf4j
