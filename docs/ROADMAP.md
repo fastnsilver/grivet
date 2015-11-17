@@ -27,7 +27,7 @@ This project will remain humble in its design and has no aspirations to match th
 - [ ] Enable HTTPS 
 - [x] Define roles to limit access to administrators for registering new types and queries
 - [ ] All writes are audited (User is associated with record)
-- [ ] Fix date/time handling flaw
+- [x] Fix date/time handling flaw
 
 ## 0.2.0
 
