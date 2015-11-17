@@ -17,9 +17,10 @@ package com.fns.grivet.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Assert;
@@ -38,6 +39,7 @@ import org.springframework.util.MultiValueMap;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fns.grivet.TestInit;
 import com.fns.grivet.query.NamedQuery;
+import com.jayway.restassured.path.json.JsonPath;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -73,8 +75,9 @@ private final PathMatchingResourcePatternResolver resolver = new PathMatchingRes
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("createdTime", LocalDateTime.now().plusDays(1).toString());
         String result = namedQueryService.get("getAttributesCreatedBefore", params);
-        JSONArray arrResult = new JSONArray(result);
-        Assert.assertTrue("Result should contain 7 attributes", arrResult.length() == 7);
+        String[] expected = { "bigint", "varchar", "decimal", "datetime", "int", "text", "json" };
+        List<String> actual = JsonPath.given(result).getList("name");
+        Assert.assertTrue(actual.containsAll(Arrays.asList(expected)));
     }
     
     @Test(expected=IllegalArgumentException.class)

@@ -17,13 +17,13 @@ package com.fns.grivet.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,16 +50,16 @@ public class EntityServiceTest {
     @Autowired
     private EntityService entityService;
     
-    @Before
-    public void setUp() throws IOException {
-        Resource r = resolver.getResource("classpath:TestType.json");
+    protected void registerType(String type) throws IOException {
+        Resource r = resolver.getResource(String.format("classpath:%s.json", type));
         String json = FileUtils.readFileToString(r.getFile());
         JSONObject payload = new JSONObject(json);
         classRegistryService.register(payload);
     }
-    
+        
     @Test
     public void testCreateThenFindByType() throws IOException {
+        registerType("TestType");
         Resource r = resolver.getResource("classpath:TestTypeData.json");
         String json = FileUtils.readFileToString(r.getFile());
         JSONObject payload = new JSONObject(json);
@@ -72,7 +72,22 @@ public class EntityServiceTest {
     }
     
     @Test
+    public void testCreateThenFindByType_variant() throws IOException {
+        registerType("TestType2");
+        Resource r = resolver.getResource("classpath:TestTypeData2.json");
+        String json = FileUtils.readFileToString(r.getFile());
+        JSONObject payload = new JSONObject(json);
+        
+        entityService.create("TestType2", payload);
+        
+        String result = entityService.findByCreatedTime("TestType2", LocalDateTime.now().minusSeconds(3), LocalDateTime.now(), null);
+        JSONArray resultAsJsonArray = new JSONArray(result);
+        JsonAssert.assertJsonEquals(payload.toString(), resultAsJsonArray.get(0).toString());
+    }
+    
+    @Test
     public void testSchemaLinkAndValidationSuccessThenUnlink() throws IOException {
+        registerType("TestType");
         Resource r = resolver.getResource("classpath:TestTypeSchema.json");
         String jsonSchema = FileUtils.readFileToString(r.getFile());
         JSONObject schemaObj = new JSONObject(jsonSchema);
@@ -100,17 +115,19 @@ public class EntityServiceTest {
     @Test(expected = IllegalArgumentException.class)
     public void testTypeNotRegistered() throws IOException {
         JSONObject payload = new JSONObject();
-        entityService.create("TestType2", payload);
+        entityService.create("TestType", payload);
     }
     
     @Test(expected = NullPointerException.class) 
-    public void testTypePayloadIsNull() {
+    public void testTypePayloadIsNull() throws IOException {
+        registerType("TestType");
         entityService.create("TestType", null);
     }
     
     @After
     public void tearDown() {
-        classRegistryService.deregister("TestType");
+        String[] types = { "TestType", "TestType2" };
+        Arrays.stream(types).forEach(type -> classRegistryService.deregister(type));
     }
 
 }

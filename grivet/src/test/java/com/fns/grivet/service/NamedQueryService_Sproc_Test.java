@@ -18,9 +18,10 @@ package com.fns.grivet.service;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Assert;
@@ -40,6 +41,7 @@ import org.springframework.util.MultiValueMap;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fns.grivet.TestInit;
 import com.fns.grivet.query.NamedQuery;
+import com.jayway.restassured.path.json.JsonPath;
 
 @WebAppConfiguration
 @ActiveProfiles(value={"hsqldb"})
@@ -77,8 +79,10 @@ private final PathMatchingResourcePatternResolver resolver = new PathMatchingRes
         Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
         params.add("createdTime", tomorrow);
         String result = namedQueryService.get("sproc.getAttributesCreatedBefore", params);
-        JSONArray arrResult = new JSONArray(result);
-        Assert.assertTrue("Result should contain 7 attributes", arrResult.length() == 7);
+        String[] expected = { "bigint", "varchar", "decimal", "datetime", "int", "text", "json" };
+        List<String> actual = JsonPath.given(result).getList("NAME");
+        Assert.assertTrue("Result should contain 7 attributes", actual.size() == 7);
+        Assert.assertTrue(actual.containsAll(Arrays.asList(expected)));
     }
     
     @Test(expected=IllegalArgumentException.class)
