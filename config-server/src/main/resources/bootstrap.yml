@@ -1,3 +1,12 @@
+server:
+  port: 8888
+
 spring:
   application:
-    name: grivet-configserver
+    name: @project.artifactId@
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/fastnsilver/spring-boot-microservice-config

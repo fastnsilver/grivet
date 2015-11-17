@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import com.google.common.base.Objects;
+
 @MappedSuperclass
 public abstract class Audited implements Auditable<Integer>{
 
@@ -116,6 +118,24 @@ public abstract class Audited implements Auditable<Integer>{
     @Override
     public void setUpdatedTime(LocalDateTime updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(createdBy, updatedBy, createdTime, updatedTime);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Audited) {
+            Audited that = (Audited) object;
+            return 
+                    Objects.equal(this.createdBy, that.createdBy) 
+                    && Objects.equal(this.updatedBy, that.updatedBy)
+                    && Objects.equal(this.createdTime, that.createdTime)
+                    && Objects.equal(this.updatedTime, that.updatedTime);
+        }
+        return false;
     }
     
 }

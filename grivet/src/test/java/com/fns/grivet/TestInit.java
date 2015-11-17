@@ -13,16 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fns.grivet.services.gateway;
+package com.fns.grivet;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
+/**
+ * Bootstraps the application
+ * 
+ * @author Chris Phillipson
+ */
 @SpringBootApplication
-@EnableZuulProxy
-public class App {
-	public static void main(String[] args) {
-		SpringApplication.run(App.class, args);
-	}
+public class TestInit {
+    
+    public static void main(String[] args) {
+        SpringApplication.run(TestInit.class, args);
+    }
+
 }

@@ -1,6 +1,9 @@
+server:
+  port: 8080
+  
 spring:
   application:
-    name: grivet-api-gateway
+    name: @project.artifactId@
         
 encrypt:
   fail-on-error: false

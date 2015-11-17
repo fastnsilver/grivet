@@ -6,7 +6,7 @@
 		"bigint": "bigint",
 		"varchar": "varchar",
 		"decimal": "decimal",
-		"datetime": "datetime",
+		"datetime": "iso_instant",
 		"int": "int",
 		"text": "text",
 		"json": "json"

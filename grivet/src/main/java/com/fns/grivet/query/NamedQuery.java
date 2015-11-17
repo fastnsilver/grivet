@@ -37,9 +37,6 @@ import javax.persistence.MapKeyColumn;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.util.CollectionUtils;
@@ -52,6 +49,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.Audited;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
@@ -188,24 +187,28 @@ public class NamedQuery extends Audited {
     
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        return MoreObjects.toStringHelper(this).omitNullValues().toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().appendSuper(super.hashCode()).append(id).append(name).append(type).append(query).append(params).toHashCode();
+        return Objects.hashCode(super.hashCode(), id, name, type, query, params);
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
+    public boolean equals(Object object) {
+        if (object instanceof NamedQuery) {
+            if (!super.equals(object))
+                return false;
+            NamedQuery that = (NamedQuery) object;
+            return 
+                    Objects.equal(this.id, that.id) 
+                    && Objects.equal(this.name, that.name)
+                    && Objects.equal(this.type, that.type) 
+                    && Objects.equal(this.query, that.query)
+                    && Objects.equal(this.params, that.params);
         }
-        if ((other instanceof NamedQuery) == false) {
-            return false;
-        }
-        NamedQuery rhs = ((NamedQuery) other);
-        return new EqualsBuilder().appendSuper(true).append(id, rhs.id).append(name, rhs.name).append(type, rhs.type).append(query, rhs.query).append(params, rhs.params).isEquals();
+        return false;
     }
 
 }

@@ -45,7 +45,7 @@ class SchemaValidator {
     public ProcessingReport validate(String type, JSONObject payload) throws SchemaValidationException {
         try {
             JsonSchemaFactory factory = JsonSchemaFactory.byDefault();
-            Assert.notNull(type, String.format("Type [%s] does exist! Schema cannot be retrieved!", type));
+            Assert.notNull(type, String.format("Type [%s] does not exist! Schema cannot be retrieved!", type));
             com.fns.grivet.model.Class c = classRepository.findByName(type);
             Assert.notNull(c, String.format("Persistent model for type [%s], does not exist", type));
             JsonNode schemaAsJsonNode = objectMapper.readTree(c.getJsonSchema());

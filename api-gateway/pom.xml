@@ -20,7 +20,7 @@
     <properties>
         <!-- Docker -->
         <apigw.image>fastnsilver/${project.artifactId}:${project.version}</apigw.image>
-        <apigw.port>10000</apigw.port>
+        <apigw.port>8080</apigw.port>
     </properties>
 
     <dependencies>
@@ -28,14 +28,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zuul</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-netflix-sidecar</artifactId>
-        </dependency>
-        <dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-config-client</artifactId>
-		</dependency>       
     </dependencies>
 
     <build>
@@ -68,7 +60,7 @@
                                     <tag>${project.version}</tag>
                                 </tags>
                                 <ports>
-                                    <port>10000</port>
+                                    <port>8080</port>
                                 </ports>
                                 <entryPoint>
                                     <exec>
@@ -88,7 +80,7 @@
                                     <!-- Port mappings: Container internal port (which must be exposed) will be
                                     dynamically mapped and this (random) port will be assigned to the Maven variable
                                     ${apigw.port}. Multiple port mappings can be specified here-->
-                                    <port>apigw.port:10000</port>
+                                    <port>apigw.port:8080</port>
                                 </ports>
                                 <wait>
                                     <!-- The plugin waits until this URL is reachable via HTTP ... -->

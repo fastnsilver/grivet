@@ -19,8 +19,7 @@ import java.io.Serializable;
 
 import javax.annotation.concurrent.Immutable;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import com.google.common.base.Objects;
 
 /**
  * A {@code ClassAttributePK} defines the primary key for an instance of {@link ClassAttribute}.
@@ -62,13 +61,19 @@ public class ClassAttributePK implements Serializable {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(cid).append(aid).append(tid).toHashCode();
+        return Objects.hashCode(cid, aid, tid);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        ClassAttributePK rhs = (ClassAttributePK) obj;
-        return new EqualsBuilder().append(cid, rhs.cid).append(aid, rhs.aid).append(tid, rhs.tid).isEquals();
+    public boolean equals(Object object) {
+        if (object instanceof ClassAttributePK) {
+            ClassAttributePK that = (ClassAttributePK) object;
+            return 
+                    Objects.equal(this.cid, that.cid) 
+                    && Objects.equal(this.aid, that.aid)
+                    && Objects.equal(this.tid, that.tid);
+        }
+        return false;
     }
 
 }

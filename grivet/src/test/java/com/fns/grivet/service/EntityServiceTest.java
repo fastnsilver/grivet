@@ -33,13 +33,13 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.fns.grivet.App;
+import com.fns.grivet.TestInit;
 
 import net.javacrumbs.jsonunit.JsonAssert;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = App.class)
+@SpringApplicationConfiguration(classes = TestInit.class)
 public class EntityServiceTest {
 
     private final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -66,7 +66,7 @@ public class EntityServiceTest {
         
         entityService.create("TestType", payload);
         
-        String result = entityService.get("TestType", LocalDateTime.now().minusSeconds(3), LocalDateTime.now(), null);
+        String result = entityService.findByCreatedTime("TestType", LocalDateTime.now().minusSeconds(3), LocalDateTime.now(), null);
         JSONArray resultAsJsonArray = new JSONArray(result);
         JsonAssert.assertJsonEquals(payload.toString(), resultAsJsonArray.get(0).toString());
     }
@@ -88,7 +88,7 @@ public class EntityServiceTest {
         
         entityService.create("TestType", payload);
         
-        String result = entityService.get("TestType", LocalDateTime.now().minusSeconds(3), LocalDateTime.now(), null);
+        String result = entityService.findByCreatedTime("TestType", LocalDateTime.now().minusSeconds(3), LocalDateTime.now(), null);
         JSONArray resultAsJsonArray = new JSONArray(result);
         JsonAssert.assertJsonEquals(payload.toString(), resultAsJsonArray.get(0).toString());
         
@@ -113,4 +113,5 @@ public class EntityServiceTest {
         classRegistryService.deregister("TestType");
     }
 
+    // TODO Need to author tests for types with iso_date and iso_date_time member variables
 }

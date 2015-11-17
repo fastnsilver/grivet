@@ -21,6 +21,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
+import com.google.common.base.Objects;
+
 /**
  * An {@code Attribute} participates in the definition of a property in a {@link ClassAttribute}.
  * One or more {@code ClassAttribute} may share an {@code Attribute}.
@@ -107,5 +109,26 @@ public class Attribute extends Audited {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(super.hashCode(), id, name, description);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Attribute) {
+            if (!super.equals(object))
+                return false;
+            Attribute that = (Attribute) object;
+            return 
+                    Objects.equal(this.id, that.id) 
+                    && Objects.equal(this.name, that.name)
+                    && Objects.equal(this.description, that.description);
+        }
+        return false;
+    }
+    
+    
     
 }

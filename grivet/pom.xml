@@ -22,19 +22,19 @@
 		<!-- Third-party library versions -->
 		<commons-lang3.version>3.4</commons-lang3.version>
 		<guava.version>18.0</guava.version>
-		<hikaricp.version>2.4.0</hikaricp.version>
-		<json.version>20141113</json.version>
+		<hikaricp.version>2.4.2</hikaricp.version>
+		<json.version>20150729</json.version>
 		<json-unit.version>1.6.1</json-unit.version>
 		<json-schema-validator.version>2.2.6</json-schema-validator.version>
 		<jsr305.version>3.0.0</jsr305.version>
-		<rest-assured.version>2.5.0</rest-assured.version>
+		<rest-assured.version>2.7.0</rest-assured.version>
 		<spring-data-releasetrain.version>Gosling-RELEASE</spring-data-releasetrain.version>
 		<springfox.version>2.1.2</springfox.version>
 		<swagger2markup.version>0.7.1</swagger2markup.version>
         
         <!-- Docker -->
         <grivet.image>fastnsilver/${project.artifactId}:${project.version}</grivet.image>
-        <grivet.port>8080</grivet.port>
+        <grivet.port>8081</grivet.port>
 	</properties>
 
 	<dependencies>
@@ -213,7 +213,7 @@
 									<tag>${project.version}</tag>
 								</tags>
 								<ports>
-									<port>8080</port>
+									<port>8081</port>
 								</ports>
 								<entryPoint>
 									<exec>
@@ -233,7 +233,7 @@
 				                  	<!-- Port mappings: Container internal port (which must be exposed) will be
 				                 	dynamically mapped and this (random) port will be assigned to the Maven variable
 				                 	${grivet.port}. Multiple port mappings can be specified here-->
-				                  	<port>grivet.port:8080</port>
+				                  	<port>grivet.port:8081</port>
 				                </ports>
 				                <wait>
 				                  	<!-- The plugin waits until this URL is reachable via HTTP ... -->

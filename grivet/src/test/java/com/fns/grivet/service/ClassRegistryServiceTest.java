@@ -31,11 +31,11 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.fns.grivet.App;
+import com.fns.grivet.TestInit;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = App.class)
+@SpringApplicationConfiguration(classes = TestInit.class)
 public class ClassRegistryServiceTest {
 
     private final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();

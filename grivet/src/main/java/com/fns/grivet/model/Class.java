@@ -21,6 +21,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
+import com.google.common.base.Objects;
+
 /**
  * A {@code Class} is akin to an abstract base {@link java.lang.Class} 
  * but is constrained to the definition of member variables. A {@code Class} 
@@ -157,5 +159,27 @@ public class Class extends Audited {
     public void setJsonSchema(String jsonSchema) {
         this.jsonSchema = jsonSchema;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(super.hashCode(), id, name, description, validatable, jsonSchema);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Class) {
+            if (!super.equals(object))
+                return false;
+            Class that = (Class) object;
+            return 
+                    Objects.equal(this.id, that.id) 
+                    && Objects.equal(this.name, that.name)
+                    && Objects.equal(this.description, that.description)
+                    && Objects.equal(this.validatable, that.validatable)
+                    && Objects.equal(this.jsonSchema, that.jsonSchema);
+        }
+        return false;
+    }
+    
     
 }

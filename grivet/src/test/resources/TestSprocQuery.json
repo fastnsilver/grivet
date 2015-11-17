@@ -3,6 +3,6 @@
     "type": "SPROC",
     "query": "CALL GET_ATTRIBUTES_CREATED_BEFORE(:createdTime)",
     "params": {
-        "createdTime": "datetime"
+        "createdTime": "iso_instant"
     }
 }

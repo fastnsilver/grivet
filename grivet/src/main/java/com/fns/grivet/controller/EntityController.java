@@ -148,7 +148,7 @@ public class EntityController {
         LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);
         LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);
         Assert.isTrue(ChronoUnit.SECONDS.between(start, end) >= 0, "Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");
-        String result = entityService.get(type, start, end, request.getParameterMap().entrySet());
+        String result = entityService.findByCreatedTime(type, start, end, request.getParameterMap().entrySet());
         return ResponseEntity.ok(result);
     }
     

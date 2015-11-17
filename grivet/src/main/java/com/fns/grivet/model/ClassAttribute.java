@@ -19,6 +19,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 
+import com.google.common.base.Objects;
+
 /**
  * A {@code ClassAttribute} expresses a three-way relationship between a
  * {@link Class#id}, an {@link Attribute#id} and an {@link AttributeType#id}. A
@@ -71,5 +73,25 @@ public class ClassAttribute extends Audited {
     public Integer getTid() {
         return tid;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(super.hashCode(), cid, aid, tid);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof ClassAttribute) {
+            if (!super.equals(object))
+                return false;
+            ClassAttribute that = (ClassAttribute) object;
+            return 
+                    Objects.equal(this.cid, that.cid) 
+                    && Objects.equal(this.aid, that.aid)
+                    && Objects.equal(this.tid, that.tid);
+        }
+        return false;
+    }
+    
     
 }

@@ -33,11 +33,13 @@ public enum AttributeType {
 
     VARCHAR(0, "varchar", Types.VARCHAR),
     TEXT(1, "text", Types.LONGVARCHAR),
-    DATETIME(2, "datetime", Types.TIMESTAMP),
-    INTEGER(3, "int", Types.INTEGER),
-    BIG_INTEGER(4, "bigint", Types.BIGINT),
-    DECIMAL(5, "decimal", Types.DECIMAL),
-    JSON_BLOB(6, "json", Types.LONGVARCHAR);
+    ISO_DATE(2, "iso_date", Types.DATE),
+    ISO_DATETIME(3, "iso_datetime", Types.TIMESTAMP_WITH_TIMEZONE),
+    ISO_INSTANT(4, "iso_instant", Types.TIMESTAMP),
+    INTEGER(5, "int", Types.INTEGER),
+    BIG_INTEGER(6, "bigint", Types.BIGINT),
+    DECIMAL(7, "decimal", Types.DECIMAL),
+    JSON_BLOB(8, "json", Types.LONGVARCHAR);
     
     /** The id. Internally, uniquely and statically identifies this enum. */
     private final Integer id;

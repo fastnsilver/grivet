@@ -23,14 +23,16 @@ This project will remain humble in its design and has no aspirations to match th
 - [ ] Add Elasticsearch, Logstash, and Kibana for log management
 - [x] Spring Boot [Admin](https://github.com/codecentric/spring-boot-admin#spring-boot-admin) available in addition to Eureka
 - [x] Upgrade to [HikariCP](http://brettwooldridge.github.io/HikariCP/) for connection pooling
-- [ ] Introduce OAuth2/SSO security
+- [ ] Secure endpoints via Stormpath [integration](https://stormpath.com/blog/build-spring-boot-spring-security-app/)
 - [ ] Enable HTTPS 
 - [x] Define roles to limit access to administrators for registering new types and queries
-- [ ] All writes are audited (user is associated with record)
+- [ ] All writes are audited (User is associated with record)
+- [ ] Fix date/time handling flaw
 
 ## 0.2.0
 
 - [ ] Implement [Vaadin](https://vaadin.com/home)-based administrative UI
+- [ ] Plumb Hystrix/Turbine for latency and fault protection
 - [ ] Improve test coverage
 - [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
 - [ ] Configurable Spring Batch job for bulk data ingestion employing FlatFileItemReader and JsonLineMapper

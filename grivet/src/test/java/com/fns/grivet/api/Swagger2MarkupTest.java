@@ -30,14 +30,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fns.grivet.App;
+import com.fns.grivet.TestInit;
 
 import io.github.robwin.markup.builder.MarkupLanguage;
 import springfox.documentation.staticdocs.Swagger2MarkupResultHandler;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = App.class)
+@SpringApplicationConfiguration(classes = TestInit.class)
 public class Swagger2MarkupTest {
 
     @Autowired

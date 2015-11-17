@@ -33,14 +33,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.fns.grivet.App;
+import com.fns.grivet.TestInit;
 import com.jayway.restassured.response.Response;
 
 import net.javacrumbs.jsonunit.JsonAssert;
 
 @WebIntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = App.class)
+@SpringApplicationConfiguration(classes = TestInit.class)
 public class GrivetApiClientTest {
 
     private final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();

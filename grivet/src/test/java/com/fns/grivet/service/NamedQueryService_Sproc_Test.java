@@ -38,13 +38,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fns.grivet.App;
+import com.fns.grivet.TestInit;
 import com.fns.grivet.query.NamedQuery;
 
 @WebAppConfiguration
 @ActiveProfiles(value={"hsqldb"})
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = App.class)
+@SpringApplicationConfiguration(classes = TestInit.class)
 public class NamedQueryService_Sproc_Test {
 
 private final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();

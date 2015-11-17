@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -70,17 +72,28 @@ public class JdbcEntityRepository implements EntityRepository {
 
     @Override
     public void save(Long eid, Attribute attribute, AttributeType attributeType, Object rawValue) {
-        SimpleJdbcInsert insertEntityAttribtueValue = new SimpleJdbcInsert(jdbcTemplate).withTableName(String.join("_", "entityav", attributeType.getType())).usingColumns("eid", "aid", "val", "created_time");
         Assert.isTrue(rawValue != null, String.format("Attempt to persist value failed! %s's value must not be null!", attribute.getName()));
         Object value = ValueHelper.toValue(attributeType, rawValue);
-        insertEntityAttribtueValue.execute(ImmutableMap.of("eid", eid, "aid", attribute.getId(), "val", value, "created_time", Timestamp.valueOf(LocalDateTime.now())));
+        User user = getCurrentUser();
+        Integer createdBy = user != null ? user.getId(): null;
+        String[] columns = { "eid", "aid", "val", "created_time" };
+        Map<String, Object> keyValuePairs = ImmutableMap.of("eid", eid, "aid", attribute.getId(), "val", value, "created_time", Timestamp.valueOf(LocalDateTime.now()));
+        if (createdBy != null) {
+            columns = Arrays.copyOf(columns, columns.length + 1);
+            columns[columns.length - 1] = "created_by";
+            Map<String, Object> keyValuePairsWithCreatedBy = new HashMap<>(keyValuePairs);
+            keyValuePairsWithCreatedBy.put("created_by", createdBy);
+            keyValuePairs = keyValuePairsWithCreatedBy;
+        } 
+        SimpleJdbcInsert insertEntityAttributeValue = new SimpleJdbcInsert(jdbcTemplate).withTableName(String.join("_", "entityav", attributeType.getType())).usingColumns(columns);
+        insertEntityAttributeValue.execute(keyValuePairs);
     }
-
+    
     @Override
-    public List<EntityAttributeValue> find(Integer cid, LocalDateTime createdTimeStart,
+    public List<EntityAttributeValue> findByCreatedTime(Integer cid, LocalDateTime createdTimeStart,
             LocalDateTime createdTimeEnd) {
         String sql = QueryBuilder.newInstance().appendCreatedTimeRange().build();
-        log.trace(String.format("JdbcEntityRepository.find[sql=%s]", sql));
+        log.trace(String.format("JdbcEntityRepository.findByCreatedTime[sql=%s]", sql));
         SqlRowSet rowSet = jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid), new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeStart)), new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeEnd)));
         return mapRows(rowSet);
     }
@@ -97,19 +110,21 @@ public class JdbcEntityRepository implements EntityRepository {
         return mapRows(rowSet);
     }
      
-    // FIXME figure out how to get other {@code Audited} info in here!
     private List<EntityAttributeValue> mapRows(SqlRowSet rowSet) {
         List<EntityAttributeValue> result = new ArrayList<>();
         EntityAttributeValue eav = null;
         if (rowSet != null) {
-            User user = securityFacade != null ? securityFacade.getCurrentUser(): null;
             while(rowSet.next()) {
-                eav = new EntityAttributeValue((Long) rowSet.getObject("eid"), (Integer) rowSet.getObject("attribute_id"), (String) rowSet.getObject("attribute_name"), rowSet.getObject("attribute_value"), ((Timestamp) rowSet.getObject("created_time")).toLocalDateTime(), user);
+                eav = new EntityAttributeValue((Long) rowSet.getObject("eid"), (Integer) rowSet.getObject("attribute_id"), (String) rowSet.getObject("attribute_name"), rowSet.getObject("attribute_value"), ((Timestamp) rowSet.getObject("created_time")).toLocalDateTime(), getCurrentUser());
                 result.add(eav);
             }
         }
         Collections.sort(result, new EAVComparator());
         return result;
+    }
+    
+    private User getCurrentUser() {
+        return securityFacade != null ? securityFacade.getCurrentUser(): null;
     }
     
     private static class EAVComparator implements Comparator<EntityAttributeValue> {
