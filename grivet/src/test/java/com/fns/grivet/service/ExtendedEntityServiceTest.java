@@ -22,7 +22,6 @@ import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +39,7 @@ import net.javacrumbs.jsonunit.JsonAssert;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TestInit.class)
-public class EntityServiceTest {
+public class ExtendedEntityServiceTest {
 
     private final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
     
@@ -52,7 +51,7 @@ public class EntityServiceTest {
     
     @Before
     public void setUp() throws IOException {
-        Resource r = resolver.getResource("classpath:TestType.json");
+        Resource r = resolver.getResource("classpath:TestType2.json");
         String json = FileUtils.readFileToString(r.getFile());
         JSONObject payload = new JSONObject(json);
         classRegistryService.register(payload);
@@ -60,57 +59,21 @@ public class EntityServiceTest {
     
     @Test
     public void testCreateThenFindByType() throws IOException {
-        Resource r = resolver.getResource("classpath:TestTypeData.json");
+        Resource r = resolver.getResource("classpath:TestTypeData2.json");
         String json = FileUtils.readFileToString(r.getFile());
         JSONObject payload = new JSONObject(json);
         
-        entityService.create("TestType", payload);
-        
-        String result = entityService.findByCreatedTime("TestType", LocalDateTime.now().minusSeconds(3), LocalDateTime.now(), null);
-        JSONArray resultAsJsonArray = new JSONArray(result);
-        JsonAssert.assertJsonEquals(payload.toString(), resultAsJsonArray.get(0).toString());
-    }
-    
-    @Test
-    public void testSchemaLinkAndValidationSuccessThenUnlink() throws IOException {
-        Resource r = resolver.getResource("classpath:TestTypeSchema.json");
-        String jsonSchema = FileUtils.readFileToString(r.getFile());
-        JSONObject schemaObj = new JSONObject(jsonSchema);
-        com.fns.grivet.model.Class c = classRegistryService.linkSchema(schemaObj);
-        String type = c.getName();
-        Assert.assertEquals("TestType", type);
-        Assert.assertTrue(c.isValidatable());
-        JsonAssert.assertJsonEquals(c.getJsonSchema(), jsonSchema);
-        
-        r = resolver.getResource("classpath:TestTypeData.json");
-        String json = FileUtils.readFileToString(r.getFile());
-        JSONObject payload = new JSONObject(json);
-        
-        entityService.create("TestType", payload);
-        
-        String result = entityService.findByCreatedTime("TestType", LocalDateTime.now().minusSeconds(3), LocalDateTime.now(), null);
-        JSONArray resultAsJsonArray = new JSONArray(result);
-        JsonAssert.assertJsonEquals(payload.toString(), resultAsJsonArray.get(0).toString());
-        
-        c = classRegistryService.unlinkSchema(type);
-        Assert.assertFalse(c.isValidatable());
-        Assert.assertNull(c.getJsonSchema());
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void testTypeNotRegistered() throws IOException {
-        JSONObject payload = new JSONObject();
         entityService.create("TestType2", payload);
+        
+        String result = entityService.findByCreatedTime("TestType2", LocalDateTime.now().minusSeconds(3), LocalDateTime.now(), null);
+        JSONArray resultAsJsonArray = new JSONArray(result);
+        JsonAssert.assertJsonEquals(payload.toString(), resultAsJsonArray.get(0).toString());
     }
     
-    @Test(expected = NullPointerException.class) 
-    public void testTypePayloadIsNull() {
-        entityService.create("TestType", null);
-    }
-    
+        
     @After
     public void tearDown() {
-        classRegistryService.deregister("TestType");
+        classRegistryService.deregister("TestType2");
     }
 
 }

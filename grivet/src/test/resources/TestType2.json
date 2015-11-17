@@ -1,0 +1,16 @@
+{
+	"type": "TestType2",
+	"description": "Another type for testing purposes",
+	"attributes": 
+	{
+		"first-name": "varchar",
+		"last-name": "varchar",
+		"age": "int",
+		"birthdate": "iso_date",
+		"eye-color": "varchar",
+		"hair-color": "varchar",
+		"iq": "int",
+		"high-school-graduation-year": "int",
+		"next-scare-at": "iso_datetime"
+	}
+}
