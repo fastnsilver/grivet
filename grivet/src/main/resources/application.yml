@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
   
 info:
   version: @project.version@
@@ -94,11 +94,12 @@ spring:
   #profiles.include: oauth2
   #profiles.include: https
   #profiles.include: oauth2,https
+  
   datasource:
     url: jdbc:mysql://localhost:3306/grivetdb
     driver-class-name: com.mysql.jdbc.Driver
     data-source-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-    username: root
+    username: admin
     password: jackal#3
 
 flyway:
@@ -126,6 +127,19 @@ spring:
   profiles: basic
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration
+    
+---
+
+spring:
+  profiles: cloud
+  cloud:
+    config:
+      enabled: true
+    discovery:
+      enabled: true
+# @see http://stackoverflow.com/questions/32202717/running-spring-boot-app-inside-docker-container-unable-to-connect-mysql?rq=1
+  datasource:
+    url: jdbc:mysql://db:3306/grivetdb
     
 ---
 

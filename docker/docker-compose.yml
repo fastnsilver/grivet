@@ -33,27 +33,7 @@ elasticsearchData:
   image: busybox
   command: "true"
   volumes:
-    - /usr/share/elasticsearch/data
-
-discovery:
-  image: fastnsilver/grivet-discovery-service
-  ports:
-    - "8761:8761"
-
-consulagent:
-  image: progrium/consul
-  ports:
-    - "8500:8500"
-    - "8400:8400"
-    - "8600:53/udp"
-  command: -server -bootstrap-expect 1 -ui-dir /ui
-  net: host
-
-consul:
-  image: fastnsilver/grivet-consul
-  ports:
-    - "8000:8000"
-  net: host
+    - ./data:/usr/share/elasticsearch/data
 
 config:
   image: fastnsilver/grivet-config-server
@@ -61,7 +41,12 @@ config:
     - "8888:8888"
   links:
     - discovery
-   
+    
+discovery:
+  image: fastnsilver/grivet-discovery-service
+  ports:
+    - "8761:8761"
+
 gateway:
   image: fastnsilver/grivet-api-gateway
   ports:
@@ -87,3 +72,12 @@ grivet:
   links:
     - discovery
     - config
+    - db
+    
+db:
+  image: tutum/mysql:latest
+  ports:
+    - "3306:3306"
+  env_file:
+    - ./db.env
+    

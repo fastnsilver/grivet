@@ -20,6 +20,8 @@ import static org.hamcrest.Matchers.equalTo;
 
 import java.io.IOException;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.io.FileUtils;
 import org.joda.time.LocalDateTime;
 import org.json.JSONArray;
@@ -27,6 +29,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.core.io.Resource;
@@ -34,16 +37,25 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.fns.grivet.TestInit;
+import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Response;
 
 import net.javacrumbs.jsonunit.JsonAssert;
 
-@WebIntegrationTest
+@WebIntegrationTest({"server.port=0", "management.port=0"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TestInit.class)
 public class GrivetApiClientTest {
 
     private final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+    
+    @Value("${local.server.port}")
+    private int serverPort;
+    
+    @PostConstruct
+    public void init() {
+      RestAssured.port = serverPort;
+    }
     
     // individual tests are responsible for setup and tear-down!
     

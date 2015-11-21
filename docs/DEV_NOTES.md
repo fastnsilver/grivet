@@ -2,7 +2,7 @@
 
 This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.  It is initialized with:
 
-[App.java](https://github.com/fastnsilver/grivet/blob/master/src/main/java/com/fns/grivet/App.java)
+[AppInit.java](https://github.com/fastnsilver/grivet/blob/master/src/main/java/com/fns/grivet/AppInit.java)
 
 
 ## Prerequisites
@@ -82,7 +82,14 @@ Or
 docker run -i -t -p 8080:8080 fastnsilver/grivet:latest /bin/bash
 ```
 
-Visit `192.168.59.103:8080` in a browser
+##### Running a local development environment
+
+@see https://forums.docker.com/t/using-localhost-for-to-access-running-container/3148
+
+On a Mac we cannot access running Docker containers from localhost.
+
+After running `docker-machine ip {env}` where `{env}` is your instance of a docker-machine, add an entry in `/etc/hosts` that maps `DOCKER_HOST` IP address to a memorable hostname.
+
 
 Caveats: 
 
