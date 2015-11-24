@@ -1,83 +1,118 @@
-elasticsearch:
-  build: elasticsearch/
-  volumes_from:
-    - elasticsearchData
-  ports:
-    - "9200:9200"
+# DOCKER COMPOSE CONFIGURATION
 
-logstash:
-  image: logstash:latest
-  environment:
-    TZ: America/Los_Angeles
-  expose:
-    - "12201"
-  ports:
-    - "12201:12201"
-    - "12201:12201/udp"
-  volumes:
-    - ./logstash/config:/etc/logstash/conf.d
-  links:
-    - elasticsearch:db
-  command: logstash -f /etc/logstash/conf.d/logstash.conf
+## INFRASTRUCTURE SERVICES
 
-kibana:
-  build: kibana/
-  ports:
-    - "5601:5601"
-  volumes:
-    - ./kibana/config/kibana.yml:/opt/kibana/config/kibana.yml
-  links:
-    - elasticsearch:elasticsearch
+### PERSISTENT DATA VOLUME
 
-elasticsearchData:
+# On a Mac, execute 
+#    dscacheutil -q user | grep -A 3 -B 2 -e uid:\ 5'[0-9][0-9]'
+# in a Terminal instance to obtain the uid:gid for the account that runs your docker-machine instance
+# You will want to edit the command below if your uid:gid differ
+data:
   image: busybox
-  command: "true"
-  volumes:
-    - ./data:/usr/share/elasticsearch/data
+  command: "mkdir /data && chown 502:20 /data && chmod 700 /data"
+  
+### ELASTICACHE, LOGSTASH, KIBANA 
+elk:
+  image: sebp/elk
+  privileged: true
+  ports:
+    - 5601:5601
+    - 9200:9200
+    - 5000:5000
+  volumes_from:
+    - data
 
+### GRAPHITE, STATSD
+graphite:
+  image: hopsoft/graphite-statsd
+  ports:
+    - 8000:80
+    - 2003:2003
+    - 8125:8125
+    - 8125:8125/udp
+    - 8126:8126
+
+### GRAFANA
+grafana:
+  image: grafana/grafana
+  ports:
+    - 3000:3000
+  env_file:
+    - ./grafana.env
+  links:
+    - graphite
+    - elk
+
+### DATABASE
+db:
+  image: tutum/mysql:5.6
+  privileged: true
+  ports:
+    - 3306:3306
+  env_file:
+    - ./db.env
+  volumes_from:
+    - data
+
+### DATABASE ADMINISTRATION
+phpmyadmin:
+  image: nazarpc/phpmyadmin
+  ports: 
+    - 8082:80
+  environment:
+    - MYSQL_PORT_3306_TCP_ADDR=db
+  links:
+    - db
+    
+
+## NEFLIX OSS, SUPPORT SERVICES
+
+### CONFIGURATION MANAGEMENT
 config:
   image: fastnsilver/grivet-config-server
   ports:
-    - "8888:8888"
+    - 8888:8888
   links:
+    - admin
     - discovery
-    
+
+### EUREKA, DISCOVERY
 discovery:
   image: fastnsilver/grivet-discovery-service
   ports:
-    - "8761:8761"
+    - 8761:8761
+  links:
+    - admin
 
+### ZUUL, API GATEWAY
 gateway:
   image: fastnsilver/grivet-api-gateway
   ports:
-    - "8080:8080"
+    - 8080:8080
   links:
-    - bootadmin
+    - admin
     - discovery
-    - config
     - grivet
 
-bootadmin:
+### SPRING BOOT SERVICE ADMINISTRATION
+admin:
   image: fastnsilver/grivet-boot-admin
   ports:
-    - "5555:5555"
-  links:
-    - discovery
-    - config
+    - 5555:5555
 
+
+## CORE SERVICES
+
+### GRIVET SERVICE
 grivet:
   image: fastnsilver/grivet
   ports:
-    - "8081:8081"
+    - 8081:8081
   links:
-    - discovery
+    - admin
     - config
+    - discovery
+    - graphite
     - db
-    
-db:
-  image: tutum/mysql:latest
-  ports:
-    - "3306:3306"
-  env_file:
-    - ./db.env
-    
+    - elk

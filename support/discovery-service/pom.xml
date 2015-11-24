@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.fns</groupId>
+        <artifactId>grivet-support-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>grivet-discovery-service</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Discovery Service</name>
+    <description>This discovery service is powered by Eureka.  Eureka is a REST based service that is primarily used in the AWS cloud for locating services for the purpose of load balancing and fail-over of middle-tier servers.</description>
+    <inceptionYear>2015</inceptionYear>
+
+    <properties>
+        <!-- Docker -->
+        <ds.image>fastnsilver/${project.artifactId}:${project.version}</ds.image>
+        <ds.port>8761</ds.port>
+        <spring.profiles.active>docker</spring.profiles.active>
+    </properties>
+
+    <dependencies>
+    	<!-- Spring Cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka-server</artifactId>
+        </dependency>
+        
+        <!-- Spring Boot Admin -->
+        <dependency>
+		    <groupId>de.codecentric</groupId>
+		    <artifactId>spring-boot-admin-starter-client</artifactId>
+		</dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jolokia</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker-maven-plugin.version}</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>${ds.image}</name>
+                            <build>
+                                <from>relateiq/oracle-java8</from>
+                                <maintainer>fastnsilver@gmail.com</maintainer>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                                <ports>
+                                    <port>8761</port>
+                                </ports>
+                                <entryPoint>
+                                    <exec>
+                                        <arg>java</arg>
+                                        <arg>-jar</arg>
+                                        <arg>-Djava.security.egd=file:/dev/./urandom</arg>
+                                        <arg>-Dspring.profiles.active=${spring.profiles.active}</arg>
+                                        <arg>/maven/${project.artifactId}.jar</arg>
+                                    </exec>
+                                </entryPoint>
+                                <assembly>
+                                    <mode>dir</mode>
+                                    <descriptor>assembly.xml</descriptor>
+                                </assembly>
+                            </build>
+                            <run>
+                                <ports>
+                                    <!-- Port mappings: Container internal port (which must be exposed) will be
+                                    dynamically mapped and this (random) port will be assigned to the Maven variable
+                                    ${ds.port}. Multiple port mappings can be specified here-->
+                                    <port>ds.port:8761</port>
+                                </ports>
+                                <wait>
+                                    <!-- The plugin waits until this URL is reachable via HTTP ... -->
+                                    <log>Server startup</log>
+                                    <url>http://${docker.host.address}:${ds.port}/</url>
+                                    <time>480000</time>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                                <log>
+                                    <enabled>true</enabled>
+                                    <color>red</color>
+                                </log>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,17 @@
+server:
+  port: 5555
+
+ribbon:
+  ServerListRefreshInterval: 1000
+
+spring:
+  boot:
+    admin:
+      url: http://localhost:${server.port} 
+---
+
+spring:
+  profiles: docker
+  boot:
+    admin:
+      url: http://admin:${server.port}

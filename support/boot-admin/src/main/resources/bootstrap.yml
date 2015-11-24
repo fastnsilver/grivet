@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: @project.artifactId@
+  
+  cloud:
+    config:
+      enabled: false
+  jackson:
+    serialization:
+     indent-output: true
+           
+logging:
+  file: target/grivet-boot-admin.log
+
+endpoints:
+  health:
+    sensitive: false

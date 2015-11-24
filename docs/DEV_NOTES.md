@@ -2,15 +2,15 @@
 
 This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.  It is initialized with:
 
-[AppInit.java](https://github.com/fastnsilver/grivet/blob/master/src/main/java/com/fns/grivet/AppInit.java)
+[AppInit.java](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/main/java/com/fns/grivet/AppInit.java)
 
 
 ## Prerequisites
 
 * [Docker Toolbox](http://docs.docker.com/mac/started/); `docker`, `docker-machine` and `docker-compose` are required
-* Java [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8.0_45+
-* [Maven](https://maven.apache.org/download.cgi) 3.3.3
-* an RDBMS (H2 is the default w/ no additional configuration); see [application.yml](https://github.com/fastnsilver/grivet/blob/master/src/main/resources/application.yml) for details
+* Java [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8.0_45 or better
+* [Maven](https://maven.apache.org/download.cgi) 3.3.3 or better
+* an RDBMS (H2 is the default w/ no additional configuration); see [application.yml](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/main/resources/application.yml) for details
 
 
 ## How to build
@@ -55,31 +55,33 @@ likewise replacing `<profile-name>`
 
 ### with Docker
 
-Assuming you have installed Docker...
-
-
-#### Build image
+Assuming you have installed Docker Machine, Docker Compose and Docker
+If not, it's highly recommended to install each via [Homebrew](http://brew.sh/) with
 
 ```
-mvn package
+brew install docker-machine
+brew install docker-compose
+brew install docker
 ```
 
-#### Pull image
+#### Build images
 
 ```
-docker pull fastnsilver/grivet:latest
+mvn clean install
 ```
 
-#### Run image
+#### Pull images
+
+Visit [Dockerhub](https://hub.docker.com/u/fastnsilver/)
+
+Pull all the grivet images
+
+
+#### Run images
 
 ```
-mvn docker:start
-```
-
-Or
-
-```
-docker run -i -t -p 8080:8080 fastnsilver/grivet:latest /bin/bash
+cd docker
+docker-compose up -d
 ```
 
 ##### Running a local development environment
@@ -93,19 +95,17 @@ After running `docker-machine ip {env}` where `{env}` is your instance of a dock
 
 Caveats: 
 
-* Docker image currently bootstraps against an H2 back-end
-* [Bug] Observed to take up to 6 minutes to start the app on Mac OS 10.10.3 running VirtualBox 4.3.30 r101610 and boot2docker 1.7.1
+* Docker image currently bootstraps against a MySQL back-end
 
 
-#### Stop image (and remove)
+#### Work with images
 
-```
-mvn docker:stop
-```
+This section to be written
 
-Or
+
+#### Stop images (and remove them)
 
 ```
-docker stop $(docker ps -a -q)
-docker rm $(docker ps -a -q)
+docker-compose stop
+docker-compose rm -f
 ```

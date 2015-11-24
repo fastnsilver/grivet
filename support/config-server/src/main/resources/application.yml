@@ -1,0 +1,22 @@
+server:
+  port: 8888
+  
+spring:
+  boot:
+    admin:
+      url: http://localhost:5555
+      
+---
+
+spring:
+  profiles: docker
+  boot:
+    admin:
+      url: http://admin:5555
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka/

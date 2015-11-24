@@ -19,20 +19,34 @@ This project will remain humble in its design and has no aspirations to match th
 
 - [x] Switch to [Travis-CI](https://travis-ci.org/) plus [Coveralls](https://coveralls.io) for continuous integration and code coverage reports respectively
 - [x] Re-org project structure; introduce [Spring Cloud](http://projects.spring.io/spring-cloud/) and [Netflix OSS](http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html) to provide cloud-native infrastructure
-- [ ] Docker [Compose](https://docs.docker.com/compose/); launch variant Docker image(s) sharing a single data-store (e.g., [MySQL](https://www.mysql.com/))
-- [ ] Add Elasticsearch, Logstash, and Kibana for log management
+- [x] Docker [Compose](https://docs.docker.com/compose/); launch variant Docker image(s) sharing a single data-store (e.g., [MySQL](https://www.mysql.com/))
+- [x] Add Elasticsearch, Logstash, and Kibana for log management
 - [x] Spring Boot [Admin](https://github.com/codecentric/spring-boot-admin#spring-boot-admin) available in addition to Eureka
 - [x] Upgrade to [HikariCP](http://brettwooldridge.github.io/HikariCP/) for connection pooling
+- [x] Fix date/time handling flaw
+- [x] Add Grafana, Graphite, statsd for metrics
+
+## 0.2.0
+
 - [ ] Secure endpoints via Stormpath [integration](https://stormpath.com/blog/build-spring-boot-spring-security-app/)
 - [ ] Enable HTTPS 
 - [x] Define roles to limit access to administrators for registering new types and queries
 - [ ] All writes are audited (User is associated with record)
-- [x] Fix date/time handling flaw
 
-## 0.2.0
+## 0.3.0
 
-- [ ] Implement [Vaadin](https://vaadin.com/home)-based administrative UI
-- [ ] Plumb Hystrix/Turbine for latency and fault protection
 - [ ] Improve test coverage
 - [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
-- [ ] Configurable Spring Batch job for bulk data ingestion employing FlatFileItemReader and JsonLineMapper
+
+## 0.4.0
+
+- [ ] Implement [Vaadin](https://vaadin.com/home)-based administrative UI
+
+## 0.5.0
+
+- [ ] Add cache provider (e.g., Redis)
+- [ ] Plumb Hystrix/Turbine for latency and fault protection
+
+## 0.6.0
+
+- [ ] Gradle build
