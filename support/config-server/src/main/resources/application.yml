@@ -7,7 +7,7 @@ spring:
       url: http://localhost:5555
       
 ---
-
+ 
 spring:
   profiles: docker
   boot:
