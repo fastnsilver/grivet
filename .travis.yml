@@ -12,4 +12,6 @@ jdk:
 services:
   - docker
   
+install: travis_wait mvn install
+
 script: mvn clean verify coveralls:report -Pwith-coverage-report

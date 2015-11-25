@@ -28,6 +28,7 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 0.2.0
 
+- [ ] Secure service administration and discovery
 - [ ] Secure endpoints via Stormpath [integration](https://stormpath.com/blog/build-spring-boot-spring-security-app/)
 - [ ] Enable HTTPS 
 - [x] Define roles to limit access to administrators for registering new types and queries

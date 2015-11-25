@@ -118,7 +118,22 @@ Caveats:
 
 #### Work with images
 
-This section to be written
+Services are accessible via the Docker host (or IP address) and port 
+
+Service           |  Port
+------------------|-------
+Spring Boot Admin | 5555
+Zuul Proxy        | 8080
+Config Server     | 8888
+Eureka Discovery  | 8761
+Graphite          | 8000
+Grafana           | 3000
+Grivet            | 8081
+PHP MySQL Admin   | 8082
+MySQL             | 3306
+Elasticsearch     | 9200
+Logstash          | 5000
+Kibana            | 5601
 
 
 #### Stop images (and remove them)
