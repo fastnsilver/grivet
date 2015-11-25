@@ -4,14 +4,14 @@ server:
 ribbon:
   ServerListRefreshInterval: 1000
 
-spring:
-  boot:
-    admin:
-      url: http://localhost:${server.port} 
 ---
 
 spring:
   profiles: docker
-  boot:
-    admin:
-      url: http://admin:${server.port}
+  
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka/

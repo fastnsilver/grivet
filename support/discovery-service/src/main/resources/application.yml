@@ -4,9 +4,6 @@ server:
 spring:
   application:
     name: @project.artifactId@
-  boot:
-    admin:
-      url: http://localhost:5555
 
 eureka:
   instance:
@@ -21,9 +18,6 @@ eureka:
 
 spring:
   profiles: docker
-  boot:
-    admin:
-      url: http://admin:5555
 
 eureka:
   instance:

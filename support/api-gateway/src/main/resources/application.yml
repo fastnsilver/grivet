@@ -1,18 +1,10 @@
 server:
   port: 8080
 
-spring:
-  boot:
-    admin:
-      url: http://localhost:5555
-      
 ---
 
 spring:
   profiles: docker
-  boot:
-    admin:
-      url: http://admin:5555
 
 eureka:
   instance:

@@ -1,5 +1,6 @@
 # DOCKER COMPOSE CONFIGURATION
 
+
 ## INFRASTRUCTURE SERVICES
 
 ### PERSISTENT DATA VOLUME
@@ -74,7 +75,6 @@ config:
   ports:
     - 8888:8888
   links:
-    - admin
     - discovery
   environment:
     - SPRING_PROFILES_ACTIVE=docker
@@ -84,8 +84,6 @@ discovery:
   image: fastnsilver/grivet-discovery-service
   ports:
     - 8761:8761
-  links:
-    - admin
   environment:
     - SPRING_PROFILES_ACTIVE=docker
 
@@ -106,6 +104,8 @@ admin:
   image: fastnsilver/grivet-boot-admin
   ports:
     - 5555:5555
+  links:
+    - discovery
   environment:
     - SPRING_PROFILES_ACTIVE=docker
 
@@ -118,7 +118,6 @@ grivet:
   ports:
     - 8081:8081
   links:
-    - admin
     - config
     - discovery
     - graphite
