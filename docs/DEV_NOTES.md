@@ -24,6 +24,16 @@ $ mvn clean install
 
 ### with Spring Boot
 
+This option is only suitable for running the `grivet` service
+
+First, change directories
+
+```
+cd core/grivet
+```
+
+Then
+
 ```
 $ mvn spring-boot:run
 ```
@@ -51,6 +61,20 @@ $ java -jar grivet-x.x.x.jar -Dspring.profiles.active=<profile-name>
 ```
 
 likewise replacing `<profile-name>`
+
+
+If you activate the `mysql` profile you will need to provision a MySQL instance.
+
+On a Mac, you could install [Homebrew](http://brew.sh/), then install MySQL with
+
+```
+brew install mysql
+```
+
+The instance will need to have a schema created before attempting to run the service as directed above.
+
+Consult [application.yml](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/main/resources/application.yml) in order to override `spring.datasource.*` properties.
+
 
 
 ### with Docker
