@@ -55,14 +55,32 @@ likewise replacing `<profile-name>`
 
 ### with Docker
 
-Assuming you have installed Docker Machine, Docker Compose and Docker
-If not, it's highly recommended to install each via [Homebrew](http://brew.sh/) with
+Assuming you have installed VirtualBox, Docker Machine, Docker Compose and Docker.
+
+If not, it's highly recommended (on a Mac) to install each via [Homebrew](http://brew.sh/) with
 
 ```
+brew tap caskroom/cask
+brew install brew-cask
+brew cask install virtualbox
+
 brew install docker-machine
 brew install docker-compose
 brew install docker
 ```
+
+The instruction below provisions a Docker host named `dev` with 2 CPU, 10Gb RAM and 40Gb disk space
+
+```
+docker-machine create --driver virtualbox --virtualbox-cpu-count "2" --virtualbox-disk-size "40000" --virtualbox-memory "10240" dev
+```
+
+To begin using it
+
+```
+docker-machine env dev
+```
+
 
 #### Build images
 

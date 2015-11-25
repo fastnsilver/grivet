@@ -93,11 +93,6 @@ flyway:
 
 spring:
   profiles: mysql
-  profiles.include: basic
-  #profiles.include: oauth2
-  #profiles.include: https
-  #profiles.include: oauth2,https
-  
   datasource:
     url: jdbc:mysql://localhost:3306/grivetdb
     driver-class-name: com.mysql.jdbc.Driver
@@ -106,7 +101,8 @@ spring:
     password: jackal#3
 
 flyway:
-  locations: classpath:db/with_partitions, classpath:db/users, classpath:db/oauth2
+  #locations: classpath:db/with_partitions, classpath:db/users, classpath:db/oauth2
+  locations: classpath:db/with_partitions, classpath:db/users
   placeholders:
     preamble: |
       /*!40101 SET character_set_client = utf8 */;
@@ -135,6 +131,7 @@ spring:
 
 spring:
   profiles: docker
+  profiles.include: basic,mysql,insecure
   boot:
     admin:
       url: http://admin:5555
@@ -143,9 +140,6 @@ spring:
       enabled: true
     discovery:
       enabled: true
-# @see http://stackoverflow.com/questions/32202717/running-spring-boot-app-inside-docker-container-unable-to-connect-mysql?rq=1
-  datasource:
-    url: jdbc:mysql://db:3306/grivetdb
 
 eureka:
   instance:

@@ -36,7 +36,6 @@
         <!-- Docker -->
         <grivet.image>fastnsilver/${project.artifactId}:${project.version}</grivet.image>
         <grivet.port>8081</grivet.port>
-       	<spring.profiles.active>mysql,docker,insecure</spring.profiles.active>
 	</properties>
 
 	<dependencies>
@@ -258,7 +257,6 @@
 						    			<arg>java</arg>
 						      			<arg>-jar</arg>
 						      			<arg>-Djava.security.egd=file:/dev/./urandom</arg>
-						      			<arg>-Dspring.profiles.active=${spring.profiles.active}</arg>
 						      			<arg>/maven/${project.artifactId}.jar</arg>
 									</exec>
 								</entryPoint>

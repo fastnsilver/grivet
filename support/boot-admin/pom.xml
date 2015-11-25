@@ -25,7 +25,6 @@
         <!-- Docker -->
         <admin.image>fastnsilver/${project.artifactId}:${project.version}</admin.image>
         <admin.port>5555</admin.port>
-        <spring.profiles.active>docker</spring.profiles.active>
     </properties>
 
     <dependencies>
@@ -78,7 +77,6 @@
                                         <arg>java</arg>
                                         <arg>-jar</arg>
                                         <arg>-Djava.security.egd=file:/dev/./urandom</arg>
-                                        <arg>-Dspring.profiles.active=${spring.profiles.active}</arg>
                                         <arg>/maven/${project.artifactId}.jar</arg>
                                     </exec>
                                 </entryPoint>

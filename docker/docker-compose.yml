@@ -76,6 +76,8 @@ config:
   links:
     - admin
     - discovery
+  environment:
+    - SPRING_PROFILES_ACTIVE=docker
 
 ### EUREKA, DISCOVERY
 discovery:
@@ -84,6 +86,8 @@ discovery:
     - 8761:8761
   links:
     - admin
+  environment:
+    - SPRING_PROFILES_ACTIVE=docker
 
 ### ZUUL, API GATEWAY
 gateway:
@@ -94,12 +98,16 @@ gateway:
     - admin
     - discovery
     - grivet
+  environment:
+    - SPRING_PROFILES_ACTIVE=docker
 
 ### SPRING BOOT SERVICE ADMINISTRATION
 admin:
   image: fastnsilver/grivet-boot-admin
   ports:
     - 5555:5555
+  environment:
+    - SPRING_PROFILES_ACTIVE=docker
 
 
 ## CORE SERVICES
@@ -116,3 +124,5 @@ grivet:
     - graphite
     - db
     - elk
+  env_file:
+    - ./grivet.env
