@@ -12,6 +12,6 @@ jdk:
 services:
   - docker
 
-install: mvn -U install --quiet -DskipTests=true
+install: mvn -U install --quiet -Dskip.unit.tests=true -Dskip.integration.tests=true
 
-script: mvn test coveralls:report -Pwith-coverage-report
+script: mvn verify coveralls:report -Pwith-coverage-report
