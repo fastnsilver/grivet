@@ -44,10 +44,11 @@ import net.javacrumbs.jsonunit.JsonAssert;
 
 @WebIntegrationTest({"server.port=0", "management.port=0"})
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = TestInit.class)
+@SpringApplicationConfiguration(classes = { TestInit.class } )
 public class GrivetApiClientIT {
 
     private final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+    
     
     @Value("${local.server.port}")
     private int serverPort;
