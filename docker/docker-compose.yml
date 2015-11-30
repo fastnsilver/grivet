@@ -12,18 +12,55 @@
 data:
   image: busybox
   command: "mkdir /data && chown 502:20 /data && chmod 700 /data"
-  
-### ELASTICACHE, LOGSTASH, KIBANA 
-elk:
-  image: sebp/elk
-  privileged: true
+
+### KIBANA
+kibana:
+  image: kibana
+  links:
+    - elasticsearch
   ports:
     - 5601:5601
+    
+### ELASTICSEARCH
+elasticsearch:
+  image: elasticsearch
+  ports:
     - 9200:9200
-    - 5000:5000
-  volumes_from:
-    - data
 
+### REDIS
+redis:
+  image: redis
+  ports:
+    - 6379:6379
+
+### LOGSTASH
+logstash:
+  image: logstash
+  command: 'logstash -f /logstash.conf -v'
+  volumes:
+    - ./logstash.conf:/logstash.conf
+  links:
+    - redis
+    - elasticsearch
+
+### LOGSPOUT
+
+# Thank you R. Toma 
+# (@see https://github.com/rtoma/logspout-redis-logstash/blob/master/example/docker-compose.yml)
+
+logspout:
+  image: rtoma/logspout-redis-logstash
+  command: 'redis://redis'
+  environment:
+    - DEBUG=true
+#    - REDIS_PASSWORD=secret
+    - REDIS_KEY=logstash
+    - REDIS_DOCKER_HOST=macbookpro
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+  links:
+    - redis
+    
 ### GRAPHITE, STATSD
 graphite:
   image: hopsoft/graphite-statsd
@@ -43,8 +80,18 @@ grafana:
     - ./grafana.env
   links:
     - graphite
-    - elk
-
+    
+### CADVISOR
+cadvisor:
+  image: google/cadvisor:latest
+  volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+  ports:
+    - 9080:8080
+    
 ### DATABASE
 db:
   image: tutum/mysql:5.6
@@ -122,6 +169,5 @@ grivet:
     - discovery
     - graphite
     - db
-    - elk
   env_file:
     - ./grivet.env
