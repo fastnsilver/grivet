@@ -158,6 +158,7 @@ MySQL             | 3306
 Elasticsearch     | 9200
 Logstash          | 5000
 Kibana            | 5601
+CAdvisor          | 9080
 
 
 #### Stop images (and remove them)
