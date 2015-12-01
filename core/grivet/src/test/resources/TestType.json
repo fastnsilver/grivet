@@ -1,0 +1,14 @@
+{
+	"type": "TestType",
+	"description": "A type for testing purposes",
+	"attributes": 
+	{
+		"bigint": "bigint",
+		"varchar": "varchar",
+		"decimal": "decimal",
+		"datetime": "iso_instant",
+		"int": "int",
+		"text": "text",
+		"json": "json"
+	}
+}

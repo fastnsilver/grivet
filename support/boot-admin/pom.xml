@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.fns</groupId>
+        <artifactId>grivet-support-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>grivet-boot-admin</artifactId>
+    <packaging>jar</packaging>
+    
+    
+    <name>Spring Boot Application Admin</name>
+    <description>Provides an overview of all running Spring Boot Micro Services in Grivet environment.</description>
+    <inceptionYear>2015</inceptionYear>
+    
+    <properties>
+        <!-- Third-party library versions -->
+        <spring-boot-admin.version>1.3.0</spring-boot-admin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-server</artifactId>
+            <version>${spring-boot-admin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-server-ui</artifactId>
+            <version>${spring-boot-admin.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    
+</project>

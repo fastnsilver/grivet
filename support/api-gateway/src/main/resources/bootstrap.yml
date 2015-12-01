@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: @project.artifactId@
+        
+encrypt:
+  fail-on-error: false

@@ -16,13 +16,13 @@ unlinks existing JSON Schema from a pre-registered type; subsequent `/store/{typ
 
 * POST `/register`
 
-Sample POST request [TestType.json](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/TestType.json)
+Sample POST request [TestType.json](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestType.json)
 
 * POST `/register?linkSchema`
 
 links a JSON Schema with a pre-registered type; subsequent `/store/{type}` requests will be validated against schema
 
-Sample POST request [TestTypeSchema.json](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/TestTypeSchema.json)
+Sample POST request [TestTypeSchema.json](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestTypeSchema.json)
 
 * DELETE `/register/{type}`
 
@@ -35,7 +35,7 @@ However, if `spring.profiles.active` is set to `mysql` then when a DELETE reques
 
 * POST `/store/{type}`
 
-Sample POST request [TestTypeData.json](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/TestTypeData.json)
+Sample POST request [TestTypeData.json](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestTypeData.json)
 
 * GET `/store/{type}`
 
@@ -54,10 +54,10 @@ You may wish to review the ER diagram below to fully leverage this feature.  Cur
 
 Sample POST requests:
 
-* [SELECT](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/TestSelectQuery.json)
-* [CALL](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/TestSprocQuery.json)
+* [SELECT](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestSelectQuery.json)
+* [CALL](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestSprocQuery.json)
 
-Consult this [Stored Procedure](https://github.com/fastnsilver/grivet/blob/master/src/test/resources/db/hsqldb/V1_1__add_test_sproc.sql) example for a sample HSQLDB based implementation
+Consult this [Stored Procedure](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/db/hsqldb/V1_1__add_test_sproc.sql) example for a sample HSQLDB based implementation
 
 * DELETE `/query/{name}`
 
@@ -98,11 +98,9 @@ where
 
 * `<constraint_key>` may be `c` or `constraint`
 * `<attribute_name>` is a registered attribute of the type
-* `<operator>` is one of [Operator](https://github.com/fastnsilver/grivet/blob/master/src/main/java/com/fns/grivet/query/Operator.java)
+* `<operator>` is one of [Operator](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/main/java/com/fns/grivet/query/Operator.java)
 * `value` is (depending upon the `operator`) either a single value or a comma-separated list of values
-* `conjunction` is one of [Conjunction](https://github.com/fastnsilver/grivet/blob/master/src/main/java/com/fns/grivet/query/Conjunction.java); this value is optional and if not defined then (for more than one constraint) each constraint is `OR`ed. 
-
-Note: all conjunctions must be homogenously defined!
+* `conjunction` is one of [Conjunction](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/main/java/com/fns/grivet/query/Conjunction.java); this value is optional and if not defined then (for more than one constraint) each constraint is `OR`ed. All conjunctions must be homogenously defined!
 
 ##### Examples
 

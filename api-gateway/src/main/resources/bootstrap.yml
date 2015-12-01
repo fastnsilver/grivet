@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: grivet-api-gateway
-  cloud:
-    config:
-      uri: http://configserver:8888
-
-encrypt:
-  fail-on-error: false

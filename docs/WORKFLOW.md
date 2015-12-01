@@ -8,7 +8,7 @@ Assuming you've already deployed this service locally...
 ### Request
 
 ```
-curl -i -H "Content-Type: application/json" -X POST -d '{ "type": "TestType", "attributes": { "bigint": "bigint", "varchar": "varchar", "decimal": "decimal", "datetime": "datetime", "int": "int", "text": "text", "json": "json" } }' http://localhost:8080/register
+curl -i -H "Content-Type: application/json" -X POST -d '{ "type": "TestType", "attributes": { "bigint": "bigint", "varchar": "varchar", "decimal": "decimal", "datetime": "datetime", "int": "int", "text": "text", "json": "json" } }' http://localhost:8081/register
 ```
 
 ### Response
@@ -27,7 +27,7 @@ Date: Wed, 29 Jul 2015 13:37:38 GMT
 ### Request
 
 ```
-curl -H "Content-Type: application/json" "http://localhost:8080/register/TestType" | python -mjson.tool
+curl -H "Content-Type: application/json" "http://localhost:8081/register/TestType" | python -mjson.tool
 ```
 
 ### Response
@@ -56,7 +56,7 @@ curl -H "Content-Type: application/json" "http://localhost:8080/register/TestTyp
 ### Request
 
 ```
-curl -H "Content-Type: application/json" "http://localhost:8080/register/" | python -mjson.tool
+curl -H "Content-Type: application/json" "http://localhost:8081/register/" | python -mjson.tool
 ```
 
 ### Response
@@ -99,7 +99,7 @@ curl -H "Content-Type: application/json" "http://localhost:8080/register/" | pyt
 ### Request
 
 ```
-curl -i -H "Content-Type: application/json" -X POST -d '{ "artist": "Rush", "year": 1981, "price": 9.99, "label": "Anthem", "title": "Moving Pictures"}' http://localhost:8080/store/Album
+curl -i -H "Content-Type: application/json" -X POST -d '{ "artist": "Rush", "year": 1981, "price": 9.99, "label": "Anthem", "title": "Moving Pictures"}' http://localhost:8081/store/Album
 ```
 
 ### Response
@@ -119,7 +119,7 @@ In this example request results constrained by `createdTime`
 ### Request
 
 ```
-curl -H "Content-Type: application/json" "http://localhost:8080/store/Album" | python -mjson.tool
+curl -H "Content-Type: application/json" "http://localhost:8081/store/Album" | python -mjson.tool
 ```
 
 ### Response

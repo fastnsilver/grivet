@@ -1,0 +1,17 @@
+server:
+  port: 5555
+
+ribbon:
+  ServerListRefreshInterval: 1000
+
+---
+
+spring:
+  profiles: docker
+  
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka/

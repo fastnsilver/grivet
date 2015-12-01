@@ -1,7 +1,0 @@
-{
-    "name": "getAttributesCreatedBefore",
-    "query": "SELECT * FROM attribute WHERE created_time < :createdTime",
-    "params": {
-        "createdTime": "datetime"
-    }
-}

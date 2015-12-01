@@ -1,15 +1,9 @@
 sudo: required
-
-cache:
-  directories:
-  - $HOME/.m2
-
-language: java
-
-jdk:
-  - oraclejdk8
-
+dist: precise
+group: edge
+language: bash
 services:
   - docker
-  
-script: mvn clean verify coveralls:report -Pwith-coverage-report
+script:
+  - docker build -t fastnsilver/maven:3.3.9-oracle-jdk8 ./docker/maven
+  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources fastnsilver/maven:3.3.9-oracle-jdk8 mvn clean install

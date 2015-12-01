@@ -1,44 +1,173 @@
-discovery:
-  image: fastnsilver/grivet-discovery-service
+# DOCKER COMPOSE CONFIGURATION
+
+
+## INFRASTRUCTURE SERVICES
+
+### PERSISTENT DATA VOLUME
+
+# On a Mac, execute 
+#    dscacheutil -q user | grep -A 3 -B 2 -e uid:\ 5'[0-9][0-9]'
+# in a Terminal instance to obtain the uid:gid for the account that runs your docker-machine instance
+# You will want to edit the command below if your uid:gid differ
+data:
+  image: busybox
+  command: "mkdir /data && chown 502:20 /data && chmod 700 /data"
+
+### KIBANA
+kibana:
+  image: kibana
+  links:
+    - elasticsearch
   ports:
-   - "8761:8761"
-consulagent:
-  image: progrium/consul
+    - 5601:5601
+    
+### ELASTICSEARCH
+elasticsearch:
+  image: elasticsearch
   ports:
-   - "8500:8500"
-   - "8400:8400"
-   - "8600:53/udp"
-  command: -server -bootstrap-expect 1 -ui-dir /ui
-  net: host
-consul:
-  image: fastnsilver/grivet-consul
+    - 9200:9200
+
+### REDIS
+redis:
+  image: redis
   ports:
-   - "8000:8000"
-  net: host
+    - 6379:6379
+
+### LOGSTASH
+logstash:
+  image: logstash
+  command: 'logstash -f /logstash.conf -v'
+  volumes:
+    - ./logstash.conf:/logstash.conf
+  links:
+    - redis
+    - elasticsearch
+
+### LOGSPOUT
+
+# Thank you R. Toma 
+# (@see https://github.com/rtoma/logspout-redis-logstash/blob/master/example/docker-compose.yml)
+
+logspout:
+  image: rtoma/logspout-redis-logstash
+  command: 'redis://redis'
+  environment:
+    - DEBUG=true
+#    - REDIS_PASSWORD=secret
+    - REDIS_KEY=logstash
+    - REDIS_DOCKER_HOST=macbookpro
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+  links:
+    - redis
+    
+### GRAPHITE, STATSD
+graphite:
+  image: hopsoft/graphite-statsd
+  ports:
+    - 8000:80
+    - 2003:2003
+    - 8125:8125
+    - 8125:8125/udp
+    - 8126:8126
+
+### GRAFANA
+grafana:
+  image: grafana/grafana
+  ports:
+    - 3000:3000
+  env_file:
+    - ./grafana.env
+  links:
+    - graphite
+    
+### CADVISOR
+cadvisor:
+  image: google/cadvisor:latest
+  volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+  ports:
+    - 9080:8080
+    
+### DATABASE
+db:
+  image: tutum/mysql:5.6
+  privileged: true
+  ports:
+    - 3306:3306
+  env_file:
+    - ./db.env
+  volumes_from:
+    - data
+
+### DATABASE ADMINISTRATION
+phpmyadmin:
+  image: nazarpc/phpmyadmin
+  ports: 
+    - 8082:80
+  environment:
+    - MYSQL_PORT_3306_TCP_ADDR=db
+  links:
+    - db
+    
+
+## NEFLIX OSS, SUPPORT SERVICES
+
+### CONFIGURATION MANAGEMENT
 config:
   image: fastnsilver/grivet-config-server
   ports:
-   - "8888:8888"
+    - 8888:8888
   links:
-   - discovery
+    - discovery
+  environment:
+    - SPRING_PROFILES_ACTIVE=docker
+
+### EUREKA, DISCOVERY
+discovery:
+  image: fastnsilver/grivet-discovery-service
+  ports:
+    - 8761:8761
+  environment:
+    - SPRING_PROFILES_ACTIVE=docker
+
+### ZUUL, API GATEWAY
 gateway:
   image: fastnsilver/grivet-api-gateway
   ports:
-   - "10000:10000"
+    - 8080:8080
   links:
-   - bootadmin
-   - discovery
-   - config
-   - grivet
-bootadmin:
+    - admin
+    - discovery
+    - grivet
+  environment:
+    - SPRING_PROFILES_ACTIVE=docker
+
+### SPRING BOOT SERVICE ADMINISTRATION
+admin:
   image: fastnsilver/grivet-boot-admin
   ports:
-   - "5555:5555"
+    - 5555:5555
   links:
-   - discovery
-   - config
+    - discovery
+  environment:
+    - SPRING_PROFILES_ACTIVE=docker
+
+
+## CORE SERVICES
+
+### GRIVET SERVICE
 grivet:
   image: fastnsilver/grivet
+  ports:
+    - 8081:8081
   links:
-   - discovery
-   - config
+    - config
+    - discovery
+    - graphite
+    - db
+  env_file:
+    - ./grivet.env
