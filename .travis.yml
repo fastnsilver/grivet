@@ -4,5 +4,8 @@ group: edge
 language: bash
 services:
   - docker
+install:
+  - ./mvnw --version
 script:
-  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources maven:3.3.3-jdk-8 mvn clean install
+  - ./.travis-build.sh
+#  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources maven:3.3.3-jdk-8 mvn clean install
