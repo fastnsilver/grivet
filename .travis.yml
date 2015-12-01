@@ -1,4 +1,4 @@
-# In container build
+# On VM build, Op 1
 #sudo: required
 #dist: precise
 #group: edge
@@ -8,19 +8,16 @@
 #script:
 #  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources maven:3.3.3-jdk-8 mvn clean install
 
-# On VM build
-sudo: required
+# In container build, Op 2
+sudo: false
 dist: precise
 group: edge
 language: java
 jdk: 
   - oraclejdk8
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer
-services:
-  - docker
+cache:
+  directories:
+    - $HOME/.m2
 install:
   - ./mvnw --version
   - ./mvnw install -Dskip.unit.tests=true -Dskip.integration.tests=true
