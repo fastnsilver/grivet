@@ -1,9 +1,8 @@
-language: bash
-
 sudo: required
-
+dist: precise
+group: edge
+language: bash
 services:
   - docker
-
 script:
-  - docker run -it -v $(pwd):/root/sources -w /root/sources maven:3.3.3-jdk-8 mvn clean install
+  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources maven:3.3.3-jdk-8 mvn clean install
