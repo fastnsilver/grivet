@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>EntityController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Service</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.controller</a> &gt; <span class="el_source">EntityController.java</span></div><h1>EntityController.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2015 - Chris Phillipson
+ * 
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.fns.grivet.controller;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.codahale.metrics.MetricRegistry;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fns.grivet.service.EntityService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+
+/**
+ * Provides end-points for type storage and retrieval
+ * 
+ * @author Chris Phillipson
+ */
+@RestController
+@RequestMapping(&quot;/store&quot;)
+@Api(value = &quot;store&quot;, produces = &quot;application/json&quot;)
+public class EntityController {
+
+<span class="fc" id="L63">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+    
+    @Value(&quot;${grivet.store.batch-size:100}&quot;)
+    private int batchSize;
+    
+    private final EntityService entityService;
+    private MetricRegistry metricRegistry;
+    
+    @Autowired
+<span class="fc" id="L72">    public EntityController(EntityService entityService) {</span>
+<span class="fc" id="L73">        this.entityService = entityService;</span>
+<span class="fc" id="L74">    }</span>
+    
+    @Autowired
+    public void setMetricRegistry(MetricRegistry metricRegistry) {
+<span class="fc" id="L78">        this.metricRegistry = metricRegistry;</span>
+<span class="fc" id="L79">    }</span>
+
+    @PreAuthorize(value = &quot;hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')&quot;)
+    @RequestMapping(value = &quot;/{type}&quot;, method = RequestMethod.POST, 
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = &quot;POST&quot;, notes = &quot;Store one or more type.&quot;, value = &quot;/store/{type}&quot;)
+    @ApiResponses(value = { 
+            @ApiResponse(code = 204, message = &quot;Successfully store type(s).&quot;),
+            @ApiResponse(code = 202, message = &quot;Partial success. Error details for type(s) that could not be registered.&quot;),
+            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
+            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
+            })
+    public ResponseEntity&lt;?&gt; create(@PathVariable(&quot;type&quot;) String type, HttpServletRequest request) throws IOException {
+<span class="nc" id="L92">        String json = IOUtils.toString(request.getInputStream(), &quot;UTF-8&quot;);</span>
+<span class="nc bnc" id="L93" title="All 4 branches missed.">        Assert.isTrue(json.startsWith(&quot;{&quot;) || json.startsWith(&quot;[&quot;), &quot;Store requests must be valid JSON starting with either a { or [!&quot;);</span>
+<span class="nc" id="L94">        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (json.startsWith(&quot;{&quot;)) {</span>
+<span class="nc" id="L96">            result = createSingleType(type, json);</span>
+        }
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (json.startsWith(&quot;[&quot;)) {</span>
+<span class="nc" id="L99">            result = createMultipleTypes(type, json);</span>
+        }
+<span class="nc" id="L101">        return result;</span>
+    }
+    
+    private ResponseEntity&lt;?&gt; createSingleType(String type, String json) {
+<span class="nc" id="L105">        entityService.create(type, new JSONObject(json));</span>
+<span class="nc" id="L106">        metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="nc" id="L107">        log.info(&quot;Successfully stored type [{}]&quot;, type);</span>
+<span class="nc" id="L108">        return ResponseEntity.noContent().build();</span>
+    }
+    
+    private ResponseEntity&lt;?&gt; createMultipleTypes(String type, String json) {
+<span class="nc" id="L112">        JSONArray jsonArray = new JSONArray(json);</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        Assert.isTrue(jsonArray.length() &lt;= batchSize, String.format(&quot;The total number of entries in a request must not exceed %d! The number of entries in your store request was [%d].&quot;, batchSize, jsonArray.length()));</span>
+<span class="nc" id="L114">        int numberOfTypesToCreate = jsonArray.length();</span>
+<span class="nc" id="L115">        int errorCount = 0;</span>
+<span class="nc" id="L116">        JSONObject jsonObject = null;</span>
+<span class="nc" id="L117">        HttpHeaders headers = new HttpHeaders();</span>
+        // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        for (int i = 0; i &lt; numberOfTypesToCreate; i++) {</span>
+<span class="nc" id="L120">            jsonObject = jsonArray.getJSONObject(i);</span>
+            try {
+<span class="nc" id="L122">                entityService.create(type, jsonObject);</span>
+<span class="nc" id="L123">                metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="nc" id="L124">                log.info(&quot;Successfully stored type [{}]&quot;, type);</span>
+<span class="nc" id="L125">            } catch (Exception e) {</span>
+<span class="nc" id="L126">                String message = LogUtil.toLog(jsonObject, String.format(&quot;Problems storing type! Portion of payload @ index[%d]\n&quot;, i+1));</span>
+<span class="nc" id="L127">                log.error(message, e);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">                if (numberOfTypesToCreate == 1) {</span>
+<span class="nc" id="L129">                    throw e;</span>
+                }
+<span class="nc" id="L131">                headers.set(String.format(&quot;Error[%s]&quot;, String.valueOf(i+1)), e.getMessage());</span>
+<span class="nc" id="L132">                errorCount++;</span>
+<span class="nc" id="L133">            }</span>
+        }
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        HttpStatus status = (errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED;</span>
+<span class="nc" id="L136">        return new ResponseEntity&lt;&gt;(headers, status);</span>
+    }
+    
+    @PreAuthorize(value = &quot;hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')&quot;)
+    @RequestMapping(value = &quot;/{type}&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = &quot;GET&quot;, notes = &quot;Retrieve type matching criteria.&quot;, value = &quot;/store/{type}&quot;)
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = &quot;Successfully retrieve type matching criteria.&quot;),
+            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
+            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
+            })
+    public ResponseEntity&lt;?&gt; get(@PathVariable(&quot;type&quot;) String type, @RequestParam(value = &quot;createdTimeStart&quot;, required=false) String createdTimeStart, @RequestParam(value = &quot;createdTimeEnd&quot;, required=false) String createdTimeEnd, HttpServletRequest request) throws JsonProcessingException {
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7): LocalDateTime.parse(createdTimeStart);</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">        LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : LocalDateTime.parse(createdTimeEnd);</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, &quot;Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!&quot;);</span>
+<span class="nc" id="L151">        String result = entityService.findByCreatedTime(type, start, end, request.getParameterMap().entrySet());</span>
+<span class="nc" id="L152">        return ResponseEntity.ok(result);</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

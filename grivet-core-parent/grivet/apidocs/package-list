@@ -1,0 +1,11 @@
+com.fns.grivet
+com.fns.grivet.api
+com.fns.grivet.config
+com.fns.grivet.controller
+com.fns.grivet.model
+com.fns.grivet.monitoring
+com.fns.grivet.query
+com.fns.grivet.repo
+com.fns.grivet.security.basic
+com.fns.grivet.security.oauth2
+com.fns.grivet.service
