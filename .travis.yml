@@ -1,25 +1,9 @@
-# On VM build, Op 1
-#sudo: required
-#dist: precise
-#group: edge
-#language: bash
-#services:
-#  - docker
-#script:
-#  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources maven:3.3.3-jdk-8 mvn clean install
-
-# In container build, Op 2
-sudo: false
+sudo: required
 dist: precise
 group: edge
-language: java
-jdk: 
-  - oraclejdk8
-cache:
-  directories:
-    - $HOME/.m2
-install:
-  - ./mvnw --version
-  - ./mvnw install -Dskip.unit.tests=true -Dskip.integration.tests=true
+language: bash
+services:
+  - docker
 script:
-  - ./.travis-build.sh
+  - docker build -t fastnsilver/maven:3.3.9-oracle-jdk8 ./docker/maven
+  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources fastnsilver/maven:3.3.9-oracle-jdk8 mvn clean install
