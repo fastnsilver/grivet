@@ -100,6 +100,7 @@
         <maven-surefire-report-plugin.version>2.18.1</maven-surefire-report-plugin.version>
         <plan-maven-plugin.version>1.2</plan-maven-plugin.version>
         <reflow-velocity-tools.version>1.1.1</reflow-velocity-tools.version>
+        <sonar-maven-plugin.version>2.7.1</sonar-maven-plugin.version>
         <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
         <velocity.version>1.7</velocity.version>
         <wagon-webdav-jackrabbit.version>2.8</wagon-webdav-jackrabbit.version>
@@ -254,6 +255,11 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+          			<groupId>org.codehaus.mojo</groupId>
+          			<artifactId>sonar-maven-plugin</artifactId>
+          			<version>${sonar-maven-plugin.version}</version>
+        		</plugin>
             </plugins>
         </pluginManagement>
         
@@ -318,6 +324,10 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+        		<groupId>org.codehaus.mojo</groupId>
+       	 		<artifactId>sonar-maven-plugin</artifactId>
+      		</plugin>
         </plugins>
     </build>
         
