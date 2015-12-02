@@ -39,6 +39,7 @@ This project will remain humble in its design and has no aspirations to match th
 - [ ] Enable [TLS/HTTPS](http://security.stackexchange.com/questions/5126/whats-the-difference-between-ssl-tls-and-https) 
 - [x] Define roles to limit access to administrators for registering new types and queries
 - [ ] All writes are audited (User is associated with record)
+- [ ] Host demo site on AWS EC2 Container Service
 
 ## 0.4.0
 
@@ -51,4 +52,4 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 0.6.0
 
-- [ ] Gradle build
+- [ ] Gradle build (as an alternative)

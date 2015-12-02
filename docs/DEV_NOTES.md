@@ -112,6 +112,18 @@ docker-machine env dev
 mvn clean install
 ```
 
+
+#### Publish images
+
+Assumes proper authentication credentials have been added to `$HOME/.m2/settings.xml`. See:
+
+* [Autenticating with Private Registries](https://github.com/spotify/docker-maven-plugin#authenticating-with-private-registries)
+
+```
+mvn clean install -DpushImage
+```
+
+
 #### Pull images
 
 Visit [Dockerhub](https://hub.docker.com/u/fastnsilver/)
@@ -167,3 +179,27 @@ CAdvisor          | 9080
 docker-compose stop
 docker-compose rm -f
 ```
+
+
+## Working with Maven Site 
+
+### Stage
+
+```
+mvn site site:stage -Pdocumentation
+```
+
+### Publish
+
+Assumes a `gh-pages` (orphan) branch has been set up in advance.  In addition, appropriate authentication credentials have been declared in `$HOME/.m2/settings.xml`. See:
+
+* [Creating Project Pages manually](https://help.github.com/articles/creating-project-pages-manually/)
+* [Security and Deployment Settings](http://maven.apache.org/guides/mini/guide-deployment-security-settings.html)
+
+```
+mvn scm-publish:publish-scm -Pdocumentation
+```
+
+### Review
+
+* [Maven Site](http://fastnsilver.github.io/grivet/)
