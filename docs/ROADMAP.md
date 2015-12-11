@@ -29,6 +29,7 @@ This project will remain humble in its design and has no aspirations to match th
 ## 0.2.0
 
 - [ ] Improve test coverage
+- [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
 - [x] Begin tracking technical debt with [Sonarqube](https://hub.docker.com/_/sonarqube/)
 - [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
 
