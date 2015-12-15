@@ -104,12 +104,16 @@ db:
     - data
 
 ### DATABASE ADMINISTRATION
+
+# Thank you timhaak!
+# @see https://github.com/timhaak/docker-phpmyadmin-alpine
+
 phpmyadmin:
-  image: nazarpc/phpmyadmin
+  build: phpmyadmin
   ports: 
     - 8082:80
-  environment:
-    - MYSQL_PORT_3306_TCP_ADDR=db
+  env_file:
+    - ./phpmyadmin/admin.env
   links:
     - db
     
