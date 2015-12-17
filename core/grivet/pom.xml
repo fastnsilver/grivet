@@ -28,6 +28,7 @@
 		<json-schema-validator.version>2.2.6</json-schema-validator.version>
 		<jsr305.version>3.0.0</jsr305.version>
 		<readytalk-metrics.version>4.1.2</readytalk-metrics.version>
+		<remock.version>0.5.1</remock.version>
 		<rest-assured.version>2.7.0</rest-assured.version>
 		<spring-data-releasetrain.version>Gosling-RELEASE</spring-data-releasetrain.version>
 		<springfox.version>2.1.2</springfox.version>
@@ -119,6 +120,12 @@
 			<version>${json-unit.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.skyscreamer</groupId>
+			<artifactId>jsonassert</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
 		
 		<!-- Apache Commons -->
 		<dependency>
@@ -206,6 +213,14 @@
 		      <artifactId>spring-mock-mvc</artifactId>
 		      <version>${rest-assured.version}</version>
 		      <scope>test</scope>
+		</dependency>
+		
+		<!-- Remock -->
+		<dependency>
+		    <groupId>no.saua.remock</groupId>
+		    <artifactId>remock</artifactId>
+		    <version>${remock.version}</version>
+		    <scope>test</scope>
 		</dependency>
 	</dependencies>
 	

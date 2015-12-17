@@ -10,19 +10,19 @@ returns all registered types
 
 returns the registered type
 
-* PUT `/register/{type}?unlinkSchema`
-
-unlinks existing JSON Schema from a pre-registered type; subsequent `/store/{type}` requests will NOT be validated against schema
-
 * POST `/register`
 
 Sample POST request [TestType.json](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestType.json)
 
-* POST `/register?linkSchema`
+* POST `/schema/link`
 
 links a JSON Schema with a pre-registered type; subsequent `/store/{type}` requests will be validated against schema
 
 Sample POST request [TestTypeSchema.json](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestTypeSchema.json)
+
+* PUT `/schema/unlink/{type}`
+
+unlinks existing JSON Schema from a pre-registered type; subsequent `/store/{type}` requests will NOT be validated against schema
 
 * DELETE `/register/{type}`
 

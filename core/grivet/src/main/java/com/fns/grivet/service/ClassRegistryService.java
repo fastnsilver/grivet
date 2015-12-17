@@ -15,12 +15,10 @@
  */
 package com.fns.grivet.service;
 
-import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +39,9 @@ import com.fns.grivet.repo.ClassRepository;
 @Service
 public class ClassRegistryService {
 
-    private static final String ID = "id";
-    private static final String SCHEMA = "$schema";
     private static final String TYPE = "type";
     private static final String DESCRIPTION = "description";
     private static final String ATTRIBUTES = "attributes";
-    private static final String PROPERTIES = "properties";
     
     private final AttributeRepository attributeRepository;
     private final AttributeTypeRepository attributeTypeRepository;
@@ -144,45 +139,5 @@ public class ClassRegistryService {
         }
         return result;
     }
-    
-    public boolean isJsonSchema(JSONObject payload) {
-        boolean result = false;
-        String schema = payload.optString(SCHEMA);
-        String type = payload.optString(TYPE);
-        String id = payload.optString(ID);
-        String props = payload.optString(PROPERTIES);
-        if (schema.equals("http://json-schema.org/draft-04/schema#") 
-                && type.equals("object") 
-                && StringUtils.isNotBlank(id) 
-                && StringUtils.isNotBlank(props)) {
-            result = true;
-        }
-        return result;
-    }
-
-    @Transactional
-    public com.fns.grivet.model.Class linkSchema(JSONObject payload) {
-        String type = payload.getString(ID);
-        com.fns.grivet.model.Class c = classRepository.findByName(type);
-        Assert.notNull(c, String.format("Type [%s] must be registered before linking a JSON Schema!", type));
-        c.setValidatable(true);
-        c.setJsonSchema(payload.toString());
-        c.setUpdatedTime(LocalDateTime.now());
-        classRepository.save(c);
-        return c;
-    }
-    
-    @Transactional
-    public com.fns.grivet.model.Class unlinkSchema(String type) {
-        com.fns.grivet.model.Class c = classRepository.findByName(type);
-        Assert.notNull(c, String.format("Type [%s] must be registered before unlinking a JSON Schema!", type));
-        c.setValidatable(false);
-        c.setJsonSchema(null);
-        c.setUpdatedTime(LocalDateTime.now());
-        User user = securityFacade != null ? securityFacade.getCurrentUser(): null;
-        c.setUpdater(user);
-        classRepository.save(c);
-        return c;
-    }
-    
+        
 }

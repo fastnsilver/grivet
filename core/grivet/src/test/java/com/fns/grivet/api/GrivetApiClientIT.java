@@ -105,8 +105,8 @@ public class GrivetApiClientIT {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestTypeSchema.json");
         String schema = FileUtils.readFileToString(r.getFile());
-        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when().post("/register?linkSchema");
-        given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().put("/register/TestType?unlinkSchema");
+        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when().post("/schema/link");
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().put("/schema/unlink/TestType");
         deregisterType();
     }
     
@@ -115,7 +115,7 @@ public class GrivetApiClientIT {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestTypeSchema.json");
         String schema = FileUtils.readFileToString(r.getFile());
-        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when().post("/register?linkSchema");
+        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when().post("/schema/link");
         r = resolver.getResource("classpath:TestTypeData.json");
         String type = FileUtils.readFileToString(r.getFile());
         given().contentType("application/json").request().body(type).then().expect().statusCode(equalTo(204)).when().post("/store/TestType");

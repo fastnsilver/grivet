@@ -45,6 +45,9 @@ public class EntityServiceTest {
     private final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
     
     @Autowired
+    private SchemaService schemaService;
+    
+    @Autowired
     private ClassRegistryService classRegistryService;
     
     @Autowired
@@ -91,7 +94,7 @@ public class EntityServiceTest {
         Resource r = resolver.getResource("classpath:TestTypeSchema.json");
         String jsonSchema = FileUtils.readFileToString(r.getFile());
         JSONObject schemaObj = new JSONObject(jsonSchema);
-        com.fns.grivet.model.Class c = classRegistryService.linkSchema(schemaObj);
+        com.fns.grivet.model.Class c = schemaService.linkSchema(schemaObj);
         String type = c.getName();
         Assert.assertEquals("TestType", type);
         Assert.assertTrue(c.isValidatable());
@@ -107,7 +110,7 @@ public class EntityServiceTest {
         JSONArray resultAsJsonArray = new JSONArray(result);
         JsonAssert.assertJsonEquals(payload.toString(), resultAsJsonArray.get(0).toString());
         
-        c = classRegistryService.unlinkSchema(type);
+        c = schemaService.unlinkSchema(type);
         Assert.assertFalse(c.isValidatable());
         Assert.assertNull(c.getJsonSchema());
     }

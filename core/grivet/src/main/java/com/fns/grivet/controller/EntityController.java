@@ -21,7 +21,6 @@ import java.time.temporal.ChronoUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -35,6 +34,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -88,8 +88,7 @@ public class EntityController {
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 500, message = "Internal server error.")
             })
-    public ResponseEntity<?> create(@PathVariable("type") String type, HttpServletRequest request) throws IOException {
-        String json = IOUtils.toString(request.getInputStream(), "UTF-8");
+    public ResponseEntity<?> create(@PathVariable("type") String type, @RequestBody String json) throws IOException {
         Assert.isTrue(json.startsWith("{") || json.startsWith("["), "Store requests must be valid JSON starting with either a { or [!");
         ResponseEntity<?> result = ResponseEntity.unprocessableEntity().build();
         if (json.startsWith("{")) {

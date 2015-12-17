@@ -18,9 +18,6 @@ package com.fns.grivet.controller;
 import java.io.IOException;
 import java.net.URI;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -34,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -74,44 +72,23 @@ public class ClassRegistryController {
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.POST, 
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Register one or more types. Optionally link a JSON Schema.", value = "/register/{type}")
+    @ApiOperation(httpMethod = "POST", notes = "Register one or more types", value = "/register")
     @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Successfully link JSON Schema to registered type."),
             @ApiResponse(code = 201, message = "Successfully registered type(s)."),
             @ApiResponse(code = 202, message = "Partial success. Location info for registered type(s). Error details for type(s) that could not be registered."),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 500, message = "Internal server error.")
             })
-    public ResponseEntity<?> register(HttpServletRequest request) throws IOException {
-        String json = IOUtils.toString(request.getInputStream(), "UTF-8");
+    public ResponseEntity<?> register(@RequestBody String json) throws IOException {
         Assert.isTrue(json.startsWith("{") || json.startsWith("["), "Registration requests must be valid JSON starting with either a { or [!");
         ResponseEntity<?> result = ResponseEntity.unprocessableEntity().build();
         if (json.startsWith("{")) {
-            if (request.getParameterMap().containsKey("linkSchema") 
-                    && classRegistryService.isJsonSchema(new JSONObject(json))) {
-                result = linkSchema(json);
-            } else {
-                result = registerSingleType(json);
-            }
+            result = registerSingleType(json);
         }
         if (json.startsWith("[")) {
             result = registerMultipleTypes(json);
         }
         return result;
-    }
-    
-    private ResponseEntity<?> linkSchema(String json) {
-        String id = classRegistryService.linkSchema(new JSONObject(json)).getName();
-        String message = String.format("JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!", id);
-        log.info(message);
-        return ResponseEntity.ok(message);
-    }
-    
-    private ResponseEntity<?> unlinkSchema(String type) {
-        classRegistryService.unlinkSchema(type);
-        String message = String.format("JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!", type);
-        log.info(message);
-        return ResponseEntity.ok(message);
     }
     
     private ResponseEntity<?> registerSingleType(String json) {
@@ -188,22 +165,6 @@ public class ClassRegistryController {
         String message = LogUtil.toLog(payload, String.format("Successfully retrieved type [%s]\n", type));
         log.info(message);
         return ResponseEntity.ok(payload.toString());
-    }
-    
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/{type}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "PUT", notes = "Unlink JSON Schema from type.", value = "/register/{type}")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Unlinked JSON Schema from type."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.")
-            })
-    public ResponseEntity<?> unlinkSchema(
-            @ApiParam(value = "Type name", required = true)
-            @PathVariable("type") String type, 
-            @ApiParam(value = "Unlink JSON Schema from registered type?", required = true)
-            @RequestParam("unlinkSchema") String unlinkSchema) {
-        return unlinkSchema(type);
     }
     
     @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")

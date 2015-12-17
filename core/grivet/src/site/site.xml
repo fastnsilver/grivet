@@ -59,7 +59,8 @@
         </menu>
         <menu name="Stats">
             <item name="Change Log" href="changelog.html" />
-            <item name="Surefire Report" href="failsafe-report.html" />
+            <item name="Surefire Report" href="surefire-report.html" />
+            <item name="Failsafe Report" href="failsafe-report.html" />
             <item name="JaCoCo Test Coverage" href="jacoco/index.html" />
         </menu>
   	</body>
