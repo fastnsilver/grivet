@@ -1,0 +1,4 @@
+{
+    "name": "getAttributesCreatedToday",
+    "query": "SELECT * FROM attribute WHERE created_time > CURRENT_DATE()"
+}
