@@ -105,7 +105,36 @@ public class NamedQueryControllerTest {
     }
     
     @Test
-    public void testGet() throws Exception {
+    public void testThatCreateSucceeds_forSelect_withQueryTypeSupplied() throws Exception {
+        Resource r = resolver.getResource("classpath:TestSelectQuery3.json");
+        String json = FileUtils.readFileToString(r.getFile());
+        NamedQuery query = mapper.readValue(r.getFile(), NamedQuery.class);
+        doCallRealMethod().when(service).create(query);
+        mockMvc.perform(
+                    post("/query")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/query/getClassesCreatedToday"));
+    }
+    
+    @Test
+    public void testThatCreateSucceeds_forSproc_withQueryTypeSupplied() throws Exception {
+        Resource r = resolver.getResource("classpath:TestSprocQuery2.json");
+        String json = FileUtils.readFileToString(r.getFile());
+        NamedQuery query = mapper.readValue(r.getFile(), NamedQuery.class);
+        doCallRealMethod().when(service).create(query);
+        mockMvc.perform(
+                    post("/query")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isNoContent());
+    }
+    
+    @Test
+    public void testThatGetSucceeds() throws Exception {
         Resource r = resolver.getResource("classpath:TestSelectQuery2-sample-response.json");
         String response = FileUtils.readFileToString(r.getFile());
         when(service.get("getAttributesCreatedToday", new LinkedMultiValueMap<String, String>())).thenReturn(response);
@@ -116,9 +145,10 @@ public class NamedQueryControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().json(response));
     }
+    
 
     @Test
-    public void testAll() throws Exception {
+    public void testThatAllSucceeds() throws Exception {
         Resource r = resolver.getResource("classpath:TestSelectQuery2.json");
         String response = String.format("[%s]", FileUtils.readFileToString(r.getFile()));
         when(service.all()).thenReturn(new JSONArray(response));
@@ -131,7 +161,7 @@ public class NamedQueryControllerTest {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testThatDeleteSucceeds() throws Exception {
         mockMvc.perform(
                 delete("/query/TestSelectQuery")
                     .contentType(MediaType.APPLICATION_JSON)

@@ -1,0 +1,5 @@
+{
+    "name": "getClassesCreatedToday",
+    "query": "SELECT * FROM class WHERE created_time > CURRENT_DATE()",
+    "type": "SELECT"
+}

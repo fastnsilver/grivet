@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.3.0.RELEASE</version>
+        <version>1.3.1.RELEASE</version>
         <relativePath/>
     </parent>
     
@@ -74,13 +74,13 @@
     	<logstash-logback-encoder.version>2.5</logstash-logback-encoder.version>
 		
 		<!-- Spring Boot Admin -->
-		<spring-boot-admin.version>1.3.0</spring-boot-admin.version>
+		<spring-boot-admin.version>1.3.1</spring-boot-admin.version>
 		
         <!-- Maven -->
         <apiviz.version>1.3.2.GA</apiviz.version>
-        <asciidoctor-maven-plugin.version>1.5.2</asciidoctor-maven-plugin.version>
+        <asciidoctor-maven-plugin.version>1.5.3</asciidoctor-maven-plugin.version>
         <coveralls-maven-plugin.version>4.0.0</coveralls-maven-plugin.version>
-        <docker-maven-plugin.version>0.3.6</docker-maven-plugin.version>
+        <docker-maven-plugin.version>0.3.7</docker-maven-plugin.version>
         <downloads-maven-plugin.version>0.6</downloads-maven-plugin.version>
         <doxia-module-markdown.version>1.6</doxia-module-markdown.version>
         <findbugs-maven-plugin.version>3.0.1</findbugs-maven-plugin.version>
@@ -103,6 +103,7 @@
         <sonar-maven-plugin.version>2.7.1</sonar-maven-plugin.version>
         <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
         <velocity.version>1.7</velocity.version>
+        <versions-maven-plugin.version>2.2</versions-maven-plugin.version>
         <wagon-webdav-jackrabbit.version>2.8</wagon-webdav-jackrabbit.version>
     </properties>
 
@@ -264,6 +265,11 @@
           			<artifactId>sonar-maven-plugin</artifactId>
           			<version>${sonar-maven-plugin.version}</version>
         		</plugin>
+        		<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>${versions-maven-plugin.version}</version>
+				</plugin>
             </plugins>
         </pluginManagement>
         
@@ -276,6 +282,10 @@
                 <groupId>tk.skuro</groupId>
                 <artifactId>plan-maven-plugin</artifactId>
                 <version>${plan-maven-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
             </plugin>
             <!-- Build test-jar artifact so that we can share test resources and implementation if required -->
             <plugin>
@@ -701,6 +711,20 @@
 				            </reportSet>
 				        </reportSets>
                     </plugin>
+                    <plugin>
+      					<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+						<version>${versions-maven-plugin.version}</version>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>dependency-updates-report</report>
+									<report>plugin-updates-report</report>
+									<report>property-updates-report</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+    				</plugin>
                 </plugins>
             </reporting>
         </profile>

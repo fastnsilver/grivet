@@ -1,0 +1,8 @@
+{
+    "name": "sproc.getClassesCreatedBefore",
+    "type": "SPROC",
+    "query": "CALL GET_CLASSES_CREATED_BEFORE(:createdTime)",
+    "params": {
+        "createdTime": "iso_instant"
+    }
+}

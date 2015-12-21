@@ -15,7 +15,7 @@
 	      	<bottomNav>
 		        <column>Overview|User</column>
 		        <column>Developer</column>
-		        <column>Stats</column>
+		        <column>Stats|Updates</column>
 	      	</bottomNav>
 	      	<pages>
 	        	<index project="project-id">
@@ -62,6 +62,11 @@
             <item name="Surefire Report" href="surefire-report.html" />
             <item name="Failsafe Report" href="failsafe-report.html" />
             <item name="JaCoCo Test Coverage" href="jacoco/index.html" />
+        </menu>
+        <menu name="Updates">
+        	<item name="Dependencies" href="dependency-updates-report.html" />
+        	<item name="Plugins" href="plugin-updates-report.html" />
+        	<item name="Properties" href="property-updates-report.html" />
         </menu>
   	</body>
 </project>
