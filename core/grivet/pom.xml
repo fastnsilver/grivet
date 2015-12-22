@@ -25,7 +25,7 @@
 		<hikaricp.version>2.4.3</hikaricp.version>
 		<json.version>20151123</json.version>
 		<json-unit.version>1.8.0</json-unit.version>
-		<json-schema-validator.version>2.2.7</json-schema-validator.version>
+		<json-schema-validator.version>2.2.6</json-schema-validator.version>
 		<jsr305.version>3.0.1</jsr305.version>
 		<readytalk-metrics.version>4.1.2</readytalk-metrics.version>
 		<remock.version>0.5.1</remock.version>
