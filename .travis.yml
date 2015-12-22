@@ -1,6 +1,3 @@
-sudo: required
-dist: precise
-group: edge
 language: bash
 services:
   - docker
