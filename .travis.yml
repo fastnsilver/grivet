@@ -3,4 +3,4 @@ services:
   - docker
 script:
   - docker build -t fastnsilver/maven:3.3.9-oracle-jdk8 ./docker/maven
-  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources fastnsilver/maven:3.3.9-oracle-jdk8 mvn clean install
+  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources fastnsilver/maven:3.3.9-oracle-jdk8 mvn clean install coveralls:report -Pwith-coverage-report

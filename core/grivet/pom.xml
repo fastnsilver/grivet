@@ -30,7 +30,7 @@
 		<readytalk-metrics.version>4.1.2</readytalk-metrics.version>
 		<remock.version>0.5.1</remock.version>
 		<rest-assured.version>2.8.0</rest-assured.version>
-		<spring-data-releasetrain.version>Gosling-RELEASE</spring-data-releasetrain.version>
+		<spring-data-releasetrain.version>Gosling-SR2A</spring-data-releasetrain.version>
 		<springfox.version>2.1.2</springfox.version>
 		<swagger2markup.version>0.7.1</swagger2markup.version>
 	</properties>
