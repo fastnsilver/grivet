@@ -91,9 +91,9 @@ flyway:
 spring:
   profiles: mysql
   datasource:
-    url: jdbc:mysql://localhost:3306/grivetdb
-    driver-class-name: com.mysql.jdbc.Driver
-    data-source-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+    url: jdbc:mariadb://localhost:3306/grivetdb
+    driver-class-name: org.mariadb.jdbc.Driver
+    data-source-class-name: org.mariadb.jdbc.MariaDbDataSource
     username: admin
     password: jackal#3
 
@@ -102,7 +102,7 @@ flyway:
   locations: classpath:db/with_partitions, classpath:db/users
   placeholders:
     preamble: |
-      /*!40101 SET character_set_client = utf8 */;
+      /*!40101 SET character_set_client = utf8mb4 */;
       /*!40101 SET global innodb_file_format = BARRACUDA */;
       /*!40101 SET global innodb_large_prefix = ON */;
     autoInc: AUTO_INCREMENT 
@@ -112,8 +112,8 @@ flyway:
     textColumnType: TEXT
     longTextColumnType: LONGTEXT
     longVarBinary: LONGBLOB
-    varcharQualifier: CHARACTER SET utf8 COLLATE utf8_bin
-    createTableSuffix: ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC
+    varcharQualifier: CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+    createTableSuffix: ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
     renameTableKeyword: RENAME
     alterColumnKeyword: MODIFY
 
