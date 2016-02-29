@@ -1,6 +1,7 @@
 package com.fns.grivet.controller;
 
-import java.lang.reflect.Method;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -9,8 +10,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
+import java.lang.reflect.Method;
 
 @Aspect
 @Component
@@ -23,7 +23,7 @@ class MetricsAspect {
         this.metricRegistry = metricRegistry;
     }
     
-    @Around("execution(* com.fns.globaldb.controller.*Controller.*(..)) && @annotation(org.springframework.web.bind.annotation.RequestMapping)")
+    @Around("execution(* com.fns.grivet.controller.*Controller.*(..)) && @annotation(org.springframework.web.bind.annotation.RequestMapping)")
     public Object run(ProceedingJoinPoint pjp) throws Throwable {
 
         Class<?> curClass = pjp.getTarget().getClass();

@@ -15,7 +15,7 @@
  */
 package com.fns.grivet.controller;
 
-import java.io.IOException;
+import com.fns.grivet.service.SchemaService;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -24,14 +24,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fns.grivet.service.SchemaService;
+import java.io.IOException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,8 +45,8 @@ import io.swagger.annotations.ApiResponses;
  * @author Chris Phillipson
  */
 @RestController
-@RequestMapping("/schema")
-@Api(value = "/schema", produces = "application/json")
+@RequestMapping("/type/schema")
+@Api(value = "type/schema", produces = "application/json")
 public class SchemaController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -63,28 +62,27 @@ public class SchemaController {
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/link", method = RequestMethod.POST, 
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Link a JSON Schema to a pre-registered type.", value = "/schema/link")
+    @ApiOperation(httpMethod = "POST", notes = "Link a JSON Schema to a pre-registered type.", value = "/type/schema/link")
     @ApiResponses(value = { 
             @ApiResponse(code = 200, message = "Successfully link JSON Schema to registered type."),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 422, message = "Unprocessable entity (e.g., invalid JSON schema)."),
             @ApiResponse(code = 500, message = "Internal server error.")
             })
-    public ResponseEntity<?> linkSchema(@RequestBody String json) throws IOException {
-        Assert.isTrue(json.startsWith("{"), "Registration requests must be valid JSON starting with a {!");
-        ResponseEntity<?> result = ResponseEntity.unprocessableEntity().build();
-        if (schemaService.isJsonSchema(new JSONObject(json))) {
-            String id = schemaService.linkSchema(new JSONObject(json)).getName();
+    public ResponseEntity<?> linkSchema(@RequestBody String payload) throws IOException {
+        JSONObject json = new JSONObject(payload);
+        if (schemaService.isJsonSchema(json)) {
+            String id = schemaService.linkSchema(json).getName();
             String message = String.format("JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!", id);
             log.info(message);
             return ResponseEntity.ok(message);
         } 
-        return result;
+        return ResponseEntity.unprocessableEntity().build();
     }
     
     @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/unlink/{type}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "PUT", notes = "Unlink JSON Schema from a pre-registered type.", value = "/schema/unlink/{type}")
+    @ApiOperation(httpMethod = "PUT", notes = "Unlink JSON Schema from a pre-registered type.", value = "/type/schema/unlink/{type}")
     @ApiResponses(value = { 
             @ApiResponse(code = 200, message = "Unlinked JSON Schema from type."),
             @ApiResponse(code = 400, message = "Bad request."),

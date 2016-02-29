@@ -63,12 +63,12 @@ public class GrivetApiClientIT {
     private String registerTestType() throws IOException {
         Resource r = resolver.getResource("classpath:TestType.json");
         String json = FileUtils.readFileToString(r.getFile());
-        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(201)).when().post("/register");
+        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(201)).when().post("/type/register");
         return json;
     }
     
     private void deregisterType() {
-        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/register/TestType");
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/type/register/TestType");
     }
     
     
@@ -80,13 +80,13 @@ public class GrivetApiClientIT {
     
     @Test
     public void testRegisterType_emptyBody() throws IOException {
-        given().contentType("application/json").request().body("").then().expect().statusCode(equalTo(400)).when().post("/register");
+        given().contentType("application/json").request().body("").then().expect().statusCode(equalTo(400)).when().post("/type/register");
     }
     
     @Test
     public void testGetRegisteredType_happyPath() throws IOException {
         String json = registerTestType();
-        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/register/TestType");
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/register/TestType");
         JsonAssert.assertJsonEquals(json, response.body().asString());
         deregisterType();
     }
@@ -94,7 +94,7 @@ public class GrivetApiClientIT {
     @Test
     public void testAllRegisteredTypes_happyPath() throws IOException {
         String json = registerTestType();
-        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/register?showAll");
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/register?showAll");
         JSONArray result = new JSONArray(response.body().asString());
         JsonAssert.assertJsonEquals(json, result.get(0).toString());
         deregisterType();
@@ -105,8 +105,8 @@ public class GrivetApiClientIT {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestTypeSchema.json");
         String schema = FileUtils.readFileToString(r.getFile());
-        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when().post("/schema/link");
-        given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().put("/schema/unlink/TestType");
+        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when().post("/type/schema/link");
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().put("/type/schema/unlink/TestType");
         deregisterType();
     }
     
@@ -115,11 +115,11 @@ public class GrivetApiClientIT {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestTypeSchema.json");
         String schema = FileUtils.readFileToString(r.getFile());
-        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when().post("/schema/link");
+        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when().post("/type/schema/link");
         r = resolver.getResource("classpath:TestTypeData.json");
         String type = FileUtils.readFileToString(r.getFile());
-        given().contentType("application/json").request().body(type).then().expect().statusCode(equalTo(204)).when().post("/store/TestType");
-        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/store/TestType");
+        given().contentType("application/json").request().body(type).then().expect().statusCode(equalTo(204)).when().post("/type/store/TestType");
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/store/TestType");
         JSONArray result = new JSONArray(response.body().asString());
         JsonAssert.assertJsonEquals(type, result.get(0).toString());
         deregisterType();

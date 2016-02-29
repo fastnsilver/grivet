@@ -62,7 +62,7 @@ public class SchemaControllerTest {
         com.fns.grivet.model.Class clazz = new com.fns.grivet.model.Class("TestType", "A type for testing purposes", null);
         when(service.linkSchema(any(JSONObject.class))).thenReturn(clazz);
         mockMvc.perform(
-                    post("/schema/link")
+                    post("/type/schema/link")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
@@ -75,7 +75,7 @@ public class SchemaControllerTest {
         com.fns.grivet.model.Class clazz = new com.fns.grivet.model.Class("TestType", "A type for testing purposes", null);
         when(service.unlinkSchema("TestType")).thenReturn(clazz);
         mockMvc.perform(
-                    put("/schema/unlink/TestType")
+                    put("/type/schema/unlink/TestType")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())

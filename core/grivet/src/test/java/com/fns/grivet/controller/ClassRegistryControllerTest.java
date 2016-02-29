@@ -63,18 +63,18 @@ public class ClassRegistryControllerTest {
         String json = FileUtils.readFileToString(r.getFile());
         when(service.register(any(JSONObject.class))).thenReturn("TestType");
         mockMvc.perform(
-                    post("/register")
+                    post("/type/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/register/TestType"));
+                .andExpect(header().string("Location", "/type/register/TestType"));
     }
 
     @Test
     public void testThatDeleteSucceeds() throws Exception {
         mockMvc.perform(
-                delete("/register/TestType")
+                delete("/type/register/TestType")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isNoContent());
@@ -86,7 +86,7 @@ public class ClassRegistryControllerTest {
         String json = FileUtils.readFileToString(r.getFile());
         when(service.get("TestType")).thenReturn(new JSONObject(json));
         mockMvc.perform(
-                get("/register/TestType")
+                get("/type/register/TestType")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
@@ -100,7 +100,7 @@ public class ClassRegistryControllerTest {
         String arr = String.format("[%s]", json);
         when(service.all()).thenReturn(new JSONArray(arr));
         mockMvc.perform(
-                get("/register?showAll=true")
+                get("/type/register?showAll=true")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())

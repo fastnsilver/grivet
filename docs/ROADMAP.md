@@ -6,9 +6,9 @@ This project will remain humble in its design and has no aspirations to match th
 ## 0.0.1 
 
 - [x] Basic implementation supporting registration, storage and retrieval of `text`, `numbers`, and `dates`
-- [x] Single and batch POST capable `/register` and `/store` end-points
+- [x] Single and batch POST capable `/type/register` and `/type/store` end-points
 - [x] Dynamic query support
-- [x] Named query support via /query end-point; both `SELECT` queries and `CALL`s to stored procedures
+- [x] Named query support via `/query` end-point; both `SELECT` queries and `CALL`s to stored procedures
 - [x] Link [JSON Schema](http://spacetelescope.github.io/understanding-json-schema/) with a registered type; on subsequent store requests for type, type will be validated against schema before attempt to persist
 - [x] Documentation authored and published inc. [API](http://fastnsilver.github.io/grivet/grivet/rest-api.html), [Javadoc](http://fastnsilver.github.io/grivet/apidocs/index.html), Maven Site to Github [Pages](http://fastnsilver.github.io/grivet/)
 - [x] Continuous integration builds configured on [Shippable](http://docs.shippable.com/)
@@ -28,6 +28,7 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 0.2.0
 
+- [x] Prefix all end-points with `/type` except for `/query`
 - [ ] Improve test coverage
 - [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
 - [x] Begin tracking technical debt with [Sonarqube](https://hub.docker.com/_/sonarqube/)

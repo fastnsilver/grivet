@@ -15,6 +15,12 @@
  */
 package com.fns.grivet.query;
 
+import com.fns.grivet.model.AttributeType;
+
+import org.springframework.jdbc.core.SqlParameterValue;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.Instant;
@@ -29,12 +35,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.jdbc.core.SqlParameterValue;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-
-import com.fns.grivet.model.AttributeType;
-
 
 public class DynamicQuery {
 
@@ -48,7 +48,7 @@ public class DynamicQuery {
         String k = null;
         String[] v = null;
         if (requestParams != null && !requestParams.isEmpty()) {
-            for (Entry<String, String[]> requestParam: requestParams) {
+            for (Entry<String, String[]> requestParam : requestParams) {
                 k = requestParam.getKey();
                 v = requestParam.getValue();
                 if (isConstraintKey(k)) {

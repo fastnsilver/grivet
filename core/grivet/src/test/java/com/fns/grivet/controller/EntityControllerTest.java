@@ -15,15 +15,15 @@
  */
 package com.fns.grivet.controller;
 
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.LocalDateTime;
+import com.fns.grivet.service.EntityService;
+import com.google.common.collect.Maps;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
@@ -36,21 +36,16 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.codahale.metrics.Counter;
-import com.codahale.metrics.MetricRegistry;
-import com.fns.grivet.service.EntityService;
+import java.time.LocalDateTime;
 
 public class EntityControllerTest {
 
     @Mock
     private EntityService service;
-    
-    private MetricRegistry metricRegistry;
-        
+
     @InjectMocks
     private EntityController controller;
     
@@ -60,8 +55,6 @@ public class EntityControllerTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        metricRegistry = mock(MetricRegistry.class);
-        controller.setMetricRegistry(metricRegistry);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
     
@@ -69,10 +62,9 @@ public class EntityControllerTest {
     public void testThatCreateSucceeds() throws Exception {
         Resource r = resolver.getResource("classpath:TestTypeData.json");
         String json = FileUtils.readFileToString(r.getFile());
-        doCallRealMethod().when(service).create("TestType", new JSONObject(json));
-        when(metricRegistry.counter("store.TestType.count")).thenReturn(new Counter());
+        doNothing().when(service).create("TestType", new JSONObject(json));
         mockMvc.perform(
-                    post("/store/TestType")
+                    post("/type/store/TestType")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
@@ -80,14 +72,15 @@ public class EntityControllerTest {
     }
 
     @Test
-    @Ignore("last assertion mysteriously fails")
+    @Ignore("For whatever silly unknown reason this test always fails.")
     public void testThatGetSucceeds() throws Exception {
-        Resource r = resolver.getResource("classpath:TestTypeData.json");
+        Resource r = resolver.getResource("classpath:TestTypeData2.json");
         String response = String.format("[%s]", FileUtils.readFileToString(r.getFile()));
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        when(service.findByCreatedTime("TestType", LocalDateTime.now().minusDays(7), LocalDateTime.now(), request.getParameterMap().entrySet())).thenReturn(response);
+        LocalDateTime now = LocalDateTime.now();
+        when(service.findByCreatedTime("TestType2", now.minusDays(7), now, Maps.newHashMap()))
+                .thenReturn(response);
         mockMvc.perform(
-                get("/store/TestType")
+                get("/type/store/TestType2")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())

@@ -15,20 +15,6 @@
  */
 package com.fns.grivet.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
@@ -43,6 +29,20 @@ import com.fns.grivet.repo.ClassRepository;
 import com.fns.grivet.repo.EntityRepository;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.google.common.collect.Lists;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -96,14 +96,16 @@ public class EntityService {
     }
     
     @Transactional(readOnly=true)
-    public String findByCreatedTime(String type, LocalDateTime createdTimeStart, LocalDateTime createdTimeEnd, Set<Entry<String, String[]>> requestParameters) throws JsonProcessingException {
+    public String findByCreatedTime(String type, LocalDateTime createdTimeStart, LocalDateTime createdTimeEnd,
+            Map<String, String[]> parameters) throws JsonProcessingException {
         com.fns.grivet.model.Class c = classRepository.findByName(type);
         Assert.notNull(c, "Type [%s] is not registered!");
         List<ClassAttribute> cas = classAttributeRepository.findByCid(c.getId());
         List<Attribute> attributes = Lists.newArrayList(attributeRepository.findAll());
         Map<Integer, Integer> attributeToAttributeTypeMap = cas.stream().collect(Collectors.toMap(ClassAttribute::getAid, ClassAttribute::getTid));
         Map<String, Integer> attributeNameToAttributeIdMap = attributes.stream().collect(Collectors.toMap(Attribute::getName, Attribute::getId));
-        DynamicQuery query = new DynamicQuery(requestParameters, attributeToAttributeTypeMap, attributeNameToAttributeIdMap);
+        Set<Entry<String, String[]>> params = parameters == null ? null : parameters.entrySet();
+        DynamicQuery query = new DynamicQuery(params, attributeToAttributeTypeMap, attributeNameToAttributeIdMap);
         List<EntityAttributeValue> rows = null;
         if (query.hasConstraints()) {
             rows = entityRepository.executeDynamicQuery(c.getId(), query);

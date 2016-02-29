@@ -23,17 +23,16 @@
 		<commons-lang3.version>3.4</commons-lang3.version>
 		<guava.version>19.0</guava.version>
 		<hikaricp.version>2.4.3</hikaricp.version>
-		<json.version>20151123</json.version>
+		<json.version>20160212</json.version>
 		<json-unit.version>1.8.0</json-unit.version>
 		<json-schema-validator.version>2.2.6</json-schema-validator.version>
 		<jsr305.version>3.0.1</jsr305.version>
 		<mariadb.version>1.3.6</mariadb.version>
 		<readytalk-metrics.version>4.1.2</readytalk-metrics.version>
-		<remock.version>0.5.1</remock.version>
 		<rest-assured.version>2.8.0</rest-assured.version>
 		<spring-data-releasetrain.version>Gosling-SR4</spring-data-releasetrain.version>
-		<springfox.version>2.3.0</springfox.version>
-		<swagger2markup.version>0.9.1</swagger2markup.version>
+		<springfox.version>2.3.1</springfox.version>
+		<swagger2markup.version>0.9.2</swagger2markup.version>
 	</properties>
 
 	<dependencies>
@@ -222,14 +221,6 @@
 		      <artifactId>spring-mock-mvc</artifactId>
 		      <version>${rest-assured.version}</version>
 		      <scope>test</scope>
-		</dependency>
-		
-		<!-- Remock -->
-		<dependency>
-		    <groupId>no.saua.remock</groupId>
-		    <artifactId>remock</artifactId>
-		    <version>${remock.version}</version>
-		    <scope>test</scope>
 		</dependency>
 	</dependencies>
 	

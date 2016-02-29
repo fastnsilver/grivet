@@ -2,29 +2,29 @@
 
 ### Type Registration
 
-* GET `/register?showAll`
+* GET `/type/register?showAll`
 
 returns all registered types
 
-* GET `/register/{type}`
+* GET `/type/register/{type}`
 
 returns the registered type
 
-* POST `/register`
+* POST `/type/register`
 
 Sample POST request [TestType.json](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestType.json)
 
-* POST `/schema/link`
+* POST `/type/schema/link`
 
 links a JSON Schema with a pre-registered type; subsequent `/store/{type}` requests will be validated against schema
 
 Sample POST request [TestTypeSchema.json](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestTypeSchema.json)
 
-* PUT `/schema/unlink/{type}`
+* PUT `/type/schema/unlink/{type}`
 
 unlinks existing JSON Schema from a pre-registered type; subsequent `/store/{type}` requests will NOT be validated against schema
 
-* DELETE `/register/{type}`
+* DELETE `/type/register/{type}`
 
 deletes a registered type; default configuration has cascading deletes enabled which means that any persistent data from prior POST `/store/{type}` requests will also be deleted; so use with caution!
 
@@ -33,15 +33,15 @@ However, if `spring.profiles.active` is set to `mysql` then when a DELETE reques
 
 ### Type Storage and Retrieval
 
-* POST `/store/{type}`
+* POST `/type/store/{type}`
 
 Sample POST request [TestTypeData.json](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestTypeData.json)
 
-* GET `/store/{type}`
+* GET `/type/store/{type}`
 
 returns records that were created within the last 7 days
 
-* GET `/store/{type}?createdTimeStart=yyyy-MM-ddTHH:mm:ss&createdTimeEnd=yyyy-MM-ddTHH:mm:ss`
+* GET `/type/store/{type}?createdTimeStart=yyyy-MM-ddTHH:mm:ss&createdTimeEnd=yyyy-MM-ddTHH:mm:ss`
 
 returns records that were created between `createdTimeStart` and `createdTimeEnd`
 
@@ -104,10 +104,10 @@ where
 
 ##### Examples
 
-* GET `/store/TestType?c=datetime|lessThan|2015-07-01T10:00:00`
+* GET `/type/store/TestType?c=datetime|lessThan|2015-07-01T10:00:00`
 
 returns `TestType` records that have attribute `datetime` less than the day constraint value
 
-* GET `/store/TestType?constraint=datetime|lessThan|2015-07-01T10:00:00&constraint=varchar|equals|Rush`
+* GET `/type/store/TestType?constraint=datetime|lessThan|2015-07-01T10:00:00&constraint=varchar|equals|Rush`
 
 returns `TestType` records that match on either `datetime` `OR` `varchar` attributes and constraint values
