@@ -59,7 +59,7 @@ public class SchemaController {
     }
     
     
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN)")
     @RequestMapping(value = "/link", method = RequestMethod.POST, 
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Link a JSON Schema to a pre-registered type.", value = "/type/schema/link")
@@ -80,7 +80,7 @@ public class SchemaController {
         return ResponseEntity.unprocessableEntity().build();
     }
     
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN)")
     @RequestMapping(value = "/unlink/{type}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "PUT", notes = "Unlink JSON Schema from a pre-registered type.", value = "/type/schema/unlink/{type}")
     @ApiResponses(value = { 

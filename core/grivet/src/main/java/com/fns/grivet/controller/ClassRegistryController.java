@@ -69,7 +69,7 @@ public class ClassRegistryController {
         this.classRegistryService = classRegistryService;
     }
     
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN)")
     @RequestMapping(method = RequestMethod.POST, 
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Register a type", value = "/type/register")
@@ -85,7 +85,7 @@ public class ClassRegistryController {
         return ResponseEntity.created(ucb.path("/type/register/{type}").buildAndExpand(type).toUri()).build();
     }
 
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN)")
     @RequestMapping(value = "/batch", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Register multiple types", value = "/type/register/batch")
     @ApiResponses(value = { 
@@ -133,7 +133,7 @@ public class ClassRegistryController {
         return new ResponseEntity<>(headers, status);
     }
 
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN)")
     @RequestMapping(value = "/{type}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "DELETE", notes = "Delete the registered type.", value = "/type/register/{type}")
     @ApiResponses(value = { 
@@ -149,7 +149,7 @@ public class ClassRegistryController {
         return ResponseEntity.noContent().build();
     }
     
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Retrieve the registered type.", value = "/type/register/{type}")
     @ApiResponses(value = { 
@@ -166,7 +166,7 @@ public class ClassRegistryController {
         return ResponseEntity.ok(payload.toString());
     }
     
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "All registered types.", value = "/type/register?showAll")
     @ApiResponses(value = { 

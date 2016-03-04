@@ -15,13 +15,14 @@
  */
 package com.fns.grivet.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
-
-import com.google.common.base.Objects;
 
 /**
  * An {@code Attribute} participates in the definition of a property in a {@link ClassAttribute}.
@@ -112,21 +113,14 @@ public class Attribute extends Audited {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(super.hashCode(), id, name, description);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof Attribute) {
-            if (!super.equals(object))
-                return false;
-            Attribute that = (Attribute) object;
-            return 
-                    Objects.equal(this.id, that.id) 
-                    && Objects.equal(this.name, that.name)
-                    && Objects.equal(this.description, that.description);
-        }
-        return false;
+        if (object == null)
+            return false;
+        return EqualsBuilder.reflectionEquals(this, object);
     }
     
     

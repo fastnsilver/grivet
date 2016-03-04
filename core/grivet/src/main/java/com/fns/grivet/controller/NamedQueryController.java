@@ -63,7 +63,7 @@ public class NamedQueryController {
         this.namedQueryService = namedQueryService;
     }
     
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN)")
     @RequestMapping(method = RequestMethod.POST, 
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Register a Named Query.", value = "/query")
@@ -96,7 +96,7 @@ public class NamedQueryController {
         return result;
     }
     
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Execute a Named Query.", value = "/query/{name}")
     @ApiResponses(value = { 
@@ -112,7 +112,7 @@ public class NamedQueryController {
         return ResponseEntity.ok(namedQueryService.get(name, parameters));
     }
     
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Available Named Queries.", value = "/query?showAll")
     @ApiResponses(value = { 
@@ -127,7 +127,7 @@ public class NamedQueryController {
         return ResponseEntity.ok(payload.toString());
     }
     
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN)")
     @RequestMapping(value = "/{name}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "DELETE", notes = "Delete the named query.", value = "/query/{name}")
     @ApiResponses(value = { 

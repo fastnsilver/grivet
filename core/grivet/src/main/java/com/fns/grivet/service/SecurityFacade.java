@@ -15,6 +15,9 @@
  */
 package com.fns.grivet.service;
 
+import com.fns.grivet.model.User;
+import com.stormpath.sdk.servlet.http.AccountPrincipal;
+
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,8 +27,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import com.fns.grivet.model.User;
-
 
 @Component
 public class SecurityFacade {
@@ -34,7 +35,8 @@ public class SecurityFacade {
         User result = null;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && !(auth instanceof AnonymousAuthenticationToken)) {
-           result = (User) auth.getPrincipal(); 
+            AccountPrincipal principal = (AccountPrincipal) auth.getPrincipal();
+            result = (User) principal.getAccount();
         }
         return result;
     }

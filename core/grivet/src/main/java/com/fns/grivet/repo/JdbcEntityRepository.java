@@ -15,16 +15,15 @@
  */
 package com.fns.grivet.repo;
 
-import java.sql.Timestamp;
-import java.sql.Types;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.fns.grivet.model.Attribute;
+import com.fns.grivet.model.AttributeType;
+import com.fns.grivet.model.EntityAttributeValue;
+import com.fns.grivet.model.User;
+import com.fns.grivet.model.ValueHelper;
+import com.fns.grivet.query.DynamicQuery;
+import com.fns.grivet.query.QueryBuilder;
+import com.fns.grivet.service.SecurityFacade;
+import com.google.common.collect.ImmutableMap;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -38,15 +37,16 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import com.fns.grivet.model.Attribute;
-import com.fns.grivet.model.AttributeType;
-import com.fns.grivet.model.EntityAttributeValue;
-import com.fns.grivet.model.User;
-import com.fns.grivet.model.ValueHelper;
-import com.fns.grivet.query.DynamicQuery;
-import com.fns.grivet.query.QueryBuilder;
-import com.fns.grivet.service.SecurityFacade;
-import com.google.common.collect.ImmutableMap;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class JdbcEntityRepository implements EntityRepository {
@@ -75,7 +75,7 @@ public class JdbcEntityRepository implements EntityRepository {
         Assert.isTrue(rawValue != null, String.format("Attempt to persist value failed! %s's value must not be null!", attribute.getName()));
         Object value = ValueHelper.toValue(attributeType, rawValue);
         User user = getCurrentUser();
-        Integer createdBy = user != null ? user.getId(): null;
+        String createdBy = user != null ? user.getUsername() : null;
         String[] columns = { "eid", "aid", "val", "created_time" };
         Map<String, Object> keyValuePairs = ImmutableMap.of("eid", eid, "aid", attribute.getId(), "val", value, "created_time", Timestamp.valueOf(LocalDateTime.now()));
         if (createdBy != null) {

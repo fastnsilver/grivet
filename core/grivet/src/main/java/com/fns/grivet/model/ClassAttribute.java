@@ -15,11 +15,12 @@
  */
 package com.fns.grivet.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-
-import com.google.common.base.Objects;
 
 /**
  * A {@code ClassAttribute} expresses a three-way relationship between a
@@ -76,22 +77,14 @@ public class ClassAttribute extends Audited {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(super.hashCode(), cid, aid, tid);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof ClassAttribute) {
-            if (!super.equals(object))
-                return false;
-            ClassAttribute that = (ClassAttribute) object;
-            return 
-                    Objects.equal(this.cid, that.cid) 
-                    && Objects.equal(this.aid, that.aid)
-                    && Objects.equal(this.tid, that.tid);
-        }
-        return false;
+        if (object == null)
+            return false;
+        return EqualsBuilder.reflectionEquals(this, object);
     }
-    
     
 }
