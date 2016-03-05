@@ -15,12 +15,15 @@
  */
 package com.fns.grivet.controller;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.time.format.DateTimeParseException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fns.grivet.service.SchemaValidationException;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +32,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.fns.grivet.service.SchemaValidationException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.format.DateTimeParseException;
+
+import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 class GlobalControllerExceptionHandler {
@@ -41,15 +48,50 @@ class GlobalControllerExceptionHandler {
         DateTimeParseException.class, NumberFormatException.class, JSONException.class, 
         SQLException.class, SchemaValidationException.class 
     })
-    protected ResponseEntity<?> badRequest(Exception e, HttpServletRequest hsr) {
-        String queryString = hsr.getQueryString();
-        if (queryString != null && !queryString.isEmpty()) {
-            log.error(String.format("Request\n-- Method: %s\n-- URI: %s\n-- Query string: %s\n-- Error: %s", 
-                    hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(), e.getMessage()));
-        } else {
-            log.error(String.format("Request\n-- Method: %s\n-- Request URI: %s\n-- Error: %s", 
-                    hsr.getMethod(), hsr.getRequestURI(), e.getMessage()));
+    protected ResponseEntity<ErrorResponse> badRequest(Exception e, HttpServletRequest hsr) {
+        ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),
+                e.getMessage());
+        log.error(er.asLog());
+        return ResponseEntity.badRequest().body(er);
+    }
+
+    @JsonPropertyOrder(value = { "error", "method", "uri", "query" })
+    @JsonInclude(Include.NON_EMPTY)
+    class ErrorResponse {
+        private String method;
+        private String uri;
+        private String query;
+        private String error;
+
+        @JsonCreator
+        public ErrorResponse(@JsonProperty String method, @JsonProperty String uri, @JsonProperty String query,
+                @JsonProperty String error) {
+            this.method = method;
+            this.uri = uri;
+            this.query = query;
+            this.error = error;
         }
-        return ResponseEntity.badRequest().body(String.format("Error: %s", e.getMessage()));
+
+        public String getMethod() {
+            return method;
+        }
+
+        public String getUri() {
+            return uri;
+        }
+
+        public String getQuery() {
+            return query;
+        }
+
+        public String getError() {
+            return error;
+        }
+
+        @JsonIgnore
+        public String asLog() {
+            return ToStringBuilder.reflectionToString(this);
+        }
+
     }
 }
