@@ -32,15 +32,15 @@ This project will remain humble in its design and has no aspirations to match th
 - [ ] Improve test coverage
 - [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
 - [x] Begin tracking technical debt with [Sonarqube](https://hub.docker.com/_/sonarqube/)
+- [x] Secure endpoints via Stormpath [integration](https://stormpath.com/blog/build-spring-boot-spring-security-app/)
+- [x] Enable [TLS/HTTPS](http://security.stackexchange.com/questions/5126/whats-the-difference-between-ssl-tls-and-https) 
+- [x] Define roles to limit access to administrators for registering new types and queries
+- [x] All writes are audited (User is associated with record)
 - [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
 
 ## 0.3.0
 
 - [ ] Password-protect service administration and discovery
-- [ ] Secure endpoints via Stormpath [integration](https://stormpath.com/blog/build-spring-boot-spring-security-app/)
-- [ ] Enable [TLS/HTTPS](http://security.stackexchange.com/questions/5126/whats-the-difference-between-ssl-tls-and-https) 
-- [x] Define roles to limit access to administrators for registering new types and queries
-- [ ] All writes are audited (User is associated with record)
 - [ ] Host demo site on AWS EC2 Container Service
 
 ## 0.4.0
