@@ -15,14 +15,12 @@
  */
 package com.fns.grivet.controller;
 
-import java.util.Arrays;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 /**
- * Creates a message from a {@code JSONObject} or {@code HttpServletRequest}
+ * Creates a message from a {@code JSONObject}
  * and optionally supplied {@code String[]} arguments suitable for logging.
  *  
  * @author Chris Phillipson
@@ -42,15 +40,4 @@ class LogUtil {
         return message;
     }
     
-    static String toLog(HttpServletRequest request, String... args) {
-        StringBuffer sb = new StringBuffer();
-        if (args != null && args.length > 0) {
-            Arrays.stream(args).forEach(a -> sb.append(a));
-        }
-        sb.append("--\n");
-        sb.append(request.getParameterMap().toString());
-        sb.append("--\n");
-        String message = sb.toString();
-        return message;
-    }
 } 
