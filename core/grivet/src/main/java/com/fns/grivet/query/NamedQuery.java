@@ -16,6 +16,22 @@
 
 package com.fns.grivet.query;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fns.grivet.model.AttributeType;
+import com.fns.grivet.model.Audited;
+import com.google.common.base.MoreObjects;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.MultiValueMap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,21 +52,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
-
-import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.MultiValueMap;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fns.grivet.model.AttributeType;
-import com.fns.grivet.model.Audited;
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
@@ -186,29 +187,19 @@ public class NamedQuery extends Audited {
     }
     
     @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).omitNullValues().toString();
-    }
-
-    @Override
     public int hashCode() {
-        return Objects.hashCode(super.hashCode(), id, name, type, query, params);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof NamedQuery) {
-            if (!super.equals(object))
-                return false;
-            NamedQuery that = (NamedQuery) object;
-            return 
-                    Objects.equal(this.id, that.id) 
-                    && Objects.equal(this.name, that.name)
-                    && Objects.equal(this.type, that.type) 
-                    && Objects.equal(this.query, that.query)
-                    && Objects.equal(this.params, that.params);
-        }
-        return false;
+        if (object == null)
+            return false;
+        return EqualsBuilder.reflectionEquals(this, object);
     }
 
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).omitNullValues().toString();
+    }
 }

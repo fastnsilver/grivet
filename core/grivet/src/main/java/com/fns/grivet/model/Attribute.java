@@ -123,6 +123,4 @@ public class Attribute extends Audited {
         return EqualsBuilder.reflectionEquals(this, object);
     }
     
-    
-    
 }

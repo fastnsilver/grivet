@@ -15,6 +15,8 @@
  */
 package com.fns.grivet.query;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.util.Assert;
 
 public class Constraint {
@@ -26,6 +28,8 @@ public class Constraint {
     
     // c=<attributeName>|<operator>|<value>|<conjunction>
     public Constraint(String[] constraintParts) {
+        Assert.notEmpty(constraintParts, "Constraint parts must not be null or empty!");
+        Assert.isTrue(constraintParts.length >= 3, "Must have 3 or more constraint parts!");
         attributeName = constraintParts[0];
         operator = Operator.fromValue(constraintParts[1]);
         values = constraintParts[2].split("\\s*,\\s*");
@@ -46,6 +50,7 @@ public class Constraint {
     public String getAttributeName() {
         return attributeName;
     }
+
     public Operator getOperator() {
         return operator;
     }
@@ -58,4 +63,16 @@ public class Constraint {
         return values;
     }
     
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null)
+            return false;
+        return EqualsBuilder.reflectionEquals(this, object);
+    }
+
 }
