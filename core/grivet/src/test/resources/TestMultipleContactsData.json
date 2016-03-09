@@ -1,0 +1,36 @@
+[
+    {
+        "firstName": "Ed",
+        "lastName": "Munch",
+        "middleInitial": "C",
+        "streetAddress": "100 Whosville Lane",
+        "city": "Ottawa",
+        "stateProvince": "Ontario",
+        "postalCode": "K1A 0B1",
+        "country": "Canada",
+        "mobileNumber": "+1 905-666-4567",
+        "homePhoneNumber": "+1 905-899-9010",
+        "dateOfBirth": "2010-07-15",
+        "emailAddress": "ed@munch.com",
+        "twitter": "@edmunch",
+        "facebook": "edmunch73",
+        "linkedIn": "emunch"
+    },
+    {
+        "firstName": "Kobe",
+        "lastName": "Beef",
+        "middleInitial": "Q",
+        "streetAddress": "7899 23rd Ave NW",
+        "city": "Pasco",
+        "stateProvince": "Texas",
+        "postalCode": "99301",
+        "country": "United States",
+        "mobileNumber": "+1 509-443-3601",
+        "homePhoneNumber": "+1 509-323-1733",
+        "dateOfBirth": "1978-01-24",
+        "emailAddress": "kobe_beef@hotmail.com",
+        "twitter": "@therealkobebeef",
+        "facebook": "kobebeef321",
+        "linkedIn": "kbeef"
+    }  
+]

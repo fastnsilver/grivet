@@ -40,7 +40,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,7 +62,7 @@ public class EntityController {
     private final Logger log = LoggerFactory.getLogger(getClass());
     
     @Value("${grivet.store.batch-size:100}")
-    private int batchSize;
+    int batchSize;
     
     private final EntityService entityService;
     
@@ -98,7 +99,7 @@ public class EntityController {
     public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody String payload)
             throws IOException {
         JSONArray json = new JSONArray(payload);
-        int numberOfTypesToCreate = payload.length();
+        int numberOfTypesToCreate = json.length();
         Assert.isTrue(numberOfTypesToCreate <= batchSize,
                 String.format(
                         "The total number of entries in a request must not exceed %d! Your store request contained [%d] entries.",
@@ -137,11 +138,11 @@ public class EntityController {
     public ResponseEntity<?> get(@PathVariable("type") String type,
             @RequestParam(value = "createdTimeStart", required = false) LocalDateTime createdTimeStart,
             @RequestParam(value = "createdTimeEnd", required = false) LocalDateTime createdTimeEnd,
-            @RequestParam Map<String, String[]> parameters) throws JsonProcessingException {
+            HttpServletRequest request) throws JsonProcessingException {
         LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7) : createdTimeStart;
         LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : createdTimeEnd;
         Assert.isTrue(ChronoUnit.SECONDS.between(start, end) >= 0, "Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");
-        String result = entityService.findByCreatedTime(type, start, end, parameters);
+        String result = entityService.findByCreatedTime(type, start, end, request.getParameterMap());
         return ResponseEntity.ok(result);
     }
     

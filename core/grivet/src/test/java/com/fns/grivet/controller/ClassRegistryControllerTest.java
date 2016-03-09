@@ -15,53 +15,42 @@
  */
 package com.fns.grivet.controller;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fns.grivet.ApplicationTests;
+
 import org.apache.commons.io.FileUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import com.fns.grivet.service.ClassRegistryService;
+public class ClassRegistryControllerTest extends ApplicationTests {
 
-public class ClassRegistryControllerTest {
-
-    @Mock
-    private ClassRegistryService service;
-        
-    @InjectMocks
-    private ClassRegistryController controller;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
     
     private MockMvc mockMvc;
     private final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
     
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
     
     @Test
-    public void testThatRegisterSucceeds() throws Exception {
+    public void testThatRegisteringASingleTypeSucceeds() throws Exception {
         Resource r = resolver.getResource("classpath:TestType.json");
         String json = FileUtils.readFileToString(r.getFile());
-        when(service.register(any(JSONObject.class))).thenReturn("TestType");
         mockMvc.perform(
                     post("/type/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -69,44 +58,39 @@ public class ClassRegistryControllerTest {
                 )
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/type/register/TestType"));
-    }
-
-    @Test
-    public void testThatDeleteSucceeds() throws Exception {
+        
         mockMvc.perform(
                 delete("/type/register/TestType")
                     .contentType(MediaType.APPLICATION_JSON)
-            )
-            .andExpect(status().isNoContent());
+                )
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    public void testThatGetSucceeds() throws Exception {
-        Resource r = resolver.getResource("classpath:TestType.json");
+    public void testThatRegisteringMultipleTypesSucceeds() throws Exception {
+        Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
         String json = FileUtils.readFileToString(r.getFile());
-        when(service.get("TestType")).thenReturn(new JSONObject(json));
         mockMvc.perform(
-                get("/type/register/TestType")
-                    .contentType(MediaType.APPLICATION_JSON)
-            )
-            .andExpect(status().isOk())
-            .andExpect(content().json(json));
-    }
-
-    @Test
-    public void testThatAllSucceeds() throws Exception {
-        Resource r = resolver.getResource("classpath:TestType.json");
-        String json = FileUtils.readFileToString(r.getFile());
-        String arr = String.format("[%s]", json);
-        when(service.all()).thenReturn(new JSONArray(arr));
+                    post("/type/register/batch")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                    )
+                    .andExpect(status().isCreated())
+                    .andExpect(header().string("Location[1]", "/type/register/Contact"))
+                    .andExpect(header().string("Location[2]", "/type/register/Course"));
+        
         mockMvc.perform(
-                get("/type/register?showAll=true")
+                delete("/type/register/Contact")
                     .contentType(MediaType.APPLICATION_JSON)
-            )
-            .andExpect(status().isOk())
-            .andExpect(content().json(arr));
+                )
+                .andExpect(status().isNoContent());
+        mockMvc.perform(
+                delete("/type/register/Course")
+                    .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNoContent());
     }
-    
+        
     // TODO More testing; unhappy path cases
 
 }

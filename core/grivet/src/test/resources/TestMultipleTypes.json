@@ -1,0 +1,34 @@
+[
+    {
+        "type": "Contact",
+        "description": "A person that you know, especially somebody who can be helpful to you in your work",
+        "attributes":
+        {
+            "firstName": "varchar",
+            "lastName": "varchar",
+            "middleInitial": "varchar",
+            "streetAddress": "varchar",
+            "city": "varchar",
+            "stateProvince": "varchar",
+            "postalCode": "varchar",
+            "country": "varchar",
+            "mobileNumber": "varchar",
+            "homePhoneNumber": "varchar",
+            "dateOfBirth": "iso_date",
+            "emailAddress": "varchar",
+            "twitter": "varchar",
+            "facebook": "varchar",
+            "linkedIn": "varchar"
+        }
+    },
+    {
+        "type": "Course",
+        "description": "A series of lessons or lectures on a particular subject",
+        "attributes":
+        {
+            "title": "varchar",
+            "prerequisites": "text",
+            "synopsis": "text"
+        }
+    }
+]

@@ -18,9 +18,9 @@ package com.fns.grivet.api;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-import java.io.IOException;
-
-import javax.annotation.PostConstruct;
+import com.fns.grivet.TestInit;
+import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.response.Response;
 
 import org.apache.commons.io.FileUtils;
 import org.joda.time.LocalDateTime;
@@ -36,9 +36,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.fns.grivet.TestInit;
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.response.Response;
+import java.io.IOException;
+
+import javax.annotation.PostConstruct;
 
 import net.javacrumbs.jsonunit.JsonAssert;
 
@@ -72,12 +72,31 @@ public class GrivetApiClientIT {
     }
     
     
+    private String registerMultipleTypes() throws IOException {
+        Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
+        String json = FileUtils.readFileToString(r.getFile());
+        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(201)).when().post("/type/register/batch");
+        return json;
+
+    }
+
+    private void deregisterTypes() {
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/type/register/Contact");
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/type/register/Course");
+    }
+
     @Test
     public void testRegisterType_happyPath() throws IOException {
         registerTestType();
         deregisterType();
     }
     
+    @Test
+    public void testRegisterMultipleTypes_happyPath() throws IOException {
+        registerMultipleTypes();
+        deregisterTypes();
+    }
+
     @Test
     public void testRegisterType_emptyBody() throws IOException {
         given().contentType("application/json").request().body("").then().expect().statusCode(equalTo(400)).when().post("/type/register");
@@ -119,10 +138,45 @@ public class GrivetApiClientIT {
         r = resolver.getResource("classpath:TestTypeData.json");
         String type = FileUtils.readFileToString(r.getFile());
         given().contentType("application/json").request().body(type).then().expect().statusCode(equalTo(204)).when().post("/type/store/TestType");
+        
+        // GET (default)
         Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/store/TestType");
         JSONArray result = new JSONArray(response.body().asString());
         JsonAssert.assertJsonEquals(type, result.get(0).toString());
+        
+        // GET (with equals constraint)
+        response = given().param("c", "varchar|equals|Rush").contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/store/TestType");
+        result = new JSONArray(response.body().asString());
+        JsonAssert.assertJsonEquals(type, result.get(0).toString());
+        
+        // GET (with startsWith constraint)
+        response = given().param("c", "text|startsWith|Grim-faced").contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/store/TestType");
+        result = new JSONArray(response.body().asString());
+        JsonAssert.assertJsonEquals(type, result.get(0).toString());
+        
+        // GET (with lessThanOrEqualTo constraint)
+        response = given().param("c", "datetime|lessThanOrEqualTo|2016-01-01T00:00:00Z").contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/store/TestType");
+        result = new JSONArray(response.body().asString());
+        JsonAssert.assertJsonEquals(type, result.get(0).toString());
+        
+        // GET (with multiple constraints)
+        response = given()
+                    .param("c", "datetime|lessThanOrEqualTo|2016-01-01T00:00:00Z")
+                    .param("c", "text|endsWith|city")
+                    .contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/store/TestType");
+        result = new JSONArray(response.body().asString());
+        JsonAssert.assertJsonEquals(type, result.get(0).toString());
+        
         deregisterType();
+    }
+    
+    @Test
+    public void testRegisterAndStoreMultipleContacts_happyPath() throws IOException {
+        registerMultipleTypes();
+        Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
+        String type = FileUtils.readFileToString(r.getFile());
+        given().contentType("application/json").request().body(type).then().expect().statusCode(equalTo(204)).when().post("/type/store/batch/Contact");
+        deregisterTypes();
     }
     
     @Test
@@ -139,14 +193,13 @@ public class GrivetApiClientIT {
     @Test
     public void testNamedQueryRegistrationAndRetrieval_select_happyPath() throws IOException {
         registerTestType();
-        Resource r = resolver.getResource("classpath:TestSelectQuery.json");
+        Resource r = resolver.getResource("classpath:TestSelectQuery3.json");
         String select = FileUtils.readFileToString(r.getFile());
-        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(204)).when().post("/query");
-        LocalDateTime now = LocalDateTime.now();
-        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/query/getAttributesCreatedBefore?createdTime=" + now.toString());
+        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(201)).when().post("/query");
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/query/getClassesCreatedToday");
         JSONArray result = new JSONArray(response.body().asString());
-        Assert.assertEquals(7, result.length());
-        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/query/getAttributesCreatedBefore");
+        Assert.assertEquals(1, result.length());
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/query/getClassesCreatedToday");
         deregisterType();
     }
     

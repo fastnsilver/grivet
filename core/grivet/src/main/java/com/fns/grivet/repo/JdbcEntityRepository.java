@@ -19,10 +19,10 @@ import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.EntityAttributeValue;
 import com.fns.grivet.model.User;
-import com.fns.grivet.model.ValueHelper;
 import com.fns.grivet.query.DynamicQuery;
 import com.fns.grivet.query.QueryBuilder;
 import com.fns.grivet.service.SecurityFacade;
+import com.fns.grivet.util.ValueHelper;
 import com.google.common.collect.ImmutableMap;
 
 import org.apache.commons.lang3.ObjectUtils;

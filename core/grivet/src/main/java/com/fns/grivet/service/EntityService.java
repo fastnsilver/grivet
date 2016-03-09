@@ -20,13 +20,13 @@ import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.ClassAttribute;
 import com.fns.grivet.model.EntityAttributeValue;
-import com.fns.grivet.model.ValueHelper;
 import com.fns.grivet.query.DynamicQuery;
 import com.fns.grivet.repo.AttributeRepository;
 import com.fns.grivet.repo.AttributeTypeRepository;
 import com.fns.grivet.repo.ClassAttributeRepository;
 import com.fns.grivet.repo.ClassRepository;
 import com.fns.grivet.repo.EntityRepository;
+import com.fns.grivet.util.ValueHelper;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.google.common.collect.Lists;
 

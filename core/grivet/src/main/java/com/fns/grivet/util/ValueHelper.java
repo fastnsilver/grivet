@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fns.grivet.model;
+package com.fns.grivet.util;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+
+import com.fns.grivet.model.AttributeType;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

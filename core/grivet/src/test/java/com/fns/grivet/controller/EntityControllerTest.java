@@ -15,76 +15,129 @@
  */
 package com.fns.grivet.controller;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fns.grivet.service.EntityService;
-import com.google.common.collect.Maps;
+import com.fns.grivet.ApplicationTests;
 
 import org.apache.commons.io.FileUtils;
-import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.time.LocalDateTime;
+public class EntityControllerTest extends ApplicationTests {
 
-public class EntityControllerTest {
-
-    @Mock
-    private EntityService service;
-
-    @InjectMocks
-    private EntityController controller;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
     
     private MockMvc mockMvc;
     private final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
     
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
+
+    private void registerTestType2() throws Exception {
+        Resource r = resolver.getResource("classpath:TestType2.json");
+        String json = FileUtils.readFileToString(r.getFile());
+        mockMvc.perform(
+                post("/type/register")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json)
+            )
+            .andExpect(status().isCreated());
+    }
+
+    private void storeTestType2() throws Exception {
+        Resource r = resolver.getResource("classpath:TestTypeData2.json");
+        String json = FileUtils.readFileToString(r.getFile());
+        mockMvc.perform(
+                post("/type/store/TestType2")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json)
+            )
+            .andExpect(status().isNoContent());
     }
     
-    @Test
-    public void testThatCreateSucceeds() throws Exception {
-        Resource r = resolver.getResource("classpath:TestTypeData.json");
-        String json = FileUtils.readFileToString(r.getFile());
-        doNothing().when(service).create("TestType", new JSONObject(json));
+    private void unregisterTestType2() throws Exception {
         mockMvc.perform(
-                    post("/type/store/TestType")
+                delete("/type/register/TestType2")
+                    .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNoContent());
+    }
+    
+    private void registerMultipleTypes() throws Exception {
+        Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
+        String json = FileUtils.readFileToString(r.getFile());
+        mockMvc.perform(
+                post("/type/register/batch")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json)
+            )
+            .andExpect(status().isCreated());
+    }
+
+    private void storeMultipleContacts() throws Exception {
+        Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
+        String json = FileUtils.readFileToString(r.getFile());
+        mockMvc.perform(
+                    post("/type/store/batch/Contact")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isNoContent());
     }
-
+    
+    private void unregisterMultipleTypes() throws Exception {
+        mockMvc.perform(
+                delete("/type/register/Contact")
+                    .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNoContent());
+        mockMvc.perform(
+                delete("/type/register/Course")
+                    .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNoContent());
+    }
+    
     @Test
-    @Ignore("For whatever silly unknown reason this test always fails.")
     public void testThatGetSucceeds() throws Exception {
+        // register, store, fetch, then unregister
+        registerTestType2();
+        storeTestType2();
+        
         Resource r = resolver.getResource("classpath:TestTypeData2.json");
         String response = String.format("[%s]", FileUtils.readFileToString(r.getFile()));
-        LocalDateTime now = LocalDateTime.now();
-        when(service.findByCreatedTime("TestType2", now.minusDays(7), now, Maps.newHashMap()))
-                .thenReturn(response);
         mockMvc.perform(
                 get("/type/store/TestType2")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
             .andExpect(content().json(response));
+        
+        unregisterTestType2();
     }
+    
+    @Test
+    public void testThatStoringMultipleContactsSucceeds() throws Exception {
+        // register, then store
+        registerMultipleTypes();
+        storeMultipleContacts();
+        unregisterMultipleTypes();
+    }
+
+    // TODO More testing; unhappy path cases
 
 }

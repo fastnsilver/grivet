@@ -60,7 +60,7 @@ public class ClassRegistryController {
     private final Logger log = LoggerFactory.getLogger(getClass());
     
     @Value("${grivet.register.batch-size:100}")
-    private int batchSize;
+    int batchSize;
     
     private final ClassRegistryService classRegistryService;
     
@@ -96,7 +96,7 @@ public class ClassRegistryController {
             })
     public ResponseEntity<?> registerMultiple(@RequestBody String payload) throws IOException {
         JSONArray json = new JSONArray(payload);
-        int numberOfTypesToRegister = payload.length();
+        int numberOfTypesToRegister = json.length();
         Assert.isTrue(numberOfTypesToRegister <= batchSize,
                 String.format(
                         "The total number of entries in a type registration request must not exceed %d! Your registration request contained [%d] entries.",
@@ -104,7 +104,6 @@ public class ClassRegistryController {
         JSONObject jsonObject = null;
         String type = null;
         HttpHeaders headers = new HttpHeaders();
-        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
         URI location = null;
         int errorCount = 0;
         // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
@@ -112,7 +111,7 @@ public class ClassRegistryController {
             jsonObject = json.getJSONObject(i);
             try {
                 type = classRegistryService.register(jsonObject);
-                location = ucb.path("/type/register/{type}").buildAndExpand(type).toUri();
+                location = UriComponentsBuilder.newInstance().path("/type/register/{type}").buildAndExpand(type).toUri();
                 if (numberOfTypesToRegister == 1) {
                     headers.setLocation(location); 
                 } else {

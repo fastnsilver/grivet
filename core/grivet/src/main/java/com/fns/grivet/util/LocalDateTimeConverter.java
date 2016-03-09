@@ -1,4 +1,4 @@
-package com.fns.grivet.model;
+package com.fns.grivet.util;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
