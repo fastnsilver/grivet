@@ -8,5 +8,6 @@
 	<logger name="com.fns.grivet" level="ERROR" />
 	<logger name="org.flyway" level="WARN" />
 	<logger name="org.hibernate" level="ERROR"/>
-	    
+	<logger name="com.stormpath" level="WARN" />
+        
 </configuration>

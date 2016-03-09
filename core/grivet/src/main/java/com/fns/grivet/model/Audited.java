@@ -15,21 +15,22 @@
  */
 package com.fns.grivet.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import com.google.common.base.Objects;
-
 @MappedSuperclass
-public abstract class Audited implements Auditable<Integer>{
+public abstract class Audited implements Auditable<String> {
 
     @Column
-    private Integer createdBy;
+    private String createdBy;
     
     @Column
-    private Integer updatedBy;
+    private String updatedBy;
     
     /** The time this entity was created. */
     @Column(nullable=false)
@@ -64,23 +65,23 @@ public abstract class Audited implements Auditable<Integer>{
     protected Audited(User user) {
         this();
         if (user != null) {
-            this.createdBy = user.getId();
+            this.createdBy = user.getUsername();
         }
     }
     
     @Override
-    public Integer getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
     @Override
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
     
     public void setCreator(User user) {
         if (user != null) {
-            this.createdBy = user.getId();
+            this.createdBy = user.getUsername();
         }
     }
 
@@ -95,18 +96,18 @@ public abstract class Audited implements Auditable<Integer>{
     }
 
     @Override
-    public Integer getUpdatedBy() {
+    public String getUpdatedBy() {
         return updatedBy;
     }
     
     public void setUpdater(User user) {
         if (user != null) {
-            this.updatedBy = user.getId();
+            this.updatedBy = user.getUsername();
         }
     }
 
     @Override
-    public void setUpdatedBy(Integer updatedBy) {
+    public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
 
@@ -122,20 +123,14 @@ public abstract class Audited implements Auditable<Integer>{
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(createdBy, updatedBy, createdTime, updatedTime);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof Audited) {
-            Audited that = (Audited) object;
-            return 
-                    Objects.equal(this.createdBy, that.createdBy) 
-                    && Objects.equal(this.updatedBy, that.updatedBy)
-                    && Objects.equal(this.createdTime, that.createdTime)
-                    && Objects.equal(this.updatedTime, that.updatedTime);
-        }
-        return false;
+        if (object == null)
+            return false;
+        return EqualsBuilder.reflectionEquals(this, object);
     }
     
 }

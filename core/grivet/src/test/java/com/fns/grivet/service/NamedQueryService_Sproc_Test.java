@@ -15,11 +15,10 @@
  */
 package com.fns.grivet.service;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fns.grivet.TestInit;
+import com.fns.grivet.query.NamedQuery;
+import com.jayway.restassured.path.json.JsonPath;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
@@ -38,13 +37,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fns.grivet.TestInit;
-import com.fns.grivet.query.NamedQuery;
-import com.jayway.restassured.path.json.JsonPath;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 @WebAppConfiguration
-@ActiveProfiles(value={"hsqldb"})
+@ActiveProfiles(value = { "hsqldb", "insecure" })
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TestInit.class)
 public class NamedQueryService_Sproc_Test {

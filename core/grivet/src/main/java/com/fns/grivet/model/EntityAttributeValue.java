@@ -15,6 +15,9 @@
  */
 package com.fns.grivet.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -47,7 +50,7 @@ public class EntityAttributeValue implements Serializable {
     /** The time this {@code EntityAttributeValue} was created */
     private final LocalDateTime createdTime;
     
-    private Integer createdBy;
+    private String createdBy;
     
     public EntityAttributeValue(Long id, Integer attributeId, String attributeName, Object attributeValue, 
             LocalDateTime createdTime, User user) {
@@ -57,7 +60,7 @@ public class EntityAttributeValue implements Serializable {
         this.attributeValue = attributeValue;
         this.createdTime = createdTime;
         if (user != null) {
-            this.createdBy = user.getId();
+            this.createdBy = user.getUsername();
         }
     }
 
@@ -81,8 +84,20 @@ public class EntityAttributeValue implements Serializable {
         return createdTime;
     }
     
-    public Integer getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
     
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null)
+            return false;
+        return EqualsBuilder.reflectionEquals(this, object);
+    }
+
 }

@@ -98,7 +98,6 @@ spring:
     password: jackal#3
 
 flyway:
-  #locations: classpath:db/with_partitions, classpath:db/users, classpath:db/oauth2
   locations: classpath:db/with_partitions, classpath:db/users
   placeholders:
     preamble: |
@@ -116,19 +115,12 @@ flyway:
     createTableSuffix: ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
     renameTableKeyword: RENAME
     alterColumnKeyword: MODIFY
-
----
-
-spring:
-  profiles: basic
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration
-    
+        
 ---
 
 spring:
   profiles: docker
-  profiles.include: basic,mysql,insecure
+  profiles.include: mysql
   cloud:
     config:
       enabled: true
@@ -150,6 +142,16 @@ monitoring:
 ---
 
 spring:
+  profiles: secure
+  
+stormpath:
+  authorized:
+    group:
+      admin: https://api.stormpath.com/v1/groups/kXMXDjb68vjzmjpCi8XVZ
+      user: https://api.stormpath.com/v1/groups/yEMNvN4kQmswQtWmR7eqv
+---
+
+spring:
   profiles: insecure
 
 management:
@@ -159,6 +161,9 @@ management:
 security:
   basic:
     enabled: false
+    
+stormpath:
+  enabled: false
     
 ---
 

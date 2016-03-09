@@ -15,11 +15,12 @@
  */
 package com.fns.grivet.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 
 import javax.annotation.concurrent.Immutable;
-
-import com.google.common.base.Objects;
 
 /**
  * A {@code ClassAttributePK} defines the primary key for an instance of {@link ClassAttribute}.
@@ -61,19 +62,14 @@ public class ClassAttributePK implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(cid, aid, tid);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof ClassAttributePK) {
-            ClassAttributePK that = (ClassAttributePK) object;
-            return 
-                    Objects.equal(this.cid, that.cid) 
-                    && Objects.equal(this.aid, that.aid)
-                    && Objects.equal(this.tid, that.tid);
-        }
-        return false;
+        if (object == null)
+            return false;
+        return EqualsBuilder.reflectionEquals(this, object);
     }
 
 }

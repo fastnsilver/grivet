@@ -70,7 +70,7 @@ public class EntityController {
         this.entityService = entityService;
     }
     
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "/{type}", method = RequestMethod.POST, 
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Store a type.", value = "/type/store/{type}")
@@ -86,7 +86,7 @@ public class EntityController {
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "/batch/{type}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/type/store/batch/{type}")
     @ApiResponses(value = { 
@@ -126,7 +126,7 @@ public class EntityController {
         return new ResponseEntity<>(headers, status);
     }
     
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize(value = "hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Retrieve type matching criteria.", value = "/type/store/{type}")
     @ApiResponses(value = { 

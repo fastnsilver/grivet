@@ -15,13 +15,14 @@
  */
 package com.fns.grivet.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
-
-import com.google.common.base.Objects;
 
 /**
  * A {@code Class} is akin to an abstract base {@link java.lang.Class} 
@@ -162,24 +163,14 @@ public class Class extends Audited {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(super.hashCode(), id, name, description, validatable, jsonSchema);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof Class) {
-            if (!super.equals(object))
-                return false;
-            Class that = (Class) object;
-            return 
-                    Objects.equal(this.id, that.id) 
-                    && Objects.equal(this.name, that.name)
-                    && Objects.equal(this.description, that.description)
-                    && Objects.equal(this.validatable, that.validatable)
-                    && Objects.equal(this.jsonSchema, that.jsonSchema);
-        }
-        return false;
+        if (object == null)
+            return false;
+        return EqualsBuilder.reflectionEquals(this, object);
     }
-    
     
 }
