@@ -27,8 +27,12 @@
         "attributes":
         {
             "title": "varchar",
+            "department": "varchar",
             "prerequisites": "text",
-            "synopsis": "text"
+            "syllabus": "text",
+            "startDate": "iso_date",
+            "schedule": "varchar",
+            "credits": "int"
         }
     }
 ]

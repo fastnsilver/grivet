@@ -15,15 +15,14 @@
  */
 package com.fns.grivet.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fns.grivet.ApplicationTests;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +44,18 @@ public class ClassRegistryControllerTest extends ApplicationTests {
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
+    
+    @Test
+    public void testThatRegisteringASingleTypeResultsInABadRequest() throws Exception {
+        Resource r = resolver.getResource("classpath:BadTestType.json");
+        String json = FileUtils.readFileToString(r.getFile());
+        mockMvc.perform(
+                    post("/type/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isBadRequest());
     }
     
     @Test

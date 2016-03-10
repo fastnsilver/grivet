@@ -29,7 +29,7 @@ This project will remain humble in its design and has no aspirations to match th
 ## 0.2.0
 
 - [x] Prefix all end-points with `/type` except for `/query`
-- [ ] Improve test coverage
+- [x] Improve test coverage
 - [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
 - [x] Begin tracking technical debt with [Sonarqube](https://hub.docker.com/_/sonarqube/)
 - [x] Secure endpoints via Stormpath [integration](https://stormpath.com/blog/build-spring-boot-spring-security-app/)

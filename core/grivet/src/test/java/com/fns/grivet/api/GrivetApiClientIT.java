@@ -103,6 +103,13 @@ public class GrivetApiClientIT {
     }
     
     @Test
+    public void testRegisterType_badRequest() throws Exception {
+        Resource r = resolver.getResource("classpath:BadTestType.json");
+        String json = FileUtils.readFileToString(r.getFile());
+        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(400)).when().post("/type/register");
+    }
+    
+    @Test
     public void testGetRegisteredType_happyPath() throws IOException {
         String json = registerTestType();
         Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/register/TestType");
@@ -174,8 +181,23 @@ public class GrivetApiClientIT {
     public void testRegisterAndStoreMultipleContacts_happyPath() throws IOException {
         registerMultipleTypes();
         Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
-        String type = FileUtils.readFileToString(r.getFile());
-        given().contentType("application/json").request().body(type).then().expect().statusCode(equalTo(204)).when().post("/type/store/batch/Contact");
+        String contacts = FileUtils.readFileToString(r.getFile());
+        given().contentType("application/json").request().body(contacts).then().expect().statusCode(equalTo(204)).when().post("/type/store/batch/Contact");
+        deregisterTypes();
+    }
+    
+    @Test
+    public void testRegisterAndStoreMultipleCourses_accepted() throws IOException {
+        registerMultipleTypes();
+        Resource r = resolver.getResource("classpath:BadCourseData.json");
+        String courses = FileUtils.readFileToString(r.getFile());
+        
+        // link Course schema
+        r = resolver.getResource("classpath:CourseSchema.json");
+        String schema = FileUtils.readFileToString(r.getFile());
+        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when().post("/type/schema/link");
+        
+        given().contentType("application/json").request().body(courses).then().expect().statusCode(equalTo(202)).when().post("/type/store/batch/Course");
         deregisterTypes();
     }
     

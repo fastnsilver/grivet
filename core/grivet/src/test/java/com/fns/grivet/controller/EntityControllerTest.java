@@ -120,8 +120,18 @@ public class EntityControllerTest extends ApplicationTests {
         
         Resource r = resolver.getResource("classpath:TestTypeData2.json");
         String response = String.format("[%s]", FileUtils.readFileToString(r.getFile()));
+        
+        // GET (with default constraints)
         mockMvc.perform(
                 get("/type/store/TestType2")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().json(response));
+        
+        // GET (with startsWith constraint)
+        mockMvc.perform(
+                get("/type/store/TestType2?c=first-name|startsWith|J")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
