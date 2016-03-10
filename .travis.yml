@@ -1,9 +1,10 @@
 language: bash
-env:
-  global:
-    secure: Y3ifyxi0xatEwVWsaSRfp/vpQIx+CbkGrUY9Yw0Fh+QtJKXraY/cMXAdWN/kni88p23O6YPvl2ATs/J3eQTPhzXMkeL0pXZaq6e10ZlmT4Pwcn8nP3kuKNutbu2sBLYaIfTxMb7qrCxqYV2vWDkzpUAkl1G45NqRQaLwQeOgM8Wlza/MzAPsDVdf5ciqCHsi5kVJ3EOEq7TerhmhfTMHoRhVMJhJCncXAvzLkWdF+plq3TebAcOPIWQ+7qZGnf/32yHOitN+5+hKwbd2Yk2PTwZryuDEVI6dgAXNJKvpGgSpzAWCQPvvWk38ZdU9dmI/cCTU6ZfDZMymaN4MP7r6KoLKfpbj6z9cPnsdxDO/I2wGI0oSzq6D+oJSzNzGZsNbNzHnJ1eVGSs1N/E/aXES1T1fraXi8JPBYWc650LYrpAi5RNRIM8gNvFvMOmwikB7JdoBQvBfGMp+0Qfl1k+FWJBLv07rTl/mgq7lwvIHE1z2PI/jVVCMdzQNLqyqq8QSkw3KzeB7Wwtx0z5PdI+d8L5CpAu5d6SYaF71dZHnCuF+i5G6abf+jyy1Lpnz40cH9e6Mdv2Q8GpAKPpfAVT9UcRVj5x/xuBiRqJnec8K1sVpTGo2DSUf+sB0Bh6ub7DYMnskIHE4a1EwiO+7Iwny16syJd9P/bqc37sdnshLF9E=
 services:
   - docker
+before_install:
+  - pip install codecov
 script:
   - docker build -t fastnsilver/maven:3.3.9-oracle-jdk8 ./docker/maven
-  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources fastnsilver/maven:3.3.9-oracle-jdk8 mvn clean install coveralls:report -Pwith-coverage-report -DrepoToken=$COVERALLS_REPO_TOKEN
+  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources fastnsilver/maven:3.3.9-oracle-jdk8 mvn clean install
+after_success:
+  - codecov
