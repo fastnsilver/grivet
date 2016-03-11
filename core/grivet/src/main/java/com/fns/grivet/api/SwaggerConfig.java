@@ -32,6 +32,7 @@ import com.fasterxml.classmate.TypeResolver;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.schema.WildcardType;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -68,7 +69,7 @@ public class SwaggerConfig {
                 .title("Grivet APIs")
                 .description(
                         "This is a comprehensive list of the APIs for Grivet.\nAdditional help is provided in this project's http://fastnsilver.github.io/grivet/[Maven Site].")
-                .contact("fastnsilver@gmail.com")
+                .contact(new Contact("Chris Phillipson", "http://fastnsilver.github.io/grivet/", "fastnsilver@gmail.com"))
                 .version(version)
                 .build();
     }
