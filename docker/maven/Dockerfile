@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-oraclejdk8:slim
+FROM delitescere/jdk:8
 
 MAINTAINER Chris Phillipson <fastnsilver@gmail.com>
 
