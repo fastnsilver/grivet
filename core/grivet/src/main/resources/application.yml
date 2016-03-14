@@ -120,7 +120,7 @@ flyway:
 
 spring:
   profiles: docker
-  profiles.include: mysql
+  profiles.include: mysql,insecure
   cloud:
     config:
       enabled: true

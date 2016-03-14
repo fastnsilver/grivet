@@ -15,6 +15,7 @@
  */
 package com.fns.grivet.controller;
 
+import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fns.grivet.service.EntityService;
 
@@ -66,9 +67,12 @@ public class EntityController {
     
     private final EntityService entityService;
     
+    private final MetricRegistry metricRegistry;
+
     @Autowired
-    public EntityController(EntityService entityService) {
+    public EntityController(EntityService entityService, MetricRegistry metricRegistry) {
         this.entityService = entityService;
+        this.metricRegistry = metricRegistry;
     }
     
     @PreAuthorize(value = "hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
@@ -83,6 +87,7 @@ public class EntityController {
             throws IOException {
         JSONObject json = new JSONObject(payload);
         entityService.create(type, json);
+        metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();
         log.info("Successfully stored type [{}]", type);
         return ResponseEntity.noContent().build();
     }
@@ -112,6 +117,7 @@ public class EntityController {
             jsonObject = json.getJSONObject(i);
             try {
                 entityService.create(type, jsonObject);
+                metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();
                 log.info("Successfully stored type [{}]", type);
             } catch (Exception e) {
                 String message = LogUtil.toLog(jsonObject, String.format("Problems storing type! Portion of payload @ index[%d]\n", i+1));
