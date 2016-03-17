@@ -15,6 +15,9 @@
  */
 package com.fns.grivet.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -47,43 +50,55 @@ public class EntityAttributeValue implements Serializable {
     /** The time this {@code EntityAttributeValue} was created */
     private final LocalDateTime createdTime;
     
-    private Integer createdBy;
+    private String createdBy;
     
     public EntityAttributeValue(Long id, Integer attributeId, String attributeName, Object attributeValue, 
-<span class="fc" id="L53">            LocalDateTime createdTime, User user) {</span>
-<span class="fc" id="L54">        this.id = id;</span>
-<span class="fc" id="L55">        this.attributeId = attributeId;</span>
-<span class="fc" id="L56">        this.attributeName = attributeName;</span>
-<span class="fc" id="L57">        this.attributeValue = attributeValue;</span>
-<span class="fc" id="L58">        this.createdTime = createdTime;</span>
-<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (user != null) {</span>
-<span class="nc" id="L60">            this.createdBy = user.getId();</span>
+<span class="nc" id="L56">            LocalDateTime createdTime, User user) {</span>
+<span class="nc" id="L57">        this.id = id;</span>
+<span class="nc" id="L58">        this.attributeId = attributeId;</span>
+<span class="nc" id="L59">        this.attributeName = attributeName;</span>
+<span class="nc" id="L60">        this.attributeValue = attributeValue;</span>
+<span class="nc" id="L61">        this.createdTime = createdTime;</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (user != null) {</span>
+<span class="nc" id="L63">            this.createdBy = user.getUsername();</span>
         }
-<span class="fc" id="L62">    }</span>
+<span class="nc" id="L65">    }</span>
 
     public Long getId() {
-<span class="fc" id="L65">        return id;</span>
+<span class="nc" id="L68">        return id;</span>
     }
     
     public Integer getAttributeId() {
-<span class="fc" id="L69">        return attributeId;</span>
+<span class="nc" id="L72">        return attributeId;</span>
     }
 
     public String getAttributeName() {
-<span class="fc" id="L73">        return attributeName;</span>
+<span class="nc" id="L76">        return attributeName;</span>
     }
 
     public Object getAttributeValue() {
-<span class="fc" id="L77">        return attributeValue;</span>
+<span class="nc" id="L80">        return attributeValue;</span>
     }
 
     public LocalDateTime getCreatedTime() {
-<span class="nc" id="L81">        return createdTime;</span>
+<span class="nc" id="L84">        return createdTime;</span>
     }
     
-    public Integer getCreatedBy() {
-<span class="nc" id="L85">        return createdBy;</span>
+    public String getCreatedBy() {
+<span class="nc" id="L88">        return createdBy;</span>
     }
     
+    @Override
+    public int hashCode() {
+<span class="nc" id="L93">        return HashCodeBuilder.reflectionHashCode(this);</span>
+    }
+
+    @Override
+    public boolean equals(Object object) {
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (object == null)</span>
+<span class="nc" id="L99">            return false;</span>
+<span class="nc" id="L100">        return EqualsBuilder.reflectionEquals(this, object);</span>
+    }
+
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

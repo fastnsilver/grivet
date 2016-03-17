@@ -15,43 +15,30 @@
  */
 package com.fns.grivet.controller;
 
-import java.util.Arrays;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 /**
- * Creates a message from a {@code JSONObject} or {@code HttpServletRequest}
+ * Creates a message from a {@code JSONObject}
  * and optionally supplied {@code String[]} arguments suitable for logging.
  *  
  * @author Chris Phillipson
  *
  */
-<span class="nc" id="L31">class LogUtil {</span>
+<span class="nc" id="L29">class LogUtil {</span>
 
     static String toLog(JSONObject jsonObject, String... args) {
-<span class="fc" id="L34">        StringBuffer sb = new StringBuffer();</span>
-<span class="pc bpc" id="L35" title="2 of 4 branches missed.">        if (args != null &amp;&amp; args.length &gt; 0) {</span>
-<span class="fc" id="L36">            Arrays.stream(args).forEach(a -&gt; sb.append(a));</span>
+<span class="fc" id="L32">        StringBuffer sb = new StringBuffer();</span>
+<span class="pc bpc" id="L33" title="2 of 4 branches missed.">        if (args != null &amp;&amp; args.length &gt; 0) {</span>
+<span class="fc" id="L34">            Arrays.stream(args).forEach(a -&gt; sb.append(a));</span>
         }
+<span class="fc" id="L36">        sb.append(&quot;--\n&quot;);</span>
+<span class="fc" id="L37">        sb.append(jsonObject.toString());</span>
 <span class="fc" id="L38">        sb.append(&quot;--\n&quot;);</span>
-<span class="fc" id="L39">        sb.append(jsonObject.toString());</span>
-<span class="fc" id="L40">        sb.append(&quot;--\n&quot;);</span>
-<span class="fc" id="L41">        String message = sb.toString();</span>
-<span class="fc" id="L42">        return message;</span>
+<span class="fc" id="L39">        String message = sb.toString();</span>
+<span class="fc" id="L40">        return message;</span>
     }
     
-    static String toLog(HttpServletRequest request, String... args) {
-<span class="nc" id="L46">        StringBuffer sb = new StringBuffer();</span>
-<span class="nc bnc" id="L47" title="All 4 branches missed.">        if (args != null &amp;&amp; args.length &gt; 0) {</span>
-<span class="nc" id="L48">            Arrays.stream(args).forEach(a -&gt; sb.append(a));</span>
-        }
-<span class="nc" id="L50">        sb.append(&quot;--\n&quot;);</span>
-<span class="nc" id="L51">        sb.append(request.getParameterMap().toString());</span>
-<span class="nc" id="L52">        sb.append(&quot;--\n&quot;);</span>
-<span class="nc" id="L53">        String message = sb.toString();</span>
-<span class="nc" id="L54">        return message;</span>
-    }
 } 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

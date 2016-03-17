@@ -15,12 +15,15 @@
  */
 package com.fns.grivet.controller;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.time.format.DateTimeParseException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fns.grivet.service.SchemaValidationException;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,28 +32,67 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.fns.grivet.service.SchemaValidationException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.format.DateTimeParseException;
+
+import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
-<span class="fc" id="L35">class GlobalControllerExceptionHandler {</span>
+<span class="fc" id="L42">class GlobalControllerExceptionHandler {</span>
 
-<span class="fc" id="L37">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+<span class="fc" id="L44">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
     
     @ExceptionHandler({ 
         IOException.class, IllegalArgumentException.class, DataAccessException.class, 
         DateTimeParseException.class, NumberFormatException.class, JSONException.class, 
         SQLException.class, SchemaValidationException.class 
     })
-    protected ResponseEntity&lt;?&gt; badRequest(Exception e, HttpServletRequest hsr) {
-<span class="nc" id="L45">        String queryString = hsr.getQueryString();</span>
-<span class="nc bnc" id="L46" title="All 4 branches missed.">        if (queryString != null &amp;&amp; !queryString.isEmpty()) {</span>
-<span class="nc" id="L47">            log.error(String.format(&quot;Request\n-- Method: %s\n-- URI: %s\n-- Query string: %s\n-- Error: %s&quot;, </span>
-<span class="nc" id="L48">                    hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(), e.getMessage()));</span>
-        } else {
-<span class="nc" id="L50">            log.error(String.format(&quot;Request\n-- Method: %s\n-- Request URI: %s\n-- Error: %s&quot;, </span>
-<span class="nc" id="L51">                    hsr.getMethod(), hsr.getRequestURI(), e.getMessage()));</span>
+    protected ResponseEntity&lt;ErrorResponse&gt; badRequest(Exception e, HttpServletRequest hsr) {
+<span class="fc" id="L52">        ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),</span>
+<span class="fc" id="L53">                e.getMessage());</span>
+<span class="fc" id="L54">        log.error(er.asLog());</span>
+<span class="fc" id="L55">        return ResponseEntity.badRequest().body(er);</span>
+    }
+
+    @JsonPropertyOrder(value = { &quot;error&quot;, &quot;method&quot;, &quot;uri&quot;, &quot;query&quot; })
+    @JsonInclude(Include.NON_EMPTY)
+    class ErrorResponse {
+        private String method;
+        private String uri;
+        private String query;
+        private String error;
+
+        @JsonCreator
+        public ErrorResponse(@JsonProperty String method, @JsonProperty String uri, @JsonProperty String query,
+<span class="fc" id="L68">                @JsonProperty String error) {</span>
+<span class="fc" id="L69">            this.method = method;</span>
+<span class="fc" id="L70">            this.uri = uri;</span>
+<span class="fc" id="L71">            this.query = query;</span>
+<span class="fc" id="L72">            this.error = error;</span>
+<span class="fc" id="L73">        }</span>
+
+        public String getMethod() {
+<span class="fc" id="L76">            return method;</span>
         }
-<span class="nc" id="L53">        return ResponseEntity.badRequest().body(String.format(&quot;Error: %s&quot;, e.getMessage()));</span>
+
+        public String getUri() {
+<span class="fc" id="L80">            return uri;</span>
+        }
+
+        public String getQuery() {
+<span class="fc" id="L84">            return query;</span>
+        }
+
+        public String getError() {
+<span class="fc" id="L88">            return error;</span>
+        }
+
+        @JsonIgnore
+        public String asLog() {
+<span class="fc" id="L93">            return ToStringBuilder.reflectionToString(this);</span>
+        }
+
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

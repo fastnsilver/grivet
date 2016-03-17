@@ -71,7 +71,7 @@
 <span class="sourceLineNo">063</span>        this.namedQueryService = namedQueryService;<a name="line.63"></a>
 <span class="sourceLineNo">064</span>    }<a name="line.64"></a>
 <span class="sourceLineNo">065</span>    <a name="line.65"></a>
-<span class="sourceLineNo">066</span>    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")<a name="line.66"></a>
+<span class="sourceLineNo">066</span>    @PreAuthorize(value = "hasRole(@roles.ADMIN)")<a name="line.66"></a>
 <span class="sourceLineNo">067</span>    @RequestMapping(method = RequestMethod.POST, <a name="line.67"></a>
 <span class="sourceLineNo">068</span>            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)<a name="line.68"></a>
 <span class="sourceLineNo">069</span>    @ApiOperation(httpMethod = "POST", notes = "Register a Named Query.", value = "/query")<a name="line.69"></a>
@@ -104,7 +104,7 @@
 <span class="sourceLineNo">096</span>        return result;<a name="line.96"></a>
 <span class="sourceLineNo">097</span>    }<a name="line.97"></a>
 <span class="sourceLineNo">098</span>    <a name="line.98"></a>
-<span class="sourceLineNo">099</span>    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")<a name="line.99"></a>
+<span class="sourceLineNo">099</span>    @PreAuthorize(value = "hasRole(@roles.ADMIN) or hasRole(@roles.USER)")<a name="line.99"></a>
 <span class="sourceLineNo">100</span>    @RequestMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)<a name="line.100"></a>
 <span class="sourceLineNo">101</span>    @ApiOperation(httpMethod = "GET", notes = "Execute a Named Query.", value = "/query/{name}")<a name="line.101"></a>
 <span class="sourceLineNo">102</span>    @ApiResponses(value = { <a name="line.102"></a>
@@ -120,7 +120,7 @@
 <span class="sourceLineNo">112</span>        return ResponseEntity.ok(namedQueryService.get(name, parameters));<a name="line.112"></a>
 <span class="sourceLineNo">113</span>    }<a name="line.113"></a>
 <span class="sourceLineNo">114</span>    <a name="line.114"></a>
-<span class="sourceLineNo">115</span>    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")<a name="line.115"></a>
+<span class="sourceLineNo">115</span>    @PreAuthorize(value = "hasRole(@roles.ADMIN) or hasRole(@roles.USER)")<a name="line.115"></a>
 <span class="sourceLineNo">116</span>    @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)<a name="line.116"></a>
 <span class="sourceLineNo">117</span>    @ApiOperation(httpMethod = "GET", notes = "Available Named Queries.", value = "/query?showAll")<a name="line.117"></a>
 <span class="sourceLineNo">118</span>    @ApiResponses(value = { <a name="line.118"></a>
@@ -135,7 +135,7 @@
 <span class="sourceLineNo">127</span>        return ResponseEntity.ok(payload.toString());<a name="line.127"></a>
 <span class="sourceLineNo">128</span>    }<a name="line.128"></a>
 <span class="sourceLineNo">129</span>    <a name="line.129"></a>
-<span class="sourceLineNo">130</span>    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")<a name="line.130"></a>
+<span class="sourceLineNo">130</span>    @PreAuthorize(value = "hasRole(@roles.ADMIN)")<a name="line.130"></a>
 <span class="sourceLineNo">131</span>    @RequestMapping(value = "/{name}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)<a name="line.131"></a>
 <span class="sourceLineNo">132</span>    @ApiOperation(httpMethod = "DELETE", notes = "Delete the named query.", value = "/query/{name}")<a name="line.132"></a>
 <span class="sourceLineNo">133</span>    @ApiResponses(value = { <a name="line.133"></a>

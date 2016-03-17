@@ -6,6 +6,5 @@ com.fns.grivet.model
 com.fns.grivet.monitoring
 com.fns.grivet.query
 com.fns.grivet.repo
-com.fns.grivet.security.basic
-com.fns.grivet.security.oauth2
 com.fns.grivet.service
+com.fns.grivet.util

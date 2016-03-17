@@ -15,11 +15,12 @@
  */
 package com.fns.grivet.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 
 import javax.annotation.concurrent.Immutable;
-
-import com.google.common.base.Objects;
 
 /**
  * A {@code ClassAttributePK} defines the primary key for an instance of {@link ClassAttribute}.
@@ -39,42 +40,37 @@ public class ClassAttributePK implements Serializable {
     private Integer aid;
     private Integer tid;
 
-<span class="fc" id="L42">    protected ClassAttributePK() {}</span>
+<span class="nc" id="L43">    protected ClassAttributePK() {}</span>
     
-<span class="nc" id="L44">    public ClassAttributePK(Integer cid, Integer aid, Integer tid) {</span>
-<span class="nc" id="L45">        this.cid = cid;</span>
-<span class="nc" id="L46">        this.aid = aid;</span>
-<span class="nc" id="L47">        this.tid = tid;</span>
-<span class="nc" id="L48">    }</span>
+<span class="nc" id="L45">    public ClassAttributePK(Integer cid, Integer aid, Integer tid) {</span>
+<span class="nc" id="L46">        this.cid = cid;</span>
+<span class="nc" id="L47">        this.aid = aid;</span>
+<span class="nc" id="L48">        this.tid = tid;</span>
+<span class="nc" id="L49">    }</span>
     
     public Integer getCid() {
-<span class="nc" id="L51">        return cid;</span>
+<span class="nc" id="L52">        return cid;</span>
     }
 
     public Integer getAid() {
-<span class="nc" id="L55">        return aid;</span>
+<span class="nc" id="L56">        return aid;</span>
     }
 
     public Integer getTid() {
-<span class="nc" id="L59">        return tid;</span>
+<span class="nc" id="L60">        return tid;</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L64">        return Objects.hashCode(cid, aid, tid);</span>
+<span class="nc" id="L65">        return HashCodeBuilder.reflectionHashCode(this);</span>
     }
 
     @Override
     public boolean equals(Object object) {
-<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (object instanceof ClassAttributePK) {</span>
-<span class="nc" id="L70">            ClassAttributePK that = (ClassAttributePK) object;</span>
-<span class="nc" id="L71">            return </span>
-<span class="nc bnc" id="L72" title="All 2 branches missed.">                    Objects.equal(this.cid, that.cid) </span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">                    &amp;&amp; Objects.equal(this.aid, that.aid)</span>
-<span class="nc bnc" id="L74" title="All 2 branches missed.">                    &amp;&amp; Objects.equal(this.tid, that.tid);</span>
-        }
-<span class="nc" id="L76">        return false;</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (object == null)</span>
+<span class="nc" id="L71">            return false;</span>
+<span class="nc" id="L72">        return EqualsBuilder.reflectionEquals(this, object);</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -63,7 +63,7 @@ public class NamedQueryController {
 <span class="fc" id="L63">        this.namedQueryService = namedQueryService;</span>
 <span class="fc" id="L64">    }</span>
     
-    @PreAuthorize(value = &quot;hasRole('ROLE_ADMIN')&quot;)
+    @PreAuthorize(value = &quot;hasRole(@roles.ADMIN)&quot;)
     @RequestMapping(method = RequestMethod.POST, 
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = &quot;POST&quot;, notes = &quot;Register a Named Query.&quot;, value = &quot;/query&quot;)
@@ -81,22 +81,22 @@ public class NamedQueryController {
 <span class="fc" id="L81">        Assert.notNull(query.getQuery(), &quot;Query string must not be null!&quot;);</span>
 <span class="fc" id="L82">        Assert.isTrue(isSupportedQuery(query), &quot;Query must start with either CALL or SELECT&quot;);</span>
         // check for named parameters; but only if they exist
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if (!query.getParams().isEmpty()) {</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (!query.getParams().isEmpty()) {</span>
 <span class="fc" id="L85">            query.getParams().keySet()</span>
 <span class="fc" id="L86">                .forEach(k -&gt; Assert.isTrue(query.getQuery().contains(String.format(&quot;:%s&quot;, k)), String.format(&quot;Query must contain named parameter [%s]&quot;, k)));</span>
         }
 <span class="fc" id="L88">        namedQueryService.create(query);</span>
 <span class="fc" id="L89">        log.info(&quot;Named Query \n\n{}\n\n successfully registered!&quot;, query);</span>
 <span class="fc" id="L90">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        if (query.getParams().isEmpty()) {</span>
-<span class="nc" id="L92">            result = ResponseEntity.created(ucb.path(&quot;/query/{name}&quot;).buildAndExpand(query.getName()).toUri()).build();</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (query.getParams().isEmpty()) {</span>
+<span class="fc" id="L92">            result = ResponseEntity.created(ucb.path(&quot;/query/{name}&quot;).buildAndExpand(query.getName()).toUri()).build();</span>
         } else {
 <span class="fc" id="L94">            result = ResponseEntity.noContent().build(); </span>
         }
 <span class="fc" id="L96">        return result;</span>
     }
     
-    @PreAuthorize(value = &quot;hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')&quot;)
+    @PreAuthorize(value = &quot;hasRole(@roles.ADMIN) or hasRole(@roles.USER)&quot;)
     @RequestMapping(value = &quot;/{name}&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = &quot;GET&quot;, notes = &quot;Execute a Named Query.&quot;, value = &quot;/query/{name}&quot;)
     @ApiResponses(value = { 
@@ -112,7 +112,7 @@ public class NamedQueryController {
 <span class="fc" id="L112">        return ResponseEntity.ok(namedQueryService.get(name, parameters));</span>
     }
     
-    @PreAuthorize(value = &quot;hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')&quot;)
+    @PreAuthorize(value = &quot;hasRole(@roles.ADMIN) or hasRole(@roles.USER)&quot;)
     @RequestMapping(value = &quot;&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = &quot;GET&quot;, notes = &quot;Available Named Queries.&quot;, value = &quot;/query?showAll&quot;)
     @ApiResponses(value = { 
@@ -127,7 +127,7 @@ public class NamedQueryController {
 <span class="fc" id="L127">        return ResponseEntity.ok(payload.toString());</span>
     }
     
-    @PreAuthorize(value = &quot;hasRole('ROLE_ADMIN')&quot;)
+    @PreAuthorize(value = &quot;hasRole(@roles.ADMIN)&quot;)
     @RequestMapping(value = &quot;/{name}&quot;, method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = &quot;DELETE&quot;, notes = &quot;Delete the named query.&quot;, value = &quot;/query/{name}&quot;)
     @ApiResponses(value = { 
@@ -152,4 +152,4 @@ public class NamedQueryController {
 <span class="fc" id="L152">        return result;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

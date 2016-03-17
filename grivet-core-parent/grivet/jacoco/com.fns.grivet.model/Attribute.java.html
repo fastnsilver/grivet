@@ -15,13 +15,14 @@
  */
 package com.fns.grivet.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
-
-import com.google.common.base.Objects;
 
 /**
  * An {@code Attribute} participates in the definition of a property in a {@link ClassAttribute}.
@@ -57,8 +58,8 @@ public class Attribute extends Audited {
      * For internal use only! Instantiates a new attribute.
      */
     protected Attribute() {
-<span class="fc" id="L60">        super();</span>
-<span class="fc" id="L61">    }</span>
+<span class="nc" id="L61">        super();</span>
+<span class="nc" id="L62">    }</span>
     
     /**
      * Instantiates a new attribute.
@@ -70,9 +71,9 @@ public class Attribute extends Audited {
      *            the currently authenticated principal
      */
     public Attribute(String name, User user) {
-<span class="fc" id="L73">        super(user);</span>
-<span class="fc" id="L74">        this.name = name;</span>
-<span class="fc" id="L75">    }</span>
+<span class="nc" id="L74">        super(user);</span>
+<span class="nc" id="L75">        this.name = name;</span>
+<span class="nc" id="L76">    }</span>
 
     /**
      * Gets the id.
@@ -80,7 +81,7 @@ public class Attribute extends Audited {
      * @return the id
      */
     public Integer getId() {
-<span class="fc" id="L83">        return id;</span>
+<span class="nc" id="L84">        return id;</span>
     }
     
     /**
@@ -89,7 +90,7 @@ public class Attribute extends Audited {
      * @return the name
      */
     public String getName() {
-<span class="fc" id="L92">        return name;</span>
+<span class="nc" id="L93">        return name;</span>
     }
     
     /**
@@ -98,7 +99,7 @@ public class Attribute extends Audited {
      * @return the description
      */
     public String getDescription() {
-<span class="nc" id="L101">        return description;</span>
+<span class="nc" id="L102">        return description;</span>
     }
     
     /**
@@ -107,29 +108,20 @@ public class Attribute extends Audited {
      * @param description a description
      */
     public void setDescription(String description) {
-<span class="nc" id="L110">        this.description = description;</span>
-<span class="nc" id="L111">    }</span>
+<span class="nc" id="L111">        this.description = description;</span>
+<span class="nc" id="L112">    }</span>
 
     @Override
     public int hashCode() {
-<span class="fc" id="L115">        return Objects.hashCode(super.hashCode(), id, name, description);</span>
+<span class="nc" id="L116">        return HashCodeBuilder.reflectionHashCode(this);</span>
     }
 
     @Override
     public boolean equals(Object object) {
-<span class="nc bnc" id="L120" title="All 2 branches missed.">        if (object instanceof Attribute) {</span>
-<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (!super.equals(object))</span>
-<span class="nc" id="L122">                return false;</span>
-<span class="nc" id="L123">            Attribute that = (Attribute) object;</span>
-<span class="nc" id="L124">            return </span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">                    Objects.equal(this.id, that.id) </span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">                    &amp;&amp; Objects.equal(this.name, that.name)</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">                    &amp;&amp; Objects.equal(this.description, that.description);</span>
-        }
-<span class="nc" id="L129">        return false;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (object == null)</span>
+<span class="nc" id="L122">            return false;</span>
+<span class="nc" id="L123">        return EqualsBuilder.reflectionEquals(this, object);</span>
     }
     
-    
-    
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

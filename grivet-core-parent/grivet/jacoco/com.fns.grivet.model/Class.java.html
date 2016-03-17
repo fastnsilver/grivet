@@ -15,13 +15,14 @@
  */
 package com.fns.grivet.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
-
-import com.google.common.base.Objects;
 
 /**
  * A {@code Class} is akin to an abstract base {@link java.lang.Class} 
@@ -67,8 +68,8 @@ public class Class extends Audited {
     /**
      * For internal use only! Instantiates a new class.
      */
-<span class="fc" id="L70">    protected Class() {</span>
-<span class="fc" id="L71">    }</span>
+<span class="nc" id="L71">    protected Class() {</span>
+<span class="nc" id="L72">    }</span>
     
     /**
      * Instantiates a new attribute.
@@ -81,10 +82,10 @@ public class Class extends Audited {
      *            the currently authenticated principal
      */
     public Class(String name, String description, User user) {
-<span class="fc" id="L84">        super(user);</span>
-<span class="fc" id="L85">        this.name = name;</span>
-<span class="fc" id="L86">        this.description = description;</span>
-<span class="fc" id="L87">    }</span>
+<span class="nc" id="L85">        super(user);</span>
+<span class="nc" id="L86">        this.name = name;</span>
+<span class="nc" id="L87">        this.description = description;</span>
+<span class="nc" id="L88">    }</span>
     
     /**
      * Gets the id.
@@ -92,7 +93,7 @@ public class Class extends Audited {
      * @return the id
      */
     public Integer getId() {
-<span class="fc" id="L95">        return id;</span>
+<span class="nc" id="L96">        return id;</span>
     }
     
     /**
@@ -101,7 +102,7 @@ public class Class extends Audited {
      * @return the name
      */
     public String getName() {
-<span class="fc" id="L104">        return name;</span>
+<span class="nc" id="L105">        return name;</span>
     }
     
     /**
@@ -110,7 +111,7 @@ public class Class extends Audited {
      * @return the description
      */
     public String getDescription() {
-<span class="fc" id="L113">        return description;</span>
+<span class="nc" id="L114">        return description;</span>
     }
     
     /**
@@ -119,8 +120,8 @@ public class Class extends Audited {
      * @param description a description
      */
     public void setDescription(String description) {
-<span class="nc" id="L122">        this.description = description;</span>
-<span class="nc" id="L123">    }</span>
+<span class="nc" id="L123">        this.description = description;</span>
+<span class="nc" id="L124">    }</span>
 
     /**
      * Sets whether or not an object (JSON payload) should be validated
@@ -130,15 +131,15 @@ public class Class extends Audited {
      *            true or false
      */
     public void setValidatable(boolean validatable) {
-<span class="fc" id="L133">        this.validatable = validatable;</span>
-<span class="fc" id="L134">    }</span>
+<span class="nc" id="L134">        this.validatable = validatable;</span>
+<span class="nc" id="L135">    }</span>
     
     /**
      * @return whether or not an object (JSON payload) should be validated
      * before being persisted.
      */
     public boolean isValidatable() {
-<span class="fc" id="L141">        return validatable;</span>
+<span class="nc" id="L142">        return validatable;</span>
     }
     
     /**
@@ -147,7 +148,7 @@ public class Class extends Audited {
      * @return the JSON Schema
      */
     public String getJsonSchema() {
-<span class="fc" id="L150">        return jsonSchema;</span>
+<span class="nc" id="L151">        return jsonSchema;</span>
     }
 
     /**
@@ -157,30 +158,20 @@ public class Class extends Audited {
      *            a JSON Schema
      */
     public void setJsonSchema(String jsonSchema) {
-<span class="fc" id="L160">        this.jsonSchema = jsonSchema;</span>
-<span class="fc" id="L161">    }</span>
+<span class="nc" id="L161">        this.jsonSchema = jsonSchema;</span>
+<span class="nc" id="L162">    }</span>
 
     @Override
     public int hashCode() {
-<span class="fc" id="L165">        return Objects.hashCode(super.hashCode(), id, name, description, validatable, jsonSchema);</span>
+<span class="nc" id="L166">        return HashCodeBuilder.reflectionHashCode(this);</span>
     }
 
     @Override
     public boolean equals(Object object) {
-<span class="nc bnc" id="L170" title="All 2 branches missed.">        if (object instanceof Class) {</span>
-<span class="nc bnc" id="L171" title="All 2 branches missed.">            if (!super.equals(object))</span>
-<span class="nc" id="L172">                return false;</span>
-<span class="nc" id="L173">            Class that = (Class) object;</span>
-<span class="nc" id="L174">            return </span>
-<span class="nc bnc" id="L175" title="All 2 branches missed.">                    Objects.equal(this.id, that.id) </span>
-<span class="nc bnc" id="L176" title="All 2 branches missed.">                    &amp;&amp; Objects.equal(this.name, that.name)</span>
-<span class="nc bnc" id="L177" title="All 2 branches missed.">                    &amp;&amp; Objects.equal(this.description, that.description)</span>
-<span class="nc bnc" id="L178" title="All 2 branches missed.">                    &amp;&amp; Objects.equal(this.validatable, that.validatable)</span>
-<span class="nc bnc" id="L179" title="All 2 branches missed.">                    &amp;&amp; Objects.equal(this.jsonSchema, that.jsonSchema);</span>
-        }
-<span class="nc" id="L181">        return false;</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">        if (object == null)</span>
+<span class="nc" id="L172">            return false;</span>
+<span class="nc" id="L173">        return EqualsBuilder.reflectionEquals(this, object);</span>
     }
     
-    
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

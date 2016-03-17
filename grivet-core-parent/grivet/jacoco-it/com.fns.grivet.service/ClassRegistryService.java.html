@@ -15,12 +15,10 @@
  */
 package com.fns.grivet.service;
 
-import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +39,9 @@ import com.fns.grivet.repo.ClassRepository;
 @Service
 public class ClassRegistryService {
 
-    private static final String ID = &quot;id&quot;;
-    private static final String SCHEMA = &quot;$schema&quot;;
     private static final String TYPE = &quot;type&quot;;
     private static final String DESCRIPTION = &quot;description&quot;;
     private static final String ATTRIBUTES = &quot;attributes&quot;;
-    private static final String PROPERTIES = &quot;properties&quot;;
     
     private final AttributeRepository attributeRepository;
     private final AttributeTypeRepository attributeTypeRepository;
@@ -59,131 +54,91 @@ public class ClassRegistryService {
     @Autowired
     public ClassRegistryService(AttributeRepository attributeRepository,
             AttributeTypeRepository attributeTypeRepository, ClassRepository classRepository,
-<span class="fc" id="L62">            ClassAttributeRepository classAttributeRepository) {</span>
-<span class="fc" id="L63">        this.attributeRepository = attributeRepository;</span>
-<span class="fc" id="L64">        this.attributeTypeRepository = attributeTypeRepository;</span>
-<span class="fc" id="L65">        this.classRepository = classRepository;</span>
-<span class="fc" id="L66">        this.classAttributeRepository = classAttributeRepository;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L57">            ClassAttributeRepository classAttributeRepository) {</span>
+<span class="fc" id="L58">        this.attributeRepository = attributeRepository;</span>
+<span class="fc" id="L59">        this.attributeTypeRepository = attributeTypeRepository;</span>
+<span class="fc" id="L60">        this.classRepository = classRepository;</span>
+<span class="fc" id="L61">        this.classAttributeRepository = classAttributeRepository;</span>
+<span class="fc" id="L62">    }</span>
 
     @Transactional
     // USE WITH CAUTION! Consider that w/ FK, type and all related data will be destroyed
     public void deregister(String type) {
-<span class="fc" id="L72">        com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (c != null) {</span>
-<span class="fc" id="L74">            classRepository.delete(c);</span>
+<span class="fc" id="L67">        com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        if (c != null) {</span>
+<span class="fc" id="L69">            classRepository.delete(c);</span>
         }
-<span class="fc" id="L76">    }</span>
+<span class="fc" id="L71">    }</span>
     
     @Transactional
     public String register(JSONObject payload) {
-<span class="fc" id="L80">        String type = payload.getString(TYPE);</span>
-<span class="fc" id="L81">        String description = payload.optString(DESCRIPTION);</span>
-<span class="fc" id="L82">        com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        User user = securityFacade != null ? securityFacade.getCurrentUser(): null;</span>
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if (c == null) {</span>
-<span class="fc" id="L85">            c = classRepository.save(new com.fns.grivet.model.Class(type, description, user));</span>
-<span class="fc" id="L86">            JSONObject attributes = payload.getJSONObject(ATTRIBUTES);</span>
-<span class="fc" id="L87">            Set&lt;String&gt; attributeNames = attributes.keySet();</span>
-<span class="fc" id="L88">            Assert.notEmpty(attributeNames, String.format(&quot;[%s] must declare at least one attribute in registration request!&quot;, type));</span>
-<span class="fc" id="L89">            Attribute a = null;</span>
-<span class="fc" id="L90">            String at = null;</span>
-<span class="fc" id="L91">            AttributeType attributeType = null;</span>
+<span class="fc" id="L75">        String type = payload.getString(TYPE);</span>
+<span class="fc" id="L76">        String description = payload.optString(DESCRIPTION);</span>
+<span class="fc" id="L77">        com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        User user = securityFacade != null ? securityFacade.getCurrentUser(): null;</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (c == null) {</span>
+<span class="fc" id="L80">            c = classRepository.save(new com.fns.grivet.model.Class(type, description, user));</span>
+<span class="fc" id="L81">            JSONObject attributes = payload.getJSONObject(ATTRIBUTES);</span>
+<span class="fc" id="L82">            Set&lt;String&gt; attributeNames = attributes.keySet();</span>
+<span class="fc" id="L83">            Assert.notEmpty(attributeNames, String.format(&quot;[%s] must declare at least one attribute in registration request!&quot;, type));</span>
+<span class="fc" id="L84">            Attribute a = null;</span>
+<span class="fc" id="L85">            String at = null;</span>
+<span class="fc" id="L86">            AttributeType attributeType = null;</span>
             // TODO create an expiring cache of attribute names for faster lookups (friendlier database use)
-<span class="fc bfc" id="L93" title="All 2 branches covered.">            for (String attributeName: attributeNames) {</span>
-<span class="fc" id="L94">                a = attributeRepository.findByName(attributeName);</span>
-<span class="fc bfc" id="L95" title="All 2 branches covered.">                if (a == null) {</span>
-<span class="fc" id="L96">                    a = attributeRepository.save(new Attribute(attributeName, user));</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            for (String attributeName: attributeNames) {</span>
+<span class="fc" id="L89">                a = attributeRepository.findByName(attributeName);</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">                if (a == null) {</span>
+<span class="fc" id="L91">                    a = attributeRepository.save(new Attribute(attributeName, user));</span>
                 }
-<span class="fc" id="L98">                at = attributes.getString(attributeName);</span>
-<span class="fc" id="L99">                Assert.notNull(at, String.format(&quot;[%s].[%s] must declare an attribute type in registration request!&quot;, type, attributeName));</span>
-<span class="fc" id="L100">                attributeType = attributeTypeRepository.findByType(at);</span>
-<span class="fc" id="L101">                Assert.notNull(attributeType, String.format(&quot;Attribute type [%s] is not supported!&quot;, at));</span>
-<span class="fc" id="L102">                classAttributeRepository.save(new ClassAttribute(c.getId(), a.getId(), attributeType.getId(), user));</span>
-<span class="fc" id="L103">            }</span>
-<span class="fc" id="L104">        } else {</span>
-<span class="nc" id="L105">            throw new DuplicateKeyException(String.format(&quot;Type [%s] already registered!&quot;, type));</span>
+<span class="fc" id="L93">                at = attributes.getString(attributeName);</span>
+<span class="fc" id="L94">                Assert.notNull(at, String.format(&quot;[%s].[%s] must declare an attribute type in registration request!&quot;, type, attributeName));</span>
+<span class="fc" id="L95">                attributeType = attributeTypeRepository.findByType(at);</span>
+<span class="fc" id="L96">                Assert.notNull(attributeType, String.format(&quot;Attribute type [%s] is not supported!&quot;, at));</span>
+<span class="fc" id="L97">                classAttributeRepository.save(new ClassAttribute(c.getId(), a.getId(), attributeType.getId(), user));</span>
+<span class="fc" id="L98">            }</span>
+<span class="fc" id="L99">        } else {</span>
+<span class="nc" id="L100">            throw new DuplicateKeyException(String.format(&quot;Type [%s] already registered!&quot;, type));</span>
         }
-<span class="fc" id="L107">        return type;</span>
+<span class="fc" id="L102">        return type;</span>
     }
 
     @Transactional(readOnly=true)
     public JSONObject get(String type) {
-<span class="fc" id="L112">        com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
-<span class="fc" id="L113">        Assert.notNull(c, String.format(&quot;Type [%s] is not registered!&quot;, type));</span>
-<span class="fc" id="L114">        JSONObject result = new JSONObject();</span>
-<span class="fc" id="L115">        result.put(&quot;type&quot;, type);</span>
-<span class="fc" id="L116">        String description = c.getDescription();</span>
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        result.put(&quot;description&quot;, description != null ? description: &quot;&quot;);</span>
-<span class="fc" id="L118">        List&lt;ClassAttribute&gt; cas = classAttributeRepository.findByCid(c.getId());</span>
-<span class="fc" id="L119">        Assert.notEmpty(cas, String.format(&quot;Type [%s] does not have any attributes registered!&quot;, type));</span>
-<span class="fc" id="L120">        JSONObject attributes = new JSONObject();</span>
-<span class="fc" id="L121">        result.put(&quot;attributes&quot;, attributes);</span>
-<span class="fc" id="L122">        Attribute a = null;</span>
-<span class="fc" id="L123">        AttributeType at = null;</span>
-<span class="fc bfc" id="L124" title="All 2 branches covered.">        for (ClassAttribute ca: cas) {</span>
-<span class="fc" id="L125">            a = attributeRepository.findOne(ca.getAid());</span>
-<span class="fc" id="L126">            Assert.notNull(a, String.format(&quot;Attribute id [%s] is not registered!&quot;, ca.getAid()));</span>
-<span class="fc" id="L127">            at = attributeTypeRepository.findOne(ca.getTid());</span>
-<span class="fc" id="L128">            Assert.notNull(a, String.format(&quot;Attribute Type id [%s] is not registered!&quot;, ca.getTid()));</span>
-<span class="fc" id="L129">            attributes.put(a.getName(), at.getType());</span>
-<span class="fc" id="L130">        }</span>
-<span class="fc" id="L131">        return result;</span>
+<span class="fc" id="L107">        com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
+<span class="fc" id="L108">        Assert.notNull(c, String.format(&quot;Type [%s] is not registered!&quot;, type));</span>
+<span class="fc" id="L109">        JSONObject result = new JSONObject();</span>
+<span class="fc" id="L110">        result.put(&quot;type&quot;, type);</span>
+<span class="fc" id="L111">        String description = c.getDescription();</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        result.put(&quot;description&quot;, description != null ? description: &quot;&quot;);</span>
+<span class="fc" id="L113">        List&lt;ClassAttribute&gt; cas = classAttributeRepository.findByCid(c.getId());</span>
+<span class="fc" id="L114">        Assert.notEmpty(cas, String.format(&quot;Type [%s] does not have any attributes registered!&quot;, type));</span>
+<span class="fc" id="L115">        JSONObject attributes = new JSONObject();</span>
+<span class="fc" id="L116">        result.put(&quot;attributes&quot;, attributes);</span>
+<span class="fc" id="L117">        Attribute a = null;</span>
+<span class="fc" id="L118">        AttributeType at = null;</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        for (ClassAttribute ca: cas) {</span>
+<span class="fc" id="L120">            a = attributeRepository.findOne(ca.getAid());</span>
+<span class="fc" id="L121">            Assert.notNull(a, String.format(&quot;Attribute id [%s] is not registered!&quot;, ca.getAid()));</span>
+<span class="fc" id="L122">            at = attributeTypeRepository.findOne(ca.getTid());</span>
+<span class="fc" id="L123">            Assert.notNull(a, String.format(&quot;Attribute Type id [%s] is not registered!&quot;, ca.getTid()));</span>
+<span class="fc" id="L124">            attributes.put(a.getName(), at.getType());</span>
+<span class="fc" id="L125">        }</span>
+<span class="fc" id="L126">        return result;</span>
     }
     
     @Transactional(readOnly=true)
     public JSONArray all() {
-<span class="fc" id="L136">        JSONArray result = new JSONArray();</span>
-<span class="fc" id="L137">        Iterable&lt;com.fns.grivet.model.Class&gt; iterable = classRepository.findAll();</span>
-<span class="fc" id="L138">        Assert.notNull(iterable, &quot;No types are registered!&quot;);</span>
-<span class="fc" id="L139">        Iterator&lt;com.fns.grivet.model.Class&gt; it = iterable.iterator();</span>
-<span class="fc" id="L140">        com.fns.grivet.model.Class c = null;</span>
-<span class="fc bfc" id="L141" title="All 2 branches covered.">        while(it.hasNext()) {</span>
-<span class="fc" id="L142">           c = it.next();</span>
-<span class="fc" id="L143">           result.put(get(c.getName()));</span>
+<span class="fc" id="L131">        JSONArray result = new JSONArray();</span>
+<span class="fc" id="L132">        Iterable&lt;com.fns.grivet.model.Class&gt; iterable = classRepository.findAll();</span>
+<span class="fc" id="L133">        Assert.notNull(iterable, &quot;No types are registered!&quot;);</span>
+<span class="fc" id="L134">        Iterator&lt;com.fns.grivet.model.Class&gt; it = iterable.iterator();</span>
+<span class="fc" id="L135">        com.fns.grivet.model.Class c = null;</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        while(it.hasNext()) {</span>
+<span class="fc" id="L137">           c = it.next();</span>
+<span class="fc" id="L138">           result.put(get(c.getName()));</span>
         }
-<span class="fc" id="L145">        return result;</span>
+<span class="fc" id="L140">        return result;</span>
     }
-    
-    public boolean isJsonSchema(JSONObject payload) {
-<span class="fc" id="L149">        boolean result = false;</span>
-<span class="fc" id="L150">        String schema = payload.optString(SCHEMA);</span>
-<span class="fc" id="L151">        String type = payload.optString(TYPE);</span>
-<span class="fc" id="L152">        String id = payload.optString(ID);</span>
-<span class="fc" id="L153">        String props = payload.optString(PROPERTIES);</span>
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        if (schema.equals(&quot;http://json-schema.org/draft-04/schema#&quot;) </span>
-<span class="pc bpc" id="L155" title="1 of 2 branches missed.">                &amp;&amp; type.equals(&quot;object&quot;) </span>
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">                &amp;&amp; StringUtils.isNotBlank(id) </span>
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">                &amp;&amp; StringUtils.isNotBlank(props)) {</span>
-<span class="fc" id="L158">            result = true;</span>
-        }
-<span class="fc" id="L160">        return result;</span>
-    }
-
-    @Transactional
-    public com.fns.grivet.model.Class linkSchema(JSONObject payload) {
-<span class="fc" id="L165">        String type = payload.getString(ID);</span>
-<span class="fc" id="L166">        com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
-<span class="fc" id="L167">        Assert.notNull(c, String.format(&quot;Type [%s] must be registered before linking a JSON Schema!&quot;, type));</span>
-<span class="fc" id="L168">        c.setValidatable(true);</span>
-<span class="fc" id="L169">        c.setJsonSchema(payload.toString());</span>
-<span class="fc" id="L170">        c.setUpdatedTime(LocalDateTime.now());</span>
-<span class="fc" id="L171">        classRepository.save(c);</span>
-<span class="fc" id="L172">        return c;</span>
-    }
-    
-    @Transactional
-    public com.fns.grivet.model.Class unlinkSchema(String type) {
-<span class="fc" id="L177">        com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
-<span class="fc" id="L178">        Assert.notNull(c, String.format(&quot;Type [%s] must be registered before unlinking a JSON Schema!&quot;, type));</span>
-<span class="fc" id="L179">        c.setValidatable(false);</span>
-<span class="fc" id="L180">        c.setJsonSchema(null);</span>
-<span class="fc" id="L181">        c.setUpdatedTime(LocalDateTime.now());</span>
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">        User user = securityFacade != null ? securityFacade.getCurrentUser(): null;</span>
-<span class="fc" id="L183">        c.setUpdater(user);</span>
-<span class="fc" id="L184">        classRepository.save(c);</span>
-<span class="fc" id="L185">        return c;</span>
-    }
-    
+        
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -15,16 +15,15 @@
  */
 package com.fns.grivet.repo;
 
-import java.sql.Timestamp;
-import java.sql.Types;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.fns.grivet.model.Attribute;
+import com.fns.grivet.model.AttributeType;
+import com.fns.grivet.model.EntityAttributeValue;
+import com.fns.grivet.model.User;
+import com.fns.grivet.query.DynamicQuery;
+import com.fns.grivet.query.QueryBuilder;
+import com.fns.grivet.service.SecurityFacade;
+import com.fns.grivet.util.ValueHelper;
+import com.google.common.collect.ImmutableMap;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -38,15 +37,16 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import com.fns.grivet.model.Attribute;
-import com.fns.grivet.model.AttributeType;
-import com.fns.grivet.model.EntityAttributeValue;
-import com.fns.grivet.model.User;
-import com.fns.grivet.model.ValueHelper;
-import com.fns.grivet.query.DynamicQuery;
-import com.fns.grivet.query.QueryBuilder;
-import com.fns.grivet.service.SecurityFacade;
-import com.google.common.collect.ImmutableMap;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class JdbcEntityRepository implements EntityRepository {
@@ -75,7 +75,7 @@ public class JdbcEntityRepository implements EntityRepository {
 <span class="pc bpc" id="L75" title="1 of 2 branches missed.">        Assert.isTrue(rawValue != null, String.format(&quot;Attempt to persist value failed! %s's value must not be null!&quot;, attribute.getName()));</span>
 <span class="fc" id="L76">        Object value = ValueHelper.toValue(attributeType, rawValue);</span>
 <span class="fc" id="L77">        User user = getCurrentUser();</span>
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        Integer createdBy = user != null ? user.getId(): null;</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        String createdBy = user != null ? user.getUsername() : null;</span>
 <span class="fc" id="L79">        String[] columns = { &quot;eid&quot;, &quot;aid&quot;, &quot;val&quot;, &quot;created_time&quot; };</span>
 <span class="fc" id="L80">        Map&lt;String, Object&gt; keyValuePairs = ImmutableMap.of(&quot;eid&quot;, eid, &quot;aid&quot;, attribute.getId(), &quot;val&quot;, value, &quot;created_time&quot;, Timestamp.valueOf(LocalDateTime.now()));</span>
 <span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (createdBy != null) {</span>
@@ -100,14 +100,14 @@ public class JdbcEntityRepository implements EntityRepository {
 
     @Override
     public List&lt;EntityAttributeValue&gt; executeDynamicQuery(Integer cid, DynamicQuery query) {
-<span class="nc" id="L103">        Assert.isTrue(query.areConjunctionsHomogenous(), &quot;Query cannot be executed! All conjunctions must be homogenous!&quot;);</span>
-<span class="nc" id="L104">        String sql = QueryBuilder.newInstance().append(query).build();</span>
-<span class="nc" id="L105">        log.trace(String.format(&quot;JdbcEntityRepository.executeDynamicQuery[sql=%s]&quot;, sql));</span>
-<span class="nc" id="L106">        List&lt;SqlParameterValue&gt; values = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L107">        values.add(new SqlParameterValue(Types.INTEGER, cid));</span>
-<span class="nc" id="L108">        values.addAll(Arrays.asList(query.asSqlParameterValues()));</span>
-<span class="nc" id="L109">        SqlRowSet rowSet = jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), values.toArray(new Object[values.size()]));</span>
-<span class="nc" id="L110">        return mapRows(rowSet);</span>
+<span class="fc" id="L103">        Assert.isTrue(query.areConjunctionsHomogenous(), &quot;Query cannot be executed! All conjunctions must be homogenous!&quot;);</span>
+<span class="fc" id="L104">        String sql = QueryBuilder.newInstance().append(query).build();</span>
+<span class="fc" id="L105">        log.trace(String.format(&quot;JdbcEntityRepository.executeDynamicQuery[sql=%s]&quot;, sql));</span>
+<span class="fc" id="L106">        List&lt;SqlParameterValue&gt; values = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L107">        values.add(new SqlParameterValue(Types.INTEGER, cid));</span>
+<span class="fc" id="L108">        values.addAll(Arrays.asList(query.asSqlParameterValues()));</span>
+<span class="fc" id="L109">        SqlRowSet rowSet = jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), values.toArray(new Object[values.size()]));</span>
+<span class="fc" id="L110">        return mapRows(rowSet);</span>
     }
      
     private List&lt;EntityAttributeValue&gt; mapRows(SqlRowSet rowSet) {
@@ -137,4 +137,4 @@ public class JdbcEntityRepository implements EntityRepository {
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
