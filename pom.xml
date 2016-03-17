@@ -78,7 +78,7 @@
         <asciidoctor-maven-plugin.version>1.5.3</asciidoctor-maven-plugin.version>
         <docker-maven-plugin.version>0.4.1</docker-maven-plugin.version>
         <downloads-maven-plugin.version>0.6</downloads-maven-plugin.version>
-        <doxia-module-markdown.version>1.6</doxia-module-markdown.version>
+        <doxia-module-markdown.version>1.7</doxia-module-markdown.version>
         <findbugs-maven-plugin.version>3.0.3</findbugs-maven-plugin.version>
         <jacoco-maven-plugin.version>0.7.6.201602180812</jacoco-maven-plugin.version>
         <maven-changes-plugin.version>2.11</maven-changes-plugin.version>
