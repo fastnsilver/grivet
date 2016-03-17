@@ -32,87 +32,87 @@ import org.json.JSONObject;
 <span class="nc" id="L32">public class ValueHelper {</span>
 
     public static Object getValue(AttributeType attributeType, Object source) {
-<span class="fc" id="L35">        Object value = null;</span>
-<span class="fc" id="L36">        String stringValue = String.valueOf(source);</span>
+<span class="nc" id="L35">        Object value = null;</span>
+<span class="nc" id="L36">        String stringValue = String.valueOf(source);</span>
         // conversion takes place here...
-<span class="pc bpc" id="L38" title="1 of 10 branches missed.">        switch (attributeType) {</span>
+<span class="nc bnc" id="L38" title="All 10 branches missed.">        switch (attributeType) {</span>
             case BIG_INTEGER:
-<span class="fc" id="L40">                value = Long.valueOf(stringValue);</span>
-<span class="fc" id="L41">                break;</span>
+<span class="nc" id="L40">                value = Long.valueOf(stringValue);</span>
+<span class="nc" id="L41">                break;</span>
             case ISO_DATE:
-<span class="fc" id="L43">                value = DateTimeFormatter.ISO_DATE.format(LocalDate.parse(stringValue));</span>
-<span class="fc" id="L44">                break;</span>
+<span class="nc" id="L43">                value = DateTimeFormatter.ISO_DATE.format(LocalDate.parse(stringValue));</span>
+<span class="nc" id="L44">                break;</span>
             case ISO_DATETIME:
-<span class="fc" id="L46">                value = DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.parse(stringValue));</span>
-<span class="fc" id="L47">                break;</span>
+<span class="nc" id="L46">                value = DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.parse(stringValue));</span>
+<span class="nc" id="L47">                break;</span>
             case ISO_INSTANT:
-<span class="fc" id="L49">                value = String.format(&quot;%s%s&quot;, stringValue, &quot;Z&quot;);</span>
-<span class="fc" id="L50">                break;</span>
+<span class="nc" id="L49">                value = String.format(&quot;%s%s&quot;, stringValue, &quot;Z&quot;);</span>
+<span class="nc" id="L50">                break;</span>
             case DECIMAL:
-<span class="fc" id="L52">                value = Double.valueOf(stringValue);</span>
-<span class="fc" id="L53">                break;</span>
+<span class="nc" id="L52">                value = Double.valueOf(stringValue);</span>
+<span class="nc" id="L53">                break;</span>
             case INTEGER:
-<span class="fc" id="L55">                value = Integer.valueOf(stringValue);</span>
-<span class="fc" id="L56">                break;</span>
+<span class="nc" id="L55">                value = Integer.valueOf(stringValue);</span>
+<span class="nc" id="L56">                break;</span>
             case VARCHAR:
-<span class="fc" id="L58">                value = stringValue;</span>
-<span class="fc" id="L59">                break;</span>
+<span class="nc" id="L58">                value = stringValue;</span>
+<span class="nc" id="L59">                break;</span>
             case TEXT:
-<span class="fc" id="L61">                value = stringValue;</span>
-<span class="fc" id="L62">                break;</span>
+<span class="nc" id="L61">                value = stringValue;</span>
+<span class="nc" id="L62">                break;</span>
             case JSON_BLOB:
-<span class="pc bpc" id="L64" title="1 of 2 branches missed.">                if (stringValue.startsWith(&quot;{&quot;)) {</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">                if (stringValue.startsWith(&quot;{&quot;)) {</span>
 <span class="nc" id="L65">                    value = new JSONObject(stringValue);</span>
                 }
-<span class="pc bpc" id="L67" title="1 of 2 branches missed.">                if (stringValue.startsWith(&quot;[&quot;)) {</span>
-<span class="fc" id="L68">                    value = new JSONArray(stringValue);</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                if (stringValue.startsWith(&quot;[&quot;)) {</span>
+<span class="nc" id="L68">                    value = new JSONArray(stringValue);</span>
                 }
                 break;
         }
-<span class="fc" id="L72">        return value;</span>
+<span class="nc" id="L72">        return value;</span>
     }
     
     public static Object toValue(AttributeType attributeType, Object source) {
-<span class="fc" id="L76">        Object value = null;</span>
-<span class="fc" id="L77">        String stringValue = String.valueOf(source);</span>
+<span class="nc" id="L76">        Object value = null;</span>
+<span class="nc" id="L77">        String stringValue = String.valueOf(source);</span>
         // conversion takes place here...
         TemporalAccessor ta;
-<span class="pc bpc" id="L80" title="1 of 10 branches missed.">        switch (attributeType) {</span>
+<span class="nc bnc" id="L80" title="All 10 branches missed.">        switch (attributeType) {</span>
             case BIG_INTEGER:
-<span class="fc" id="L82">                value = Long.valueOf(stringValue);</span>
-<span class="fc" id="L83">                break;</span>
+<span class="nc" id="L82">                value = Long.valueOf(stringValue);</span>
+<span class="nc" id="L83">                break;</span>
             case ISO_DATE:
-<span class="fc" id="L85">                ta = DateTimeFormatter.ISO_DATE.parse(stringValue);</span>
-<span class="fc" id="L86">                LocalDate ld = LocalDate.from(ta);</span>
-<span class="fc" id="L87">                value = java.sql.Date.valueOf(ld);</span>
-<span class="fc" id="L88">                break;</span>
+<span class="nc" id="L85">                ta = DateTimeFormatter.ISO_DATE.parse(stringValue);</span>
+<span class="nc" id="L86">                LocalDate ld = LocalDate.from(ta);</span>
+<span class="nc" id="L87">                value = java.sql.Date.valueOf(ld);</span>
+<span class="nc" id="L88">                break;</span>
             case ISO_DATETIME:
-<span class="fc" id="L90">                ta = DateTimeFormatter.ISO_DATE_TIME.parse(stringValue);</span>
-<span class="fc" id="L91">                LocalDateTime ldt = LocalDateTime.from(ta);</span>
-<span class="fc" id="L92">                value = Timestamp.valueOf(ldt);</span>
-<span class="fc" id="L93">                break;</span>
+<span class="nc" id="L90">                ta = DateTimeFormatter.ISO_DATE_TIME.parse(stringValue);</span>
+<span class="nc" id="L91">                LocalDateTime ldt = LocalDateTime.from(ta);</span>
+<span class="nc" id="L92">                value = Timestamp.valueOf(ldt);</span>
+<span class="nc" id="L93">                break;</span>
             case ISO_INSTANT:
-<span class="fc" id="L95">                ta = DateTimeFormatter.ISO_INSTANT.parse(stringValue);</span>
-<span class="fc" id="L96">                Instant in = Instant.from(ta);</span>
-<span class="fc" id="L97">                value = Timestamp.valueOf(LocalDateTime.ofInstant(in, ZoneId.of(&quot;UTC&quot;)));</span>
-<span class="fc" id="L98">                break;</span>
+<span class="nc" id="L95">                ta = DateTimeFormatter.ISO_INSTANT.parse(stringValue);</span>
+<span class="nc" id="L96">                Instant in = Instant.from(ta);</span>
+<span class="nc" id="L97">                value = Timestamp.valueOf(LocalDateTime.ofInstant(in, ZoneId.of(&quot;UTC&quot;)));</span>
+<span class="nc" id="L98">                break;</span>
             case DECIMAL:
-<span class="fc" id="L100">                value = Double.valueOf(stringValue);</span>
-<span class="fc" id="L101">                break;</span>
+<span class="nc" id="L100">                value = Double.valueOf(stringValue);</span>
+<span class="nc" id="L101">                break;</span>
             case INTEGER:
-<span class="fc" id="L103">                value = Integer.valueOf(stringValue);</span>
-<span class="fc" id="L104">                break;</span>
+<span class="nc" id="L103">                value = Integer.valueOf(stringValue);</span>
+<span class="nc" id="L104">                break;</span>
             case VARCHAR:
-<span class="fc" id="L106">                value = stringValue;</span>
-<span class="fc" id="L107">                break;</span>
+<span class="nc" id="L106">                value = stringValue;</span>
+<span class="nc" id="L107">                break;</span>
             case TEXT:
-<span class="fc" id="L109">                value = stringValue;</span>
-<span class="fc" id="L110">                break;</span>
+<span class="nc" id="L109">                value = stringValue;</span>
+<span class="nc" id="L110">                break;</span>
             case JSON_BLOB:
-<span class="fc" id="L112">                value = stringValue;</span>
+<span class="nc" id="L112">                value = stringValue;</span>
                 break;
         }
-<span class="fc" id="L115">        return value;</span>
+<span class="nc" id="L115">        return value;</span>
     }
     
 }

@@ -49,14 +49,14 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = &quot;type/schema&quot;, produces = &quot;application/json&quot;)
 public class SchemaController {
 
-<span class="fc" id="L52">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+<span class="nc" id="L52">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
         
     private final SchemaService schemaService;
     
     @Autowired
-<span class="fc" id="L57">    public SchemaController(SchemaService schemaService) {</span>
-<span class="fc" id="L58">        this.schemaService = schemaService;</span>
-<span class="fc" id="L59">    }</span>
+<span class="nc" id="L57">    public SchemaController(SchemaService schemaService) {</span>
+<span class="nc" id="L58">        this.schemaService = schemaService;</span>
+<span class="nc" id="L59">    }</span>
     
     
     @PreAuthorize(value = &quot;hasRole(@roles.ADMIN)&quot;)
@@ -70,12 +70,12 @@ public class SchemaController {
             @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
             })
     public ResponseEntity&lt;?&gt; linkSchema(@RequestBody String payload) throws IOException {
-<span class="fc" id="L73">        JSONObject json = new JSONObject(payload);</span>
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (schemaService.isJsonSchema(json)) {</span>
-<span class="fc" id="L75">            String id = schemaService.linkSchema(json).getName();</span>
-<span class="fc" id="L76">            String message = String.format(&quot;JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!&quot;, id);</span>
-<span class="fc" id="L77">            log.info(message);</span>
-<span class="fc" id="L78">            return ResponseEntity.ok(message);</span>
+<span class="nc" id="L73">        JSONObject json = new JSONObject(payload);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (schemaService.isJsonSchema(json)) {</span>
+<span class="nc" id="L75">            String id = schemaService.linkSchema(json).getName();</span>
+<span class="nc" id="L76">            String message = String.format(&quot;JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!&quot;, id);</span>
+<span class="nc" id="L77">            log.info(message);</span>
+<span class="nc" id="L78">            return ResponseEntity.ok(message);</span>
         } 
 <span class="nc" id="L80">        return ResponseEntity.unprocessableEntity().build();</span>
     }
@@ -91,10 +91,10 @@ public class SchemaController {
     public ResponseEntity&lt;?&gt; unlinkSchema(
             @ApiParam(value = &quot;Type name&quot;, required = true)
             @PathVariable(&quot;type&quot;) String type) {
-<span class="fc" id="L94">        schemaService.unlinkSchema(type);</span>
-<span class="fc" id="L95">        String message = String.format(&quot;JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!&quot;, type);</span>
-<span class="fc" id="L96">        log.info(message);</span>
-<span class="fc" id="L97">        return ResponseEntity.ok(message);</span>
+<span class="nc" id="L94">        schemaService.unlinkSchema(type);</span>
+<span class="nc" id="L95">        String message = String.format(&quot;JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!&quot;, type);</span>
+<span class="nc" id="L96">        log.info(message);</span>
+<span class="nc" id="L97">        return ResponseEntity.ok(message);</span>
     }
             
 }

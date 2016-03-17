@@ -47,7 +47,7 @@ import org.springframework.context.annotation.Configuration;
 <span class="nc" id="L47">            hostname = InetAddress.getLocalHost().getHostName().replace('.', '_');</span>
 <span class="nc" id="L48">        } catch (UnknownHostException uhe) {</span>
             // do nothing
-<span class="nc" id="L50">        }</span>
+        }
 <span class="nc bnc" id="L51" title="All 2 branches missed.">        final String shortName = applicationName.length() &gt; 6 ? applicationName.substring(0, 6) : applicationName;</span>
 <span class="nc" id="L52">        return String.format(&quot;%s-%s&quot;, shortName, hostname);</span>
     }

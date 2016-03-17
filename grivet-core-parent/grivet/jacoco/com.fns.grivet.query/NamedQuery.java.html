@@ -93,109 +93,109 @@ public class NamedQuery extends Audited {
     private Map&lt;String, String&gt; params;
     
     protected NamedQuery() {
-<span class="fc" id="L96">        super();</span>
-<span class="fc" id="L97">    }</span>
+<span class="nc" id="L96">        super();</span>
+<span class="nc" id="L97">    }</span>
     
     @JsonCreator
-<span class="fc" id="L100">    public NamedQuery(@JsonProperty(&quot;name&quot;) String name, @JsonProperty(&quot;type&quot;) QueryType type, @JsonProperty(&quot;query&quot;) String query, @JsonProperty(&quot;params&quot;) Map&lt;String, String&gt; params) {</span>
-<span class="fc" id="L101">        this.name = name;</span>
-<span class="fc" id="L102">        this.query = query;</span>
-<span class="fc" id="L103">        setType(type);</span>
-<span class="fc" id="L104">        this.params = params;</span>
-<span class="fc" id="L105">    }</span>
+<span class="nc" id="L100">    public NamedQuery(@JsonProperty(&quot;name&quot;) String name, @JsonProperty(&quot;type&quot;) QueryType type, @JsonProperty(&quot;query&quot;) String query, @JsonProperty(&quot;params&quot;) Map&lt;String, String&gt; params) {</span>
+<span class="nc" id="L101">        this.name = name;</span>
+<span class="nc" id="L102">        this.query = query;</span>
+<span class="nc" id="L103">        setType(type);</span>
+<span class="nc" id="L104">        this.params = params;</span>
+<span class="nc" id="L105">    }</span>
     
     public Integer getId() {
-<span class="fc" id="L108">        return id;</span>
+<span class="nc" id="L108">        return id;</span>
     }
 
     public String getName() {
-<span class="fc" id="L112">        return name;</span>
+<span class="nc" id="L112">        return name;</span>
     }
     
     private void setType(QueryType type) {
-<span class="fc bfc" id="L116" title="All 2 branches covered.">       if (type == null) {</span>
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">           if (query.toUpperCase().startsWith(&quot;SELECT&quot;)) {</span>
-<span class="fc" id="L118">               this.type = QueryType.SELECT;</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">       if (type == null) {</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">           if (query.toUpperCase().startsWith(&quot;SELECT&quot;)) {</span>
+<span class="nc" id="L118">               this.type = QueryType.SELECT;</span>
            }
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">           if (query.toUpperCase().startsWith(&quot;CALL&quot;)) {</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">           if (query.toUpperCase().startsWith(&quot;CALL&quot;)) {</span>
 <span class="nc" id="L121">               this.type = QueryType.SPROC;</span>
            }
-       } else {
-<span class="fc" id="L124">           this.type = type;</span>
+<span class="nc" id="L123">       } else {</span>
+<span class="nc" id="L124">           this.type = type;</span>
        }
-<span class="fc" id="L126">    }</span>
+<span class="nc" id="L126">    }</span>
     
     public QueryType getType() {
-<span class="fc" id="L129">        return type;</span>
+<span class="nc" id="L129">        return type;</span>
     }
 
     public String getQuery() {
-<span class="fc" id="L133">        return query;</span>
+<span class="nc" id="L133">        return query;</span>
     }
 
     public Map&lt;String, String&gt; getParams() {
-<span class="fc bfc" id="L137" title="All 2 branches covered.">        if (params == null) {</span>
-<span class="fc" id="L138">            params = new HashMap&lt;String, String&gt;();</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        if (params == null) {</span>
+<span class="nc" id="L138">            params = new HashMap&lt;String, String&gt;();</span>
         }
-<span class="fc" id="L140">        return params;</span>
+<span class="nc" id="L140">        return params;</span>
     }
     
     // only when parameter values are not null, empty, or blank 
     // and parameter definition for named query is not empty
     // will a MapSqlParameterSource be constructed
     public MapSqlParameterSource asParameterSource(MultiValueMap&lt;String, ?&gt; parameterValues) {
-<span class="fc" id="L147">        MapSqlParameterSource paramSource = null;</span>
-<span class="pc bpc" id="L148" title="1 of 4 branches missed.">        if (!CollectionUtils.isEmpty(parameterValues) &amp;&amp; !getParams().isEmpty()) {</span>
-<span class="fc" id="L149">            paramSource = new MapSqlParameterSource();</span>
-<span class="fc" id="L150">            Set&lt;Entry&lt;String, String&gt;&gt; paramNameToParamTypeEntries = getParams().entrySet();</span>
-<span class="fc" id="L151">            List&lt;?&gt; values = null; </span>
-<span class="fc bfc" id="L152" title="All 2 branches covered.">            for (Entry&lt;String, String&gt; entry: paramNameToParamTypeEntries) {</span>
-<span class="fc" id="L153">                values = parameterValues.get(entry.getKey());</span>
-<span class="fc bfc" id="L154" title="All 2 branches covered.">                if (!CollectionUtils.isEmpty(values)) {</span>
-<span class="pc bpc" id="L155" title="1 of 2 branches missed.">                    if (values.size() == 1) {</span>
-<span class="fc" id="L156">                        paramSource.addValue(entry.getKey(), parameterValues.getFirst(entry.getKey()), AttributeType.toSqlType(entry.getValue()));</span>
-                    } else {
+<span class="nc" id="L147">        MapSqlParameterSource paramSource = null;</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">        if (!CollectionUtils.isEmpty(parameterValues) &amp;&amp; !getParams().isEmpty()) {</span>
+<span class="nc" id="L149">            paramSource = new MapSqlParameterSource();</span>
+<span class="nc" id="L150">            Set&lt;Entry&lt;String, String&gt;&gt; paramNameToParamTypeEntries = getParams().entrySet();</span>
+<span class="nc" id="L151">            List&lt;?&gt; values = null; </span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            for (Entry&lt;String, String&gt; entry: paramNameToParamTypeEntries) {</span>
+<span class="nc" id="L153">                values = parameterValues.get(entry.getKey());</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                if (!CollectionUtils.isEmpty(values)) {</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                    if (values.size() == 1) {</span>
+<span class="nc" id="L156">                        paramSource.addValue(entry.getKey(), parameterValues.getFirst(entry.getKey()), AttributeType.toSqlType(entry.getValue()));</span>
+<span class="nc" id="L157">                    } else {</span>
 <span class="nc" id="L158">                        paramSource.addValue(entry.getKey(), values);</span>
                     }
                 }
-<span class="fc" id="L161">            }</span>
+            }
         }
-<span class="fc" id="L163">        return paramSource;</span>
+<span class="nc" id="L163">        return paramSource;</span>
     }
     
     // only when parameter values are not null, empty, or blank 
     // and parameter definition for named query is not empty
     // will a List&lt;SqlParameter&gt; be constructed
     public List&lt;SqlParameter&gt; asSqlParameters(MultiValueMap&lt;String, ?&gt; parameterValues) {
-<span class="fc" id="L170">        List&lt;SqlParameter&gt; sqlParams = null;</span>
-<span class="pc bpc" id="L171" title="2 of 4 branches missed.">        if (!CollectionUtils.isEmpty(parameterValues) &amp;&amp; !getParams().isEmpty()) {</span>
-<span class="fc" id="L172">            sqlParams = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L173">            Set&lt;Entry&lt;String, String&gt;&gt; paramNameToParamTypeEntries = getParams().entrySet();</span>
-<span class="fc" id="L174">            List&lt;?&gt; values = null; </span>
-<span class="fc bfc" id="L175" title="All 2 branches covered.">            for (Entry&lt;String, String&gt; entry: paramNameToParamTypeEntries) {</span>
-<span class="fc" id="L176">                values = parameterValues.get(entry.getKey());</span>
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">                if (!CollectionUtils.isEmpty(values)) {</span>
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">                    if (values.size() == 1) {</span>
-<span class="fc" id="L179">                        sqlParams.add(new SqlParameter(entry.getKey(), AttributeType.toSqlType(entry.getValue())));</span>
-                    } else {
+<span class="nc" id="L170">        List&lt;SqlParameter&gt; sqlParams = null;</span>
+<span class="nc bnc" id="L171" title="All 4 branches missed.">        if (!CollectionUtils.isEmpty(parameterValues) &amp;&amp; !getParams().isEmpty()) {</span>
+<span class="nc" id="L172">            sqlParams = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L173">            Set&lt;Entry&lt;String, String&gt;&gt; paramNameToParamTypeEntries = getParams().entrySet();</span>
+<span class="nc" id="L174">            List&lt;?&gt; values = null; </span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">            for (Entry&lt;String, String&gt; entry: paramNameToParamTypeEntries) {</span>
+<span class="nc" id="L176">                values = parameterValues.get(entry.getKey());</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">                if (!CollectionUtils.isEmpty(values)) {</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">                    if (values.size() == 1) {</span>
+<span class="nc" id="L179">                        sqlParams.add(new SqlParameter(entry.getKey(), AttributeType.toSqlType(entry.getValue())));</span>
+<span class="nc" id="L180">                    } else {</span>
 <span class="nc" id="L181">                        throw new IllegalArgumentException(String.format(&quot;Stored Procedure cannot be executed! Parameter [%s] is not a scalar value!&quot;, entry.getKey()));</span>
                     }
                 }
-<span class="fc" id="L184">            }</span>
+            }
         }
-<span class="fc" id="L186">        return sqlParams;</span>
+<span class="nc" id="L186">        return sqlParams;</span>
     }
     
     @Override
     public int hashCode() {
-<span class="fc" id="L191">        return HashCodeBuilder.reflectionHashCode(this);</span>
+<span class="nc" id="L191">        return HashCodeBuilder.reflectionHashCode(this);</span>
     }
 
     @Override
     public boolean equals(Object object) {
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        if (object == null)</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (object == null)</span>
 <span class="nc" id="L197">            return false;</span>
-<span class="fc" id="L198">        return EqualsBuilder.reflectionEquals(this, object);</span>
+<span class="nc" id="L198">        return EqualsBuilder.reflectionEquals(this, object);</span>
     }
 
     @Override

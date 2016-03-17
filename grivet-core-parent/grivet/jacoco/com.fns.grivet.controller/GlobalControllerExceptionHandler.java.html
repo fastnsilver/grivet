@@ -39,9 +39,9 @@ import java.time.format.DateTimeParseException;
 import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
-<span class="fc" id="L42">class GlobalControllerExceptionHandler {</span>
+<span class="nc" id="L42">class GlobalControllerExceptionHandler {</span>
 
-<span class="fc" id="L44">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+<span class="nc" id="L44">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
     
     @ExceptionHandler({ 
         IOException.class, IllegalArgumentException.class, DataAccessException.class, 
@@ -49,10 +49,10 @@ import javax.servlet.http.HttpServletRequest;
         SQLException.class, SchemaValidationException.class 
     })
     protected ResponseEntity&lt;ErrorResponse&gt; badRequest(Exception e, HttpServletRequest hsr) {
-<span class="fc" id="L52">        ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),</span>
-<span class="fc" id="L53">                e.getMessage());</span>
-<span class="fc" id="L54">        log.error(er.asLog());</span>
-<span class="fc" id="L55">        return ResponseEntity.badRequest().body(er);</span>
+<span class="nc" id="L52">        ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),</span>
+<span class="nc" id="L53">                e.getMessage());</span>
+<span class="nc" id="L54">        log.error(er.asLog());</span>
+<span class="nc" id="L55">        return ResponseEntity.badRequest().body(er);</span>
     }
 
     @JsonPropertyOrder(value = { &quot;error&quot;, &quot;method&quot;, &quot;uri&quot;, &quot;query&quot; })
@@ -64,33 +64,33 @@ import javax.servlet.http.HttpServletRequest;
         private String error;
 
         @JsonCreator
-        public ErrorResponse(@JsonProperty String method, @JsonProperty String uri, @JsonProperty String query,
-<span class="fc" id="L68">                @JsonProperty String error) {</span>
-<span class="fc" id="L69">            this.method = method;</span>
-<span class="fc" id="L70">            this.uri = uri;</span>
-<span class="fc" id="L71">            this.query = query;</span>
-<span class="fc" id="L72">            this.error = error;</span>
-<span class="fc" id="L73">        }</span>
+<span class="nc" id="L67">        public ErrorResponse(@JsonProperty String method, @JsonProperty String uri, @JsonProperty String query,</span>
+<span class="nc" id="L68">                @JsonProperty String error) {</span>
+<span class="nc" id="L69">            this.method = method;</span>
+<span class="nc" id="L70">            this.uri = uri;</span>
+<span class="nc" id="L71">            this.query = query;</span>
+<span class="nc" id="L72">            this.error = error;</span>
+<span class="nc" id="L73">        }</span>
 
         public String getMethod() {
-<span class="fc" id="L76">            return method;</span>
+<span class="nc" id="L76">            return method;</span>
         }
 
         public String getUri() {
-<span class="fc" id="L80">            return uri;</span>
+<span class="nc" id="L80">            return uri;</span>
         }
 
         public String getQuery() {
-<span class="fc" id="L84">            return query;</span>
+<span class="nc" id="L84">            return query;</span>
         }
 
         public String getError() {
-<span class="fc" id="L88">            return error;</span>
+<span class="nc" id="L88">            return error;</span>
         }
 
         @JsonIgnore
         public String asLog() {
-<span class="fc" id="L93">            return ToStringBuilder.reflectionToString(this);</span>
+<span class="nc" id="L93">            return ToStringBuilder.reflectionToString(this);</span>
         }
 
     }

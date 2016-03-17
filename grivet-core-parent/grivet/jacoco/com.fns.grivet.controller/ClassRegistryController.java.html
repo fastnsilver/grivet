@@ -57,7 +57,7 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = &quot;type/register&quot;, produces = &quot;application/json&quot;)
 public class ClassRegistryController {
 
-<span class="fc" id="L60">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+<span class="nc" id="L60">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
     
     @Value(&quot;${grivet.register.batch-size:100}&quot;)
     int batchSize;
@@ -65,9 +65,9 @@ public class ClassRegistryController {
     private final ClassRegistryService classRegistryService;
     
     @Autowired
-<span class="fc" id="L68">    public ClassRegistryController(ClassRegistryService classRegistryService) {</span>
-<span class="fc" id="L69">        this.classRegistryService = classRegistryService;</span>
-<span class="fc" id="L70">    }</span>
+<span class="nc" id="L68">    public ClassRegistryController(ClassRegistryService classRegistryService) {</span>
+<span class="nc" id="L69">        this.classRegistryService = classRegistryService;</span>
+<span class="nc" id="L70">    }</span>
     
     @PreAuthorize(value = &quot;hasRole(@roles.ADMIN)&quot;)
     @RequestMapping(method = RequestMethod.POST, 
@@ -78,11 +78,11 @@ public class ClassRegistryController {
             @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
             @ApiResponse(code = 500, message = &quot;Internal server error.&quot;) })
     public ResponseEntity&lt;?&gt; registerSingle(@RequestBody String payload) throws IOException {
-<span class="fc" id="L81">        JSONObject json = new JSONObject(payload);</span>
-<span class="fc" id="L82">        String type = classRegistryService.register(json);</span>
-<span class="fc" id="L83">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
-<span class="fc" id="L84">        log.info(&quot;Type [{}] successfully registered!&quot;, type);</span>
-<span class="fc" id="L85">        return ResponseEntity.created(ucb.path(&quot;/type/register/{type}&quot;).buildAndExpand(type).toUri()).build();</span>
+<span class="nc" id="L81">        JSONObject json = new JSONObject(payload);</span>
+<span class="nc" id="L82">        String type = classRegistryService.register(json);</span>
+<span class="nc" id="L83">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
+<span class="nc" id="L84">        log.info(&quot;Type [{}] successfully registered!&quot;, type);</span>
+<span class="nc" id="L85">        return ResponseEntity.created(ucb.path(&quot;/type/register/{type}&quot;).buildAndExpand(type).toUri()).build();</span>
     }
 
     @PreAuthorize(value = &quot;hasRole(@roles.ADMIN)&quot;)
@@ -95,29 +95,29 @@ public class ClassRegistryController {
             @ApiResponse(code = 500, message = &quot;Internal server error.&quot;)
             })
     public ResponseEntity&lt;?&gt; registerMultiple(@RequestBody String payload) throws IOException {
-<span class="fc" id="L98">        JSONArray json = new JSONArray(payload);</span>
-<span class="fc" id="L99">        int numberOfTypesToRegister = json.length();</span>
-<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        Assert.isTrue(numberOfTypesToRegister &lt;= batchSize,</span>
-<span class="fc" id="L101">                String.format(</span>
-                        &quot;The total number of entries in a type registration request must not exceed %d! Your registration request contained [%d] entries.&quot;,
-<span class="fc" id="L103">                        batchSize, numberOfTypesToRegister));</span>
-<span class="fc" id="L104">        JSONObject jsonObject = null;</span>
-<span class="fc" id="L105">        String type = null;</span>
-<span class="fc" id="L106">        HttpHeaders headers = new HttpHeaders();</span>
-<span class="fc" id="L107">        URI location = null;</span>
-<span class="fc" id="L108">        int errorCount = 0;</span>
+<span class="nc" id="L98">        JSONArray json = new JSONArray(payload);</span>
+<span class="nc" id="L99">        int numberOfTypesToRegister = json.length();</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        Assert.isTrue(numberOfTypesToRegister &lt;= batchSize,</span>
+<span class="nc" id="L101">                String.format(</span>
+<span class="nc" id="L102">                        &quot;The total number of entries in a type registration request must not exceed %d! Your registration request contained [%d] entries.&quot;,</span>
+<span class="nc" id="L103">                        batchSize, numberOfTypesToRegister));</span>
+<span class="nc" id="L104">        JSONObject jsonObject = null;</span>
+<span class="nc" id="L105">        String type = null;</span>
+<span class="nc" id="L106">        HttpHeaders headers = new HttpHeaders();</span>
+<span class="nc" id="L107">        URI location = null;</span>
+<span class="nc" id="L108">        int errorCount = 0;</span>
         // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
-<span class="fc bfc" id="L110" title="All 2 branches covered.">        for (int i = 0; i &lt; numberOfTypesToRegister; i++) {</span>
-<span class="fc" id="L111">            jsonObject = json.getJSONObject(i);</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        for (int i = 0; i &lt; numberOfTypesToRegister; i++) {</span>
+<span class="nc" id="L111">            jsonObject = json.getJSONObject(i);</span>
             try {
-<span class="fc" id="L113">                type = classRegistryService.register(jsonObject);</span>
-<span class="fc" id="L114">                location = UriComponentsBuilder.newInstance().path(&quot;/type/register/{type}&quot;).buildAndExpand(type).toUri();</span>
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">                if (numberOfTypesToRegister == 1) {</span>
+<span class="nc" id="L113">                type = classRegistryService.register(jsonObject);</span>
+<span class="nc" id="L114">                location = UriComponentsBuilder.newInstance().path(&quot;/type/register/{type}&quot;).buildAndExpand(type).toUri();</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                if (numberOfTypesToRegister == 1) {</span>
 <span class="nc" id="L116">                    headers.setLocation(location); </span>
-                } else {
-<span class="fc" id="L118">                    headers.set(String.format(&quot;Location[%s]&quot;,String.valueOf(i+1)), location.toASCIIString());</span>
+<span class="nc" id="L117">                } else {</span>
+<span class="nc" id="L118">                    headers.set(String.format(&quot;Location[%s]&quot;,String.valueOf(i+1)), location.toASCIIString());</span>
                 }
-<span class="fc" id="L120">                log.info(&quot;Type [{}] successfully registered!&quot;, type);</span>
+<span class="nc" id="L120">                log.info(&quot;Type [{}] successfully registered!&quot;, type);</span>
 <span class="nc" id="L121">            } catch (Exception e) {</span>
 <span class="nc" id="L122">                String message = LogUtil.toLog(jsonObject, String.format(&quot;Problems registering type! Portion of payload @ index[%d]\n&quot;, i+1));</span>
 <span class="nc" id="L123">                log.error(message, e);</span>
@@ -126,10 +126,10 @@ public class ClassRegistryController {
                 }
 <span class="nc" id="L127">                headers.set(String.format(&quot;Error[%s]&quot;, String.valueOf(i+1)), e.getMessage());</span>
 <span class="nc" id="L128">                errorCount++;</span>
-<span class="fc" id="L129">            }</span>
+            }
         }
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        HttpStatus status = (errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED;</span>
-<span class="fc" id="L132">        return new ResponseEntity&lt;&gt;(headers, status);</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        HttpStatus status = (errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED;</span>
+<span class="nc" id="L132">        return new ResponseEntity&lt;&gt;(headers, status);</span>
     }
 
     @PreAuthorize(value = &quot;hasRole(@roles.ADMIN)&quot;)
@@ -143,9 +143,9 @@ public class ClassRegistryController {
     public ResponseEntity&lt;?&gt; delete(
             @ApiParam(value = &quot;Type name&quot;, required = true)
             @PathVariable(&quot;type&quot;) String type) {
-<span class="fc" id="L146">        classRegistryService.deregister(type);</span>
-<span class="fc" id="L147">        log.info(&quot;Type [{}] successfully deregistered!&quot;, type);</span>
-<span class="fc" id="L148">        return ResponseEntity.noContent().build();</span>
+<span class="nc" id="L146">        classRegistryService.deregister(type);</span>
+<span class="nc" id="L147">        log.info(&quot;Type [{}] successfully deregistered!&quot;, type);</span>
+<span class="nc" id="L148">        return ResponseEntity.noContent().build();</span>
     }
     
     @PreAuthorize(value = &quot;hasRole(@roles.ADMIN) or hasRole(@roles.USER)&quot;)

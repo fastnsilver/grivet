@@ -60,7 +60,7 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = &quot;type/store&quot;, produces = &quot;application/json&quot;)
 public class EntityController {
 
-<span class="fc" id="L63">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+<span class="nc" id="L63">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
     
     @Value(&quot;${grivet.store.batch-size:100}&quot;)
     int batchSize;
@@ -70,10 +70,10 @@ public class EntityController {
     private final MetricRegistry metricRegistry;
 
     @Autowired
-<span class="fc" id="L73">    public EntityController(EntityService entityService, MetricRegistry metricRegistry) {</span>
-<span class="fc" id="L74">        this.entityService = entityService;</span>
-<span class="fc" id="L75">        this.metricRegistry = metricRegistry;</span>
-<span class="fc" id="L76">    }</span>
+<span class="nc" id="L73">    public EntityController(EntityService entityService, MetricRegistry metricRegistry) {</span>
+<span class="nc" id="L74">        this.entityService = entityService;</span>
+<span class="nc" id="L75">        this.metricRegistry = metricRegistry;</span>
+<span class="nc" id="L76">    }</span>
     
     @PreAuthorize(value = &quot;hasRole(@roles.ADMIN) or hasRole(@roles.USER)&quot;)
     @RequestMapping(value = &quot;/{type}&quot;, method = RequestMethod.POST, 
@@ -85,11 +85,11 @@ public class EntityController {
             @ApiResponse(code = 500, message = &quot;Internal server error.&quot;) })
     public ResponseEntity&lt;?&gt; createSingle(@PathVariable(&quot;type&quot;) String type, @RequestBody String payload)
             throws IOException {
-<span class="fc" id="L88">        JSONObject json = new JSONObject(payload);</span>
-<span class="fc" id="L89">        entityService.create(type, json);</span>
-<span class="fc" id="L90">        metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, type, &quot;count&quot;)).inc();</span>
-<span class="fc" id="L91">        log.info(&quot;Successfully stored type [{}]&quot;, type);</span>
-<span class="fc" id="L92">        return ResponseEntity.noContent().build();</span>
+<span class="nc" id="L88">        JSONObject json = new JSONObject(payload);</span>
+<span class="nc" id="L89">        entityService.create(type, json);</span>
+<span class="nc" id="L90">        metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="nc" id="L91">        log.info(&quot;Successfully stored type [{}]&quot;, type);</span>
+<span class="nc" id="L92">        return ResponseEntity.noContent().build();</span>
     }
 
     @PreAuthorize(value = &quot;hasRole(@roles.ADMIN) or hasRole(@roles.USER)&quot;)
@@ -103,22 +103,22 @@ public class EntityController {
             })
     public ResponseEntity&lt;?&gt; createMultiple(@PathVariable(&quot;type&quot;) String type, @RequestBody String payload)
             throws IOException {
-<span class="fc" id="L106">        JSONArray json = new JSONArray(payload);</span>
-<span class="fc" id="L107">        int numberOfTypesToCreate = json.length();</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        Assert.isTrue(numberOfTypesToCreate &lt;= batchSize,</span>
-<span class="fc" id="L109">                String.format(</span>
-                        &quot;The total number of entries in a request must not exceed %d! Your store request contained [%d] entries.&quot;,
-<span class="fc" id="L111">                        batchSize, numberOfTypesToCreate));</span>
-<span class="fc" id="L112">        int errorCount = 0;</span>
-<span class="fc" id="L113">        JSONObject jsonObject = null;</span>
-<span class="fc" id="L114">        HttpHeaders headers = new HttpHeaders();</span>
+<span class="nc" id="L106">        JSONArray json = new JSONArray(payload);</span>
+<span class="nc" id="L107">        int numberOfTypesToCreate = json.length();</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        Assert.isTrue(numberOfTypesToCreate &lt;= batchSize,</span>
+<span class="nc" id="L109">                String.format(</span>
+<span class="nc" id="L110">                        &quot;The total number of entries in a request must not exceed %d! Your store request contained [%d] entries.&quot;,</span>
+<span class="nc" id="L111">                        batchSize, numberOfTypesToCreate));</span>
+<span class="nc" id="L112">        int errorCount = 0;</span>
+<span class="nc" id="L113">        JSONObject jsonObject = null;</span>
+<span class="nc" id="L114">        HttpHeaders headers = new HttpHeaders();</span>
         // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
-<span class="fc bfc" id="L116" title="All 2 branches covered.">        for (int i = 0; i &lt; numberOfTypesToCreate; i++) {</span>
-<span class="fc" id="L117">            jsonObject = json.getJSONObject(i);</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        for (int i = 0; i &lt; numberOfTypesToCreate; i++) {</span>
+<span class="nc" id="L117">            jsonObject = json.getJSONObject(i);</span>
             try {
-<span class="fc" id="L119">                entityService.create(type, jsonObject);</span>
-<span class="fc" id="L120">                metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, type, &quot;count&quot;)).inc();</span>
-<span class="fc" id="L121">                log.info(&quot;Successfully stored type [{}]&quot;, type);</span>
+<span class="nc" id="L119">                entityService.create(type, jsonObject);</span>
+<span class="nc" id="L120">                metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="nc" id="L121">                log.info(&quot;Successfully stored type [{}]&quot;, type);</span>
 <span class="nc" id="L122">            } catch (Exception e) {</span>
 <span class="nc" id="L123">                String message = LogUtil.toLog(jsonObject, String.format(&quot;Problems storing type! Portion of payload @ index[%d]\n&quot;, i+1));</span>
 <span class="nc" id="L124">                log.error(message, e);</span>
@@ -127,10 +127,10 @@ public class EntityController {
                 }
 <span class="nc" id="L128">                headers.set(String.format(&quot;Error[%s]&quot;, String.valueOf(i+1)), e.getMessage());</span>
 <span class="nc" id="L129">                errorCount++;</span>
-<span class="fc" id="L130">            }</span>
+            }
         }
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        HttpStatus status = (errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED;</span>
-<span class="fc" id="L133">        return new ResponseEntity&lt;&gt;(headers, status);</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        HttpStatus status = (errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED;</span>
+<span class="nc" id="L133">        return new ResponseEntity&lt;&gt;(headers, status);</span>
     }
     
     @PreAuthorize(value = &quot;hasRole(@roles.ADMIN) or hasRole(@roles.USER)&quot;)
@@ -145,11 +145,11 @@ public class EntityController {
             @RequestParam(value = &quot;createdTimeStart&quot;, required = false) LocalDateTime createdTimeStart,
             @RequestParam(value = &quot;createdTimeEnd&quot;, required = false) LocalDateTime createdTimeEnd,
             HttpServletRequest request) throws JsonProcessingException {
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">        LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7) : createdTimeStart;</span>
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">        LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : createdTimeEnd;</span>
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, &quot;Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!&quot;);</span>
-<span class="fc" id="L151">        String result = entityService.findByCreatedTime(type, start, end, request.getParameterMap());</span>
-<span class="fc" id="L152">        return ResponseEntity.ok(result);</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7) : createdTimeStart;</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">        LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : createdTimeEnd;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, &quot;Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!&quot;);</span>
+<span class="nc" id="L151">        String result = entityService.findByCreatedTime(type, start, end, request.getParameterMap());</span>
+<span class="nc" id="L152">        return ResponseEntity.ok(result);</span>
     }
     
 }

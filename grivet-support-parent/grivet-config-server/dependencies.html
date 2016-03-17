@@ -13,10 +13,12 @@
 		<meta name="description" content="" />
 		<meta http-equiv="content-language" content="en" />
 
-		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet" />
-		<link href="./css/docs.css" rel="stylesheet" />
+		<link href="http://netdna.bootstrapcdn.com/bootswatch/2.3.2/cerulean/bootstrap.min.css" rel="stylesheet" />
+		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet" />
+		<link href="./css/bootswatch.css" rel="stylesheet" />
 		<link href="./css/reflow-skin.css" rel="stylesheet" />
 
+		<link href="http://yandex.st/highlightjs/7.5/styles/default.min.css" rel="stylesheet" />
 
 		<link href="./css/lightbox.css" rel="stylesheet" />
 
@@ -32,7 +34,7 @@
 
 	</head>
 
-	<body class="page-$config.fileId project-$config.projectId" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+	<body class="page-dependencies project-grivet-config-server" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
 
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
@@ -42,31 +44,32 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
+					<a class="brand" href="https://github.com/fastnsilver/grivet/config-server">Grivet (Configuration Server)</a>
 					<div class="nav-collapse collapse" id="top-nav-collapse">
 						<ul class="nav pull-right">
-							<li class="dropdown active">
+							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parent Project <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li class="active"><a href="" title="Grivet Support Services">Grivet Support Services</a></li>
+									<li ><a href="../index.html" title="Grivet Support Services">Grivet Support Services</a></li>
 								</ul>
 							</li>
-							<li class="dropdown active">
+							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Overview <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li class="active"><a href="" title="About">About</a></li>
-									<li class="active"><a href="" title="Project License">Project License</a></li>
+									<li ><a href="index.html" title="About">About</a></li>
+									<li ><a href="license.html" title="Project License">Project License</a></li>
 								</ul>
 							</li>
-							<li class="dropdown active">
+							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Developer <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li class="active"><a href="" title="JavaDocs">JavaDocs</a></li>
-									<li class="active"><a href="" title="Source Repository">Source Repository</a></li>
-									<li class="active"><a href="" title="Project Summary">Project Summary</a></li>
-									<li class="active"><a href="" title="Dependency Information">Dependency Information</a></li>
-									<li class="active"><a href="" title="Dependency Management">Dependency Management</a></li>
-									<li class="active"><a href="" title="Plugin Management">Plugin Management</a></li>
-									<li class="active"><a href="" title="Project Plugins">Project Plugins</a></li>
+									<li ><a href="apidocs/index.html" title="JavaDocs">JavaDocs</a></li>
+									<li ><a href="source-repository.html" title="Source Repository">Source Repository</a></li>
+									<li ><a href="project-summary.html" title="Project Summary">Project Summary</a></li>
+									<li ><a href="dependency-info.html" title="Dependency Information">Dependency Information</a></li>
+									<li ><a href="dependency-management.html" title="Dependency Management">Dependency Management</a></li>
+									<li ><a href="plugin-management.html" title="Plugin Management">Plugin Management</a></li>
+									<li ><a href="plugins.html" title="Project Plugins">Project Plugins</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -94,7 +97,2364 @@
 	<div class="row">
 		<div class="span12">
 			<div class="body-content">
-$bodyWithHeader
+<a name="Project_Dependencies"></a> 
+<div class="section"> 
+ <div class="page-header">
+  <h2 id="Project_Dependencies">Project Dependencies</h2>
+ </div> 
+ <a name="Project_Dependencies_compile"></a> 
+ <div class="section"> 
+  <h3 id="compile">compile</h3> 
+  <p>The following is a list of compile dependencies for this project. These dependencies are required to compile and run the application:</p> 
+  <table border="0" class="bodyTable table table-striped table-hover"> 
+   <thead> 
+    <tr class="a"> 
+     <th>GroupId</th> 
+     <th>ArtifactId</th> 
+     <th>Version</th> 
+     <th>Type</th> 
+     <th>License</th> 
+    </tr> 
+   </thead> 
+   <tbody> 
+    <tr class="b"> 
+     <td>org.springframework.cloud</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-cloud/spring-cloud-config-server/">spring-cloud-config-server</a></td> 
+     <td>1.1.0.M5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework.cloud</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-cloud">spring-cloud-starter</a></td> 
+     <td>1.1.0.M5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework.cloud</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-cloud">spring-cloud-starter-eureka</a></td> 
+     <td>1.1.0.M5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+</div> 
+<a name="Project_Transitive_Dependencies"></a> 
+<div class="section"> 
+ <h2 id="Project_Transitive_Dependencies">Project Transitive Dependencies</h2> 
+ <p>The following is a list of transitive dependencies for this project. Transitive dependencies are the dependencies of the project dependencies.</p> 
+ <a name="Project_Transitive_Dependencies_compile"></a> 
+ <div class="section"> 
+  <h3 id="compile">compile</h3> 
+  <p>The following is a list of compile dependencies for this project. These dependencies are required to compile and run the application:</p> 
+  <table border="0" class="bodyTable table table-striped table-hover"> 
+   <thead> 
+    <tr class="a"> 
+     <th>GroupId</th> 
+     <th>ArtifactId</th> 
+     <th>Version</th> 
+     <th>Type</th> 
+     <th>License</th> 
+    </tr> 
+   </thead> 
+   <tbody> 
+    <tr class="b"> 
+     <td>aopalliance</td> 
+     <td><a class="externalLink" href="http://aopalliance.sourceforge.net">aopalliance</a></td> 
+     <td>1.0</td> 
+     <td>jar</td> 
+     <td>Public Domain</td> 
+    </tr> 
+    <tr class="a"> 
+     <td>ch.qos.logback</td> 
+     <td><a class="externalLink" href="http://logback.qos.ch/logback-classic">logback-classic</a></td> 
+     <td>1.1.5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a>-<a class="externalLink" href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU Lesser General Public License</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>ch.qos.logback</td> 
+     <td><a class="externalLink" href="http://logback.qos.ch/logback-core">logback-core</a></td> 
+     <td>1.1.5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a>-<a class="externalLink" href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU Lesser General Public License</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.fasterxml</td> 
+     <td><a class="externalLink" href="http://github.com/cowtowncoder/java-classmate">classmate</a></td> 
+     <td>1.1.0</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.fasterxml.jackson.core</td> 
+     <td><a class="externalLink" href="http://github.com/FasterXML/jackson">jackson-annotations</a></td> 
+     <td>2.6.5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.fasterxml.jackson.core</td> 
+     <td><a class="externalLink" href="https://github.com/FasterXML/jackson-core">jackson-core</a></td> 
+     <td>2.6.5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.fasterxml.jackson.core</td> 
+     <td><a class="externalLink" href="http://github.com/FasterXML/jackson">jackson-databind</a></td> 
+     <td>2.6.5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.google.guava</td> 
+     <td><a class="externalLink" href="http://code.google.com/p/guava-libraries/guava">guava</a></td> 
+     <td>18.0</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.googlecode.javaewah</td> 
+     <td><a class="externalLink" href="http://code.google.com/p/javaewah/">JavaEWAH</a></td> 
+     <td>0.7.9</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.jcraft</td> 
+     <td><a class="externalLink" href="http://www.jcraft.com/jsch/">jsch</a></td> 
+     <td>0.1.50</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.jcraft.com/jsch/LICENSE.txt">Revised BSD</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.netflix.archaius</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/archaius">archaius-core</a></td> 
+     <td>0.7.3</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.netflix.eureka</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/eureka">eureka-client</a></td> 
+     <td>1.3.7</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.netflix.ribbon</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/ribbon">ribbon</a></td> 
+     <td>2.1.0</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.netflix.ribbon</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/ribbon">ribbon-core</a></td> 
+     <td>2.1.0</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.netflix.ribbon</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/ribbon">ribbon-eureka</a></td> 
+     <td>2.1.0</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.netflix.ribbon</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/ribbon">ribbon-httpclient</a></td> 
+     <td>2.1.0</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.netflix.ribbon</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/ribbon">ribbon-loadbalancer</a></td> 
+     <td>2.1.0</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.thoughtworks.xstream</td> 
+     <td><a class="externalLink" href="http://codehaus.org/xstream-parent/xstream/">xstream</a></td> 
+     <td>1.4.2</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://xstream.codehaus.com/license.html">BSD style</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>commons-codec</td> 
+     <td><a class="externalLink" href="http://commons.apache.org/proper/commons-codec/">commons-codec</a></td> 
+     <td>1.9</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>commons-configuration</td> 
+     <td><a class="externalLink" href="http://commons.apache.org/configuration/">commons-configuration</a></td> 
+     <td>1.8</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>commons-lang</td> 
+     <td><a class="externalLink" href="http://commons.apache.org/lang/">commons-lang</a></td> 
+     <td>2.6</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>commons-logging</td> 
+     <td><a class="externalLink" href="http://commons.apache.org/logging">commons-logging</a></td> 
+     <td>1.1.1</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>io.reactivex</td> 
+     <td><a class="externalLink" href="https://github.com/ReactiveX/RxJava">rxjava</a></td> 
+     <td>1.0.14</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>javax.validation</td> 
+     <td><a class="externalLink" href="http://beanvalidation.org">validation-api</a></td> 
+     <td>1.1.0.Final</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.apache.httpcomponents</td> 
+     <td><a class="externalLink" href="http://hc.apache.org/httpcomponents-client">httpclient</a></td> 
+     <td>4.5.1</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.apache.httpcomponents</td> 
+     <td><a class="externalLink" href="http://hc.apache.org/httpcomponents-core-ga">httpcore</a></td> 
+     <td>4.4.4</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.apache.tomcat.embed</td> 
+     <td><a class="externalLink" href="http://tomcat.apache.org/">tomcat-embed-core</a></td> 
+     <td>8.0.32</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.apache.tomcat.embed</td> 
+     <td><a class="externalLink" href="http://tomcat.apache.org/">tomcat-embed-el</a></td> 
+     <td>8.0.32</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.apache.tomcat.embed</td> 
+     <td><a class="externalLink" href="http://tomcat.apache.org/">tomcat-embed-logging-juli</a></td> 
+     <td>8.0.32</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.apache.tomcat.embed</td> 
+     <td><a class="externalLink" href="http://tomcat.apache.org/">tomcat-embed-websocket</a></td> 
+     <td>8.0.32</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.bouncycastle</td> 
+     <td><a class="externalLink" href="http://www.bouncycastle.org/java.html">bcpkix-jdk15on</a></td> 
+     <td>1.47</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.bouncycastle.org/licence.html">Bouncy Castle Licence</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.bouncycastle</td> 
+     <td><a class="externalLink" href="http://www.bouncycastle.org/java.html">bcprov-jdk15on</a></td> 
+     <td>1.47</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.bouncycastle.org/licence.html">Bouncy Castle Licence</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.eclipse.jgit</td> 
+     <td>org.eclipse.jgit</td> 
+     <td>3.5.3.201412180710-r</td> 
+     <td>jar</td> 
+     <td>Eclipse Distribution License (New BSD License)</td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.hibernate</td> 
+     <td><a class="externalLink" href="http://hibernate.org/validator/hibernate-validator">hibernate-validator</a></td> 
+     <td>5.2.4.Final</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.jboss.logging</td> 
+     <td><a class="externalLink" href="http://www.jboss.org">jboss-logging</a></td> 
+     <td>3.3.0.Final</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.slf4j</td> 
+     <td><a class="externalLink" href="http://www.slf4j.org">jcl-over-slf4j</a></td> 
+     <td>1.7.16</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.slf4j</td> 
+     <td><a class="externalLink" href="http://www.slf4j.org">jul-to-slf4j</a></td> 
+     <td>1.7.16</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.slf4j</td> 
+     <td><a class="externalLink" href="http://www.slf4j.org">log4j-over-slf4j</a></td> 
+     <td>1.7.16</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache Software Licenses</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.slf4j</td> 
+     <td><a class="externalLink" href="http://www.slf4j.org">slf4j-api</a></td> 
+     <td>1.7.16</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework</td> 
+     <td><a class="externalLink" href="https://github.com/spring-projects/spring-framework">spring-aop</a></td> 
+     <td>4.2.4.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework</td> 
+     <td><a class="externalLink" href="https://github.com/spring-projects/spring-framework">spring-beans</a></td> 
+     <td>4.2.4.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework</td> 
+     <td><a class="externalLink" href="https://github.com/spring-projects/spring-framework">spring-context</a></td> 
+     <td>4.2.4.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework</td> 
+     <td><a class="externalLink" href="https://github.com/spring-projects/spring-framework">spring-core</a></td> 
+     <td>4.2.5.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework</td> 
+     <td><a class="externalLink" href="https://github.com/spring-projects/spring-framework">spring-expression</a></td> 
+     <td>4.2.4.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework</td> 
+     <td><a class="externalLink" href="https://github.com/spring-projects/spring-framework">spring-web</a></td> 
+     <td>4.2.4.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework</td> 
+     <td><a class="externalLink" href="https://github.com/spring-projects/spring-framework">spring-webmvc</a></td> 
+     <td>4.2.4.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework.boot</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-boot/">spring-boot</a></td> 
+     <td>1.3.3.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework.boot</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-boot/">spring-boot-actuator</a></td> 
+     <td>1.3.3.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework.boot</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-boot/">spring-boot-autoconfigure</a></td> 
+     <td>1.3.3.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework.boot</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-boot/">spring-boot-starter</a></td> 
+     <td>1.3.3.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework.boot</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-boot/">spring-boot-starter-actuator</a></td> 
+     <td>1.3.3.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework.boot</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-boot/">spring-boot-starter-logging</a></td> 
+     <td>1.3.3.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework.boot</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-boot/">spring-boot-starter-tomcat</a></td> 
+     <td>1.3.3.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework.boot</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-boot/">spring-boot-starter-validation</a></td> 
+     <td>1.3.3.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework.boot</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-boot/">spring-boot-starter-web</a></td> 
+     <td>1.3.3.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework.cloud</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-cloud/spring-cloud-commons/">spring-cloud-commons</a></td> 
+     <td>1.1.0.M5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework.cloud</td> 
+     <td><a class="externalLink" href="http://spring.io">spring-cloud-config-client</a></td> 
+     <td>1.1.0.M5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework.cloud</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-cloud/spring-cloud-context/">spring-cloud-context</a></td> 
+     <td>1.1.0.M5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework.cloud</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-boot/spring-cloud-build/spring-cloud-netflix/spring-cloud-netflix-core/">spring-cloud-netflix-core</a></td> 
+     <td>1.1.0.M5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework.cloud</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-boot/spring-cloud-build/spring-cloud-netflix/spring-cloud-netflix-eureka-client/">spring-cloud-netflix-eureka-client</a></td> 
+     <td>1.1.0.M5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework.cloud</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-cloud">spring-cloud-starter-archaius</a></td> 
+     <td>1.1.0.M5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework.cloud</td> 
+     <td><a class="externalLink" href="http://projects.spring.io/spring-cloud">spring-cloud-starter-ribbon</a></td> 
+     <td>1.1.0.M5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.springframework.security</td> 
+     <td><a class="externalLink" href="http://spring.io/spring-security">spring-security-crypto</a></td> 
+     <td>4.0.3.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>org.springframework.security</td> 
+     <td><a class="externalLink" href="http://github.com/spring-projects/spring-security-oauth">spring-security-rsa</a></td> 
+     <td>1.0.1.RELEASE</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.yaml</td> 
+     <td><a class="externalLink" href="http://www.snakeyaml.org">snakeyaml</a></td> 
+     <td>1.16</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>xmlpull</td> 
+     <td><a class="externalLink" href="http://www.xmlpull.org">xmlpull</a></td> 
+     <td>1.1.3.1</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.xmlpull.org/v1/download/unpacked/LICENSE.txt">Public Domain</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>xpp3</td> 
+     <td><a class="externalLink" href="http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/">xpp3_min</a></td> 
+     <td>1.1.4c</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.extreme.indiana.edu/viewcvs/~checkout~/XPP3/java/LICENSE.txt">Indiana University Extreme! Lab Software License, vesion 1.1.1</a>-<a class="externalLink" href="http://creativecommons.org/licenses/publicdomain">Public Domain</a></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <a name="Project_Transitive_Dependencies_runtime"></a> 
+ <div class="section"> 
+  <h3 id="runtime">runtime</h3> 
+  <p>The following is a list of runtime dependencies for this project. These dependencies are required to run the application:</p> 
+  <table border="0" class="bodyTable table table-striped table-hover"> 
+   <thead> 
+    <tr class="a"> 
+     <th>GroupId</th> 
+     <th>ArtifactId</th> 
+     <th>Version</th> 
+     <th>Type</th> 
+     <th>License</th> 
+    </tr> 
+   </thead> 
+   <tbody> 
+    <tr class="b"> 
+     <td>com.google.inject</td> 
+     <td><a class="externalLink" href="https://github.com/google/guice/guice">guice</a></td> 
+     <td>4.0</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.netflix.eureka</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/eureka">eureka2-client-shaded</a></td> 
+     <td>2.0.0-rc.2</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.netflix.governator</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/governator">governator-annotations</a></td> 
+     <td>1.10.5</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.netflix.hystrix</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/Hystrix">hystrix-core</a></td> 
+     <td>1.4.23</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.netflix.netflix-commons</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/netflix-commons">netflix-commons-util</a></td> 
+     <td>0.1.1</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.netflix.netflix-commons</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/netflix-commons">netflix-eventbus</a></td> 
+     <td>0.3.0</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.netflix.netflix-commons</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/netflix-commons">netflix-statistics</a></td> 
+     <td>0.1.1</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.netflix.ribbon</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/ribbon">ribbon-transport</a></td> 
+     <td>2.1.0</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.netflix.servo</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/servo">servo-core</a></td> 
+     <td>0.10.1</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.netflix.servo</td> 
+     <td><a class="externalLink" href="https://github.com/Netflix/servo">servo-internal</a></td> 
+     <td>0.10.1</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.sun.jersey</td> 
+     <td><a class="externalLink" href="https://jersey.java.net/jersey-client/">jersey-client</a></td> 
+     <td>1.19</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL_1_1.html">CDDL 1.1</a>-<a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL_1_1.html">GPL2 w/ CPE</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>com.sun.jersey</td> 
+     <td><a class="externalLink" href="https://jersey.java.net/jersey-core/">jersey-core</a></td> 
+     <td>1.19</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL_1_1.html">CDDL 1.1</a>-<a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL_1_1.html">GPL2 w/ CPE</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>com.sun.jersey.contribs</td> 
+     <td><a class="externalLink" href="https://jersey.java.net/jersey-contribs/jersey-apache-client4/">jersey-apache-client4</a></td> 
+     <td>1.19</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL_1_1.html">CDDL 1.1</a>-<a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL_1_1.html">GPL2 w/ CPE</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>commons-collections</td> 
+     <td><a class="externalLink" href="http://commons.apache.org/collections/">commons-collections</a></td> 
+     <td>3.2.2</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>io.netty</td> 
+     <td><a class="externalLink" href="http://netty.io/netty-buffer/">netty-buffer</a></td> 
+     <td>4.0.25.Final</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>io.netty</td> 
+     <td><a class="externalLink" href="http://netty.io/netty-codec/">netty-codec</a></td> 
+     <td>4.0.25.Final</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>io.netty</td> 
+     <td><a class="externalLink" href="http://netty.io/netty-codec-http/">netty-codec-http</a></td> 
+     <td>4.0.25.Final</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>io.netty</td> 
+     <td><a class="externalLink" href="http://netty.io/netty-common/">netty-common</a></td> 
+     <td>4.0.25.Final</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>io.netty</td> 
+     <td><a class="externalLink" href="http://netty.io/netty-handler/">netty-handler</a></td> 
+     <td>4.0.25.Final</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>io.netty</td> 
+     <td><a class="externalLink" href="http://netty.io/netty-transport/">netty-transport</a></td> 
+     <td>4.0.25.Final</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>io.netty</td> 
+     <td><a class="externalLink" href="http://netty.io/netty-transport-native-epoll/">netty-transport-native-epoll</a></td> 
+     <td>4.0.25.Final</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>io.reactivex</td> 
+     <td><a class="externalLink" href="https://github.com/ReactiveX/RxNetty">rxnetty</a></td> 
+     <td>0.4.9</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>io.reactivex</td> 
+     <td><a class="externalLink" href="https://github.com/ReactiveX/RxNetty">rxnetty-contexts</a></td> 
+     <td>0.4.9</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>io.reactivex</td> 
+     <td><a class="externalLink" href="https://github.com/ReactiveX/RxNetty">rxnetty-servo</a></td> 
+     <td>0.4.9</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>javax.inject</td> 
+     <td><a class="externalLink" href="http://code.google.com/p/atinject/">javax.inject</a></td> 
+     <td>1</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>javax.ws.rs</td> 
+     <td><a class="externalLink" href="https://jsr311.dev.java.net">jsr311-api</a></td> 
+     <td>1.1.1</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.opensource.org/licenses/cddl1.php">CDDL License</a></td> 
+    </tr> 
+    <tr class="b"> 
+     <td>org.codehaus.jettison</td> 
+     <td><a class="externalLink" href="http://codehaus.org/jettison/">jettison</a></td> 
+     <td>1.3.7</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></td> 
+    </tr> 
+    <tr class="a"> 
+     <td>stax</td> 
+     <td><a class="externalLink" href="http://stax.codehaus.org/">stax-api</a></td> 
+     <td>1.0.1</td> 
+     <td>jar</td> 
+     <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+</div> 
+<a name="Project_Dependency_Graph"></a> 
+<div class="section"> 
+ <h2 id="Project_Dependency_Graph">Project Dependency Graph</h2> 
+ <script language="javascript" type="text/javascript">
+      function toggleDependencyDetail( divId, imgId )
+      {
+        var div = document.getElementById( divId );
+        var img = document.getElementById( imgId );
+        if( div.style.display == '' )
+        {
+          div.style.display = 'none';
+          img.src='./images/icon_info_sml.gif';
+        }
+        else
+        {
+          div.style.display = '';
+          img.src='./images/close.gif';
+        }
+      }
+</script> 
+ <a name="Dependency_Tree"></a> 
+ <div class="section"> 
+  <h3 id="Dependency_Tree">Dependency Tree</h3> 
+  <ul> 
+   <li>com.fns:grivet-config-server:jar:0.2.0 <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep0"><i class="icon-info-sign"></i></button> 
+    <div id="_dep0" style="" class=" collapse"> 
+     <table border="0" class="bodyTable table table-striped table-hover"> 
+      <thead> 
+       <tr class="a"> 
+        <th>Configuration Server</th> 
+       </tr> 
+      </thead> 
+      <tbody> 
+       <tr class="b"> 
+        <td> <p><b>Description: </b>A central place to manage external properties for applications across all environments.</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-boot/grivet-parent/grivet-support-parent/grivet-config-server/">http://projects.spring.io/spring-boot/grivet-parent/grivet-support-parent/grivet-config-server/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache</a></p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <ul> 
+     <li>org.springframework.cloud:spring-cloud-starter:jar:1.1.0.M5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep2"><i class="icon-info-sign"></i></button> 
+      <div id="_dep2" style="" class=" collapse"> 
+       <table border="0" class="bodyTable table table-striped table-hover"> 
+        <thead> 
+         <tr class="a"> 
+          <th>spring-cloud-starter</th> 
+         </tr> 
+        </thead> 
+        <tbody> 
+         <tr class="b"> 
+          <td> <p><b>Description: </b>Spring Cloud Starter</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-cloud">http://projects.spring.io/spring-cloud</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+         </tr> 
+        </tbody> 
+       </table> 
+      </div> 
+      <ul> 
+       <li>org.springframework.boot:spring-boot-starter:jar:1.3.3.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep4"><i class="icon-info-sign"></i></button> 
+        <div id="_dep4" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>Spring Boot Starter</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>Spring Boot Starter</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-boot/">http://projects.spring.io/spring-boot/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div> 
+        <ul> 
+         <li>org.springframework.boot:spring-boot:jar:1.3.3.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep6"><i class="icon-info-sign"></i></button> 
+          <div id="_dep6" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Spring Boot</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Spring Boot</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-boot/">http://projects.spring.io/spring-boot/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>org.springframework:spring-context:jar:4.2.4.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep8"><i class="icon-info-sign"></i></button> 
+            <div id="_dep8" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Spring Context</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Spring Context</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/spring-projects/spring-framework">https://github.com/spring-projects/spring-framework</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+         <li>org.springframework.boot:spring-boot-autoconfigure:jar:1.3.3.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep10"><i class="icon-info-sign"></i></button> 
+          <div id="_dep10" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Spring Boot AutoConfigure</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Spring Boot AutoConfigure</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-boot/">http://projects.spring.io/spring-boot/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>org.springframework.boot:spring-boot-starter-logging:jar:1.3.3.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep12"><i class="icon-info-sign"></i></button> 
+          <div id="_dep12" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Spring Boot Logger Starter</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Spring Boot Logger Starter</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-boot/">http://projects.spring.io/spring-boot/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>ch.qos.logback:logback-classic:jar:1.1.5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep14"><i class="icon-info-sign"></i></button> 
+            <div id="_dep14" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Logback Classic Module</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>logback-classic module</p> <p><b>URL: </b><a class="externalLink" href="http://logback.qos.ch/logback-classic">http://logback.qos.ch/logback-classic</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a>, <a class="externalLink" href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU Lesser General Public License</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div> 
+            <ul> 
+             <li>ch.qos.logback:logback-core:jar:1.1.5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep16"><i class="icon-info-sign"></i></button> 
+              <div id="_dep16" style="" class=" collapse"> 
+               <table border="0" class="bodyTable table table-striped table-hover"> 
+                <thead> 
+                 <tr class="a"> 
+                  <th>Logback Core Module</th> 
+                 </tr> 
+                </thead> 
+                <tbody> 
+                 <tr class="b"> 
+                  <td> <p><b>Description: </b>logback-core module</p> <p><b>URL: </b><a class="externalLink" href="http://logback.qos.ch/logback-core">http://logback.qos.ch/logback-core</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a>, <a class="externalLink" href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU Lesser General Public License</a></p></td> 
+                 </tr> 
+                </tbody> 
+               </table> 
+              </div></li> 
+            </ul></li> 
+           <li>org.slf4j:jcl-over-slf4j:jar:1.7.16 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep18"><i class="icon-info-sign"></i></button> 
+            <div id="_dep18" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>JCL 1.1.1 implemented over SLF4J</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>JCL 1.1.1 implemented over SLF4J</p> <p><b>URL: </b><a class="externalLink" href="http://www.slf4j.org">http://www.slf4j.org</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+           <li>org.slf4j:jul-to-slf4j:jar:1.7.16 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep20"><i class="icon-info-sign"></i></button> 
+            <div id="_dep20" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>JUL to SLF4J bridge</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>JUL to SLF4J bridge</p> <p><b>URL: </b><a class="externalLink" href="http://www.slf4j.org">http://www.slf4j.org</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+           <li>org.slf4j:log4j-over-slf4j:jar:1.7.16 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep22"><i class="icon-info-sign"></i></button> 
+            <div id="_dep22" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Log4j Implemented Over SLF4J</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Log4j implemented over SLF4J</p> <p><b>URL: </b><a class="externalLink" href="http://www.slf4j.org">http://www.slf4j.org</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache Software Licenses</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+         <li>org.springframework:spring-core:jar:4.2.5.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep24"><i class="icon-info-sign"></i></button> 
+          <div id="_dep24" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Spring Core</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Spring Core</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/spring-projects/spring-framework">https://github.com/spring-projects/spring-framework</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+        </ul></li> 
+       <li>org.springframework.cloud:spring-cloud-context:jar:1.1.0.M5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep26"><i class="icon-info-sign"></i></button> 
+        <div id="_dep26" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>Spring Cloud Context</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>Spring Cloud Context</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-cloud/spring-cloud-context/">http://projects.spring.io/spring-cloud/spring-cloud-context/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div></li> 
+       <li>org.springframework.cloud:spring-cloud-commons:jar:1.1.0.M5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep28"><i class="icon-info-sign"></i></button> 
+        <div id="_dep28" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>Spring Cloud Commons</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>Spring Cloud Commons</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-cloud/spring-cloud-commons/">http://projects.spring.io/spring-cloud/spring-cloud-commons/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div></li> 
+      </ul></li> 
+     <li>org.springframework.cloud:spring-cloud-config-server:jar:1.1.0.M5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep30"><i class="icon-info-sign"></i></button> 
+      <div id="_dep30" style="" class=" collapse"> 
+       <table border="0" class="bodyTable table table-striped table-hover"> 
+        <thead> 
+         <tr class="a"> 
+          <th>spring-cloud-config-server</th> 
+         </tr> 
+        </thead> 
+        <tbody> 
+         <tr class="b"> 
+          <td> <p><b>Description: </b>spring-cloud-config-server</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-cloud/spring-cloud-config-server/">http://projects.spring.io/spring-cloud/spring-cloud-config-server/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+         </tr> 
+        </tbody> 
+       </table> 
+      </div> 
+      <ul> 
+       <li>org.springframework.cloud:spring-cloud-config-client:jar:1.1.0.M5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep32"><i class="icon-info-sign"></i></button> 
+        <div id="_dep32" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>Spring Cloud Config Client</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>This project is a Spring configuration client.</p> <p><b>URL: </b><a class="externalLink" href="http://spring.io">http://spring.io</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div> 
+        <ul> 
+         <li>org.springframework:spring-web:jar:4.2.4.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep34"><i class="icon-info-sign"></i></button> 
+          <div id="_dep34" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Spring Web</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Spring Web</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/spring-projects/spring-framework">https://github.com/spring-projects/spring-framework</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>org.springframework:spring-aop:jar:4.2.4.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep36"><i class="icon-info-sign"></i></button> 
+            <div id="_dep36" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Spring AOP</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Spring AOP</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/spring-projects/spring-framework">https://github.com/spring-projects/spring-framework</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+           <li>org.springframework:spring-beans:jar:4.2.4.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep38"><i class="icon-info-sign"></i></button> 
+            <div id="_dep38" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Spring Beans</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Spring Beans</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/spring-projects/spring-framework">https://github.com/spring-projects/spring-framework</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+         <li>com.fasterxml.jackson.core:jackson-annotations:jar:2.6.5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep40"><i class="icon-info-sign"></i></button> 
+          <div id="_dep40" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Jackson-annotations</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Core annotations used for value types, used by Jackson data binding package.</p> <p><b>URL: </b><a class="externalLink" href="http://github.com/FasterXML/jackson">http://github.com/FasterXML/jackson</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>com.fasterxml.jackson.core:jackson-databind:jar:2.6.5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep42"><i class="icon-info-sign"></i></button> 
+          <div id="_dep42" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>jackson-databind</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>General data-binding functionality for Jackson: works on core streaming API</p> <p><b>URL: </b><a class="externalLink" href="http://github.com/FasterXML/jackson">http://github.com/FasterXML/jackson</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+        </ul></li> 
+       <li>org.springframework.boot:spring-boot-starter-actuator:jar:1.3.3.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep44"><i class="icon-info-sign"></i></button> 
+        <div id="_dep44" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>Spring Boot Actuator Starter</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>Spring Boot Actuator Starter</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-boot/">http://projects.spring.io/spring-boot/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div> 
+        <ul> 
+         <li>org.springframework.boot:spring-boot-actuator:jar:1.3.3.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep46"><i class="icon-info-sign"></i></button> 
+          <div id="_dep46" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Spring Boot Actuator</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Spring Boot Actuator</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-boot/">http://projects.spring.io/spring-boot/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+        </ul></li> 
+       <li>org.springframework.boot:spring-boot-starter-web:jar:1.3.3.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep48"><i class="icon-info-sign"></i></button> 
+        <div id="_dep48" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>Spring Boot Web Starter</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>Spring Boot Web Starter</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-boot/">http://projects.spring.io/spring-boot/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div> 
+        <ul> 
+         <li>org.springframework.boot:spring-boot-starter-tomcat:jar:1.3.3.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep50"><i class="icon-info-sign"></i></button> 
+          <div id="_dep50" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Spring Boot Tomcat Starter</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Spring Boot Tomcat Starter</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-boot/">http://projects.spring.io/spring-boot/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>org.apache.tomcat.embed:tomcat-embed-core:jar:8.0.32 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep52"><i class="icon-info-sign"></i></button> 
+            <div id="_dep52" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>tomcat-embed-core</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Core Tomcat implementation</p> <p><b>URL: </b><a class="externalLink" href="http://tomcat.apache.org/">http://tomcat.apache.org/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+           <li>org.apache.tomcat.embed:tomcat-embed-el:jar:8.0.32 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep54"><i class="icon-info-sign"></i></button> 
+            <div id="_dep54" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>tomcat-embed-el</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Core Tomcat implementation</p> <p><b>URL: </b><a class="externalLink" href="http://tomcat.apache.org/">http://tomcat.apache.org/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+           <li>org.apache.tomcat.embed:tomcat-embed-logging-juli:jar:8.0.32 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep56"><i class="icon-info-sign"></i></button> 
+            <div id="_dep56" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>tomcat-embed-logging-juli</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>JULI logging implementation for embedded Tomcat</p> <p><b>URL: </b><a class="externalLink" href="http://tomcat.apache.org/">http://tomcat.apache.org/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+           <li>org.apache.tomcat.embed:tomcat-embed-websocket:jar:8.0.32 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep58"><i class="icon-info-sign"></i></button> 
+            <div id="_dep58" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>tomcat-embed-websocket</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Core Tomcat implementation</p> <p><b>URL: </b><a class="externalLink" href="http://tomcat.apache.org/">http://tomcat.apache.org/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+         <li>org.springframework.boot:spring-boot-starter-validation:jar:1.3.3.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep60"><i class="icon-info-sign"></i></button> 
+          <div id="_dep60" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Spring Boot Validation Starter</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Spring Boot Validation Starter</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-boot/">http://projects.spring.io/spring-boot/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>org.hibernate:hibernate-validator:jar:5.2.4.Final (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep62"><i class="icon-info-sign"></i></button> 
+            <div id="_dep62" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Hibernate Validator Engine</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Hibernate's Bean Validation (JSR-303) reference implementation.</p> <p><b>URL: </b><a class="externalLink" href="http://hibernate.org/validator/hibernate-validator">http://hibernate.org/validator/hibernate-validator</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div> 
+            <ul> 
+             <li>javax.validation:validation-api:jar:1.1.0.Final (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep64"><i class="icon-info-sign"></i></button> 
+              <div id="_dep64" style="" class=" collapse"> 
+               <table border="0" class="bodyTable table table-striped table-hover"> 
+                <thead> 
+                 <tr class="a"> 
+                  <th>Bean Validation API</th> 
+                 </tr> 
+                </thead> 
+                <tbody> 
+                 <tr class="b"> 
+                  <td> <p><b>Description: </b>Bean Validation API</p> <p><b>URL: </b><a class="externalLink" href="http://beanvalidation.org">http://beanvalidation.org</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+                 </tr> 
+                </tbody> 
+               </table> 
+              </div></li> 
+             <li>org.jboss.logging:jboss-logging:jar:3.3.0.Final (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep66"><i class="icon-info-sign"></i></button> 
+              <div id="_dep66" style="" class=" collapse"> 
+               <table border="0" class="bodyTable table table-striped table-hover"> 
+                <thead> 
+                 <tr class="a"> 
+                  <th>JBoss Logging 3</th> 
+                 </tr> 
+                </thead> 
+                <tbody> 
+                 <tr class="b"> 
+                  <td> <p><b>Description: </b>The JBoss Logging Framework</p> <p><b>URL: </b><a class="externalLink" href="http://www.jboss.org">http://www.jboss.org</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, version 2.0</a></p></td> 
+                 </tr> 
+                </tbody> 
+               </table> 
+              </div></li> 
+             <li>com.fasterxml:classmate:jar:1.1.0 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep68"><i class="icon-info-sign"></i></button> 
+              <div id="_dep68" style="" class=" collapse"> 
+               <table border="0" class="bodyTable table table-striped table-hover"> 
+                <thead> 
+                 <tr class="a"> 
+                  <th>ClassMate</th> 
+                 </tr> 
+                </thead> 
+                <tbody> 
+                 <tr class="b"> 
+                  <td> <p><b>Description: </b>Library for introspecting types with full generic information including resolving of field and method types.</p> <p><b>URL: </b><a class="externalLink" href="http://github.com/cowtowncoder/java-classmate">http://github.com/cowtowncoder/java-classmate</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+                 </tr> 
+                </tbody> 
+               </table> 
+              </div></li> 
+            </ul></li> 
+          </ul></li> 
+         <li>org.springframework:spring-webmvc:jar:4.2.4.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep70"><i class="icon-info-sign"></i></button> 
+          <div id="_dep70" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Spring Web MVC</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Spring Web MVC</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/spring-projects/spring-framework">https://github.com/spring-projects/spring-framework</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>org.springframework:spring-expression:jar:4.2.4.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep72"><i class="icon-info-sign"></i></button> 
+            <div id="_dep72" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Spring Expression Language (SpEL)</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Spring Expression Language (SpEL)</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/spring-projects/spring-framework">https://github.com/spring-projects/spring-framework</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+        </ul></li> 
+       <li>org.springframework.security:spring-security-crypto:jar:4.0.3.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep74"><i class="icon-info-sign"></i></button> 
+        <div id="_dep74" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>spring-security-crypto</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>spring-security-crypto</p> <p><b>URL: </b><a class="externalLink" href="http://spring.io/spring-security">http://spring.io/spring-security</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div></li> 
+       <li>org.springframework.security:spring-security-rsa:jar:1.0.1.RELEASE (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep76"><i class="icon-info-sign"></i></button> 
+        <div id="_dep76" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>spring-security-rsa</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>Spring Security RSA is a small utility library for RSA ciphers. It belongs to the family of Spring Security crypto libraries that handle encoding and decoding text as a general, useful thing to be able to do.</p> <p><b>URL: </b><a class="externalLink" href="http://github.com/spring-projects/spring-security-oauth">http://github.com/spring-projects/spring-security-oauth</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div> 
+        <ul> 
+         <li>org.bouncycastle:bcpkix-jdk15on:jar:1.47 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep78"><i class="icon-info-sign"></i></button> 
+          <div id="_dep78" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>The Bouncy Castle Java APIs for CMS, PKCS, EAC, TSP, CMP, CRMF, OCSP, and certificate generation. This jar contains APIs for JDK 1.5 to JDK 1.7. The APIs can be used in conjunction with a JCE/JCA provider such as the one provided with the Bouncy Castle Cryptography APIs.</p> <p><b>URL: </b><a class="externalLink" href="http://www.bouncycastle.org/java.html">http://www.bouncycastle.org/java.html</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.bouncycastle.org/licence.html">Bouncy Castle Licence</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>org.bouncycastle:bcprov-jdk15on:jar:1.47 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep80"><i class="icon-info-sign"></i></button> 
+            <div id="_dep80" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Bouncy Castle Provider</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>The Bouncy Castle Crypto package is a Java implementation of cryptographic algorithms. This jar contains JCE provider and lightweight API for the Bouncy Castle Cryptography APIs for JDK 1.5 to JDK 1.7.</p> <p><b>URL: </b><a class="externalLink" href="http://www.bouncycastle.org/java.html">http://www.bouncycastle.org/java.html</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.bouncycastle.org/licence.html">Bouncy Castle Licence</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+        </ul></li> 
+       <li>org.eclipse.jgit:org.eclipse.jgit:jar:3.5.3.201412180710-r (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep82"><i class="icon-info-sign"></i></button> 
+        <div id="_dep82" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>JGit - Core</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>Repository access and algorithms</p> <p><b>URL: </b>http://www.eclipse.org/jgit//org.eclipse.jgit</p> <p><b>Project License: </b>Eclipse Distribution License (New BSD License)</p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div> 
+        <ul> 
+         <li>com.jcraft:jsch:jar:0.1.50 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep84"><i class="icon-info-sign"></i></button> 
+          <div id="_dep84" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>JSch</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>JSch is a pure Java implementation of SSH2</p> <p><b>URL: </b><a class="externalLink" href="http://www.jcraft.com/jsch/">http://www.jcraft.com/jsch/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.jcraft.com/jsch/LICENSE.txt">Revised BSD</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>com.googlecode.javaewah:JavaEWAH:jar:0.7.9 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep86"><i class="icon-info-sign"></i></button> 
+          <div id="_dep86" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>JavaEWAH</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>The bit array data structure is implemented in Java as the BitSet class. Unfortunately, this fails to scale without compression. JavaEWAH is a word-aligned compressed variant of the Java bitset class. It uses a 64-bit run-length encoding (RLE) compression scheme. The goal of word-aligned compression is not to achieve the best compression, but rather to improve query processing time. Hence, we try to save CPU cycles, maybe at the expense of storage. However, the EWAH scheme we implemented is always more efficient storage-wise than an uncompressed bitmap (implemented in Java as the BitSet class). Unlike some alternatives, javaewah does not rely on a patented scheme.</p> <p><b>URL: </b><a class="externalLink" href="http://code.google.com/p/javaewah/">http://code.google.com/p/javaewah/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>org.apache.httpcomponents:httpclient:jar:4.5.1 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep88"><i class="icon-info-sign"></i></button> 
+          <div id="_dep88" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Apache HttpClient</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Apache HttpComponents Client</p> <p><b>URL: </b><a class="externalLink" href="http://hc.apache.org/httpcomponents-client">http://hc.apache.org/httpcomponents-client</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>org.apache.httpcomponents:httpcore:jar:4.4.4 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep90"><i class="icon-info-sign"></i></button> 
+            <div id="_dep90" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Apache HttpCore</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Apache HttpComponents Core (blocking I/O)</p> <p><b>URL: </b><a class="externalLink" href="http://hc.apache.org/httpcomponents-core-ga">http://hc.apache.org/httpcomponents-core-ga</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+           <li>commons-codec:commons-codec:jar:1.9 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep92"><i class="icon-info-sign"></i></button> 
+            <div id="_dep92" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Apache Commons Codec</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>The Apache Commons Codec package contains simple encoder and decoders for various formats such as Base64 and Hexadecimal. In addition to these widely used encoders and decoders, the codec package also maintains a collection of phonetic encoding utilities.</p> <p><b>URL: </b><a class="externalLink" href="http://commons.apache.org/proper/commons-codec/">http://commons.apache.org/proper/commons-codec/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+        </ul></li> 
+       <li>org.yaml:snakeyaml:jar:1.16 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep94"><i class="icon-info-sign"></i></button> 
+        <div id="_dep94" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>SnakeYAML</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>YAML 1.1 parser and emitter for Java</p> <p><b>URL: </b><a class="externalLink" href="http://www.snakeyaml.org">http://www.snakeyaml.org</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div></li> 
+      </ul></li> 
+     <li>org.springframework.cloud:spring-cloud-starter-eureka:jar:1.1.0.M5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep96"><i class="icon-info-sign"></i></button> 
+      <div id="_dep96" style="" class=" collapse"> 
+       <table border="0" class="bodyTable table table-striped table-hover"> 
+        <thead> 
+         <tr class="a"> 
+          <th>spring-cloud-starter-eureka</th> 
+         </tr> 
+        </thead> 
+        <tbody> 
+         <tr class="b"> 
+          <td> <p><b>Description: </b>Spring Cloud Starter</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-cloud">http://projects.spring.io/spring-cloud</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+         </tr> 
+        </tbody> 
+       </table> 
+      </div> 
+      <ul> 
+       <li>org.springframework.cloud:spring-cloud-netflix-core:jar:1.1.0.M5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep98"><i class="icon-info-sign"></i></button> 
+        <div id="_dep98" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>Spring Cloud Netflix Core</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>Spring Cloud Netflix Core</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-boot/spring-cloud-build/spring-cloud-netflix/spring-cloud-netflix-core/">http://projects.spring.io/spring-boot/spring-cloud-build/spring-cloud-netflix/spring-cloud-netflix-core/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div></li> 
+       <li>org.springframework.cloud:spring-cloud-netflix-eureka-client:jar:1.1.0.M5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep100"><i class="icon-info-sign"></i></button> 
+        <div id="_dep100" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>Spring Cloud Netflix Eureka Client</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>Spring Cloud Netflix Eureka Client</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-boot/spring-cloud-build/spring-cloud-netflix/spring-cloud-netflix-eureka-client/">http://projects.spring.io/spring-boot/spring-cloud-build/spring-cloud-netflix/spring-cloud-netflix-eureka-client/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div></li> 
+       <li>com.netflix.eureka:eureka-client:jar:1.3.7 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep102"><i class="icon-info-sign"></i></button> 
+        <div id="_dep102" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>eureka-client</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>eureka-client</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/eureka">https://github.com/Netflix/eureka</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div> 
+        <ul> 
+         <li>org.codehaus.jettison:jettison:jar:1.3.7 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep104"><i class="icon-info-sign"></i></button> 
+          <div id="_dep104" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Jettison</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>A StAX implementation for JSON.</p> <p><b>URL: </b><a class="externalLink" href="http://codehaus.org/jettison/">http://codehaus.org/jettison/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>stax:stax-api:jar:1.0.1 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep106"><i class="icon-info-sign"></i></button> 
+            <div id="_dep106" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>StAX API</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>StAX API is the standard java XML processing API defined by JSR-173</p> <p><b>URL: </b><a class="externalLink" href="http://stax.codehaus.org/">http://stax.codehaus.org/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+         <li>com.netflix.netflix-commons:netflix-eventbus:jar:0.3.0 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep108"><i class="icon-info-sign"></i></button> 
+          <div id="_dep108" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>netflix-eventbus</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>netflix-eventbus</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/netflix-commons">https://github.com/Netflix/netflix-commons</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>com.netflix.archaius:archaius-core:jar:0.7.3 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep110"><i class="icon-info-sign"></i></button> 
+          <div id="_dep110" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>archaius-core</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>archaius-core</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/archaius">https://github.com/Netflix/archaius</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>javax.ws.rs:jsr311-api:jar:1.1.1 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep112"><i class="icon-info-sign"></i></button> 
+          <div id="_dep112" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>jsr311-api</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>There is currently no description associated with this project.</p> <p><b>URL: </b><a class="externalLink" href="https://jsr311.dev.java.net">https://jsr311.dev.java.net</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/cddl1.php">CDDL License</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>com.netflix.servo:servo-core:jar:0.10.1 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep114"><i class="icon-info-sign"></i></button> 
+          <div id="_dep114" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>servo-core</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>servo-core</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/servo">https://github.com/Netflix/servo</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>com.netflix.servo:servo-internal:jar:0.10.1 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep116"><i class="icon-info-sign"></i></button> 
+            <div id="_dep116" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>servo-internal</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>servo-internal</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/servo">https://github.com/Netflix/servo</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+         <li>com.sun.jersey:jersey-core:jar:1.19 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep118"><i class="icon-info-sign"></i></button> 
+          <div id="_dep118" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>jersey-core</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Jersey is the open source (under dual CDDL+GPL license) JAX-RS (JSR 311) production quality Reference Implementation for building RESTful Web services.</p> <p><b>URL: </b><a class="externalLink" href="https://jersey.java.net/jersey-core/">https://jersey.java.net/jersey-core/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL_1_1.html">CDDL 1.1</a>, <a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL_1_1.html">GPL2 w/ CPE</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>com.sun.jersey:jersey-client:jar:1.19 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep120"><i class="icon-info-sign"></i></button> 
+          <div id="_dep120" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>jersey-client</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Jersey is the open source (under dual CDDL+GPL license) JAX-RS (JSR 311) production quality Reference Implementation for building RESTful Web services.</p> <p><b>URL: </b><a class="externalLink" href="https://jersey.java.net/jersey-client/">https://jersey.java.net/jersey-client/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL_1_1.html">CDDL 1.1</a>, <a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL_1_1.html">GPL2 w/ CPE</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>com.sun.jersey.contribs:jersey-apache-client4:jar:1.19 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep122"><i class="icon-info-sign"></i></button> 
+          <div id="_dep122" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Jersey Apache HTTP Client 4.x</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Projects that provide additional functionality to jersey, like integration with other projects/frameworks.</p> <p><b>URL: </b><a class="externalLink" href="https://jersey.java.net/jersey-contribs/jersey-apache-client4/">https://jersey.java.net/jersey-contribs/jersey-apache-client4/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL_1_1.html">CDDL 1.1</a>, <a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL_1_1.html">GPL2 w/ CPE</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>com.google.inject:guice:jar:4.0 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep124"><i class="icon-info-sign"></i></button> 
+          <div id="_dep124" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Google Guice - Core Library</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Guice is a lightweight dependency injection framework for Java 6 and above</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/google/guice/guice">https://github.com/google/guice/guice</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>javax.inject:javax.inject:jar:1 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep126"><i class="icon-info-sign"></i></button> 
+            <div id="_dep126" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>javax.inject</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>The javax.inject API</p> <p><b>URL: </b><a class="externalLink" href="http://code.google.com/p/atinject/">http://code.google.com/p/atinject/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+           <li>aopalliance:aopalliance:jar:1.0 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep128"><i class="icon-info-sign"></i></button> 
+            <div id="_dep128" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>AOP alliance</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>AOP Alliance</p> <p><b>URL: </b><a class="externalLink" href="http://aopalliance.sourceforge.net">http://aopalliance.sourceforge.net</a></p> <p><b>Project License: </b>Public Domain</p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+         <li>com.netflix.governator:governator-annotations:jar:1.10.5 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep130"><i class="icon-info-sign"></i></button> 
+          <div id="_dep130" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>governator-annotations</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>governator-annotations</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/governator">https://github.com/Netflix/governator</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>com.fasterxml.jackson.core:jackson-core:jar:2.6.5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep132"><i class="icon-info-sign"></i></button> 
+          <div id="_dep132" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Jackson-core</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Core Jackson abstractions, basic JSON streaming API implementation</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/FasterXML/jackson-core">https://github.com/FasterXML/jackson-core</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+        </ul></li> 
+       <li>org.springframework.cloud:spring-cloud-starter-archaius:jar:1.1.0.M5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep134"><i class="icon-info-sign"></i></button> 
+        <div id="_dep134" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>spring-cloud-starter-archaius</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>Spring Cloud Starter</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-cloud">http://projects.spring.io/spring-cloud</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div> 
+        <ul> 
+         <li>commons-configuration:commons-configuration:jar:1.8 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep136"><i class="icon-info-sign"></i></button> 
+          <div id="_dep136" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Commons Configuration</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Tools to assist in the reading of configuration/preferences files in various formats</p> <p><b>URL: </b><a class="externalLink" href="http://commons.apache.org/configuration/">http://commons.apache.org/configuration/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>commons-lang:commons-lang:jar:2.6 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep138"><i class="icon-info-sign"></i></button> 
+            <div id="_dep138" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Commons Lang</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Commons Lang, a package of Java utility classes for the classes that are in java.lang's hierarchy, or are considered to be so standard as to justify existence in java.lang.</p> <p><b>URL: </b><a class="externalLink" href="http://commons.apache.org/lang/">http://commons.apache.org/lang/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+           <li>commons-logging:commons-logging:jar:1.1.1 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep140"><i class="icon-info-sign"></i></button> 
+            <div id="_dep140" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Commons Logging</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Commons Logging is a thin adapter allowing configurable bridging to other, well known logging systems.</p> <p><b>URL: </b><a class="externalLink" href="http://commons.apache.org/logging">http://commons.apache.org/logging</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+         <li>com.google.guava:guava:jar:18.0 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep142"><i class="icon-info-sign"></i></button> 
+          <div id="_dep142" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>Guava: Google Core Libraries for Java</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>Guava is a suite of core and expanded libraries that include utility classes, google's collections, io classes, and much much more. Guava has only one code dependency - javax.annotation, per the JSR-305 spec.</p> <p><b>URL: </b><a class="externalLink" href="http://code.google.com/p/guava-libraries/guava">http://code.google.com/p/guava-libraries/guava</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+        </ul></li> 
+       <li>org.springframework.cloud:spring-cloud-starter-ribbon:jar:1.1.0.M5 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep144"><i class="icon-info-sign"></i></button> 
+        <div id="_dep144" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>spring-cloud-starter-ribbon</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>Spring Cloud Starter</p> <p><b>URL: </b><a class="externalLink" href="http://projects.spring.io/spring-cloud">http://projects.spring.io/spring-cloud</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div> 
+        <ul> 
+         <li>com.netflix.ribbon:ribbon:jar:2.1.0 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep146"><i class="icon-info-sign"></i></button> 
+          <div id="_dep146" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>ribbon</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>ribbon</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/ribbon">https://github.com/Netflix/ribbon</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>com.netflix.ribbon:ribbon-transport:jar:2.1.0 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep148"><i class="icon-info-sign"></i></button> 
+            <div id="_dep148" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>ribbon-transport</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>ribbon-transport</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/ribbon">https://github.com/Netflix/ribbon</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div> 
+            <ul> 
+             <li>io.reactivex:rxnetty-contexts:jar:0.4.9 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep150"><i class="icon-info-sign"></i></button> 
+              <div id="_dep150" style="" class=" collapse"> 
+               <table border="0" class="bodyTable table table-striped table-hover"> 
+                <thead> 
+                 <tr class="a"> 
+                  <th>rxnetty-contexts</th> 
+                 </tr> 
+                </thead> 
+                <tbody> 
+                 <tr class="b"> 
+                  <td> <p><b>Description: </b>rxnetty-contexts</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/ReactiveX/RxNetty">https://github.com/ReactiveX/RxNetty</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+                 </tr> 
+                </tbody> 
+               </table> 
+              </div></li> 
+             <li>io.reactivex:rxnetty-servo:jar:0.4.9 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep152"><i class="icon-info-sign"></i></button> 
+              <div id="_dep152" style="" class=" collapse"> 
+               <table border="0" class="bodyTable table table-striped table-hover"> 
+                <thead> 
+                 <tr class="a"> 
+                  <th>rxnetty-servo</th> 
+                 </tr> 
+                </thead> 
+                <tbody> 
+                 <tr class="b"> 
+                  <td> <p><b>Description: </b>rxnetty-servo</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/ReactiveX/RxNetty">https://github.com/ReactiveX/RxNetty</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+                 </tr> 
+                </tbody> 
+               </table> 
+              </div></li> 
+            </ul></li> 
+           <li>com.netflix.hystrix:hystrix-core:jar:1.4.23 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep154"><i class="icon-info-sign"></i></button> 
+            <div id="_dep154" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>hystrix-core</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>hystrix-core</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/Hystrix">https://github.com/Netflix/Hystrix</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+           <li>io.reactivex:rxnetty:jar:0.4.9 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep156"><i class="icon-info-sign"></i></button> 
+            <div id="_dep156" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>rxnetty</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>rxnetty</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/ReactiveX/RxNetty">https://github.com/ReactiveX/RxNetty</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+         <li>com.netflix.ribbon:ribbon-core:jar:2.1.0 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep158"><i class="icon-info-sign"></i></button> 
+          <div id="_dep158" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>ribbon-core</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>ribbon-core</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/ribbon">https://github.com/Netflix/ribbon</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>com.netflix.ribbon:ribbon-httpclient:jar:2.1.0 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep160"><i class="icon-info-sign"></i></button> 
+          <div id="_dep160" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>ribbon-httpclient</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>ribbon-httpclient</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/ribbon">https://github.com/Netflix/ribbon</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>commons-collections:commons-collections:jar:3.2.2 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep162"><i class="icon-info-sign"></i></button> 
+            <div id="_dep162" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Apache Commons Collections</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Types that extend and augment the Java Collections Framework.</p> <p><b>URL: </b><a class="externalLink" href="http://commons.apache.org/collections/">http://commons.apache.org/collections/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+           <li>com.netflix.netflix-commons:netflix-commons-util:jar:0.1.1 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep164"><i class="icon-info-sign"></i></button> 
+            <div id="_dep164" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>netflix-commons-util</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>netflix-commons-util developed by Netflix</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/netflix-commons">https://github.com/Netflix/netflix-commons</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+         <li>com.netflix.ribbon:ribbon-loadbalancer:jar:2.1.0 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep166"><i class="icon-info-sign"></i></button> 
+          <div id="_dep166" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>ribbon-loadbalancer</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>ribbon-loadbalancer</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/ribbon">https://github.com/Netflix/ribbon</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>com.netflix.netflix-commons:netflix-statistics:jar:0.1.1 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep168"><i class="icon-info-sign"></i></button> 
+            <div id="_dep168" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>netflix-statistics</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>netflix-statistics developed by Netflix</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/netflix-commons">https://github.com/Netflix/netflix-commons</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div></li> 
+          </ul></li> 
+         <li>io.reactivex:rxjava:jar:1.0.14 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep170"><i class="icon-info-sign"></i></button> 
+          <div id="_dep170" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>rxjava</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>rxjava</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/ReactiveX/RxJava">https://github.com/ReactiveX/RxJava</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+        </ul></li> 
+       <li>com.netflix.ribbon:ribbon-eureka:jar:2.1.0 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep172"><i class="icon-info-sign"></i></button> 
+        <div id="_dep172" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>ribbon-eureka</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>ribbon-eureka</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/ribbon">https://github.com/Netflix/ribbon</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div> 
+        <ul> 
+         <li>com.netflix.eureka:eureka2-client-shaded:jar:2.0.0-rc.2 (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep174"><i class="icon-info-sign"></i></button> 
+          <div id="_dep174" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>eureka2-client-shaded</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>eureka2-client-shaded</p> <p><b>URL: </b><a class="externalLink" href="https://github.com/Netflix/eureka">https://github.com/Netflix/eureka</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div> 
+          <ul> 
+           <li>io.netty:netty-codec-http:jar:4.0.25.Final (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep176"><i class="icon-info-sign"></i></button> 
+            <div id="_dep176" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Netty/Codec/HTTP</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Netty is an asynchronous event-driven network application framework for rapid development of maintainable high performance protocol servers and clients.</p> <p><b>URL: </b><a class="externalLink" href="http://netty.io/netty-codec-http/">http://netty.io/netty-codec-http/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div> 
+            <ul> 
+             <li>io.netty:netty-codec:jar:4.0.25.Final (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep178"><i class="icon-info-sign"></i></button> 
+              <div id="_dep178" style="" class=" collapse"> 
+               <table border="0" class="bodyTable table table-striped table-hover"> 
+                <thead> 
+                 <tr class="a"> 
+                  <th>Netty/Codec</th> 
+                 </tr> 
+                </thead> 
+                <tbody> 
+                 <tr class="b"> 
+                  <td> <p><b>Description: </b>Netty is an asynchronous event-driven network application framework for rapid development of maintainable high performance protocol servers and clients.</p> <p><b>URL: </b><a class="externalLink" href="http://netty.io/netty-codec/">http://netty.io/netty-codec/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+                 </tr> 
+                </tbody> 
+               </table> 
+              </div></li> 
+             <li>io.netty:netty-handler:jar:4.0.25.Final (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep180"><i class="icon-info-sign"></i></button> 
+              <div id="_dep180" style="" class=" collapse"> 
+               <table border="0" class="bodyTable table table-striped table-hover"> 
+                <thead> 
+                 <tr class="a"> 
+                  <th>Netty/Handler</th> 
+                 </tr> 
+                </thead> 
+                <tbody> 
+                 <tr class="b"> 
+                  <td> <p><b>Description: </b>Netty is an asynchronous event-driven network application framework for rapid development of maintainable high performance protocol servers and clients.</p> <p><b>URL: </b><a class="externalLink" href="http://netty.io/netty-handler/">http://netty.io/netty-handler/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+                 </tr> 
+                </tbody> 
+               </table> 
+              </div></li> 
+            </ul></li> 
+           <li>io.netty:netty-transport-native-epoll:jar:4.0.25.Final (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep182"><i class="icon-info-sign"></i></button> 
+            <div id="_dep182" style="" class=" collapse"> 
+             <table border="0" class="bodyTable table table-striped table-hover"> 
+              <thead> 
+               <tr class="a"> 
+                <th>Netty/Transport/Native/Epoll</th> 
+               </tr> 
+              </thead> 
+              <tbody> 
+               <tr class="b"> 
+                <td> <p><b>Description: </b>Netty is an asynchronous event-driven network application framework for rapid development of maintainable high performance protocol servers and clients.</p> <p><b>URL: </b><a class="externalLink" href="http://netty.io/netty-transport-native-epoll/">http://netty.io/netty-transport-native-epoll/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+               </tr> 
+              </tbody> 
+             </table> 
+            </div> 
+            <ul> 
+             <li>io.netty:netty-common:jar:4.0.25.Final (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep184"><i class="icon-info-sign"></i></button> 
+              <div id="_dep184" style="" class=" collapse"> 
+               <table border="0" class="bodyTable table table-striped table-hover"> 
+                <thead> 
+                 <tr class="a"> 
+                  <th>Netty/Common</th> 
+                 </tr> 
+                </thead> 
+                <tbody> 
+                 <tr class="b"> 
+                  <td> <p><b>Description: </b>Netty is an asynchronous event-driven network application framework for rapid development of maintainable high performance protocol servers and clients.</p> <p><b>URL: </b><a class="externalLink" href="http://netty.io/netty-common/">http://netty.io/netty-common/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+                 </tr> 
+                </tbody> 
+               </table> 
+              </div></li> 
+             <li>io.netty:netty-buffer:jar:4.0.25.Final (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep186"><i class="icon-info-sign"></i></button> 
+              <div id="_dep186" style="" class=" collapse"> 
+               <table border="0" class="bodyTable table table-striped table-hover"> 
+                <thead> 
+                 <tr class="a"> 
+                  <th>Netty/Buffer</th> 
+                 </tr> 
+                </thead> 
+                <tbody> 
+                 <tr class="b"> 
+                  <td> <p><b>Description: </b>Netty is an asynchronous event-driven network application framework for rapid development of maintainable high performance protocol servers and clients.</p> <p><b>URL: </b><a class="externalLink" href="http://netty.io/netty-buffer/">http://netty.io/netty-buffer/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+                 </tr> 
+                </tbody> 
+               </table> 
+              </div></li> 
+             <li>io.netty:netty-transport:jar:4.0.25.Final (runtime) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep188"><i class="icon-info-sign"></i></button> 
+              <div id="_dep188" style="" class=" collapse"> 
+               <table border="0" class="bodyTable table table-striped table-hover"> 
+                <thead> 
+                 <tr class="a"> 
+                  <th>Netty/Transport</th> 
+                 </tr> 
+                </thead> 
+                <tbody> 
+                 <tr class="b"> 
+                  <td> <p><b>Description: </b>Netty is an asynchronous event-driven network application framework for rapid development of maintainable high performance protocol servers and clients.</p> <p><b>URL: </b><a class="externalLink" href="http://netty.io/netty-transport/">http://netty.io/netty-transport/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p></td> 
+                 </tr> 
+                </tbody> 
+               </table> 
+              </div></li> 
+            </ul></li> 
+          </ul></li> 
+         <li>org.slf4j:slf4j-api:jar:1.7.16 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep190"><i class="icon-info-sign"></i></button> 
+          <div id="_dep190" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>SLF4J API Module</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>The slf4j API</p> <p><b>URL: </b><a class="externalLink" href="http://www.slf4j.org">http://www.slf4j.org</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+        </ul></li> 
+       <li>com.thoughtworks.xstream:xstream:jar:1.4.2 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep192"><i class="icon-info-sign"></i></button> 
+        <div id="_dep192" style="" class=" collapse"> 
+         <table border="0" class="bodyTable table table-striped table-hover"> 
+          <thead> 
+           <tr class="a"> 
+            <th>XStream Core</th> 
+           </tr> 
+          </thead> 
+          <tbody> 
+           <tr class="b"> 
+            <td> <p><b>Description: </b>The Codehaus is a collaborative environment for building open source projects with a strong emphasis on modern languages, focussed on quality components that meet real world needs.</p> <p><b>URL: </b><a class="externalLink" href="http://codehaus.org/xstream-parent/xstream/">http://codehaus.org/xstream-parent/xstream/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://xstream.codehaus.com/license.html">BSD style</a></p></td> 
+           </tr> 
+          </tbody> 
+         </table> 
+        </div> 
+        <ul> 
+         <li>xmlpull:xmlpull:jar:1.1.3.1 (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep194"><i class="icon-info-sign"></i></button> 
+          <div id="_dep194" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>XML Pull Parsing API</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>There is currently no description associated with this project.</p> <p><b>URL: </b><a class="externalLink" href="http://www.xmlpull.org">http://www.xmlpull.org</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.xmlpull.org/v1/download/unpacked/LICENSE.txt">Public Domain</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+         <li>xpp3:xpp3_min:jar:1.1.4c (compile) <button title="Information" class="btn btn-link btn-small" type="button" data-toggle="collapse" data-target="#_dep196"><i class="icon-info-sign"></i></button> 
+          <div id="_dep196" style="" class=" collapse"> 
+           <table border="0" class="bodyTable table table-striped table-hover"> 
+            <thead> 
+             <tr class="a"> 
+              <th>MXP1: Xml Pull Parser 3rd Edition (XPP3)</th> 
+             </tr> 
+            </thead> 
+            <tbody> 
+             <tr class="b"> 
+              <td> <p><b>Description: </b>MXP1 is a stable XmlPull parsing engine that is based on ideas from XPP and in particular XPP2 but completely revised and rewritten to take the best advantage of latest JIT JVMs such as Hotspot in JDK 1.4+.</p> <p><b>URL: </b><a class="externalLink" href="http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/">http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/</a></p> <p><b>Project License: </b><a class="externalLink" href="http://www.extreme.indiana.edu/viewcvs/~checkout~/XPP3/java/LICENSE.txt">Indiana University Extreme! Lab Software License, vesion 1.1.1</a>, <a class="externalLink" href="http://creativecommons.org/licenses/publicdomain">Public Domain</a></p></td> 
+             </tr> 
+            </tbody> 
+           </table> 
+          </div></li> 
+        </ul></li> 
+      </ul></li> 
+    </ul></li> 
+  </ul> 
+ </div> 
+</div> 
+<a name="Licenses"></a> 
+<div class="section"> 
+ <h2 id="Licenses">Licenses</h2> 
+ <p><b>Apache License, version 2.0: </b>JBoss Logging 3</p> 
+ <p><b>CDDL 1.1: </b>Jersey Apache HTTP Client 4.x, jersey-client, jersey-core</p> 
+ <p><b>Apache 2.0: </b>spring-security-rsa</p> 
+ <p><b>MIT License: </b>JCL 1.1.1 implemented over SLF4J, JUL to SLF4J bridge, SLF4J API Module</p> 
+ <p><b>Revised BSD: </b>JSch</p> 
+ <p><b>Indiana University Extreme! Lab Software License, vesion 1.1.1: </b>MXP1: Xml Pull Parser 3rd Edition (XPP3)</p> 
+ <p><b>GPL2 w/ CPE: </b>Jersey Apache HTTP Client 4.x, jersey-client, jersey-core</p> 
+ <p><b>Public Domain: </b>AOP alliance, MXP1: Xml Pull Parser 3rd Edition (XPP3), XML Pull Parsing API</p> 
+ <p><b>Apache: </b>Configuration Server</p> 
+ <p><b>GNU Lesser General Public License: </b>Logback Classic Module, Logback Core Module</p> 
+ <p><b>Eclipse Distribution License (New BSD License): </b>JGit - Core</p> 
+ <p><b>Bouncy Castle Licence: </b>Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs, Bouncy Castle Provider</p> 
+ <p><b>Apache 2: </b>JavaEWAH</p> 
+ <p><b>BSD style: </b>XStream Core</p> 
+ <p><b>Apache Software Licenses: </b>Log4j Implemented Over SLF4J</p> 
+ <p><b>CDDL License: </b>jsr311-api</p> 
+ <p><b>Apache License, Version 2.0: </b>Apache Commons Collections, Apache HttpClient, Apache HttpCore, Hibernate Validator Engine, Jettison, Netty/Buffer, Netty/Codec, Netty/Codec/HTTP, Netty/Common, Netty/Handler, Netty/Transport, Netty/Transport/Native/Epoll, SnakeYAML, Spring Boot, Spring Boot Actuator, Spring Boot Actuator Starter, Spring Boot AutoConfigure, Spring Boot Logger Starter, Spring Boot Starter, Spring Boot Tomcat Starter, Spring Boot Validation Starter, Spring Boot Web Starter, Spring Cloud Commons, Spring Cloud Config Client, Spring Cloud Context, Spring Cloud Netflix Core, Spring Cloud Netflix Eureka Client, spring-cloud-config-server, spring-cloud-starter, spring-cloud-starter-archaius, spring-cloud-starter-eureka, spring-cloud-starter-ribbon, tomcat-embed-core, tomcat-embed-el, tomcat-embed-logging-juli, tomcat-embed-websocket</p> 
+ <p><b>The Apache Software License, Version 2.0: </b>Apache Commons Codec, Bean Validation API, ClassMate, Commons Configuration, Commons Lang, Commons Logging, Google Guice - Core Library, Guava: Google Core Libraries for Java, Jackson-annotations, Jackson-core, Spring AOP, Spring Beans, Spring Context, Spring Core, Spring Expression Language (SpEL), Spring Web, Spring Web MVC, StAX API, archaius-core, eureka-client, eureka2-client-shaded, governator-annotations, hystrix-core, jackson-databind, javax.inject, netflix-commons-util, netflix-eventbus, netflix-statistics, ribbon, ribbon-core, ribbon-eureka, ribbon-httpclient, ribbon-loadbalancer, ribbon-transport, rxjava, rxnetty, rxnetty-contexts, rxnetty-servo, servo-core, servo-internal, spring-security-crypto</p> 
+ <p><b>Eclipse Public License - v 1.0: </b>Logback Classic Module, Logback Core Module</p> 
+</div>
 			</div>
 		</div>
 	</div>
@@ -107,40 +2467,40 @@ $bodyWithHeader
 	<footer class="well">
 		<div class="container">
 			<div class="row">
-				<div class="span9 bottom-nav">
+				<div class="span4 bottom-nav">
 					<ul class="nav nav-list">
-						<li class="nav-header">Parent Project</li>
-						<li class="active">
-							<a href="#" title="Grivet Support Services">Grivet Support Services</a>
-						</li>
 						<li class="nav-header">Overview</li>
-						<li class="active">
-							<a href="#" title="About">About</a>
+						<li >
+							<a href="index.html" title="About">About</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Project License">Project License</a>
+						<li >
+							<a href="license.html" title="Project License">Project License</a>
 						</li>
+					</ul>
+				</div>
+				<div class="span5 bottom-nav">
+					<ul class="nav nav-list">
 						<li class="nav-header">Developer</li>
-						<li class="active">
-							<a href="#" title="JavaDocs">JavaDocs</a>
+						<li >
+							<a href="apidocs/index.html" title="JavaDocs">JavaDocs</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Source Repository">Source Repository</a>
+						<li >
+							<a href="source-repository.html" title="Source Repository">Source Repository</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Project Summary">Project Summary</a>
+						<li >
+							<a href="project-summary.html" title="Project Summary">Project Summary</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Dependency Information">Dependency Information</a>
+						<li >
+							<a href="dependency-info.html" title="Dependency Information">Dependency Information</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Dependency Management">Dependency Management</a>
+						<li >
+							<a href="dependency-management.html" title="Dependency Management">Dependency Management</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Plugin Management">Plugin Management</a>
+						<li >
+							<a href="plugin-management.html" title="Plugin Management">Plugin Management</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Project Plugins">Project Plugins</a>
+						<li >
+							<a href="plugins.html" title="Project Plugins">Project Plugins</a>
 						</li>
 					</ul>
 				</div>
@@ -166,6 +2526,7 @@ $bodyWithHeader
 	<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 	<script src="./js/lightbox.min.js"></script>
 	<script src="./js/reflow-scroll.js"></script>
+	<script src="http://yandex.st/highlightjs/7.5/highlight.min.js"></script>
 
 	<script src="./js/reflow-skin.js"></script>
 

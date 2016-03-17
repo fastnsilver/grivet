@@ -13,10 +13,12 @@
 		<meta name="description" content="" />
 		<meta http-equiv="content-language" content="en" />
 
-		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet" />
-		<link href="./css/docs.css" rel="stylesheet" />
+		<link href="http://netdna.bootstrapcdn.com/bootswatch/2.3.2/cerulean/bootstrap.min.css" rel="stylesheet" />
+		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet" />
+		<link href="./css/bootswatch.css" rel="stylesheet" />
 		<link href="./css/reflow-skin.css" rel="stylesheet" />
 
+		<link href="http://yandex.st/highlightjs/7.5/styles/default.min.css" rel="stylesheet" />
 
 		<link href="./css/lightbox.css" rel="stylesheet" />
 
@@ -32,7 +34,7 @@
 
 	</head>
 
-	<body class="page-$config.fileId project-$config.projectId" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
+	<body class="page-surefire-report project-grivet" data-spy="scroll" data-offset="60" data-target="#toc-scroll-target">
 
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
@@ -42,57 +44,58 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
+					<a class="brand" href="grivet">Grivet (Service)</a>
 					<div class="nav-collapse collapse" id="top-nav-collapse">
 						<ul class="nav pull-right">
-							<li class="dropdown active">
+							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parent Project <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li class="active"><a href="" title="Grivet Core Services">Grivet Core Services</a></li>
+									<li ><a href="../index.html" title="Grivet Core Services">Grivet Core Services</a></li>
 								</ul>
 							</li>
-							<li class="dropdown active">
+							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Overview <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li class="active"><a href="" title="About">About</a></li>
-									<li class="active"><a href="" title="Project License">Project License</a></li>
+									<li ><a href="index.html" title="About">About</a></li>
+									<li ><a href="license.html" title="Project License">Project License</a></li>
 								</ul>
 							</li>
-							<li class="dropdown active">
+							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">User <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li class="active"><a href="" title="API">API</a></li>
+									<li ><a href="rest-api.html" title="API">API</a></li>
 								</ul>
 							</li>
-							<li class="dropdown active">
+							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Developer <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li class="active"><a href="" title="JavaDocs">JavaDocs</a></li>
-									<li class="active"><a href="" title="Source Repository">Source Repository</a></li>
-									<li class="active"><a href="" title="Project Summary">Project Summary</a></li>
-									<li class="active"><a href="" title="Issue Tracking">Issue Tracking</a></li>
-									<li class="active"><a href="" title="Project Team">Project Team</a></li>
-									<li class="active"><a href="" title="Tag List">Tag List</a></li>
-									<li class="active"><a href="" title="Dependency Information">Dependency Information</a></li>
-									<li class="active"><a href="" title="Dependency Management">Dependency Management</a></li>
-									<li class="active"><a href="" title="Plugin Management">Plugin Management</a></li>
-									<li class="active"><a href="" title="Project Plugins">Project Plugins</a></li>
+									<li ><a href="apidocs/index.html" title="JavaDocs">JavaDocs</a></li>
+									<li ><a href="source-repository.html" title="Source Repository">Source Repository</a></li>
+									<li ><a href="project-summary.html" title="Project Summary">Project Summary</a></li>
+									<li ><a href="issue-tracking.html" title="Issue Tracking">Issue Tracking</a></li>
+									<li ><a href="team-list.html" title="Project Team">Project Team</a></li>
+									<li ><a href="taglist.html" title="Tag List">Tag List</a></li>
+									<li ><a href="dependency-info.html" title="Dependency Information">Dependency Information</a></li>
+									<li ><a href="dependency-management.html" title="Dependency Management">Dependency Management</a></li>
+									<li ><a href="plugin-management.html" title="Plugin Management">Plugin Management</a></li>
+									<li ><a href="plugins.html" title="Project Plugins">Project Plugins</a></li>
 								</ul>
 							</li>
 							<li class="dropdown active">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Stats <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li class="active"><a href="" title="Change Log">Change Log</a></li>
+									<li ><a href="changelog.html" title="Change Log">Change Log</a></li>
 									<li class="active"><a href="" title="Surefire Report">Surefire Report</a></li>
-									<li class="active"><a href="" title="Failsafe Report">Failsafe Report</a></li>
-									<li class="active"><a href="" title="JaCoCo Test Coverage">JaCoCo Test Coverage</a></li>
+									<li ><a href="failsafe-report.html" title="Failsafe Report">Failsafe Report</a></li>
+									<li ><a href="jacoco/index.html" title="JaCoCo Test Coverage">JaCoCo Test Coverage</a></li>
 								</ul>
 							</li>
-							<li class="dropdown active">
+							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Updates <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li class="active"><a href="" title="Dependencies">Dependencies</a></li>
-									<li class="active"><a href="" title="Plugins">Plugins</a></li>
-									<li class="active"><a href="" title="Properties">Properties</a></li>
+									<li ><a href="dependency-updates-report.html" title="Dependencies">Dependencies</a></li>
+									<li ><a href="plugin-updates-report.html" title="Plugins">Plugins</a></li>
+									<li ><a href="property-updates-report.html" title="Properties">Properties</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -120,7 +123,771 @@
 	<div class="row">
 		<div class="span12">
 			<div class="body-content">
-$bodyWithHeader
+<script type="text/javascript">
+//<![CDATA[
+function toggleDisplay(elementId) {
+ var elm = document.getElementById(elementId + 'error');
+ if (elm && typeof elm.style != "undefined") {
+ if (elm.style.display == "none") {
+ elm.style.display = "";
+ document.getElementById(elementId + 'off').style.display = "none";
+ document.getElementById(elementId + 'on').style.display = "inline";
+ } else if (elm.style.display == "") { elm.style.display = "none";
+ document.getElementById(elementId + 'off').style.display = "inline";
+ document.getElementById(elementId + 'on').style.display = "none";
+ } 
+ } 
+ }
+//]]>
+</script> 
+<div class="section"> 
+ <div class="page-header">
+  <h2 id="Surefire_Report">Surefire Report</h2>
+ </div> 
+</div> 
+<div class="section"> 
+ <h2 id="Summary">Summary</h2> 
+ <a name="Summary"></a> 
+ <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p> 
+ <br /> 
+ <table border="1" class="bodyTable table table-striped table-hover"> 
+  <thead> 
+   <tr class="a"> 
+    <th>Tests</th> 
+    <th>Errors </th> 
+    <th>Failures</th> 
+    <th>Skipped</th> 
+    <th>Success Rate</th> 
+    <th>Time</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr class="b"> 
+    <td>57</td> 
+    <td>0</td> 
+    <td>0</td> 
+    <td>0</td> 
+    <td>100%</td> 
+    <td>5.636</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+ <br /> 
+ <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p> 
+ <br /> 
+</div> 
+<div class="section"> 
+ <h2 id="Package_List">Package List</h2> 
+ <a name="Package_List"></a> 
+ <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p> 
+ <br /> 
+ <table border="1" class="bodyTable table table-striped table-hover"> 
+  <thead> 
+   <tr class="a"> 
+    <th>Package</th> 
+    <th>Tests</th> 
+    <th>Errors </th> 
+    <th>Failures</th> 
+    <th>Skipped</th> 
+    <th>Success Rate</th> 
+    <th>Time</th> 
+   </tr> 
+  </thead> 
+  <tbody> 
+   <tr class="b"> 
+    <td><a href="#com.fns.grivet.controller">com.fns.grivet.controller</a></td> 
+    <td>17</td> 
+    <td>0</td> 
+    <td>0</td> 
+    <td>0</td> 
+    <td>100%</td> 
+    <td>2.428</td> 
+   </tr> 
+   <tr class="a"> 
+    <td><a href="#com.fns.grivet">com.fns.grivet</a></td> 
+    <td>1</td> 
+    <td>0</td> 
+    <td>0</td> 
+    <td>0</td> 
+    <td>100%</td> 
+    <td>0</td> 
+   </tr> 
+   <tr class="b"> 
+    <td><a href="#com.fns.grivet.service">com.fns.grivet.service</a></td> 
+    <td>14</td> 
+    <td>0</td> 
+    <td>0</td> 
+    <td>0</td> 
+    <td>100%</td> 
+    <td>2.451</td> 
+   </tr> 
+   <tr class="a"> 
+    <td><a href="#com.fns.grivet.api">com.fns.grivet.api</a></td> 
+    <td>2</td> 
+    <td>0</td> 
+    <td>0</td> 
+    <td>0</td> 
+    <td>100%</td> 
+    <td>0.739</td> 
+   </tr> 
+   <tr class="b"> 
+    <td><a href="#com.fns.grivet.query">com.fns.grivet.query</a></td> 
+    <td>23</td> 
+    <td>0</td> 
+    <td>0</td> 
+    <td>0</td> 
+    <td>100%</td> 
+    <td>0.018</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+ <br /> 
+ <p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p> 
+ <div class="section"> 
+  <h3 id="com.fns.grivet.controller">com.fns.grivet.controller</h3> 
+  <a name="com.fns.grivet.controller"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <thead> 
+    <tr class="a"> 
+     <th></th> 
+     <th>Class</th> 
+     <th>Tests</th> 
+     <th>Errors </th> 
+     <th>Failures</th> 
+     <th>Skipped</th> 
+     <th>Success Rate</th> 
+     <th>Time</th> 
+    </tr> 
+   </thead> 
+   <tbody> 
+    <tr class="b"> 
+     <td><a href="#com.fns.grivet.controllerClassRegistryControllerTest"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.controllerClassRegistryControllerTest">ClassRegistryControllerTest</a></td> 
+     <td>4</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>1.031</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><a href="#com.fns.grivet.controllerEntityControllerTest"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.controllerEntityControllerTest">EntityControllerTest</a></td> 
+     <td>3</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>0.849</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><a href="#com.fns.grivet.controllerNamedQueryControllerTest"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.controllerNamedQueryControllerTest">NamedQueryControllerTest</a></td> 
+     <td>8</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>0.495</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><a href="#com.fns.grivet.controllerSchemaControllerTest"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.controllerSchemaControllerTest">SchemaControllerTest</a></td> 
+     <td>2</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>0.053</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="com.fns.grivet">com.fns.grivet</h3> 
+  <a name="com.fns.grivet"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <thead> 
+    <tr class="a"> 
+     <th></th> 
+     <th>Class</th> 
+     <th>Tests</th> 
+     <th>Errors </th> 
+     <th>Failures</th> 
+     <th>Skipped</th> 
+     <th>Success Rate</th> 
+     <th>Time</th> 
+    </tr> 
+   </thead> 
+   <tbody> 
+    <tr class="b"> 
+     <td><a href="#com.fns.grivetApplicationTests"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivetApplicationTests">ApplicationTests</a></td> 
+     <td>1</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>0</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="com.fns.grivet.service">com.fns.grivet.service</h3> 
+  <a name="com.fns.grivet.service"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <thead> 
+    <tr class="a"> 
+     <th></th> 
+     <th>Class</th> 
+     <th>Tests</th> 
+     <th>Errors </th> 
+     <th>Failures</th> 
+     <th>Skipped</th> 
+     <th>Success Rate</th> 
+     <th>Time</th> 
+    </tr> 
+   </thead> 
+   <tbody> 
+    <tr class="b"> 
+     <td><a href="#com.fns.grivet.serviceClassRegistryServiceTest"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.serviceClassRegistryServiceTest">ClassRegistryServiceTest</a></td> 
+     <td>1</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>0.08</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><a href="#com.fns.grivet.serviceEntityServiceTest"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.serviceEntityServiceTest">EntityServiceTest</a></td> 
+     <td>5</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>0.651</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><a href="#com.fns.grivet.serviceNamedQueryService_Select_Test"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.serviceNamedQueryService_Select_Test">NamedQueryService_Select_Test</a></td> 
+     <td>4</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>1.114</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><a href="#com.fns.grivet.serviceNamedQueryService_Sproc_Test"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.serviceNamedQueryService_Sproc_Test">NamedQueryService_Sproc_Test</a></td> 
+     <td>4</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>0.606</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="com.fns.grivet.api">com.fns.grivet.api</h3> 
+  <a name="com.fns.grivet.api"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <thead> 
+    <tr class="a"> 
+     <th></th> 
+     <th>Class</th> 
+     <th>Tests</th> 
+     <th>Errors </th> 
+     <th>Failures</th> 
+     <th>Skipped</th> 
+     <th>Success Rate</th> 
+     <th>Time</th> 
+    </tr> 
+   </thead> 
+   <tbody> 
+    <tr class="b"> 
+     <td><a href="#com.fns.grivet.apiSwagger2MarkupTest"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.apiSwagger2MarkupTest">Swagger2MarkupTest</a></td> 
+     <td>2</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>0.739</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="com.fns.grivet.query">com.fns.grivet.query</h3> 
+  <a name="com.fns.grivet.query"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <thead> 
+    <tr class="a"> 
+     <th></th> 
+     <th>Class</th> 
+     <th>Tests</th> 
+     <th>Errors </th> 
+     <th>Failures</th> 
+     <th>Skipped</th> 
+     <th>Success Rate</th> 
+     <th>Time</th> 
+    </tr> 
+   </thead> 
+   <tbody> 
+    <tr class="b"> 
+     <td><a href="#com.fns.grivet.queryConjunctionTest"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.queryConjunctionTest">ConjunctionTest</a></td> 
+     <td>4</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>0.002</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><a href="#com.fns.grivet.queryConstraintTest"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.queryConstraintTest">ConstraintTest</a></td> 
+     <td>8</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>0.005</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><a href="#com.fns.grivet.queryDynamicQueryTest"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.queryDynamicQueryTest">DynamicQueryTest</a></td> 
+     <td>6</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>0.009</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><a href="#com.fns.grivet.queryOperatorTest"><i class="icon-ok"></i></a></td> 
+     <td><a href="#com.fns.grivet.queryOperatorTest">OperatorTest</a></td> 
+     <td>5</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>0</td> 
+     <td>100%</td> 
+     <td>0.002</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <br /> 
+</div> 
+<div class="section"> 
+ <h2 id="Test_Cases">Test Cases</h2> 
+ <a name="Test_Cases"></a> 
+ <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p> 
+ <div class="section"> 
+  <h3 id="Swagger2MarkupTest">Swagger2MarkupTest</h3> 
+  <a name="com.fns.grivet.apiSwagger2MarkupTest"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.api.Swagger2MarkupTest.convertSwaggerToAsciiDoc"></a>convertSwaggerToAsciiDoc</td> 
+     <td>0.694</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.api.Swagger2MarkupTest.convertSwaggerToMarkdown"></a>convertSwaggerToMarkdown</td> 
+     <td>0.045</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="ApplicationTests">ApplicationTests</h3> 
+  <a name="com.fns.grivetApplicationTests"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.ApplicationTests.contextLoads"></a>contextLoads</td> 
+     <td>0</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="ClassRegistryControllerTest">ClassRegistryControllerTest</h3> 
+  <a name="com.fns.grivet.controllerClassRegistryControllerTest"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.ClassRegistryControllerTest.testThatRegisteringMultipleTypesSucceeds"></a>testThatRegisteringMultipleTypesSucceeds</td> 
+     <td>0.87</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.ClassRegistryControllerTest.testThatRegisteringASingleTypeSucceeds"></a>testThatRegisteringASingleTypeSucceeds</td> 
+     <td>0.084</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.ClassRegistryControllerTest.testThatRegisteringASingleTypeResultsInABadRequest"></a>testThatRegisteringASingleTypeResultsInABadRequest</td> 
+     <td>0.065</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.ClassRegistryControllerTest.contextLoads"></a>contextLoads</td> 
+     <td>0.012</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="EntityControllerTest">EntityControllerTest</h3> 
+  <a name="com.fns.grivet.controllerEntityControllerTest"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.EntityControllerTest.testThatGetSucceeds"></a>testThatGetSucceeds</td> 
+     <td>0.472</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.EntityControllerTest.testThatStoringMultipleContactsSucceeds"></a>testThatStoringMultipleContactsSucceeds</td> 
+     <td>0.355</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.EntityControllerTest.contextLoads"></a>contextLoads</td> 
+     <td>0.022</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="NamedQueryControllerTest">NamedQueryControllerTest</h3> 
+  <a name="com.fns.grivet.controllerNamedQueryControllerTest"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.NamedQueryControllerTest.testThatCreateSucceeds_forSelect_withQueryTypeSupplied"></a>testThatCreateSucceeds_forSelect_withQueryTypeSupplied</td> 
+     <td>0.302</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.NamedQueryControllerTest.testThatGetSucceeds"></a>testThatGetSucceeds</td> 
+     <td>0.018</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.NamedQueryControllerTest.testThatCreateSucceeds_forSproc_withQueryTypeSupplied"></a>testThatCreateSucceeds_forSproc_withQueryTypeSupplied</td> 
+     <td>0.027</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.NamedQueryControllerTest.testThatCreateSucceeds_selectWithParams"></a>testThatCreateSucceeds_selectWithParams</td> 
+     <td>0.03</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.NamedQueryControllerTest.testThatAllSucceeds"></a>testThatAllSucceeds</td> 
+     <td>0.024</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.NamedQueryControllerTest.testThatCreateSucceeds_sprocWithParams"></a>testThatCreateSucceeds_sprocWithParams</td> 
+     <td>0.036</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.NamedQueryControllerTest.testThatCreateSucceeds_selectNoParams"></a>testThatCreateSucceeds_selectNoParams</td> 
+     <td>0.035</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.NamedQueryControllerTest.testThatDeleteSucceeds"></a>testThatDeleteSucceeds</td> 
+     <td>0.023</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="SchemaControllerTest">SchemaControllerTest</h3> 
+  <a name="com.fns.grivet.controllerSchemaControllerTest"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.SchemaControllerTest.testThatUnlinkSchemaSucceeds"></a>testThatUnlinkSchemaSucceeds</td> 
+     <td>0.034</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.controller.SchemaControllerTest.testThatLinkSchemaSucceeds"></a>testThatLinkSchemaSucceeds</td> 
+     <td>0.019</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="ConjunctionTest">ConjunctionTest</h3> 
+  <a name="com.fns.grivet.queryConjunctionTest"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.ConjunctionTest.testFromValue_good"></a>testFromValue_good</td> 
+     <td>0.002</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.ConjunctionTest.testFromValue_null"></a>testFromValue_null</td> 
+     <td>0</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.ConjunctionTest.testFromValue_unknown"></a>testFromValue_unknown</td> 
+     <td>0</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.ConjunctionTest.testGetName"></a>testGetName</td> 
+     <td>0</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="ConstraintTest">ConstraintTest</h3> 
+  <a name="com.fns.grivet.queryConstraintTest"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.ConstraintTest.testConstraint_empty"></a>testConstraint_empty</td> 
+     <td>0</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.ConstraintTest.testConstraint_withConjunction"></a>testConstraint_withConjunction</td> 
+     <td>0.003</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.ConstraintTest.testConstraint_betweenGoodWithConjunction"></a>testConstraint_betweenGoodWithConjunction</td> 
+     <td>0</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.ConstraintTest.testConstraint_betweenGood"></a>testConstraint_betweenGood</td> 
+     <td>0.001</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.ConstraintTest.testConstraint_null"></a>testConstraint_null</td> 
+     <td>0</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.ConstraintTest.testConstraint_betweenBad"></a>testConstraint_betweenBad</td> 
+     <td>0</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.ConstraintTest.testConstraint_3parts"></a>testConstraint_3parts</td> 
+     <td>0</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.ConstraintTest.testConstraint_partsLessThan3"></a>testConstraint_partsLessThan3</td> 
+     <td>0.001</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="DynamicQueryTest">DynamicQueryTest</h3> 
+  <a name="com.fns.grivet.queryDynamicQueryTest"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.DynamicQueryTest.testConstaintWithNullConjunction"></a>testConstaintWithNullConjunction</td> 
+     <td>0.001</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.DynamicQueryTest.testConstaintWithIn"></a>testConstaintWithIn</td> 
+     <td>0.002</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.DynamicQueryTest.testAndConstraints"></a>testAndConstraints</td> 
+     <td>0.003</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.DynamicQueryTest.testContainsConstraints"></a>testContainsConstraints</td> 
+     <td>0.001</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.DynamicQueryTest.testOrConstraints"></a>testOrConstraints</td> 
+     <td>0.001</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.DynamicQueryTest.testConstaintWithBetween"></a>testConstaintWithBetween</td> 
+     <td>0.001</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="OperatorTest">OperatorTest</h3> 
+  <a name="com.fns.grivet.queryOperatorTest"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.OperatorTest.testFromValue_good"></a>testFromValue_good</td> 
+     <td>0.001</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.OperatorTest.testFromValue_null"></a>testFromValue_null</td> 
+     <td>0.001</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.OperatorTest.testFromValue_unknown"></a>testFromValue_unknown</td> 
+     <td>0</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.OperatorTest.testGetName"></a>testGetName</td> 
+     <td>0</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.query.OperatorTest.testGetSymbol"></a>testGetSymbol</td> 
+     <td>0</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="ClassRegistryServiceTest">ClassRegistryServiceTest</h3> 
+  <a name="com.fns.grivet.serviceClassRegistryServiceTest"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.ClassRegistryServiceTest.testRegisterThenGetThenAll"></a>testRegisterThenGetThenAll</td> 
+     <td>0.08</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="EntityServiceTest">EntityServiceTest</h3> 
+  <a name="com.fns.grivet.serviceEntityServiceTest"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.EntityServiceTest.testCreateThenFindByType_variant"></a>testCreateThenFindByType_variant</td> 
+     <td>0.141</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.EntityServiceTest.testTypeNotRegistered"></a>testTypeNotRegistered</td> 
+     <td>0.005</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.EntityServiceTest.testTypePayloadIsNull"></a>testTypePayloadIsNull</td> 
+     <td>0.039</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.EntityServiceTest.testCreateThenFindByType"></a>testCreateThenFindByType</td> 
+     <td>0.09</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.EntityServiceTest.testSchemaLinkAndValidationSuccessThenUnlink"></a>testSchemaLinkAndValidationSuccessThenUnlink</td> 
+     <td>0.376</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="NamedQueryService_Select_Test">NamedQueryService_Select_Test</h3> 
+  <a name="com.fns.grivet.serviceNamedQueryService_Select_Test"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.NamedQueryService_Select_Test.testCreateThenGet_happyPath"></a>testCreateThenGet_happyPath</td> 
+     <td>1.036</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.NamedQueryService_Select_Test.testGet_queryNotFound"></a>testGet_queryNotFound</td> 
+     <td>0.024</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.NamedQueryService_Select_Test.testCreateThenGet_paramsNotSupplied"></a>testCreateThenGet_paramsNotSupplied</td> 
+     <td>0.029</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.NamedQueryService_Select_Test.testCreateThenGet_incorrectParamsSupplied"></a>testCreateThenGet_incorrectParamsSupplied</td> 
+     <td>0.025</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <div class="section"> 
+  <h3 id="NamedQueryService_Sproc_Test">NamedQueryService_Sproc_Test</h3> 
+  <a name="com.fns.grivet.serviceNamedQueryService_Sproc_Test"></a> 
+  <table border="1" class="bodyTable table table-striped table-hover"> 
+   <tbody> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.NamedQueryService_Sproc_Test.testCreateThenGet_happyPath"></a>testCreateThenGet_happyPath</td> 
+     <td>0.454</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.NamedQueryService_Sproc_Test.testGet_queryNotFound"></a>testGet_queryNotFound</td> 
+     <td>0.05</td> 
+    </tr> 
+    <tr class="a"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.NamedQueryService_Sproc_Test.testCreateThenGet_paramsNotSupplied"></a>testCreateThenGet_paramsNotSupplied</td> 
+     <td>0.055</td> 
+    </tr> 
+    <tr class="b"> 
+     <td><i class="icon-ok"></i></td> 
+     <td><a name="TC_com.fns.grivet.service.NamedQueryService_Sproc_Test.testCreateThenGet_incorrectParamsSupplied"></a>testCreateThenGet_incorrectParamsSupplied</td> 
+     <td>0.047</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <br /> 
+</div>
 			</div>
 		</div>
 	</div>
@@ -133,76 +900,80 @@ $bodyWithHeader
 	<footer class="well">
 		<div class="container">
 			<div class="row">
-				<div class="span9 bottom-nav">
+				<div class="span3 bottom-nav">
 					<ul class="nav nav-list">
-						<li class="nav-header">Parent Project</li>
-						<li class="active">
-							<a href="#" title="Grivet Core Services">Grivet Core Services</a>
-						</li>
 						<li class="nav-header">Overview</li>
-						<li class="active">
-							<a href="#" title="About">About</a>
+						<li >
+							<a href="index.html" title="About">About</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Project License">Project License</a>
+						<li >
+							<a href="license.html" title="Project License">Project License</a>
 						</li>
 						<li class="nav-header">User</li>
-						<li class="active">
-							<a href="#" title="API">API</a>
+						<li >
+							<a href="rest-api.html" title="API">API</a>
 						</li>
+					</ul>
+				</div>
+				<div class="span3 bottom-nav">
+					<ul class="nav nav-list">
 						<li class="nav-header">Developer</li>
-						<li class="active">
-							<a href="#" title="JavaDocs">JavaDocs</a>
+						<li >
+							<a href="apidocs/index.html" title="JavaDocs">JavaDocs</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Source Repository">Source Repository</a>
+						<li >
+							<a href="source-repository.html" title="Source Repository">Source Repository</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Project Summary">Project Summary</a>
+						<li >
+							<a href="project-summary.html" title="Project Summary">Project Summary</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Issue Tracking">Issue Tracking</a>
+						<li >
+							<a href="issue-tracking.html" title="Issue Tracking">Issue Tracking</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Project Team">Project Team</a>
+						<li >
+							<a href="team-list.html" title="Project Team">Project Team</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Tag List">Tag List</a>
+						<li >
+							<a href="taglist.html" title="Tag List">Tag List</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Dependency Information">Dependency Information</a>
+						<li >
+							<a href="dependency-info.html" title="Dependency Information">Dependency Information</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Dependency Management">Dependency Management</a>
+						<li >
+							<a href="dependency-management.html" title="Dependency Management">Dependency Management</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Plugin Management">Plugin Management</a>
+						<li >
+							<a href="plugin-management.html" title="Plugin Management">Plugin Management</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Project Plugins">Project Plugins</a>
+						<li >
+							<a href="plugins.html" title="Project Plugins">Project Plugins</a>
 						</li>
+					</ul>
+				</div>
+				<div class="span3 bottom-nav">
+					<ul class="nav nav-list">
 						<li class="nav-header">Stats</li>
-						<li class="active">
-							<a href="#" title="Change Log">Change Log</a>
+						<li >
+							<a href="changelog.html" title="Change Log">Change Log</a>
 						</li>
 						<li class="active">
 							<a href="#" title="Surefire Report">Surefire Report</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Failsafe Report">Failsafe Report</a>
+						<li >
+							<a href="failsafe-report.html" title="Failsafe Report">Failsafe Report</a>
 						</li>
-						<li class="active">
-							<a href="#" title="JaCoCo Test Coverage">JaCoCo Test Coverage</a>
+						<li >
+							<a href="jacoco/index.html" title="JaCoCo Test Coverage">JaCoCo Test Coverage</a>
 						</li>
 						<li class="nav-header">Updates</li>
-						<li class="active">
-							<a href="#" title="Dependencies">Dependencies</a>
+						<li >
+							<a href="dependency-updates-report.html" title="Dependencies">Dependencies</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Plugins">Plugins</a>
+						<li >
+							<a href="plugin-updates-report.html" title="Plugins">Plugins</a>
 						</li>
-						<li class="active">
-							<a href="#" title="Properties">Properties</a>
+						<li >
+							<a href="property-updates-report.html" title="Properties">Properties</a>
 						</li>
 					</ul>
 				</div>
@@ -228,6 +999,7 @@ $bodyWithHeader
 	<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 	<script src="./js/lightbox.min.js"></script>
 	<script src="./js/reflow-scroll.js"></script>
+	<script src="http://yandex.st/highlightjs/7.5/highlight.min.js"></script>
 
 	<script src="./js/reflow-skin.js"></script>
 
