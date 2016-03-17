@@ -19,14 +19,15 @@
 	
 	<properties>
 		<!-- Scala -->
-		<scala.version>2.11.7</scala.version>
+		<scala.version>2.11.8</scala.version>
 
 		<!-- Third-party library versions -->
 		<gatling.version>2.1.7</gatling.version>
+        <httpclient.version>4.5.2</httpclient.version>
         		
         <!-- Maven -->
         <gatling-maven-plugin.verson>${gatling.version}</gatling-maven-plugin.verson>
-        <scala-maven-plugin.version>3.2.1</scala-maven-plugin.version>
+        <scala-maven-plugin.version>3.2.2</scala-maven-plugin.version>
 	</properties>		
 	
 	
@@ -57,6 +58,11 @@
 				<artifactId>scala-library</artifactId>
 				<version>${scala.version}</version>
 			</dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 	
@@ -86,63 +92,70 @@
 			<artifactId>scala-library</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
-      	<build>
-      		<pluginManagement>
-      			<plugins>
-      				<plugin>
-					<groupId>net.alchim31.maven</groupId>
-					<artifactId>scala-maven-plugin</artifactId>
-					<version>${scala-maven-plugin.version}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>add-source</goal>
-								<goal>compile</goal>
-								<goal>testCompile</goal>
-							</goals>
-							<configuration>
-								<args>
-									<arg>-encoding</arg>
-									<arg>UTF-8</arg>
-									<arg>-target:jvm-1.8</arg>
-									<arg>-deprecation</arg>
-									<arg>-feature</arg>
-									<arg>-unchecked</arg>
-									<arg>-language:implicitConversions</arg>
-									<arg>-language:postfixOps</arg>
-								</args>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>io.gatling</groupId>
-					<artifactId>gatling-maven-plugin</artifactId>
-					<version>${gatling-maven-plugin.verson}</version>
-				</plugin>
-      			</plugins>
-      		</pluginManagement>
-      		<plugins>
-      			<plugin>
-				<groupId>io.gatling</groupId>
-				<artifactId>gatling-maven-plugin</artifactId>
+    
+  	<build>
+        <testSourceDirectory>src/test/scala</testSourceDirectory>
+  		<pluginManagement>
+  			<plugins>
+  				<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>scala-maven-plugin</artifactId>
+				<version>${scala-maven-plugin.version}</version>
 				<executions>
 					<execution>
-						<phase>test</phase>
 						<goals>
-							<goal>execute</goal>
+							<goal>add-source</goal>
+							<goal>compile</goal>
+							<goal>testCompile</goal>
 						</goals>
 						<configuration>
-							<dataFolder>src/test/resources/data</dataFolder>
-							<resultsFolder>target/gatling/results</resultsFolder>
-							<requestBodiesFolder>src/test/resources/request-bodies</requestBodiesFolder>
-							<simulationsFolder>src/test/scala</simulationsFolder>
+							<args>
+								<arg>-encoding</arg>
+								<arg>UTF-8</arg>
+								<arg>-target:jvm-1.8</arg>
+								<arg>-deprecation</arg>
+								<arg>-feature</arg>
+								<arg>-unchecked</arg>
+								<arg>-language:implicitConversions</arg>
+								<arg>-language:postfixOps</arg>
+							</args>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-      		</plugins>
-      	</build>
+			<plugin>
+				<groupId>io.gatling</groupId>
+				<artifactId>gatling-maven-plugin</artifactId>
+				<version>${gatling-maven-plugin.verson}</version>
+			</plugin>
+  			</plugins>
+  		</pluginManagement>
+  		<plugins>
+  			<plugin>
+			<groupId>io.gatling</groupId>
+			<artifactId>gatling-maven-plugin</artifactId>
+			<executions>
+				<execution>
+					<phase>test</phase>
+					<goals>
+						<goal>execute</goal>
+					</goals>
+					<configuration>
+						<dataFolder>src/test/resources/data</dataFolder>
+						<resultsFolder>target/gatling/results</resultsFolder>
+						<requestBodiesFolder>src/test/resources/request-bodies</requestBodiesFolder>
+						<simulationsFolder>src/test/scala</simulationsFolder>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
+  		</plugins>
+  	</build>
 
 </project>

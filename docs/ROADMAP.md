@@ -1,6 +1,6 @@
 # Roadmap
 
-This project will remain humble in its design and has no aspirations to match the features or scaling characteristics of other projects like [Hadoop](https://hadoop.apache.org/) + Apache [Orc](https://orc.apache.org/), [ElasticSearch](https://www.elastic.co/products/elasticsearch), [Scylla DB](http://www.scylladb.com/) or [SenseiDB](http://www.senseidb.com/).
+This project will remain humble in its design and has no aspirations to match the features or scaling characteristics of other more mature projects like [Hadoop](https://hadoop.apache.org/) + Apache [Orc](https://orc.apache.org/), [ElasticSearch](https://www.elastic.co/products/elasticsearch), [Scylla DB](http://www.scylladb.com/) or [SenseiDB](http://www.senseidb.com/).
 
 
 ## 0.0.1 
@@ -31,18 +31,20 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Prefix all end-points with `/type` except for `/query`
 - [x] Improve test coverage
 - [x] Switch to [CodeCov](https://codecov.io/) for coverage reporting
-- [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
 - [x] Begin tracking technical debt with [Sonarqube](https://hub.docker.com/_/sonarqube/)
 - [x] Secure endpoints via Stormpath [integration](https://stormpath.com/blog/build-spring-boot-spring-security-app/)
 - [x] Enable [TLS/HTTPS](http://security.stackexchange.com/questions/5126/whats-the-difference-between-ssl-tls-and-https) 
 - [x] Define roles to limit access to administrators for registering new types and queries
 - [x] All writes are audited (User is associated with record)
-- [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
 
 ## 0.3.0
 
+- [ ] Introduce reverse [proxy](https://github.com/fastnsilver/grivet/issues/9)
+- [ ] [Upgrade](https://github.com/fastnsilver/grivet/issues/8) Docker Compose configuration
 - [ ] Password-protect service administration and discovery
+- [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
 - [ ] Host demo site on AWS EC2 Container Service
+- [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
 
 ## 0.4.0
 
@@ -55,4 +57,5 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 0.6.0
 
+- [ ] Apache Kafka [integration](https://github.com/fastnsilver/grivet/issues/7)
 - [ ] Gradle build (as an alternative)
