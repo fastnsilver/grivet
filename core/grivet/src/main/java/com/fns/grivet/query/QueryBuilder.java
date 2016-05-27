@@ -15,11 +15,11 @@
  */
 package com.fns.grivet.query;
 
+import org.springframework.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.springframework.util.StringUtils;
 
 public class QueryBuilder {
 
@@ -67,12 +67,9 @@ public class QueryBuilder {
         boolean isAndConjuncted = query.containsAndConjunction();
         if (isAndConjuncted) {
             int numberOfJoins = query.getConstraints().size();
+            String joinStatement = "INNER JOIN all_entity_values AS ev%d ON ev.eid = ev%d.eid ";
             for (int i = 1; i < numberOfJoins; i++) {
-                if (i == 1) {
-                  joins.append(String.format("INNER JOIN all_entity_values AS ev%d ON ev.eid = ev%d.eid ", i, i));  
-                } else {
-                    joins.append(String.format("INNER JOIN all_entity_values AS ev%d ON ev%d.eid = ev%d.eid ", i, i-1, i)); 
-                }
+                joins.append(i == 1 ? String.format(joinStatement, i, i) : String.format(joinStatement, i, i - 1, i));
             }
         }
         return joins.toString();
@@ -93,7 +90,7 @@ public class QueryBuilder {
             if (c.getConjunction() != null) {
                 conj = c.getConjunction().getName();
             } else {
-               conj = Conjunction.OR.getName(); // default
+                conj = Conjunction.OR.getName(); // default
             }
             sb.append(conj);
             sb.append(" ");

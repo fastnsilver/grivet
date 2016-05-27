@@ -70,8 +70,6 @@ public class Constraint {
 
     @Override
     public boolean equals(Object object) {
-        if (object == null)
-            return false;
         return EqualsBuilder.reflectionEquals(this, object);
     }
 

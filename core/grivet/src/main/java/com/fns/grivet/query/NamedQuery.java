@@ -23,10 +23,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.Audited;
-import com.google.common.base.MoreObjects;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.util.CollectionUtils;
@@ -193,13 +193,11 @@ public class NamedQuery extends Audited {
 
     @Override
     public boolean equals(Object object) {
-        if (object == null)
-            return false;
         return EqualsBuilder.reflectionEquals(this, object);
     }
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).omitNullValues().toString();
+        return ToStringBuilder.reflectionToString(this);
     }
 }

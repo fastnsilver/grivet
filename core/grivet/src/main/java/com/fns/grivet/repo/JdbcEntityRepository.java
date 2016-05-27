@@ -66,8 +66,9 @@ public class JdbcEntityRepository implements EntityRepository {
 
     @Override
     public Long id(Integer cid) {
-        SimpleJdbcInsert insertEntity = new SimpleJdbcInsert(jdbcTemplate).withTableName("entity").usingGeneratedKeyColumns("eid").usingColumns("cid", "created_time");
-        return Long.valueOf(String.valueOf(insertEntity.executeAndReturnKey(ImmutableMap.of("cid", cid, "created_time", Timestamp.valueOf(LocalDateTime.now())))));
+        return Long.valueOf(String.valueOf(new SimpleJdbcInsert(jdbcTemplate).withTableName("entity")
+                .usingGeneratedKeyColumns("eid").usingColumns("cid", "created_time").executeAndReturnKey(
+                        ImmutableMap.of("cid", cid, "created_time", Timestamp.valueOf(LocalDateTime.now())))));
     }
 
     @Override
@@ -75,7 +76,7 @@ public class JdbcEntityRepository implements EntityRepository {
         Assert.isTrue(rawValue != null, String.format("Attempt to persist value failed! %s's value must not be null!", attribute.getName()));
         Object value = ValueHelper.toValue(attributeType, rawValue);
         User user = getCurrentUser();
-        String createdBy = user != null ? user.getUsername() : null;
+        String createdBy = user == null ? null : user.getUsername();
         String[] columns = { "eid", "aid", "val", "created_time" };
         Map<String, Object> keyValuePairs = ImmutableMap.of("eid", eid, "aid", attribute.getId(), "val", value, "created_time", Timestamp.valueOf(LocalDateTime.now()));
         if (createdBy != null) {
@@ -85,8 +86,8 @@ public class JdbcEntityRepository implements EntityRepository {
             keyValuePairsWithCreatedBy.put("created_by", createdBy);
             keyValuePairs = keyValuePairsWithCreatedBy;
         } 
-        SimpleJdbcInsert insertEntityAttributeValue = new SimpleJdbcInsert(jdbcTemplate).withTableName(String.join("_", "entityav", attributeType.getType())).usingColumns(columns);
-        insertEntityAttributeValue.execute(keyValuePairs);
+        new SimpleJdbcInsert(jdbcTemplate).withTableName(String.join("_", "entityav", attributeType.getType()))
+                .usingColumns(columns).execute(keyValuePairs);
     }
     
     @Override
@@ -94,8 +95,9 @@ public class JdbcEntityRepository implements EntityRepository {
             LocalDateTime createdTimeEnd) {
         String sql = QueryBuilder.newInstance().appendCreatedTimeRange().build();
         log.trace(String.format("JdbcEntityRepository.findByCreatedTime[sql=%s]", sql));
-        SqlRowSet rowSet = jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid), new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeStart)), new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeEnd)));
-        return mapRows(rowSet);
+        return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid),
+                new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeStart)),
+                new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeEnd))));
     }
 
     @Override
@@ -106,8 +108,7 @@ public class JdbcEntityRepository implements EntityRepository {
         List<SqlParameterValue> values = new ArrayList<>();
         values.add(new SqlParameterValue(Types.INTEGER, cid));
         values.addAll(Arrays.asList(query.asSqlParameterValues()));
-        SqlRowSet rowSet = jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), values.toArray(new Object[values.size()]));
-        return mapRows(rowSet);
+        return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), values.toArray(new Object[values.size()])));
     }
      
     private List<EntityAttributeValue> mapRows(SqlRowSet rowSet) {
@@ -124,7 +125,7 @@ public class JdbcEntityRepository implements EntityRepository {
     }
     
     private User getCurrentUser() {
-        return securityFacade != null ? securityFacade.getCurrentUser(): null;
+        return securityFacade == null ? null : securityFacade.getCurrentUser();
     }
     
     private static class EAVComparator implements Comparator<EntityAttributeValue> {
