@@ -1,7 +1,7 @@
 -- Table for storing any errors reported by the MySQL Events (see v4__init_events.sql)
 CREATE TABLE `event_errors` (
   `id` MEDIUMINT NOT NULL AUTO_INCREMENT,
-  `error_date` DATETIME NOT NULL,
+  `error_date` DATETIME(3) NOT NULL,
   `sql_state` VARCHAR(256) NOT NULL,
   `error_message` VARCHAR(256) NOT NULL,
   `error_no` VARCHAR(25) NOT NULL,

@@ -1,4 +1,4 @@
-FROM delitescere/jdk:8
+FROM anapsix/jdk:8
 
 MAINTAINER Chris Phillipson <fastnsilver@gmail.com>
 

@@ -20,7 +20,7 @@
     
     <properties>
         <!-- Third-party library versions -->
-        <spring-boot-admin.version>1.3.2</spring-boot-admin.version>
+        <spring-boot-admin.version>1.3.3</spring-boot-admin.version>
     </properties>
 
     <dependencies>

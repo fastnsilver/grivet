@@ -35,8 +35,7 @@ public class SecurityFacade {
         User result = null;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && !(auth instanceof AnonymousAuthenticationToken)) {
-            AccountPrincipal principal = (AccountPrincipal) auth.getPrincipal();
-            result = (User) principal.getAccount();
+            result = (User) ((AccountPrincipal) auth.getPrincipal()).getAccount();
         }
         return result;
     }
