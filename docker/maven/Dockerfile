@@ -1,4 +1,4 @@
-FROM anapsix/jdk:8
+FROM anapsix/alpine-java:jdk8
 
 MAINTAINER Chris Phillipson <fastnsilver@gmail.com>
 
