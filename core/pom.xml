@@ -16,8 +16,15 @@
     <description>Service and UI deployables</description>
 
     <modules>
-        <module>grivet</module>
-        <!--<module>grivet-ui</module> -->
+        <module>model</module>
+        <module>services</module>
+        <module>admin</module>
+        <module>ingest</module>
+        <module>query</module>
+        <module>persist</module>
+        <module>standalone</module>
+        <module>ui</module>
+        <module>test-resources</module>
     </modules>
 
 </project>
