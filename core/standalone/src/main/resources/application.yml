@@ -68,7 +68,7 @@ spring:
     url: jdbc:mariadb://localhost:3306/grivetdb
     driver-class-name: org.mariadb.jdbc.Driver
     data-source-class-name: org.mariadb.jdbc.MariaDbDataSource
-    username: admin
+    username: root
     password: jackal#3
 
 flyway:
@@ -106,7 +106,7 @@ eureka:
     preferIpAddress: true
   client:
     serviceUrl:
-      defaultZone: http://discovery:8761/eureka/
+      defaultZone: http://discovery-service:8761/eureka/
     
 monitoring:
   statsd:

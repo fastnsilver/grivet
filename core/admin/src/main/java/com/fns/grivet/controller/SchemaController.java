@@ -59,35 +59,32 @@ public class SchemaController {
     }
     
     
-    @PreAuthorize(value = "hasRole(@roles.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ADMIN)")
     @RequestMapping(value = "/link", method = RequestMethod.POST, 
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Link a JSON Schema to a pre-registered type.", value = "/type/schema/link")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Successfully link JSON Schema to registered type."),
+    @ApiResponses({ @ApiResponse(code = 200, message = "Successfully link JSON Schema to registered type."),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 422, message = "Unprocessable entity (e.g., invalid JSON schema)."),
-            @ApiResponse(code = 500, message = "Internal server error.")
-            })
+            @ApiResponse(code = 500, message = "Internal server error.") })
     public ResponseEntity<?> linkSchema(@RequestBody String payload) throws IOException {
         JSONObject json = new JSONObject(payload);
-        if (schemaService.isJsonSchema(json)) {
-            String id = schemaService.linkSchema(json).getName();
-            String message = String.format("JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!", id);
-            log.info(message);
-            return ResponseEntity.ok(message);
-        } 
-        return ResponseEntity.unprocessableEntity().build();
+        if (!schemaService.isJsonSchema(json)) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        String id = schemaService.linkSchema(json).getName();
+        String message = String.format(
+                "JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!", id);
+        log.info(message);
+        return ResponseEntity.ok(message);
     }
     
-    @PreAuthorize(value = "hasRole(@roles.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ADMIN)")
     @RequestMapping(value = "/unlink/{type}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "PUT", notes = "Unlink JSON Schema from a pre-registered type.", value = "/type/schema/unlink/{type}")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Unlinked JSON Schema from type."),
+    @ApiResponses({ @ApiResponse(code = 200, message = "Unlinked JSON Schema from type."),
             @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.")
-            })
+            @ApiResponse(code = 500, message = "Internal server error.") })
     public ResponseEntity<?> unlinkSchema(
             @ApiParam(value = "Type name", required = true)
             @PathVariable("type") String type) {

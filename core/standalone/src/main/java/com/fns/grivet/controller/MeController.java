@@ -23,7 +23,7 @@ public class MeController {
         return new AccountInfo(account.getHref(), account.getFullName(), account.getEmail());
     }
 
-    @JsonPropertyOrder(value = { "href", "fullName", "email " })
+    @JsonPropertyOrder({ "href", "fullName", "email " })
     class AccountInfo {
 
         private String href;

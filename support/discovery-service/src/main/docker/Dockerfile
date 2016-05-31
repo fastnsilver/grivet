@@ -1,6 +1,5 @@
-FROM anapsix/alpine-java:8
+FROM java:openjdk-8-jre-alpine
 MAINTAINER Chris Phillipson <fastnsilver@gmail.com>
-VOLUME /tmp
-ADD @project.artifactId@-@project.version@.jar app.jar
-RUN bash -c 'touch /app.jar'
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+RUN mkdir -p /opt/@project.artifactId@/bin
+COPY @project.artifactId@-@project.version@.jar /opt/@project.artifactId@/bin
+ENTRYPOINT exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /opt/@project.artifactId@/bin/@project.artifactId@-@project.version@.jar

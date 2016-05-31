@@ -15,6 +15,10 @@
  */
 package com.fns.grivet.controller;
 
+import com.fns.grivet.query.NamedQuery;
+import com.fns.grivet.query.QueryType;
+import com.fns.grivet.service.NamedQueryService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.slf4j.Logger;
@@ -32,10 +36,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import com.fns.grivet.query.NamedQuery;
-import com.fns.grivet.query.QueryType;
-import com.fns.grivet.service.NamedQueryService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -63,16 +63,15 @@ public class NamedQueryController {
         this.namedQueryService = namedQueryService;
     }
     
-    @PreAuthorize(value = "hasRole(@roles.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ADMIN)")
     @RequestMapping(method = RequestMethod.POST, 
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Register a Named Query.", value = "/query")
-    @ApiResponses(value = { 
+    @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully registered Named Query requiring no parameters."),
             @ApiResponse(code = 204, message = "Successfully registered Named Query that requires parameters."),
             @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.")
-            })
+            @ApiResponse(code = 500, message = "Internal server error.") })
     public ResponseEntity<?> create(
             @ApiParam(value = "Named Query payload", required = true)
             @RequestBody NamedQuery query) {
@@ -91,19 +90,17 @@ public class NamedQueryController {
         if (query.getParams().isEmpty()) {
             result = ResponseEntity.created(ucb.path("/query/{name}").buildAndExpand(query.getName()).toUri()).build();
         } else {
-            result = ResponseEntity.noContent().build(); 
+            result = ResponseEntity.noContent().build();
         }
         return result;
     }
     
-    @PreAuthorize(value = "hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
+    @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Execute a Named Query.", value = "/query/{name}")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Successfully executed Named Query request."),
+    @ApiResponses({ @ApiResponse(code = 200, message = "Successfully executed Named Query request."),
             @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.")
-            })
+            @ApiResponse(code = 500, message = "Internal server error.") })
     public ResponseEntity<?> get(
             @ApiParam(value = "The name of the query to execute", required = true)
             @PathVariable("name") String name, 
@@ -112,14 +109,12 @@ public class NamedQueryController {
         return ResponseEntity.ok(namedQueryService.get(name, parameters));
     }
     
-    @PreAuthorize(value = "hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
+    @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "GET", notes = "Available Named Queries.", value = "/query?showAll")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "List available Named Queries."),
+    @ApiResponses({ @ApiResponse(code = 200, message = "List available Named Queries."),
             @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.")
-            })
+            @ApiResponse(code = 500, message = "Internal server error.") })
     public ResponseEntity<?> all(
             @ApiParam(value = "Show all registered queries?", required = true)
             @RequestParam(value = "showAll", required = true) String showAll) {
@@ -127,14 +122,12 @@ public class NamedQueryController {
         return ResponseEntity.ok(payload.toString());
     }
     
-    @PreAuthorize(value = "hasRole(@roles.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ADMIN)")
     @RequestMapping(value = "/{name}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "DELETE", notes = "Delete the named query.", value = "/query/{name}")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 204, message = "Successfully deleted a Named Query."),
+    @ApiResponses({ @ApiResponse(code = 204, message = "Successfully deleted a Named Query."),
             @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.")
-            })
+            @ApiResponse(code = 500, message = "Internal server error.") })
     public ResponseEntity<?> delete(
             @ApiParam(value = "The name of the query to delete", required = true)
             @PathVariable("name") String name) {

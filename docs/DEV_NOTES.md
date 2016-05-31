@@ -29,7 +29,7 @@ This option is only suitable for running the `grivet` service
 First, change directories
 
 ```
-cd core/grivet
+cd core/grivet-standalone
 ```
 
 Then
@@ -49,7 +49,7 @@ where `<profile-name>` could be replaced with `h2` or `mysql`
 Or 
 
 ```
-$ java -jar grivet-x.x.x.jar
+$ java -jar grivet-standalone-x.x.x.jar
 ```
 
 where `x.x.x` is a version like `0.0.1-SNAPSHOT`
@@ -57,7 +57,7 @@ where `x.x.x` is a version like `0.0.1-SNAPSHOT`
 Or
 
 ```
-$ java -jar grivet-x.x.x.jar -Dspring.profiles.active=<profile-name>
+$ java -jar grivet-standalone-x.x.x.jar -Dspring.profiles.active=<profile-name>
 ```
 
 likewise replacing `<profile-name>`

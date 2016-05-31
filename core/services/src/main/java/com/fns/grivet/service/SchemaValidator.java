@@ -15,13 +15,6 @@
  */
 package com.fns.grivet.service;
 
-import java.io.IOException;
-
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fns.grivet.repo.ClassRepository;
@@ -30,11 +23,18 @@ import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.main.JsonSchema;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
 
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
+
+import java.io.IOException;
+
 @Component
 class SchemaValidator {
     
-    private ClassRepository classRepository;
-    private ObjectMapper objectMapper;
+    private final ClassRepository classRepository;
+    private final ObjectMapper objectMapper;
     
     @Autowired
     public SchemaValidator(ClassRepository classRepository, ObjectMapper objectMapper) {
