@@ -1,9 +1,10 @@
-FROM anapsix/alpine-java:jdk8
+FROM java:openjdk-8-jdk-alpine
 
 MAINTAINER Chris Phillipson <fastnsilver@gmail.com>
 
 ENV MAVEN_VERSION="3.3.9" \
-    M2_HOME=/usr/lib/mvn
+    M2_HOME=/usr/lib/mvn \
+    MAVEN_OPTS="-Xms64m -Xmx128m"
 
 RUN apk add --update wget && \
   cd /tmp && \
