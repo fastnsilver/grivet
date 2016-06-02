@@ -20,6 +20,7 @@
 
 	<properties>
         <!-- Third-party library versions -->
+        <flyway.version>4.0.1</flyway.version>
         <guava.version>19.0</guava.version>
         <hikaricp.version>2.4.5</hikaricp.version>
         <jackson.version>2.7.3</jackson.version>
