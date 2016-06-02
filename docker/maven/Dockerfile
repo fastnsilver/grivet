@@ -4,7 +4,7 @@ MAINTAINER Chris Phillipson <fastnsilver@gmail.com>
 
 ENV MAVEN_VERSION="3.3.9" \
     M2_HOME=/usr/lib/mvn \
-    MAVEN_OPTS="-Xms64m -Xmx128m"
+    MAVEN_OPTS="-Xms64m -Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication"
 
 RUN apk add --update wget && \
   cd /tmp && \
