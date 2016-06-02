@@ -13,7 +13,15 @@ flyway:
     varcharQualifier: 
     createTableSuffix:
     longVarBinary:
- 
+
+logging:
+  level:
+    org.flyway: WARN
+    org.hibernate: WARN
+    org.springframework: WARN
+    com.zaxxer.hikari: WARN
+    com.fns.grivet: INFO
+     
 ---
 
 spring:
