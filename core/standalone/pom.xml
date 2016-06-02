@@ -51,24 +51,6 @@
             <scope>test</scope>
         </dependency>
         
-        
-        <!-- Spring Cloud -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-config-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
-        </dependency>
-
-        <!-- JDBC Drivers -->
-        <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
         <!-- Swagger -->
         <dependency>
             <groupId>io.github.robwin</groupId>
@@ -134,6 +116,10 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <mainClass>com.fns.grivet.AppInit</mainClass>
+                    <jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005</jvmArguments>
+                </configuration>
 			</plugin>
 
     		<plugin>
@@ -159,19 +145,6 @@
                          </configuration>
                      </execution>
                  </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>**/AppInit.*</exclude>
-                        <exclude>**/SwaggerConfig.*</exclude>
-                        <exclude>**/model/*</exclude>
-                        <exclude>**/monitoring/*</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
 		</plugins>
 	</build>

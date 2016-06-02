@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,7 +80,7 @@ public class IngestController {
     public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody String payload)
             throws IOException {
         JSONObject json = new JSONObject(payload);
-        ingestService.ingest(type, json);
+        ingestService.ingest(MessageBuilder.withPayload(json).setHeader("type", type).build());
         metricRegistry.counter(MetricRegistry.name("ingest", type, "count")).inc();
         log.info("Successfully ingested type [{}]", type);
         return ResponseEntity.accepted().build();
@@ -106,7 +107,7 @@ public class IngestController {
         for (int i = 0; i < numberOfTypesToCreate; i++) {
             jsonObject = json.getJSONObject(i);
             try {
-                ingestService.ingest(type, jsonObject);
+                ingestService.ingest(MessageBuilder.withPayload(jsonObject).setHeader("type", type).build());
                 metricRegistry.counter(MetricRegistry.name("ingest", type, "count")).inc();
                 log.info("Successfully ingested type [{}]", type);
             } catch (Exception e) {

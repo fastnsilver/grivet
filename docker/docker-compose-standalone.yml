@@ -1,0 +1,39 @@
+# DOCKER COMPOSE CONFIGURATION
+# This file uses the version 2 docker-compose file format, described here:
+# https://docs.docker.com/compose/compose-file/#version-2
+
+version: '2'
+
+services:
+  
+  ## INFRASTRUCTURE SERVICES
+  
+  ### API GATEWAY
+  api-gateway:
+    extends:
+      file: api-gateway.yml
+      service: zuul
+    links:
+      - springboot-admin
+      - discovery-service
+      - grivet-standalone
+
+
+  ## CORE SERVICE
+  
+  ### GRIVET STANDALONE
+  grivet-standalone:
+    image: fastnsilver/grivet-standalone
+    ports:
+      - 8081:8081
+    links:
+      - config-service
+      - discovery-service
+      - graphite
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
+      - MONITORING_STATSD_ENABLED=true
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx2G

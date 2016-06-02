@@ -1,9 +1,6 @@
 # Developer Notes
 
-This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.  It is initialized with:
-
-[AppInit.java](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/main/java/com/fns/grivet/AppInit.java)
-
+This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.  
 
 ## Prerequisites
 
@@ -109,7 +106,7 @@ docker-machine env dev
 #### Build images
 
 ```
-mvn clean install
+./build.sh
 ```
 
 
@@ -117,7 +114,7 @@ mvn clean install
 
 Assumes proper authentication credentials have been added to `$HOME/.m2/settings.xml`. See:
 
-* [Autenticating with Private Registries](https://github.com/spotify/docker-maven-plugin#authenticating-with-private-registries)
+* [Authenticating with Private Registries](https://github.com/spotify/docker-maven-plugin#authenticating-with-private-registries)
 
 ```
 mvn clean install -DpushImage
@@ -128,15 +125,17 @@ mvn clean install -DpushImage
 
 Visit [Dockerhub](https://hub.docker.com/u/fastnsilver/)
 
-Pull all the grivet images
+Pull all the `fastnsilver/grivet-*` images
 
 
 #### Run images
 
 ```
-cd docker
-docker-compose up -d
+./startup.sh {1}
 ```
+
+where `{1}` above would be replaced with either `standalone` or `pipeline`
+
 
 ##### Running a local development environment
 
@@ -176,9 +175,10 @@ CAdvisor          | 9080
 #### Stop images (and remove them)
 
 ```
-docker-compose stop
-docker-compose rm -f
+./shutdown.sh {1}
 ```
+
+where `{1}` above would be replaced with either `standalone` or `pipeline`
 
 
 ## Working with Maven Site 

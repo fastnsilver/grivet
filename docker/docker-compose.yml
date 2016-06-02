@@ -6,7 +6,6 @@ version: '2'
 
 services:
 
-
   ## INFRASTRUCTURE SERVICES
   
   ### PERSISTENT DATA VOLUME
@@ -110,18 +109,6 @@ services:
     volumes_from:
       - data
       
-  ### KAFKA
-  kafka:
-    image: spotify/kafka
-    ports:
-      - 2181:2181
-      - 9092:9092
-    environment:
-      - KAFKA_HEAP_OPTS="-Xmx1G -Xms128M"
-      - ADVERTISED_HOST=$DOCKER_IP
-      - ADVERTISED_PORT=9092
-      
-  
   ### DATABASE ADMINISTRATION
   
   # Thank you timhaak!
@@ -168,20 +155,6 @@ services:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx256m
   
-  ### ZUUL, API GATEWAY
-  api-gateway:
-    image: fastnsilver/grivet-api-gateway
-    ports:
-      - 8080:8080
-    links:
-      - springboot-admin
-      - discovery-service
-      - grivet-standalone
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx256m
-  
   ### SPRING BOOT SERVICE ADMINISTRATION
   springboot-admin:
     image: fastnsilver/grivet-boot-admin
@@ -193,23 +166,3 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m
-  
-  
-  ## CORE SERVICES
-  
-  ### GRIVET SERVICE
-  grivet-standalone:
-    image: fastnsilver/grivet-standalone
-    ports:
-      - 8081:8081
-    links:
-      - config-service
-      - discovery-service
-      - graphite
-      - db
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
-      - MONITORING_STATSD_ENABLED=true
-      - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx2G

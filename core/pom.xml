@@ -25,6 +25,24 @@
         <module>standalone</module>
         <module>ui</module>
         <module>test-resources</module>
+        <module>shared-config</module>
     </modules>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/AppInit.*</exclude>
+                        <exclude>**/SwaggerConfig.*</exclude>
+                        <exclude>**/model/*</exclude>
+                        <exclude>**/monitoring/*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

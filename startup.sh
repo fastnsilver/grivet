@@ -2,6 +2,13 @@
 
 set -e
 
+if [ $# -ne 1 ]; then
+    echo "Usage: ./startup.sh standalone|pipeline"
+    exit 1
+fi
+
+suffix=$1
+
 # Change directories
 cd docker
 
@@ -34,7 +41,7 @@ while [ -z ${DISCOVERY_SERVICE_READY} ]; do
 done
 
 # Start the other containers
-docker-compose up -d
+docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml up -d
 
 # Attach to the log output of the cluster
-docker-compose logs
+docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml logs

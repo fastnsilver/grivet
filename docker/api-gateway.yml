@@ -1,0 +1,18 @@
+# COMMON SERVICES
+
+# This file uses the version 2 docker-compose file format, described here:
+# https://docs.docker.com/compose/compose-file/#version-2
+
+version: '2'
+
+services:
+
+  ### ZUUL, API GATEWAY
+  zuul:
+    image: fastnsilver/grivet-api-gateway
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx256m

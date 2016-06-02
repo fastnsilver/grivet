@@ -18,7 +18,7 @@ package com.fns.grivet.api;
 import static springfox.documentation.builders.PathSelectors.regex;
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
-import java.time.LocalDate;
+import com.fasterxml.classmate.TypeResolver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import com.fasterxml.classmate.TypeResolver;
+import java.time.LocalDate;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.schema.WildcardType;
@@ -60,7 +60,7 @@ public class SwaggerConfig {
                                 typeResolver.resolve(WildcardType.class))
                         )
                 .select()
-                .paths(regex("^(/query|/register|/store|/v2/api-docs).*$"))
+                .paths(regex("^(/query|/type/register|/type/store|/v2/api-docs).*$"))
                 .build();
     }
 

@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -75,6 +76,7 @@ public class EntityController {
         this.metricRegistry = metricRegistry;
     }
     
+    @Profile("!no-http")
     @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "/{type}", method = RequestMethod.POST, 
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -92,6 +94,7 @@ public class EntityController {
         return ResponseEntity.noContent().build();
     }
 
+    @Profile("!no-http")
     @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "/batch/{type}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/type/store/batch/{type}")

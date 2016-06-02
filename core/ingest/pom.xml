@@ -46,6 +46,11 @@
         </dependency>
         <dependency>
             <groupId>com.fns</groupId>
+            <artifactId>grivet-shared-config</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fns</groupId>
             <artifactId>grivet-test-resources</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
@@ -97,7 +102,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-stream-kafka</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>com.101tec</groupId>
             <artifactId>zkclient</artifactId>
@@ -122,6 +127,27 @@
             <artifactId>jsonassert</artifactId>
             <scope>test</scope>
         </dependency>
+        
     </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>com.fns.grivet.AppInit</mainClass>
+                    <jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005</jvmArguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

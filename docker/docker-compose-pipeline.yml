@@ -1,0 +1,104 @@
+# DOCKER COMPOSE CONFIGURATION
+# This file uses the version 2 docker-compose file format, described here:
+# https://docs.docker.com/compose/compose-file/#version-2
+
+version: '2'
+
+services:
+
+
+  ## INFRASTRUCTURE SERVICES
+     
+  ### API GATEWAY   
+  api-gateway:
+    extends:
+      file: api-gateway.yml
+      service: zuul
+    links:
+      - springboot-admin
+      - discovery-service
+      - grivet-ingest
+      - grivet-admin
+      - grivet-persist
+      - grivet-query
+      
+  ### KAFKA
+  kafka:
+    image: spotify/kafka
+    ports:
+      - 2181:2181
+      - 9092:9092
+    environment:
+      - KAFKA_HEAP_OPTS="-Xmx1G -Xms128M"
+      - ADVERTISED_HOST=$DOCKER_IP
+      - ADVERTISED_PORT=9092
+  
+  
+  ## CORE SERVICES
+  
+  ### GRIVET INGEST
+  grivet-ingest:
+    image: fastnsilver/grivet-ingest
+    ports:
+      - 8081:8081
+    links:
+      - config-service
+      - discovery-service
+      - graphite
+      - kafka
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - MONITORING_STATSD_ENABLED=true
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx512m
+
+  ### GRIVET ADMIN
+  grivet-admin:
+    image: fastnsilver/grivet-admin
+    ports:
+      - 8085:8085
+    links:
+      - config-service
+      - discovery-service
+      - graphite
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
+      - MONITORING_STATSD_ENABLED=true
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx256m
+  
+  ### GRIVET PERSIST
+  grivet-persist:
+    image: fastnsilver/grivet-persist
+    ports:
+      - 8082:8082
+    links:
+      - config-service
+      - discovery-service
+      - graphite
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,no-http
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
+      - MONITORING_STATSD_ENABLED=true
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx512m
+  
+  ### GRIVET QUERY
+  grivet-query:
+    image: fastnsilver/grivet-query
+    ports:
+      - 8083:8083
+    links:
+      - config-service
+      - discovery-service
+      - graphite
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
+      - MONITORING_STATSD_ENABLED=true
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx512m

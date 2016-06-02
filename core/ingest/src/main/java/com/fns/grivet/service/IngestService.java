@@ -19,10 +19,12 @@ import com.fns.grivet.repo.ClassRepository;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -33,6 +35,8 @@ public class IngestService {
     @EnableBinding(Source.class)
     static class EventSource { }
     
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     private final ClassRepository classRepository;
     private final SchemaValidator schemaValidator;
     private final Source source;
@@ -44,18 +48,19 @@ public class IngestService {
         this.source = source;
     }
 
-    public void ingest(String type, JSONObject payload) {
+    public void ingest(Message<JSONObject> message) {
+        log.debug("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
+                message.getPayload().toString());
+        String type = message.getHeaders().get("type", String.class);
         com.fns.grivet.model.Class c = classRepository.findByName(type);
         Assert.notNull(c, String.format("Type [%s] is not registered!", type));
         if (c.isValidatable()) {
-            ProcessingReport report = schemaValidator.validate(type, payload);
+            ProcessingReport report = schemaValidator.validate(type, message.getPayload());
             Assert.isTrue(report.isSuccess(),
                     String.format("Cannot ingest [%s]! Type does not conform to JSON Schema definition.\n %s", type,
                             report.toString()));
         }
-        // TODO Add Client-ID / User plus Transaction-ID as message headers
-        // If Transaction-ID is not present manufacture one for tracking purposes
-        source.output().send(MessageBuilder.withPayload(payload).setHeader("type", type).build());
+        source.output().send(message);
     }
     
 }

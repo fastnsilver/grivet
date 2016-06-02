@@ -1,5 +1,6 @@
 package com.fns.grivet.config;
 
+import com.codahale.metrics.MetricRegistry;
 import com.fns.grivet.service.EntityService;
 import com.fns.grivet.service.PersistenceService;
 
@@ -11,8 +12,8 @@ import org.springframework.cloud.stream.messaging.Sink;
 @ConditionalOnProperty(prefix = "app.persistence.sink", name = "enabled", havingValue = "true")
 public class PersistenceSinkConfig {
 
-    public PersistenceService persistenceService(EntityService entityService) {
-        return new PersistenceService(entityService);
+    public PersistenceService persistenceService(EntityService entityService, MetricRegistry metricRegistry) {
+        return new PersistenceService(entityService, metricRegistry);
     }
 
 }
