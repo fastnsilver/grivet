@@ -9,11 +9,11 @@
 	    	<theme>bootswatch-cerulean</theme>
 	      	<highlightJs>true</highlightJs>
 	      	<brand>
-	        	<name>Grivet (Standalone)</name>
-	        	<href>https://github.com/fastnsilver/grivet/core/standalone</href>
+	        	<name>Grivet (Persist)</name>
+	        	<href>https://github.com/fastnsilver/grivet/core/persist</href>
 	      	</brand>
 	      	<bottomNav>
-		        <column>Overview|User</column>
+		        <column>Overview</column>
 		        <column>Developer</column>
 		        <column>Stats|Updates</column>
 	      	</bottomNav>
@@ -41,9 +41,6 @@
     	<menu name="Overview">
             <item name="About" href="index.html" />
             <item name="Project License" href="license.html" />
-        </menu>
-        <menu name="User">
-            <item name="API" href="rest-api.html" />
         </menu>
         <menu name="Developer">
             <item name="JavaDocs" href="apidocs/index.html" />
