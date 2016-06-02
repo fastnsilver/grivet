@@ -50,7 +50,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - MONITORING_STATSD_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx512m
+      - JAVA_OPTS="-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication"
 
   ### GRIVET ADMIN
   grivet-admin:
@@ -67,7 +67,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
       - MONITORING_STATSD_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx256m
+      - JAVA_OPTS="-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication"
   
   ### GRIVET PERSIST
   grivet-persist:
@@ -84,7 +84,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
       - MONITORING_STATSD_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx512m
+      - JAVA_OPTS="-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication"
   
   ### GRIVET QUERY
   grivet-query:
@@ -101,4 +101,4 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
       - MONITORING_STATSD_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx512m
+      - JAVA_OPTS="-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication"
