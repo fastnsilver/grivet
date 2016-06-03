@@ -96,11 +96,33 @@ The instruction below provisions a Docker host named `dev` with 2 CPU, 10Gb RAM 
 docker-machine create --driver virtualbox --virtualbox-cpu-count "2" --virtualbox-disk-size "40000" --virtualbox-memory "10240" dev
 ```
 
+You could also execute the following script which will perform the first step above on your behalf
+
+```
+./provision.sh {1}
+```
+
+where `{1}` above would be replaced with whatever you want to name your docker-machine
+
+Caveat: You should have at least 16GB of memory and 40GB of disk space on your laptop or workstation.
+
+
 To begin using it
 
 ```
-docker-machine env dev
+eval $(docker-machine env dev)
 ```
+
+
+Lastly, to destroy your docker machine, you could execute
+
+```
+./destroy.sh {1}
+```
+
+where `{1}` above would be replaced with an existing docker-machine name
+
+Caution! This will remove the VM hosting all your Docker images.
 
 
 #### Build images
@@ -164,7 +186,7 @@ Eureka Discovery  | 8761
 Graphite          | 8000
 Grafana           | 3000
 Grivet            | 8081
-PHP MySQL Admin   | 8082
+PHP MySQL Admin   | 4000
 MySQL             | 3306
 Elasticsearch     | 9200
 Logstash          | 5000

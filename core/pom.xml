@@ -17,6 +17,7 @@
 
     <modules>
         <module>model</module>
+        <module>utils</module>
         <module>services</module>
         <module>admin</module>
         <module>ingest</module>
@@ -28,6 +29,26 @@
         <module>shared-config</module>
     </modules>
     
+    <properties>
+        <!-- Third-party library versions -->
+        <flyway.version>4.0.1</flyway.version>
+        <guava.version>19.0</guava.version>
+        <hikaricp.version>2.4.5</hikaricp.version>
+        <jackson.version>2.7.3</jackson.version>
+        <json-unit.version>1.9.0</json-unit.version>
+        <json.version>20160212</json.version>
+        <json-schema-validator.version>2.2.6</json-schema-validator.version>
+        <mariadb.version>1.4.5</mariadb.version>
+        <readytalk-metrics.version>4.1.2</readytalk-metrics.version>
+        <rest-assured.version>2.9.0</rest-assured.version>
+        <springfox.version>2.4.0</springfox.version>
+        <scala.version>2.10.6</scala.version>
+        <swagger.version>1.5.9</swagger.version>
+        <swagger2markup.version>0.9.2</swagger2markup.version>
+        <stormpath.version>1.0.RC9.2</stormpath.version>
+        <zkclient.version>0.8</zkclient.version>
+    </properties>
+    
     <build>
         <plugins>
             <plugin>
@@ -35,7 +56,7 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>**/AppInit.*</exclude>
+                        <exclude>**/*Init.*</exclude>
                         <exclude>**/SwaggerConfig.*</exclude>
                         <exclude>**/model/*</exclude>
                         <exclude>**/monitoring/*</exclude>

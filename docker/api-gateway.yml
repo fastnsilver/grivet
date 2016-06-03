@@ -1,4 +1,4 @@
-# COMMON SERVICES
+# API GATEWAY
 
 # This file uses the version 2 docker-compose file format, described here:
 # https://docs.docker.com/compose/compose-file/#version-2
@@ -7,7 +7,7 @@ version: '2'
 
 services:
 
-  ### ZUUL, API GATEWAY
+  ### NETFLIX ZUUL
   zuul:
     image: fastnsilver/grivet-api-gateway
     ports:
@@ -15,4 +15,4 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx256m
+      - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication

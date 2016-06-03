@@ -800,12 +800,25 @@
 					        <serverId>docker.io</serverId>
 						</configuration>
 						<executions>
+                            <execution>
+                                <id>remove-docker-image</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>removeImage</goal>
+                                </goals>
+                                <configuration>
+                                    <imageName>fastnsilver/${project.artifactId}</imageName>
+                                </configuration>
+                            </execution>
 							<execution>
 								<id>build-docker-image</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>build</goal>
 								</goals>
+                                <configuration>
+                                    <noCache>true</noCache>
+                                </configuration>
 							</execution>
 							<execution>
 								<id>tag-docker-image</id>

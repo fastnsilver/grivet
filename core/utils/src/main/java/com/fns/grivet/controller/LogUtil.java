@@ -33,11 +33,12 @@ class LogUtil {
         if (args != null && args.length > 0) {
             Arrays.stream(args).forEach(a -> sb.append(a));
         }
-        sb.append("--\n");
-        sb.append(jsonObject.toString());
-        sb.append("--\n");
-        String message = sb.toString();
-        return message;
+        if (jsonObject != null) {
+            sb.append("--\n");
+            sb.append(jsonObject.toString());
+            sb.append("--\n");
+        }
+        return sb.toString();
     }
     
 } 

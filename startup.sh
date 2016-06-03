@@ -45,3 +45,6 @@ docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml up -d
 
 # Attach to the log output of the cluster
 docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml logs
+
+# Display status of cluster
+docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml ps

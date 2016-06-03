@@ -18,15 +18,7 @@
 	<url>https://github.com/fastnsilver/grivet</url>
 
 
-	<properties>
-        <json-unit.version>1.9.0</json-unit.version>
-        <rest-assured.version>2.9.0</rest-assured.version>
-        <scala.version>2.10.6</scala.version>
-        <swagger.version>1.5.9</swagger.version>
-        <zkclient.version>0.8</zkclient.version>
-    </properties>
-
-     <dependencyManagement>
+    <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -124,6 +116,10 @@
                     <artifactId>slf4j-log4j12</artifactId>
                     <groupId>org.slf4j</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -161,7 +157,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.fns.grivet.AppInit</mainClass>
                     <jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005</jvmArguments>
                 </configuration>
             </plugin>

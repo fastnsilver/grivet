@@ -18,18 +18,20 @@ package com.fns.grivet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Profile;
 
 /**
  * Bootstraps the application
  * 
  * @author Chris Phillipson
  */
+@Profile("!standalone")
 @SpringBootApplication
 @EnableDiscoveryClient
-public class AppInit {
+public class AdminInit {
     
     public static void main(String[] args) {
-        SpringApplication.run(AppInit.class, args);
+        SpringApplication.run(AdminInit.class, args);
     }
 
 }

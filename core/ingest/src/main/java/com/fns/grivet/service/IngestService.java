@@ -15,9 +15,6 @@
  */
 package com.fns.grivet.service;
 
-import com.fns.grivet.repo.ClassRepository;
-import com.github.fge.jsonschema.core.report.ProcessingReport;
-
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,14 +34,10 @@ public class IngestService {
     
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final ClassRepository classRepository;
-    private final SchemaValidator schemaValidator;
     private final Source source;
     
     @Autowired
-    public IngestService(ClassRepository classRepository, SchemaValidator schemaValidator, Source source) {
-        this.classRepository = classRepository;
-        this.schemaValidator = schemaValidator;
+    public IngestService(Source source) {
         this.source = source;
     }
 
@@ -52,14 +45,7 @@ public class IngestService {
         log.debug("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
                 message.getPayload().toString());
         String type = message.getHeaders().get("type", String.class);
-        com.fns.grivet.model.Class c = classRepository.findByName(type);
-        Assert.notNull(c, String.format("Type [%s] is not registered!", type));
-        if (c.isValidatable()) {
-            ProcessingReport report = schemaValidator.validate(type, message.getPayload());
-            Assert.isTrue(report.isSuccess(),
-                    String.format("Cannot ingest [%s]! Type does not conform to JSON Schema definition.\n %s", type,
-                            report.toString()));
-        }
+        Assert.hasText(type, "Type must not be null or empty!");
         source.output().send(message);
     }
     
