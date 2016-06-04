@@ -23,18 +23,36 @@ services:
       - grivet-query
       
   ### KAFKA
-  kafka:
-    image: spotify/kafka
+  #### @see http://wurstmeister.github.io/kafka-docker/
+  zookeeper:
+    image: wurstmeister/zookeeper
     ports:
       - 2181:2181
+      
+  kafka:
+    image: wurstmeister/kafka
+    ports:
       - 9092:9092
+    links:
+      - zookeeper:zk
     environment:
-      - KAFKA_HEAP_OPTS=-Xmx1G -Xms128M
-      - ADVERTISED_HOST=$DOCKER_IP
-      - ADVERTISED_PORT=9092
+      KAFKA_ADVERTISED_HOST_NAME: $DOCKER_IP
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    
+  kafka-manager:
+    image: sheepkiller/kafka-manager
+    ports:
+      - 29000:9000
+    environment:
+      ZK_HOSTS: zk:2181
+    links:
+      - zookeeper:zk
   
   
   ## CORE SERVICES
+  ### @see http://docs.spring.io/spring-cloud-stream/docs/current-SNAPSHOT/reference/htmlsingle/#_kafka_specific_settings
   
   ### GRIVET INGEST
   grivet-ingest:
@@ -46,11 +64,14 @@ services:
       - discovery-service
       - graphite
       - kafka
+      - zookeeper:zk
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - MONITORING_STATSD_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zookeeper
 
   ### GRIVET ADMIN
   grivet-admin:
@@ -79,12 +100,16 @@ services:
       - discovery-service
       - graphite
       - db
+      - kafka
+      - zookeeper:zk
     environment:
       - SPRING_PROFILES_ACTIVE=docker,no-http
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
       - MONITORING_STATSD_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zookeeper
   
   ### GRIVET QUERY
   grivet-query:

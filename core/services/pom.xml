@@ -12,8 +12,8 @@
     <artifactId>grivet-services</artifactId>
     <packaging>jar</packaging>
 
-    <name>Grivet Service</name>
-    <description>Common service and repository implementation.</description>
+    <name>Grivet Services</name>
+    <description>Common service and repository implementations.</description>
     <inceptionYear>2016</inceptionYear>
     <url>https://github.com/fastnsilver/grivet</url>
 
