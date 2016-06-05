@@ -1,8 +1,15 @@
+sudo: required
+
 language: bash
+
 services:
   - docker
-script:
+
+before_install: 
   - docker build -t fastnsilver/maven:3.3.9-open-jdk8 ./docker/maven
+
+script:
   - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources fastnsilver/maven:3.3.9-open-jdk8 mvn clean install
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)

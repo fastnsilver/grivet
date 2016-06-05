@@ -1,6 +1,21 @@
 server:
-  port: 8080
+  port: 80
 
+zuul:
+  ignored-services: '*'
+  ignoredPatterns: /**/api/**
+  routes:
+    grivet-admin: /admin/**
+    grivet-ingest: /ingest/**
+    grivet-persist: /persist/**
+    grivet-query: /query/**
+    grivet-standalone: /standalone/**
+    springboot-admin: /bootadmin/**
+
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 60000
+  
 ---
 
 spring:
@@ -8,7 +23,9 @@ spring:
 
 eureka:
   instance:
-    preferIpAddress: true
+    prefer-ip-address: true
   client:
+    registerWithEureka: true
+    fetchRegistry: true
     serviceUrl:
       defaultZone: http://discovery-service:8761/eureka/

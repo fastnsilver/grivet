@@ -9,13 +9,14 @@ services:
   ## INFRASTRUCTURE SERVICES
   
   ### API GATEWAY
-  api-gateway:
+  edge-service:
     extends:
       file: api-gateway.yml
       service: zuul
     links:
-      - springboot-admin
       - discovery-service
+      - config-service
+      - springboot-admin
       - grivet-standalone
 
 

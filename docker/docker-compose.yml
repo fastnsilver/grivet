@@ -128,8 +128,6 @@ services:
     image: fastnsilver/grivet-config-server
     ports:
       - 8888:8888
-    links:
-      - discovery-service
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP

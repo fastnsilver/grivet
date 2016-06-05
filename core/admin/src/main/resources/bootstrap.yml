@@ -1,12 +1,6 @@
+server:
+  port: 8085
+
 spring:
   application:
     name: @project.artifactId@
-    
-eureka:
-  instance:
-    hostname: localhost
-    metadata-map:
-      instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-  client:
-    service-url:
-      default-zone: http://${eureka.instance.hostname}:8761/eureka/
