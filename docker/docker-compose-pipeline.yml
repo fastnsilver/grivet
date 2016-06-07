@@ -38,7 +38,7 @@ services:
       - zookeeper:zk
     environment:
       KAFKA_ADVERTISED_HOST_NAME: $DOCKER_IP
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ZOOKEEPER_CONNECT: zk:2181
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     
@@ -71,8 +71,6 @@ services:
       - MONITORING_STATSD_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
-      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zookeeper
 
   ### GRIVET ADMIN
   grivet-admin:
@@ -109,8 +107,6 @@ services:
       - MONITORING_STATSD_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
-      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zookeeper
   
   ### GRIVET QUERY
   grivet-query:
