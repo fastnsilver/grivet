@@ -9,7 +9,7 @@ before_install:
   - docker build -t fastnsilver/maven:3.3.9-open-jdk8 ./docker/maven
 
 script:
-  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources fastnsilver/maven:3.3.9-open-jdk8 mvn clean install
+  - docker run -it --rm --name grivet -v "$(pwd)":/root/sources -w /root/sources fastnsilver/maven:3.3.9-open-jdk8 mvn clean install -DskipTests=true; mvn clean verify
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
