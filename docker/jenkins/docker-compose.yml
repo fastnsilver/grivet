@@ -1,0 +1,16 @@
+# On a Mac, execute 
+#    dscacheutil -q user | grep -A 3 -B 2 -e uid:\ 5'[0-9][0-9]'
+# in a Terminal instance to obtain the uid:gid for the account that runs your docker-machine instance
+# You will want to edit the command below if your uid:gid differ
+jenkinsFileVolume:
+  image: busybox
+  command: "mkdir /data && chown 502:20 /data && chmod 700 /data"
+
+jenkins:
+  build: .
+  privileged: true
+  ports:
+    - 9080:8080
+    - 50000:50000
+  volumes_from:
+   - jenkinsFileVolume
