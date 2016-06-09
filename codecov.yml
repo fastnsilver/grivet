@@ -1,0 +1,7 @@
+codecov:
+  token: f992ec75-149b-4163-8d43-d4d031d9fd48
+comment:
+  layout: header, changes, diff
+coverage:
+  status:
+    patch: false
