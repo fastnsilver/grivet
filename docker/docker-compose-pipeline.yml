@@ -1,0 +1,126 @@
+# DOCKER COMPOSE CONFIGURATION
+# This file uses the version 2 docker-compose file format, described here:
+# https://docs.docker.com/compose/compose-file/#version-2
+
+version: '2'
+
+services:
+
+
+  ## INFRASTRUCTURE SERVICES
+     
+  ### API GATEWAY   
+  edge-service:
+    extends:
+      file: api-gateway.yml
+      service: zuul
+    links:
+      - discovery-service
+      - config-service
+      - springboot-admin
+      - grivet-ingest
+      - grivet-admin
+      - grivet-persist
+      - grivet-query
+      
+  ### KAFKA
+  #### @see http://wurstmeister.github.io/kafka-docker/
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - 2181:2181
+      
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - 9092:9092
+    links:
+      - zookeeper:zk
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: $DOCKER_IP
+      KAFKA_ZOOKEEPER_CONNECT: zk:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    
+  kafka-manager:
+    image: sheepkiller/kafka-manager
+    ports:
+      - 29000:9000
+    environment:
+      ZK_HOSTS: zk:2181
+    links:
+      - zookeeper:zk
+  
+  
+  ## CORE SERVICES
+  ### @see http://docs.spring.io/spring-cloud-stream/docs/current-SNAPSHOT/reference/htmlsingle/#_kafka_specific_settings
+  
+  ### GRIVET INGEST
+  grivet-ingest:
+    image: fastnsilver/grivet-ingest
+    ports:
+      - 8081:8081
+    links:
+      - config-service
+      - discovery-service
+      - graphite
+      - kafka
+      - zookeeper:zk
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - MONITORING_STATSD_ENABLED=true
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
+
+  ### GRIVET ADMIN
+  grivet-admin:
+    image: fastnsilver/grivet-admin
+    ports:
+      - 8085:8085
+    links:
+      - config-service
+      - discovery-service
+      - graphite
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
+      - MONITORING_STATSD_ENABLED=true
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
+  
+  ### GRIVET PERSIST
+  grivet-persist:
+    image: fastnsilver/grivet-persist
+    ports:
+      - 8082:8082
+    links:
+      - config-service
+      - discovery-service
+      - graphite
+      - db
+      - kafka
+      - zookeeper:zk
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,no-http
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
+      - MONITORING_STATSD_ENABLED=true
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
+  
+  ### GRIVET QUERY
+  grivet-query:
+    image: fastnsilver/grivet-query
+    ports:
+      - 8083:8083
+    links:
+      - config-service
+      - discovery-service
+      - graphite
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
+      - MONITORING_STATSD_ENABLED=true
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication

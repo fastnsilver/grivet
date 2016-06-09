@@ -81,7 +81,7 @@
         <!-- Maven -->
         <apiviz.version>1.3.2.GA</apiviz.version>
         <asciidoctor-maven-plugin.version>1.5.3</asciidoctor-maven-plugin.version>
-        <docker-maven-plugin.version>0.4.3</docker-maven-plugin.version>
+        <docker-maven-plugin.version>0.4.10</docker-maven-plugin.version>
         <downloads-maven-plugin.version>0.6</downloads-maven-plugin.version>
         <doxia-module-markdown.version>1.6</doxia-module-markdown.version>
         <findbugs-maven-plugin.version>3.0.3</findbugs-maven-plugin.version>
@@ -800,12 +800,25 @@
 					        <serverId>docker.io</serverId>
 						</configuration>
 						<executions>
+                            <execution>
+                                <id>remove-docker-image</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>removeImage</goal>
+                                </goals>
+                                <configuration>
+                                    <imageName>fastnsilver/${project.artifactId}</imageName>
+                                </configuration>
+                            </execution>
 							<execution>
 								<id>build-docker-image</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>build</goal>
 								</goals>
+                                <configuration>
+                                    <noCache>true</noCache>
+                                </configuration>
 							</execution>
 							<execution>
 								<id>tag-docker-image</id>

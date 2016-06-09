@@ -1,9 +1,6 @@
 # Developer Notes
 
-This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.  It is initialized with:
-
-[AppInit.java](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/main/java/com/fns/grivet/AppInit.java)
-
+This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.  
 
 ## Prerequisites
 
@@ -29,7 +26,7 @@ This option is only suitable for running the `grivet` service
 First, change directories
 
 ```
-cd core/grivet
+cd core/grivet-standalone
 ```
 
 Then
@@ -49,7 +46,7 @@ where `<profile-name>` could be replaced with `h2` or `mysql`
 Or 
 
 ```
-$ java -jar grivet-x.x.x.jar
+$ java -jar grivet-standalone-x.x.x.jar
 ```
 
 where `x.x.x` is a version like `0.0.1-SNAPSHOT`
@@ -57,7 +54,7 @@ where `x.x.x` is a version like `0.0.1-SNAPSHOT`
 Or
 
 ```
-$ java -jar grivet-x.x.x.jar -Dspring.profiles.active=<profile-name>
+$ java -jar grivet-standalone-x.x.x.jar -Dspring.profiles.active=<profile-name>
 ```
 
 likewise replacing `<profile-name>`
@@ -99,17 +96,39 @@ The instruction below provisions a Docker host named `dev` with 2 CPU, 10Gb RAM 
 docker-machine create --driver virtualbox --virtualbox-cpu-count "2" --virtualbox-disk-size "40000" --virtualbox-memory "10240" dev
 ```
 
+You could also execute the following script which will perform the first step above on your behalf
+
+```
+./provision.sh {1}
+```
+
+where `{1}` above would be replaced with whatever you want to name your docker-machine
+
+Caveat: You should have at least 16GB of memory and 40GB of disk space on your laptop or workstation.
+
+
 To begin using it
 
 ```
-docker-machine env dev
+eval $(docker-machine env dev)
 ```
+
+
+Lastly, to destroy your docker machine, you could execute
+
+```
+./destroy.sh {1}
+```
+
+where `{1}` above would be replaced with an existing docker-machine name
+
+Caution! This will remove the VM hosting all your Docker images.
 
 
 #### Build images
 
 ```
-mvn clean install
+./build.sh
 ```
 
 
@@ -117,7 +136,7 @@ mvn clean install
 
 Assumes proper authentication credentials have been added to `$HOME/.m2/settings.xml`. See:
 
-* [Autenticating with Private Registries](https://github.com/spotify/docker-maven-plugin#authenticating-with-private-registries)
+* [Authenticating with Private Registries](https://github.com/spotify/docker-maven-plugin#authenticating-with-private-registries)
 
 ```
 mvn clean install -DpushImage
@@ -128,15 +147,17 @@ mvn clean install -DpushImage
 
 Visit [Dockerhub](https://hub.docker.com/u/fastnsilver/)
 
-Pull all the grivet images
+Pull all the `fastnsilver/grivet-*` images
 
 
 #### Run images
 
 ```
-cd docker
-docker-compose up -d
+./startup.sh {1}
 ```
+
+where `{1}` above would be replaced with either `standalone` or `pipeline`
+
 
 ##### Running a local development environment
 
@@ -165,7 +186,7 @@ Eureka Discovery  | 8761
 Graphite          | 8000
 Grafana           | 3000
 Grivet            | 8081
-PHP MySQL Admin   | 8082
+PHP MySQL Admin   | 4000
 MySQL             | 3306
 Elasticsearch     | 9200
 Logstash          | 5000
@@ -176,9 +197,10 @@ CAdvisor          | 9080
 #### Stop images (and remove them)
 
 ```
-docker-compose stop
-docker-compose rm -f
+./shutdown.sh {1}
 ```
+
+where `{1}` above would be replaced with either `standalone` or `pipeline`
 
 
 ## Working with Maven Site 

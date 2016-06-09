@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.fns</groupId>
+		<artifactId>grivet-core-parent</artifactId>
+		<version>0.3.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>grivet-standalone</artifactId>
+	<packaging>jar</packaging>
+
+	<name>Grivet Standalone</name>
+	<description>Standalone variant of a micro-service capable of self-service modeling and persistence.</description>
+	<inceptionYear>2015</inceptionYear>
+	<url>https://github.com/fastnsilver/grivet</url>
+
+
+    <dependencies>
+        
+        <dependency>
+            <groupId>com.fns</groupId>
+            <artifactId>grivet-admin</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fns</groupId>
+            <artifactId>grivet-persist</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fns</groupId>
+            <artifactId>grivet-query</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fns</groupId>
+            <artifactId>grivet-test-resources</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Swagger -->
+        <dependency>
+            <groupId>io.github.robwin</groupId>
+            <artifactId>swagger2markup</artifactId>
+            <version>${swagger2markup.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-staticdocs</artifactId>
+            <version>${springfox.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        
+        <!-- Rest Assured -->
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>net.javacrumbs.json-unit</groupId>
+            <artifactId>json-unit</artifactId>
+            <version>${json-unit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+    </dependencies>
+
+
+	<build>
+        <plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005</jvmArguments>
+                </configuration>
+			</plugin>
+
+    		<plugin>
+                 <groupId>org.asciidoctor</groupId>
+                 <artifactId>asciidoctor-maven-plugin</artifactId>
+                 <version>${asciidoctor-maven-plugin.version}</version>
+                 <executions>
+                     <execution>
+                         <id>generate-docs</id>
+                         <phase>package</phase>
+                         <goals>
+                             <goal>process-asciidoc</goal>
+                         </goals>
+                         <configuration>
+                             <backend>html</backend>
+                             <attributes>
+                                 <toclevels>2</toclevels>
+                                 <toc>left</toc>
+                                 <doctype>book</doctype>
+                                 <generated>${project.build.directory}/docs/asciidoc/generated</generated>
+                             </attributes>
+                             <outputDirectory>${project.build.directory}/site</outputDirectory>
+                         </configuration>
+                     </execution>
+                 </executions>
+            </plugin>
+		</plugins>
+	</build>
+
+</project>

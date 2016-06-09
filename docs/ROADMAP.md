@@ -45,6 +45,7 @@ This project will remain humble in its design and has no aspirations to match th
 - [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
 - [ ] Host demo site on AWS EC2 Container Service
 - [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
+- [x] Apache Kafka [integration](https://github.com/fastnsilver/grivet/issues/7)
 
 ## 0.4.0
 
@@ -57,5 +58,4 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 0.6.0
 
-- [ ] Apache Kafka [integration](https://github.com/fastnsilver/grivet/issues/7)
 - [ ] Gradle build (as an alternative)
