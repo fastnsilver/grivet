@@ -1,5 +1,5 @@
 # Grivet 
-[![Build Status](https://travis-ci.org/fastnsilver/grivet.svg)](https://travis-ci.org/fastnsilver/grivet)
+[![Build Status](https://drone.io/github.com/fastnsilver/grivet/status.png)](https://drone.io/github.com/fastnsilver/grivet/latest)
 [![codecov.io](https://codecov.io/github/fastnsilver/grivet/coverage.svg?branch=master)](https://codecov.io/github/fastnsilver/grivet?branch=master)
 [![Apache License 2](https://img.shields.io/badge/license-ASF2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
