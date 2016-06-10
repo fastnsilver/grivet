@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>com.fns</groupId>
-        <artifactId>grivet-core-parent</artifactId>
+        <artifactId>grivet-deployables-parent</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
 
-	<artifactId>grivet-query</artifactId>
-	<packaging>jar</packaging>
+    <artifactId>grivet-admin</artifactId>
+    <packaging>jar</packaging>
 
-	<name>Grivet Query</name>
-	<description>Query end-points.</description>
-	<inceptionYear>2016</inceptionYear>
-	<url>https://github.com/fastnsilver/grivet</url>
+    <name>Grivet Admin</name>
+    <description>Registration end-points.</description>
+    <inceptionYear>2016</inceptionYear>
+    <url>https://github.com/fastnsilver/grivet</url>
 
 
     <dependencies>
@@ -24,7 +24,7 @@
             <artifactId>grivet-services</artifactId>
             <version>${project.version}</version>
         </dependency>
-				<dependency>
+        <dependency>
             <groupId>com.fns</groupId>
             <artifactId>grivet-shared-config</artifactId>
             <version>${project.version}</version>
