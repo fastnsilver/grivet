@@ -39,7 +39,7 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 0.3.0
 
-- [ ] Introduce reverse [proxy](https://github.com/fastnsilver/grivet/issues/9)
+- [ ] Introduce reverse [proxy](https://github.com/fastnsilver/grivet/issues/9), adjust endpoints behind this gateway
 - [ ] [Upgrade](https://github.com/fastnsilver/grivet/issues/8) Docker Compose configuration
 - [ ] Password-protect service administration and discovery
 - [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
