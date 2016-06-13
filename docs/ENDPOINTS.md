@@ -2,29 +2,33 @@
 
 ### Type Registration
 
-* GET `/type/register?showAll`
+* GET `/register?showAll`
 
 returns all registered types
 
-* GET `/type/register/{type}`
+* GET `/register/{type}`
 
 returns the registered type
 
-* POST `/type/register`
+* POST `/register`
 
-Sample POST request [TestType.json](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestType.json)
+Sample POST request [TestType.json](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/TestType.json)
 
-* POST `/type/schema/link`
+* POST `/register/types`
+
+Sample POST request [TestMultipleType.json](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/TestMultipleType.json)
+
+* POST `/schema`
 
 links a JSON Schema with a pre-registered type; subsequent `/store/{type}` requests will be validated against schema
 
-Sample POST request [TestTypeSchema.json](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestTypeSchema.json)
+Sample POST request [TestTypeSchema.json](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/TestTypeSchema.json)
 
-* PUT `/type/schema/unlink/{type}`
+* DELETE `/schema/{type}`
 
 unlinks existing JSON Schema from a pre-registered type; subsequent `/store/{type}` requests will NOT be validated against schema
 
-* DELETE `/type/register/{type}`
+* DELETE `/register/{type}`
 
 deletes a registered type; default configuration has cascading deletes enabled which means that any persistent data from prior POST `/store/{type}` requests will also be deleted; so use with caution!
 
@@ -33,15 +37,19 @@ However, if `spring.profiles.active` is set to `mysql` then when a DELETE reques
 
 ### Type Storage and Retrieval
 
-* POST `/type/store/{type}`
+* POST `/store/{type}`
 
-Sample POST request [TestTypeData.json](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestTypeData.json)
+Sample POST request [TestTypeData.json](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/TestTypeData.json)
 
-* GET `/type/store/{type}`
+* POST `/store/batch/{type}`
+
+Sample POST request [TestMultipleContactsData.json](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/TestMultipleContactsData.json)
+
+* GET `/store/{type}`
 
 returns records that were created within the last 7 days
 
-* GET `/type/store/{type}?createdTimeStart=yyyy-MM-ddTHH:mm:ss&createdTimeEnd=yyyy-MM-ddTHH:mm:ss`
+* GET `/store/{type}?createdTimeStart=yyyy-MM-ddTHH:mm:ss&createdTimeEnd=yyyy-MM-ddTHH:mm:ss`
 
 returns records that were created between `createdTimeStart` and `createdTimeEnd`
 
@@ -50,34 +58,34 @@ returns records that were created between `createdTimeStart` and `createdTimeEnd
 
 You may wish to review the ER diagram below to fully leverage this feature.  Currently, you are limited to registering and executing `SELECT` queries and `CALL`ing stored procedures.  
 
-* POST `/query`
+* POST `/namedQuery`
 
 Sample POST requests:
 
-* [SELECT](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestSelectQuery.json)
-* [CALL](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/TestSprocQuery.json)
+* [SELECT](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/TestSelectQuery.json)
+* [CALL](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/TestSprocQuery.json)
 
-Consult this [Stored Procedure](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/test/resources/db/hsqldb/V1_1__add_test_sproc.sql) example for a sample HSQLDB based implementation
+Consult this [Stored Procedure](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/db/hsqldb/V1_1__add_test_sproc.sql) example for a sample HSQLDB based implementation
 
-* DELETE `/query/{name}`
+* DELETE `/namedQuery/{name}`
 
 deletes the named query
 
-* GET `/query?showAll`
+* GET `/namedQuery?showAll`
 
 returns all named queries; displays: name, type, query, and parameters
 
-* GET `/query/{name}`
+* GET `/namedQuery/{name}`
 
 executes a named query that does not require parameters
 
-* GET `/query/{name}?<parameter_key1>=<parameter_value1>&<parameter_key2>=<parameter_key2>...`
+* GET `/namedQuery/{name}?<parameter_key1>=<parameter_value1>&<parameter_key2>=<parameter_key2>...`
 
 executes a named query consuming the parameters supplied in request
 
 ##### Example
 
-* GET `/query/getAttributesCreatedBefore?createdTime=2015-10-01T00:00:00`
+* GET `/namedQuery/getAttributesCreatedBefore?createdTime=2015-10-01T00:00:00`
 
 will execute the named query `getAttributesCreatedBefore` consuming the `createdTime` parameter value
 
@@ -98,16 +106,16 @@ where
 
 * `<constraint_key>` may be `c` or `constraint`
 * `<attribute_name>` is a registered attribute of the type
-* `<operator>` is one of [Operator](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/main/java/com/fns/grivet/query/Operator.java)
+* `<operator>` is one of [Operator](https://github.com/fastnsilver/grivet/blob/master/core/services/src/main/java/com/fns/grivet/query/Operator.java)
 * `value` is (depending upon the `operator`) either a single value or a comma-separated list of values
-* `conjunction` is one of [Conjunction](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/main/java/com/fns/grivet/query/Conjunction.java); this value is optional and if not defined then (for more than one constraint) each constraint is `OR`ed. All conjunctions must be homogenously defined!
+* `conjunction` is one of [Conjunction](https://github.com/fastnsilver/grivet/blob/master/core/services/src/main/java/com/fns/grivet/query/Conjunction.java); this value is optional and if not defined then (for more than one constraint) each constraint is `OR`ed. All conjunctions must be homogenously defined!
 
 ##### Examples
 
-* GET `/type/store/TestType?c=datetime|lessThan|2015-07-01T10:00:00`
+* GET `/store/TestType?c=datetime|lessThan|2015-07-01T10:00:00`
 
 returns `TestType` records that have attribute `datetime` less than the day constraint value
 
-* GET `/type/store/TestType?constraint=datetime|lessThan|2015-07-01T10:00:00&constraint=varchar|equals|Rush`
+* GET `/store/TestType?constraint=datetime|lessThan|2015-07-01T10:00:00&constraint=varchar|equals|Rush`
 
 returns `TestType` records that match on either `datetime` `OR` `varchar` attributes and constraint values

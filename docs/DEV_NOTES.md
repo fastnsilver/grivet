@@ -7,7 +7,7 @@ This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.
 * [Docker Toolbox](http://docs.docker.com/mac/started/); `docker`, `docker-machine` and `docker-compose` are required
 * Java [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8.0_45 or better
 * [Maven](https://maven.apache.org/download.cgi) 3.3.3 or better
-* an RDBMS (H2 is the default w/ no additional configuration); see [application.yml](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/main/resources/application.yml) for details
+* an RDBMS (H2 is the default w/ no additional configuration); see [application.yml](https://github.com/fastnsilver/grivet/blob/master/core/shared-config/src/main/resources/application.yml) for details
 
 
 ## How to build
@@ -26,7 +26,7 @@ This option is only suitable for running the `grivet` service
 First, change directories
 
 ```
-cd core/grivet-standalone
+cd core/deployables/grivet-standalone
 ```
 
 Then
@@ -70,7 +70,7 @@ brew install mysql
 
 The instance will need to have a schema created before attempting to run the service as directed above.
 
-Consult [application.yml](https://github.com/fastnsilver/grivet/blob/master/core/grivet/src/main/resources/application.yml) in order to override `spring.datasource.*` properties.
+Consult [application.yml](https://github.com/fastnsilver/grivet/blob/master/core/shared-config/src/main/resources/application.yml) in order to override `spring.datasource.*` properties.
 
 
 
@@ -177,21 +177,24 @@ Caveats:
 
 Services are accessible via the Docker host (or IP address) and port 
 
-Service           |  Port
-------------------|-------
-Spring Boot Admin | 5555
-Zuul Proxy        | 8080
-Config Server     | 8888
-Eureka Discovery  | 8761
-Graphite          | 8000
-Grafana           | 3000
-Grivet            | 8081
-PHP MySQL Admin   | 4000
-MySQL             | 3306
-Elasticsearch     | 9200
-Logstash          | 5000
-Kibana            | 5601
-CAdvisor          | 9080
+Service            |  Port
+-------------------|-------
+Spring Boot Admin  | 5555
+Edge Service (Zuul)| 80
+Config Server      | 8888
+Discovery (Eureka) | 8761
+Graphite           | 8000
+Grafana            | 3000
+Grivet Standalone  | 8080
+PHP MySQL Admin    | 4000
+MySQL              | 3306
+Elasticsearch      | 9200
+Logstash           | 5000
+Kibana             | 5601
+CAdvisor           | 9080
+
+If making requests via Edge Service, consult `zuul.routes` in [application.yml](https://github.com/fastnsilver/grivet/blob/master/support/api-gateway/src/main/resources/application.yml).  Prepend
+route to each service's public API.
 
 
 #### Stop images (and remove them)

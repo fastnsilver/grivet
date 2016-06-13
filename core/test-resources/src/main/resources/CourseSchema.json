@@ -24,7 +24,7 @@
 		},
 		"syllabus": {
 			"description": "Summary of topics to be covered in this course",
-			"type": "string",
+			"type": "string"
 		},
 		"schedule": {
 			"description": "Days of the week and hours that this course will be offered",

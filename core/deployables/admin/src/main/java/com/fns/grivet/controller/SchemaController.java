@@ -45,8 +45,8 @@ import io.swagger.annotations.ApiResponses;
  * @author Chris Phillipson
  */
 @RestController
-@RequestMapping("/type/schema")
-@Api(value = "type/schema", produces = "application/json")
+@RequestMapping("/schema")
+@Api(value = "schema", produces = "application/json")
 public class SchemaController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -60,15 +60,14 @@ public class SchemaController {
     
     
     @PreAuthorize("hasRole(@roles.ADMIN)")
-    @RequestMapping(value = "/link", method = RequestMethod.POST, 
+    @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Link a JSON Schema to a pre-registered type.", value = "/type/schema/link")
+    @ApiOperation(httpMethod = "POST", notes = "Link a JSON Schema to a pre-registered type.", value = "/schema")
     @ApiResponses({ @ApiResponse(code = 200, message = "Successfully link JSON Schema to registered type."),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 422, message = "Unprocessable entity (e.g., invalid JSON schema)."),
             @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> linkSchema(@RequestBody String payload) throws IOException {
-        JSONObject json = new JSONObject(payload);
+    public ResponseEntity<?> linkSchema(@RequestBody JSONObject json) throws IOException {
         if (!schemaService.isJsonSchema(json)) {
             return ResponseEntity.unprocessableEntity().build();
         }
@@ -80,8 +79,8 @@ public class SchemaController {
     }
     
     @PreAuthorize("hasRole(@roles.ADMIN)")
-    @RequestMapping(value = "/unlink/{type}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "PUT", notes = "Unlink JSON Schema from a pre-registered type.", value = "/type/schema/unlink/{type}")
+    @RequestMapping(value = "/{type}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = "DELETE", notes = "Unlink JSON Schema from a pre-registered type.", value = "/schema/{type}")
     @ApiResponses({ @ApiResponse(code = 200, message = "Unlinked JSON Schema from type."),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 500, message = "Internal server error.") })

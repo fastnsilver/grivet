@@ -9,7 +9,7 @@ zuul:
     grivet-ingest: /ingest/**
     grivet-persist: /persist/**
     grivet-query: /query/**
-    grivet-standalone: /standalone/**
+    grivet-standalone: /grivet/**
     springboot-admin: /bootadmin/**
 
 ribbon:

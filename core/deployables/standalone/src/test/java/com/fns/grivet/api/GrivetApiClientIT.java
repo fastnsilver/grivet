@@ -37,8 +37,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.IOException;
-
 import javax.annotation.PostConstruct;
 
 import net.javacrumbs.jsonunit.JsonAssert;
@@ -62,109 +60,126 @@ public class GrivetApiClientIT {
     
     // individual tests are responsible for setup and tear-down!
     
-    private String registerTestType() throws IOException {
+    private String registerTestType() throws Exception {
         Resource r = resolver.getResource("classpath:TestType.json");
         String json = IOUtils.toString(r.getInputStream());
-        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(201)).when().post("/type/register");
+        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(201)).when()
+                .post("/register");
         return json;
     }
     
     private void deregisterType() {
-        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/type/register/TestType");
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
+                .delete("/register/TestType");
     }
     
     
-    private String registerMultipleTypes() throws IOException {
+    private String registerMultipleTypes() throws Exception {
         Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
         String json = IOUtils.toString(r.getInputStream());
-        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(201)).when().post("/type/register/batch");
+        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(201)).when()
+                .post("/register/types");
         return json;
 
     }
 
     private void deregisterTypes() {
-        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/type/register/Contact");
-        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/type/register/Course");
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
+                .delete("/register/Contact");
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
+                .delete("/register/Course");
     }
 
     @Test
-    public void testRegisterType_happyPath() throws IOException {
+    public void testRegisterType_happyPath() throws Exception {
         registerTestType();
         deregisterType();
     }
     
     @Test
-    public void testRegisterMultipleTypes_happyPath() throws IOException {
+    public void testRegisterMultipleTypes_happyPath() throws Exception {
         registerMultipleTypes();
         deregisterTypes();
     }
 
     @Test
-    public void testRegisterType_emptyBody() throws IOException {
-        given().contentType("application/json").request().body("").then().expect().statusCode(equalTo(400)).when().post("/type/register");
+    public void testRegisterType_emptyBody() throws Exception {
+        given().contentType("application/json").request().body("").then().expect().statusCode(equalTo(400)).when()
+                .post("/register");
     }
     
     @Test
     public void testRegisterType_badRequest() throws Exception {
         Resource r = resolver.getResource("classpath:BadTestType.json");
         String json = IOUtils.toString(r.getInputStream());
-        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(400)).when().post("/type/register");
+        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(400)).when()
+                .post("/register");
     }
     
     @Test
-    public void testGetRegisteredType_happyPath() throws IOException {
+    public void testGetRegisteredType_happyPath() throws Exception {
         String json = registerTestType();
-        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/register/TestType");
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
+                .when().get("/register/TestType");
         JsonAssert.assertJsonEquals(json, response.body().asString());
         deregisterType();
     }
     
     @Test
-    public void testAllRegisteredTypes_happyPath() throws IOException {
+    public void testAllRegisteredTypes_happyPath() throws Exception {
         String json = registerTestType();
-        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/register?showAll");
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
+                .when().get("/register?showAll");
         JSONArray result = new JSONArray(response.body().asString());
         JsonAssert.assertJsonEquals(json, result.get(0).toString());
         deregisterType();
     }
 
     @Test
-    public void testLinkAndUnlinkJsonSchema_happyPath() throws IOException {
+    public void testLinkAndUnlinkJsonSchema_happyPath() throws Exception {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestTypeSchema.json");
         String schema = IOUtils.toString(r.getInputStream());
-        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when().post("/type/schema/link");
-        given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().put("/type/schema/unlink/TestType");
+        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when()
+                .post("/schema");
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when()
+                .delete("/schema/TestType");
         deregisterType();
     }
     
     @Test
-    public void testRegisterAndLinkAndStoreAndGetType_happyPath() throws IOException {
+    public void testRegisterAndLinkAndStoreAndGetType_happyPath() throws Exception {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestTypeSchema.json");
         String schema = IOUtils.toString(r.getInputStream());
-        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when().post("/type/schema/link");
+        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when()
+                .post("/schema");
         r = resolver.getResource("classpath:TestTypeData.json");
         String type = IOUtils.toString(r.getInputStream());
-        given().contentType("application/json").request().body(type).then().expect().statusCode(equalTo(204)).when().post("/type/store/TestType");
+        given().contentType("application/json").request().body(type).then().expect().statusCode(equalTo(204)).when()
+                .post("/store/TestType");
         
         // GET (default)
-        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/store/TestType");
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
+                .when().get("/store/TestType");
         JSONArray result = new JSONArray(response.body().asString());
         JsonAssert.assertJsonEquals(type, result.get(0).toString());
         
         // GET (with equals constraint)
-        response = given().param("c", "varchar|equals|Rush").contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/store/TestType");
+        response = given().param("c", "varchar|equals|Rush").contentType("application/json").request().then().expect()
+                .statusCode(equalTo(200)).when().get("/store/TestType");
         result = new JSONArray(response.body().asString());
         JsonAssert.assertJsonEquals(type, result.get(0).toString());
         
         // GET (with startsWith constraint)
-        response = given().param("c", "text|startsWith|Grim-faced").contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/store/TestType");
+        response = given().param("c", "text|startsWith|Grim-faced").contentType("application/json").request().then()
+                .expect().statusCode(equalTo(200)).when().get("/store/TestType");
         result = new JSONArray(response.body().asString());
         JsonAssert.assertJsonEquals(type, result.get(0).toString());
         
         // GET (with lessThanOrEqualTo constraint)
-        response = given().param("c", "datetime|lessThanOrEqualTo|2016-01-01T00:00:00Z").contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/store/TestType");
+        response = given().param("c", "datetime|lessThanOrEqualTo|2016-01-01T00:00:00Z").contentType("application/json")
+                .request().then().expect().statusCode(equalTo(200)).when().get("/store/TestType");
         result = new JSONArray(response.body().asString());
         JsonAssert.assertJsonEquals(type, result.get(0).toString());
         
@@ -172,7 +187,8 @@ public class GrivetApiClientIT {
         response = given()
                     .param("c", "datetime|lessThanOrEqualTo|2016-01-01T00:00:00Z")
                     .param("c", "text|endsWith|city")
-                    .contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/type/store/TestType");
+                .contentType("application/json").request().then().expect().statusCode(equalTo(200)).when()
+                .get("/store/TestType");
         result = new JSONArray(response.body().asString());
         JsonAssert.assertJsonEquals(type, result.get(0).toString());
         
@@ -180,16 +196,17 @@ public class GrivetApiClientIT {
     }
     
     @Test
-    public void testRegisterAndStoreMultipleContacts_happyPath() throws IOException {
+    public void testRegisterAndStoreMultipleContacts_happyPath() throws Exception {
         registerMultipleTypes();
         Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
         String contacts = IOUtils.toString(r.getInputStream());
-        given().contentType("application/json").request().body(contacts).then().expect().statusCode(equalTo(204)).when().post("/type/store/batch/Contact");
+        given().contentType("application/json").request().body(contacts).then().expect().statusCode(equalTo(204)).when()
+                .post("/store/batch/Contact");
         deregisterTypes();
     }
     
     @Test
-    public void testRegisterAndStoreMultipleCourses_accepted() throws IOException {
+    public void testRegisterAndStoreMultipleCourses_accepted() throws Exception {
         registerMultipleTypes();
         Resource r = resolver.getResource("classpath:BadCourseData.json");
         String courses = IOUtils.toString(r.getInputStream());
@@ -197,49 +214,60 @@ public class GrivetApiClientIT {
         // link Course schema
         r = resolver.getResource("classpath:CourseSchema.json");
         String schema = IOUtils.toString(r.getInputStream());
-        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when().post("/type/schema/link");
+        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when()
+                .post("/schema");
         
-        given().contentType("application/json").request().body(courses).then().expect().statusCode(equalTo(202)).when().post("/type/store/batch/Course");
+        given().contentType("application/json").request().body(courses).then().expect().statusCode(equalTo(202)).when()
+                .post("/store/batch/Course");
         deregisterTypes();
     }
     
     @Test
-    public void testAllRegisteredNamedQueries_happyPath() throws IOException {
+    public void testAllRegisteredNamedQueries_happyPath() throws Exception {
         Resource r = resolver.getResource("classpath:TestSelectQuery.json");
         String select = IOUtils.toString(r.getInputStream());
-        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(204)).when().post("/query"); 
-        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/query?showAll");
+        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(204)).when()
+                .post("/namedQuery");
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
+                .when().get("/namedQuery?showAll");
         JSONArray result = new JSONArray(response.body().asString());
         Assert.assertEquals(1, result.length()); 
-        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/query/getAttributesCreatedBefore");
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
+                .delete("/namedQuery/getAttributesCreatedBefore");
     }
     
     @Test
-    public void testNamedQueryRegistrationAndRetrieval_select_happyPath() throws IOException {
+    public void testNamedQueryRegistrationAndRetrieval_select_happyPath() throws Exception {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestSelectQuery3.json");
         String select = IOUtils.toString(r.getInputStream());
-        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(201)).when().post("/query");
-        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/query/getClassesCreatedToday");
+        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(201)).when()
+                .post("/namedQuery");
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
+                .when().get("/namedQuery/getClassesCreatedToday");
         JSONArray result = new JSONArray(response.body().asString());
         Assert.assertEquals(1, result.length());
-        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/query/getClassesCreatedToday");
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
+                .delete("/namedQuery/getClassesCreatedToday");
         deregisterType();
     }
     
     
     @Test
     @Ignore("Cannot test w/ H2")
-    public void testNamedQueryRegistrationAndRetrieval_sproc_happyPath() throws IOException {
+    public void testNamedQueryRegistrationAndRetrieval_sproc_happyPath() throws Exception {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestSprocQuery.json");
         String sproc = IOUtils.toString(r.getInputStream());
-        given().contentType("application/json").request().body(sproc).then().expect().statusCode(equalTo(204)).when().post("/query");
+        given().contentType("application/json").request().body(sproc).then().expect().statusCode(equalTo(204)).when()
+                .post("/namedQuery");
         LocalDateTime now = LocalDateTime.now();
-        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when().get("/query/sproc.getAttributesCreatedBefore?createdTime=" + now.toString());
+        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
+                .when().get("/namedQuery/sproc.getAttributesCreatedBefore?createdTime=" + now.toString());
         JSONArray result = new JSONArray(response.body().asString());
         Assert.assertEquals(7, result.length());
-        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when().delete("/query/sproc.getAttributesCreatedBefore");
+        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
+                .delete("/namedQuery/sproc.getAttributesCreatedBefore");
         deregisterType();
     }
     

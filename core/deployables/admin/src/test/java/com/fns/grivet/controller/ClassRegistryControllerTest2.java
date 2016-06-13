@@ -54,7 +54,7 @@ public class ClassRegistryControllerTest2 {
     @Test
     public void testThatDeleteSucceeds() throws Exception {
         mockMvc.perform(
-                delete("/type/register/TestType")
+                delete("/register/TestType")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isNoContent());
@@ -65,7 +65,7 @@ public class ClassRegistryControllerTest2 {
         String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestType.json"));
         when(service.get("TestType")).thenReturn(new JSONObject(json));
         mockMvc.perform(
-                get("/type/register/TestType")
+                get("/register/TestType")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
@@ -78,7 +78,7 @@ public class ClassRegistryControllerTest2 {
         String arr = String.format("[%s]", json);
         when(service.all()).thenReturn(new JSONArray(arr));
         mockMvc.perform(
-                get("/type/register?showAll=true")
+                get("/register?showAll=true")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())

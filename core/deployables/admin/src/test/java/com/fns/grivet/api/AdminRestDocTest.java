@@ -18,6 +18,8 @@ package com.fns.grivet.api;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fns.grivet.SwaggerInit;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,15 +32,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fns.grivet.TestInit;
-
 import io.github.robwin.markup.builder.MarkupLanguage;
 import springfox.documentation.staticdocs.Swagger2MarkupResultHandler;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = TestInit.class)
-public class Swagger2MarkupTest {
+@SpringApplicationConfiguration(classes = SwaggerInit.class)
+public class AdminRestDocTest {
 
     @Autowired
     private WebApplicationContext context;

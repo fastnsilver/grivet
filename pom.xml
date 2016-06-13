@@ -61,7 +61,7 @@
     <distributionManagement>
         <!-- publish to GitHub gh-pages -->
         <site>
-            <id>github</id>
+            <id>grivet</id>
             <name>Deployment through Maven's SCM Publish Plugin</name>
             <url>scm:git:git@github.com:fastnsilver/grivet.git</url>
         </site>
@@ -72,10 +72,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
     	
-        <logstash-logback-encoder.version>4.7</logstash-logback-encoder.version>
         
         <disruptor.version>3.3.4</disruptor.version>
         <log4j2.version>2.6.1</log4j2.version>
+        <logstash-logback-encoder.version>4.7</logstash-logback-encoder.version>
         <slf4j.version>1.7.21</slf4j.version>
                 
         <!-- Maven -->

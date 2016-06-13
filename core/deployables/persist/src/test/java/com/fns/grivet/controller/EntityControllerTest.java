@@ -53,7 +53,7 @@ public class EntityControllerTest extends ApplicationTests {
         Resource r = resolver.getResource("classpath:TestType2.json");
         String json = IOUtils.toString(r.getInputStream());
         mockMvc.perform(
-                post("/type/register")
+                post("/register")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(json)
             )
@@ -64,7 +64,7 @@ public class EntityControllerTest extends ApplicationTests {
         Resource r = resolver.getResource("classpath:TestTypeData2.json");
         String json = IOUtils.toString(r.getInputStream());
         mockMvc.perform(
-                post("/type/store/TestType2")
+                post("/store/TestType2")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(json)
             )
@@ -73,7 +73,7 @@ public class EntityControllerTest extends ApplicationTests {
     
     private void unregisterTestType2() throws Exception {
         mockMvc.perform(
-                delete("/type/register/TestType2")
+                delete("/register/TestType2")
                     .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNoContent());
@@ -83,7 +83,7 @@ public class EntityControllerTest extends ApplicationTests {
         Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
         String json = IOUtils.toString(r.getInputStream());
         mockMvc.perform(
-                post("/type/register/batch")
+                post("/register/types")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(json)
             )
@@ -94,7 +94,7 @@ public class EntityControllerTest extends ApplicationTests {
         Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
         String json = IOUtils.toString(r.getInputStream());
         mockMvc.perform(
-                    post("/type/store/batch/Contact")
+                post("/store/batch/Contact")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
@@ -103,12 +103,12 @@ public class EntityControllerTest extends ApplicationTests {
     
     private void unregisterMultipleTypes() throws Exception {
         mockMvc.perform(
-                delete("/type/register/Contact")
+                delete("/register/Contact")
                     .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNoContent());
         mockMvc.perform(
-                delete("/type/register/Course")
+                delete("/register/Course")
                     .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNoContent());
@@ -125,7 +125,7 @@ public class EntityControllerTest extends ApplicationTests {
         
         // GET (with default constraints)
         mockMvc.perform(
-                get("/type/store/TestType2")
+                get("/store/TestType2")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
@@ -133,7 +133,7 @@ public class EntityControllerTest extends ApplicationTests {
         
         // GET (with startsWith constraint)
         mockMvc.perform(
-                get("/type/store/TestType2?c=first-name|startsWith|J")
+                get("/store/TestType2?c=first-name|startsWith|J")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())

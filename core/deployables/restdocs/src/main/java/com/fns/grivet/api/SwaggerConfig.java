@@ -44,6 +44,9 @@ public class SwaggerConfig {
     @Value("${info.version}")
     private String version;
     
+    @Value("${info.title}")
+    private String title;
+
     @Autowired
     private TypeResolver typeResolver;
 
@@ -60,15 +63,16 @@ public class SwaggerConfig {
                                 typeResolver.resolve(WildcardType.class))
                         )
                 .select()
-                .paths(regex("^(/query|/type/register|/type/store|/v2/api-docs).*$"))
+                .paths(regex("^(/ingester|/namedQuery|/register|/schema|/store|/v2/api-docs).*$"))
                 .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Grivet APIs")
+                .title(title)
                 .description(
-                        "This is a comprehensive list of the APIs for Grivet.\nAdditional help is provided in this project's http://fastnsilver.github.io/grivet/[Maven Site].")
+                        "This is a comprehensive list of the APIs for " + title
+                                + ".\nAdditional help is provided in this project's http://fastnsilver.github.io/grivet/[Maven Site].")
                 .contact(new Contact("Chris Phillipson", "http://fastnsilver.github.io/grivet/", "fastnsilver@gmail.com"))
                 .version(version)
                 .build();

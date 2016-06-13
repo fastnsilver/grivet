@@ -18,34 +18,28 @@ package com.fns.grivet.service;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.messaging.Message;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 
-@Service
-public class IngestService {
+public class IngestService implements Ingester {
 
-    @EnableBinding(Source.class)
-    static class EventSource { }
-    
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final Source source;
     
-    @Autowired
     public IngestService(Source source) {
         this.source = source;
     }
 
+    @Override
     public void ingest(Message<JSONObject> message) {
+        Assert.notNull(message.getHeaders(), "No message headers!");
+        Assert.hasText(message.getHeaders().get("type", String.class), "Type must not be null or empty!");
+        Assert.notNull(message.getPayload(), "Message must have non-null payload!");
         log.debug("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
                 message.getPayload().toString());
-        String type = message.getHeaders().get("type", String.class);
-        Assert.hasText(type, "Type must not be null or empty!");
         source.output().send(message);
     }
     

@@ -35,7 +35,7 @@
             <artifactId>grivet-services</artifactId>
             <version>${project.version}</version>
         </dependency>
-				<dependency>
+	   <dependency>
             <groupId>com.fns</groupId>
             <artifactId>grivet-shared-config</artifactId>
             <version>${project.version}</version>
@@ -52,13 +52,19 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.fns</groupId>
+            <artifactId>grivet-restdocs</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
             <version>${swagger.version}</version>
         </dependency>
-
+        
         <!-- Rest Assured -->
         <dependency>
             <groupId>com.jayway.restassured</groupId>
@@ -110,6 +116,12 @@
             <groupId>com.101tec</groupId>
             <artifactId>zkclient</artifactId>
             <version>${zkclient.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -149,7 +161,30 @@
                     <jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005</jvmArguments>
                 </configuration>
             </plugin>
+            <plugin>
+                 <groupId>org.asciidoctor</groupId>
+                 <artifactId>asciidoctor-maven-plugin</artifactId>
+                 <version>${asciidoctor-maven-plugin.version}</version>
+                 <executions>
+                     <execution>
+                         <id>generate-docs</id>
+                         <phase>package</phase>
+                         <goals>
+                             <goal>process-asciidoc</goal>
+                         </goals>
+                         <configuration>
+                             <backend>html</backend>
+                             <attributes>
+                                 <toclevels>2</toclevels>
+                                 <toc>left</toc>
+                                 <doctype>book</doctype>
+                                 <generated>${project.build.directory}/docs/asciidoc/generated</generated>
+                             </attributes>
+                             <outputDirectory>${project.build.directory}/site</outputDirectory>
+                         </configuration>
+                     </execution>
+                 </executions>
+            </plugin>
         </plugins>
     </build>
-
 </project>

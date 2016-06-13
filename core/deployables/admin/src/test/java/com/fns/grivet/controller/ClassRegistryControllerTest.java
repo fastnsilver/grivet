@@ -54,7 +54,7 @@ public class ClassRegistryControllerTest extends ApplicationTests {
         Resource r = resolver.getResource("classpath:BadTestType.json");
         String json = IOUtils.toString(r.getInputStream());
         mockMvc.perform(
-                    post("/type/register")
+                post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
@@ -66,15 +66,15 @@ public class ClassRegistryControllerTest extends ApplicationTests {
         Resource r = resolver.getResource("classpath:TestType.json");
         String json = IOUtils.toString(r.getInputStream());
         mockMvc.perform(
-                    post("/type/register")
+                post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/type/register/TestType"));
+                .andExpect(header().string("Location", "/register/TestType"));
         
         mockMvc.perform(
-                delete("/type/register/TestType")
+                delete("/register/TestType")
                     .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNoContent());
@@ -85,21 +85,21 @@ public class ClassRegistryControllerTest extends ApplicationTests {
         Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
         String json = IOUtils.toString(r.getInputStream());
         mockMvc.perform(
-                    post("/type/register/batch")
+                post("/register/types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                     )
                     .andExpect(status().isCreated())
-                    .andExpect(header().string("Location[1]", "/type/register/Contact"))
-                    .andExpect(header().string("Location[2]", "/type/register/Course"));
+                .andExpect(header().string("Location[1]", "/register/Contact"))
+                .andExpect(header().string("Location[2]", "/register/Course"));
         
         mockMvc.perform(
-                delete("/type/register/Contact")
+                delete("/register/Contact")
                     .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNoContent());
         mockMvc.perform(
-                delete("/type/register/Course")
+                delete("/register/Course")
                     .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNoContent());

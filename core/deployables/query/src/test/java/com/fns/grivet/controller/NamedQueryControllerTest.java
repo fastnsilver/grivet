@@ -68,7 +68,7 @@ public class NamedQueryControllerTest {
         NamedQuery query = mapper.readValue(json, NamedQuery.class);
         doCallRealMethod().when(service).create(query);
         mockMvc.perform(
-                    post("/query")
+                post("/namedQuery")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
@@ -82,7 +82,7 @@ public class NamedQueryControllerTest {
         NamedQuery query = mapper.readValue(json, NamedQuery.class);
         doCallRealMethod().when(service).create(query);
         mockMvc.perform(
-                    post("/query")
+                post("/namedQuery")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
@@ -96,12 +96,12 @@ public class NamedQueryControllerTest {
         NamedQuery query = mapper.readValue(json, NamedQuery.class);
         doCallRealMethod().when(service).create(query);
         mockMvc.perform(
-                    post("/query")
+                post("/namedQuery")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/query/getAttributesCreatedToday"));
+                .andExpect(header().string("Location", "/namedQuery/getAttributesCreatedToday"));
     }
     
     @Test
@@ -111,12 +111,12 @@ public class NamedQueryControllerTest {
         NamedQuery query = mapper.readValue(json, NamedQuery.class);
         doCallRealMethod().when(service).create(query);
         mockMvc.perform(
-                    post("/query")
+                post("/namedQuery")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/query/getClassesCreatedToday"));
+                .andExpect(header().string("Location", "/namedQuery/getClassesCreatedToday"));
     }
     
     @Test
@@ -126,7 +126,7 @@ public class NamedQueryControllerTest {
         NamedQuery query = mapper.readValue(json, NamedQuery.class);
         doCallRealMethod().when(service).create(query);
         mockMvc.perform(
-                    post("/query")
+                post("/namedQuery")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
@@ -139,7 +139,7 @@ public class NamedQueryControllerTest {
         String response = IOUtils.toString(is);
         when(service.get("getAttributesCreatedToday", new LinkedMultiValueMap<String, String>())).thenReturn(response);
         mockMvc.perform(
-                get("/query/getAttributesCreatedToday")
+                get("/namedQuery/getAttributesCreatedToday")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
@@ -154,7 +154,7 @@ public class NamedQueryControllerTest {
         response.put(new JSONObject(json));
         when(service.all()).thenReturn(response);
         mockMvc.perform(
-                get("/query?showAll=true")
+                get("/namedQuery?showAll=true")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
@@ -164,7 +164,7 @@ public class NamedQueryControllerTest {
     @Test
     public void testThatDeleteSucceeds() throws Exception {
         mockMvc.perform(
-                delete("/query/TestSelectQuery")
+                delete("/namedQuery/TestSelectQuery")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isNoContent());

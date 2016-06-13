@@ -53,7 +53,7 @@ public class EntityControllerTest2 {
         String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestTypeData.json"));
         doNothing().when(service).create("TestType", new JSONObject(json));
         mockMvc.perform(
-                    post("/type/store/TestType")
+                    post("/store/TestType")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )

@@ -17,8 +17,8 @@ package com.fns.grivet.controller;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,12 +53,12 @@ public class SchemaControllerTest {
 
     @Test
     public void testThatLinkSchemaSucceeds() throws Exception {
-        String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestType.json"));
+        String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestTypeSchema.json"));
         when(service.isJsonSchema(any(JSONObject.class))).thenReturn(true);
         com.fns.grivet.model.Class clazz = new com.fns.grivet.model.Class("TestType", "A type for testing purposes", null);
         when(service.linkSchema(any(JSONObject.class))).thenReturn(clazz);
         mockMvc.perform(
-                    post("/type/schema/link")
+                    post("/schema")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
@@ -71,7 +71,7 @@ public class SchemaControllerTest {
         com.fns.grivet.model.Class clazz = new com.fns.grivet.model.Class("TestType", "A type for testing purposes", null);
         when(service.unlinkSchema("TestType")).thenReturn(clazz);
         mockMvc.perform(
-                    put("/type/schema/unlink/TestType")
+                    delete("/schema/TestType")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())

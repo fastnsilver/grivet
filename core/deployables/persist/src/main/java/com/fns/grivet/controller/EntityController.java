@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fns.grivet.service.EntityService;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,8 +58,8 @@ import io.swagger.annotations.ApiResponses;
  * @author Chris Phillipson
  */
 @RestController
-@RequestMapping("/type/store")
-@Api(value = "type/store", produces = "application/json")
+@RequestMapping("/store")
+@Api(value = "store", produces = "application/json")
 public class EntityController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -80,14 +81,13 @@ public class EntityController {
     @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "/{type}", method = RequestMethod.POST, 
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Store a type.", value = "/type/store/{type}")
+    @ApiOperation(httpMethod = "POST", notes = "Store a type.", value = "/store/{type}")
     @ApiResponses({ @ApiResponse(code = 204, message = "Successfully store type."),
             @ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody String payload)
+    public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody JSONObject json)
             throws IOException {
-        JSONObject json = new JSONObject(payload);
         entityService.create(type, json);
         metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();
         log.info("Successfully stored type [{}]", type);
@@ -97,14 +97,13 @@ public class EntityController {
     @Profile("!no-http")
     @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "/batch/{type}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/type/store/batch/{type}")
+    @ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/store/batch/{type}")
     @ApiResponses({ @ApiResponse(code = 204, message = "Successfully store types."),
             @ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody String payload)
-            throws IOException {
-        JSONArray json = new JSONArray(payload);
+    public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody JSONArray json)
+            throws IOException, JSONException {
         int numberOfTypesToCreate = json.length();
         Assert.isTrue(numberOfTypesToCreate <= batchSize,
                 String.format(
@@ -115,8 +114,8 @@ public class EntityController {
         HttpHeaders headers = new HttpHeaders();
         // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
         for (int i = 0; i < numberOfTypesToCreate; i++) {
-            jsonObject = json.getJSONObject(i);
             try {
+                jsonObject = json.getJSONObject(i);
                 entityService.create(type, jsonObject);
                 metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();
                 log.info("Successfully stored type [{}]", type);
@@ -135,7 +134,7 @@ public class EntityController {
     
     @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "GET", notes = "Retrieve type matching criteria.", value = "/type/store/{type}")
+    @ApiOperation(httpMethod = "GET", notes = "Retrieve type matching criteria.", value = "/store/{type}")
     @ApiResponses({ @ApiResponse(code = 200, message = "Successfully retrieve type matching criteria."),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 500, message = "Internal server error.") })

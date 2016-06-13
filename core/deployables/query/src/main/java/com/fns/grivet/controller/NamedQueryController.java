@@ -50,8 +50,8 @@ import io.swagger.annotations.ApiResponses;
  * @author Chris Phillipson
  */
 @RestController
-@RequestMapping("/query")
-@Api(value = "query", produces = "application/json")
+@RequestMapping("/namedQuery")
+@Api(value = "namedQuery", produces = "application/json")
 public class NamedQueryController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -66,7 +66,7 @@ public class NamedQueryController {
     @PreAuthorize("hasRole(@roles.ADMIN)")
     @RequestMapping(method = RequestMethod.POST, 
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Register a Named Query.", value = "/query")
+    @ApiOperation(httpMethod = "POST", notes = "Register a Named Query.", value = "/namedQuery")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully registered Named Query requiring no parameters."),
             @ApiResponse(code = 204, message = "Successfully registered Named Query that requires parameters."),
@@ -88,7 +88,8 @@ public class NamedQueryController {
         log.info("Named Query \n\n{}\n\n successfully registered!", query);
         UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
         if (query.getParams().isEmpty()) {
-            result = ResponseEntity.created(ucb.path("/query/{name}").buildAndExpand(query.getName()).toUri()).build();
+            result = ResponseEntity.created(ucb.path("/namedQuery/{name}").buildAndExpand(query.getName()).toUri())
+                    .build();
         } else {
             result = ResponseEntity.noContent().build();
         }
@@ -97,7 +98,7 @@ public class NamedQueryController {
     
     @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "GET", notes = "Execute a Named Query.", value = "/query/{name}")
+    @ApiOperation(httpMethod = "GET", notes = "Execute a Named Query.", value = "/namedQuery/{name}")
     @ApiResponses({ @ApiResponse(code = 200, message = "Successfully executed Named Query request."),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 500, message = "Internal server error.") })
@@ -111,7 +112,7 @@ public class NamedQueryController {
     
     @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
     @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "GET", notes = "Available Named Queries.", value = "/query?showAll")
+    @ApiOperation(httpMethod = "GET", notes = "Available Named Queries.", value = "/namedQuery?showAll")
     @ApiResponses({ @ApiResponse(code = 200, message = "List available Named Queries."),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 500, message = "Internal server error.") })
@@ -124,7 +125,7 @@ public class NamedQueryController {
     
     @PreAuthorize("hasRole(@roles.ADMIN)")
     @RequestMapping(value = "/{name}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "DELETE", notes = "Delete the named query.", value = "/query/{name}")
+    @ApiOperation(httpMethod = "DELETE", notes = "Delete the named query.", value = "/namedQuery/{name}")
     @ApiResponses({ @ApiResponse(code = 204, message = "Successfully deleted a Named Query."),
             @ApiResponse(code = 400, message = "Bad request."),
             @ApiResponse(code = 500, message = "Internal server error.") })
