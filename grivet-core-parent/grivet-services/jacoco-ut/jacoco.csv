@@ -1,0 +1,20 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Grivet Services,com.fns.grivet.repo,JdbcEntityRepository,86,241,5,7,12,31,6,7,1,6
+Grivet Services,com.fns.grivet.repo,AttributeTypeRepository,0,40,0,0,0,5,0,8,0,8
+Grivet Services,com.fns.grivet.repo,JdbcEntityRepository.EAVComparator,0,9,0,0,0,2,0,2,0,2
+Grivet Services,com.fns.grivet.query,Constraint,15,78,1,9,3,17,3,9,2,5
+Grivet Services,com.fns.grivet.query,DynamicQuery,112,390,27,33,25,71,23,23,1,10
+Grivet Services,com.fns.grivet.query,QueryBuilder,90,328,3,19,14,68,6,17,3,9
+Grivet Services,com.fns.grivet.query,QueryType,5,33,0,0,0,3,1,3,1,3
+Grivet Services,com.fns.grivet.query,NamedQuery,35,184,9,19,6,45,11,16,2,11
+Grivet Services,com.fns.grivet.query,Operator,5,186,0,0,0,21,1,7,1,7
+Grivet Services,com.fns.grivet.query,Conjunction,5,70,0,0,0,10,1,6,1,6
+Grivet Services,com.fns.grivet.query,DynamicQuery.new Object() {...},12,81,0,0,0,2,0,1,0,1
+Grivet Services,com.fns.grivet.service,EntityService,10,288,2,10,1,57,2,8,0,4
+Grivet Services,com.fns.grivet.service,NamedQueryService,97,254,12,16,23,54,11,12,1,7
+Grivet Services,com.fns.grivet.service,SchemaService,37,87,9,1,11,21,6,3,1,3
+Grivet Services,com.fns.grivet.service,SchemaValidator,14,79,0,0,2,15,0,2,0,2
+Grivet Services,com.fns.grivet.service,ClassRegistryService,14,314,3,13,1,63,3,10,0,5
+Grivet Services,com.fns.grivet.service,NamedQueryService.new CallableStatementCallback() {...},0,26,0,0,0,3,0,2,0,2
+Grivet Services,com.fns.grivet.service,NamedQueryService.new Object() {...},2,17,0,0,0,1,0,1,0,1
+Grivet Services,com.fns.grivet.config,DataSourceConfig,0,38,0,0,0,9,0,2,0,2

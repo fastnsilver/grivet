@@ -1,0 +1,4 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Grivet Persistence,com.fns.grivet.controller,EntityController,51,156,7,7,7,27,6,5,0,4
+Grivet Persistence,com.fns.grivet.service,PersistenceService,72,0,0,0,15,0,2,0,2,0
+Grivet Persistence,com.fns.grivet.config,PersistenceSinkConfig,9,0,0,0,2,0,2,0,2,0

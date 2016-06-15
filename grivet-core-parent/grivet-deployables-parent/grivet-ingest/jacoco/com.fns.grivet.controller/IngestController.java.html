@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>IngestController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Ingest</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.controller</a> &gt; <span class="el_source">IngestController.java</span></div><h1>IngestController.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2015 - Chris Phillipson
+ * 
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.fns.grivet.controller;
+
+import com.codahale.metrics.MetricRegistry;
+import com.fns.grivet.service.Ingester;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+
+/**
+ * Ingestion end-points
+ * 
+ * @author Chris Phillipson
+ */
+@RestController
+@RequestMapping(&quot;/ingester&quot;)
+@Api(value = &quot;ingester&quot;, produces = &quot;application/json&quot;)
+public class IngestController {
+
+<span class="fc" id="L58">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+    
+    @Value(&quot;${grivet.ingest.batch-size:100}&quot;)
+    int batchSize;
+    
+    private final Ingester ingestService;
+    
+    private final MetricRegistry metricRegistry;
+
+    @Autowired
+<span class="fc" id="L68">    public IngestController(Ingester entityService, MetricRegistry metricRegistry) {</span>
+<span class="fc" id="L69">        this.ingestService = entityService;</span>
+<span class="fc" id="L70">        this.metricRegistry = metricRegistry;</span>
+<span class="fc" id="L71">    }</span>
+    
+    @PreAuthorize(&quot;hasRole(@roles.ADMIN) or hasRole(@roles.USER)&quot;)
+    @RequestMapping(value = &quot;/{type}&quot;, method = RequestMethod.POST, 
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = &quot;POST&quot;, notes = &quot;Store a type.&quot;, value = &quot;/ingester/{type}&quot;)
+    @ApiResponses({ @ApiResponse(code = 204, message = &quot;Successfully ingest type.&quot;),
+            @ApiResponse(code = 202, message = &quot;Partial success. Error details for type(s) that could not be registered.&quot;),
+            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
+            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;) })
+    public ResponseEntity&lt;?&gt; createSingle(@PathVariable(&quot;type&quot;) String type, @RequestBody JSONObject json)
+            throws IOException {
+<span class="nc" id="L83">        ingestService.ingest(MessageBuilder.withPayload(json).setHeader(&quot;type&quot;, type).build());</span>
+<span class="nc" id="L84">        metricRegistry.counter(MetricRegistry.name(&quot;ingest&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="nc" id="L85">        log.info(&quot;Successfully ingested type [{}]&quot;, type);</span>
+<span class="nc" id="L86">        return ResponseEntity.accepted().build();</span>
+    }
+
+    @PreAuthorize(&quot;hasRole(@roles.ADMIN) or hasRole(@roles.USER)&quot;)
+    @RequestMapping(value = &quot;/batch/{type}&quot;, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(httpMethod = &quot;POST&quot;, notes = &quot;Store multiple types.&quot;, value = &quot;/ingester/batch/{type}&quot;)
+    @ApiResponses({ @ApiResponse(code = 204, message = &quot;Successfully ingest types.&quot;),
+            @ApiResponse(code = 202, message = &quot;Partial success. Error details for type(s) that could not be registered.&quot;),
+            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
+            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;) })
+    public ResponseEntity&lt;?&gt; createMultiple(@PathVariable(&quot;type&quot;) String type, @RequestBody JSONArray json)
+            throws IOException, JSONException {
+<span class="nc" id="L98">        int numberOfTypesToCreate = json.length();</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        Assert.isTrue(numberOfTypesToCreate &lt;= batchSize,</span>
+<span class="nc" id="L100">                String.format(</span>
+                        &quot;The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries.&quot;,
+<span class="nc" id="L102">                        batchSize, numberOfTypesToCreate));</span>
+<span class="nc" id="L103">        JSONObject jsonObject = null;</span>
+<span class="nc" id="L104">        HttpHeaders headers = new HttpHeaders();</span>
+        // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        for (int i = 0; i &lt; numberOfTypesToCreate; i++) {</span>
+            try {
+<span class="nc" id="L108">                jsonObject = json.getJSONObject(i);</span>
+<span class="nc" id="L109">                ingestService.ingest(MessageBuilder.withPayload(jsonObject).setHeader(&quot;type&quot;, type).build());</span>
+<span class="nc" id="L110">                metricRegistry.counter(MetricRegistry.name(&quot;ingest&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="nc" id="L111">                log.info(&quot;Successfully ingested type [{}]&quot;, type);</span>
+<span class="nc" id="L112">            } catch (Exception e) {</span>
+<span class="nc" id="L113">                String message = LogUtil.toLog(jsonObject,</span>
+<span class="nc" id="L114">                        String.format(&quot;Problems ingesting type! Portion of payload @ index[%d]\n&quot;, i + 1));</span>
+<span class="nc" id="L115">                log.error(message, e);</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                if (numberOfTypesToCreate == 1) {</span>
+<span class="nc" id="L117">                    throw e;</span>
+                }
+<span class="nc" id="L119">                headers.set(String.format(&quot;Error[%s]&quot;, String.valueOf(i+1)), e.getMessage());</span>
+<span class="nc" id="L120">            }</span>
+        }
+<span class="nc" id="L122">        return ResponseEntity.accepted().headers(headers).build();</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

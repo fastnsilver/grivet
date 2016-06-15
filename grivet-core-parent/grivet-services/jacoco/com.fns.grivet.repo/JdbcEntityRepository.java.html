@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>JdbcEntityRepository.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Services</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.repo</a> &gt; <span class="el_source">JdbcEntityRepository.java</span></div><h1>JdbcEntityRepository.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2015 - Chris Phillipson
+ * 
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.fns.grivet.repo;
+
+import com.fns.grivet.model.Attribute;
+import com.fns.grivet.model.AttributeType;
+import com.fns.grivet.model.EntityAttributeValue;
+import com.fns.grivet.model.User;
+import com.fns.grivet.query.DynamicQuery;
+import com.fns.grivet.query.QueryBuilder;
+import com.fns.grivet.service.SecurityFacade;
+import com.fns.grivet.util.ValueHelper;
+import com.google.common.collect.ImmutableMap;
+
+import org.apache.commons.lang3.ObjectUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlParameterValue;
+import org.springframework.jdbc.core.SqlRowSetResultSetExtractor;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public class JdbcEntityRepository implements EntityRepository {
+
+<span class="fc" id="L54">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+    
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired(required=false)
+    private SecurityFacade securityFacade;
+    
+    @Autowired
+<span class="fc" id="L62">    public JdbcEntityRepository(JdbcTemplate jdbcTemplate) {</span>
+<span class="fc" id="L63">        this.jdbcTemplate = jdbcTemplate;</span>
+<span class="fc" id="L64">    }</span>
+
+
+    @Override
+    public Long id(Integer cid) {
+<span class="fc" id="L69">        return Long.valueOf(String.valueOf(new SimpleJdbcInsert(jdbcTemplate).withTableName(&quot;entity&quot;)</span>
+<span class="fc" id="L70">                .usingGeneratedKeyColumns(&quot;eid&quot;).usingColumns(&quot;cid&quot;, &quot;created_time&quot;).executeAndReturnKey(</span>
+<span class="fc" id="L71">                        ImmutableMap.of(&quot;cid&quot;, cid, &quot;created_time&quot;, Timestamp.valueOf(LocalDateTime.now())))));</span>
+    }
+
+    @Override
+    public void save(Long eid, Attribute attribute, AttributeType attributeType, Object rawValue) {
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        Assert.isTrue(rawValue != null, String.format(&quot;Attempt to persist value failed! %s's value must not be null!&quot;, attribute.getName()));</span>
+<span class="fc" id="L77">        Object value = ValueHelper.toValue(attributeType, rawValue);</span>
+<span class="fc" id="L78">        User user = getCurrentUser();</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        String createdBy = user == null ? null : user.getUsername();</span>
+<span class="fc" id="L80">        String[] columns = { &quot;eid&quot;, &quot;aid&quot;, &quot;val&quot;, &quot;created_time&quot; };</span>
+<span class="fc" id="L81">        Map&lt;String, Object&gt; keyValuePairs = ImmutableMap.of(&quot;eid&quot;, eid, &quot;aid&quot;, attribute.getId(), &quot;val&quot;, value, &quot;created_time&quot;, Timestamp.valueOf(LocalDateTime.now()));</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (createdBy != null) {</span>
+<span class="nc" id="L83">            columns = Arrays.copyOf(columns, columns.length + 1);</span>
+<span class="nc" id="L84">            columns[columns.length - 1] = &quot;created_by&quot;;</span>
+<span class="nc" id="L85">            Map&lt;String, Object&gt; keyValuePairsWithCreatedBy = new HashMap&lt;&gt;(keyValuePairs);</span>
+<span class="nc" id="L86">            keyValuePairsWithCreatedBy.put(&quot;created_by&quot;, createdBy);</span>
+<span class="nc" id="L87">            keyValuePairs = keyValuePairsWithCreatedBy;</span>
+        } 
+<span class="fc" id="L89">        new SimpleJdbcInsert(jdbcTemplate).withTableName(String.join(&quot;_&quot;, &quot;entityav&quot;, attributeType.getType()))</span>
+<span class="fc" id="L90">                .usingColumns(columns).execute(keyValuePairs);</span>
+<span class="fc" id="L91">    }</span>
+    
+    @Override
+    public List&lt;EntityAttributeValue&gt; findByCreatedTime(Integer cid, LocalDateTime createdTimeStart,
+            LocalDateTime createdTimeEnd) {
+<span class="fc" id="L96">        String sql = QueryBuilder.newInstance().appendCreatedTimeRange().build();</span>
+<span class="fc" id="L97">        log.trace(String.format(&quot;JdbcEntityRepository.findByCreatedTime[sql=%s]&quot;, sql));</span>
+<span class="fc" id="L98">        return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid),</span>
+<span class="fc" id="L99">                new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeStart)),</span>
+<span class="fc" id="L100">                new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeEnd))));</span>
+    }
+
+    @Override
+    public List&lt;EntityAttributeValue&gt; executeDynamicQuery(Integer cid, DynamicQuery query) {
+<span class="nc" id="L105">        Assert.isTrue(query.areConjunctionsHomogenous(), &quot;Query cannot be executed! All conjunctions must be homogenous!&quot;);</span>
+<span class="nc" id="L106">        String sql = QueryBuilder.newInstance().append(query).build();</span>
+<span class="nc" id="L107">        log.trace(String.format(&quot;JdbcEntityRepository.executeDynamicQuery[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L108">        List&lt;SqlParameterValue&gt; values = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L109">        values.add(new SqlParameterValue(Types.INTEGER, cid));</span>
+<span class="nc" id="L110">        values.addAll(Arrays.asList(query.asSqlParameterValues()));</span>
+<span class="nc" id="L111">        return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), values.toArray(new Object[values.size()])));</span>
+    }
+     
+    private List&lt;EntityAttributeValue&gt; mapRows(SqlRowSet rowSet) {
+<span class="fc" id="L115">        List&lt;EntityAttributeValue&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L116">        EntityAttributeValue eav = null;</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        if (rowSet != null) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            while(rowSet.next()) {</span>
+<span class="fc" id="L119">                eav = new EntityAttributeValue((Long) rowSet.getObject(&quot;eid&quot;), (Integer) rowSet.getObject(&quot;attribute_id&quot;), (String) rowSet.getObject(&quot;attribute_name&quot;), rowSet.getObject(&quot;attribute_value&quot;), ((Timestamp) rowSet.getObject(&quot;created_time&quot;)).toLocalDateTime(), getCurrentUser());</span>
+<span class="fc" id="L120">                result.add(eav);</span>
+            }
+        }
+<span class="fc" id="L123">        Collections.sort(result, new EAVComparator());</span>
+<span class="fc" id="L124">        return result;</span>
+    }
+    
+    private User getCurrentUser() {
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        return securityFacade == null ? null : securityFacade.getCurrentUser();</span>
+    }
+    
+<span class="fc" id="L131">    private static class EAVComparator implements Comparator&lt;EntityAttributeValue&gt; {</span>
+
+        @Override
+        public int compare(EntityAttributeValue eav1, EntityAttributeValue eav2) {
+<span class="fc" id="L135">            return ObjectUtils.compare(eav1.getId(), eav2.getId());</span>
+        }
+        
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
