@@ -11,7 +11,7 @@ services:
   zuul:
     image: fastnsilver/grivet-api-gateway
     ports:
-      - 80:8080
+      - 80:80
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP

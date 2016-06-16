@@ -10,8 +10,8 @@ object Engine extends App {
 	props.binariesDirectory(IDEPathHelper.mavenBinariesDirectory.toString)
 	props.runDescription("N/A") 
 
-	//	props.simulationClass("luis.GetAmenityLogSimulation")
-	//  props.simulationClass("luis.PostAmenityLogSimulation")
+	//	props.simulationClass("pkg.name.GetSomeSimulation")
+	//  props.simulationClass("pkg.name.PostSomeSimulation")
 
 	Gatling.fromMap(props.build)
 }

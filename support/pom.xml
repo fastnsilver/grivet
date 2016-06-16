@@ -22,4 +22,11 @@
         <module>config-server</module>
     </modules>
     
+    <dependencies>
+        <dependency>
+            <groupId>org.jolokia</groupId>
+            <artifactId>jolokia-core</artifactId>
+        </dependency>
+    </dependencies>
+    
 </project>
