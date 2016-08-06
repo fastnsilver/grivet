@@ -8,7 +8,7 @@
         <artifactId>grivet-core-parent</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
-    
+
     <artifactId>grivet-model</artifactId>
     <packaging>jar</packaging>
 
@@ -28,8 +28,7 @@
         <javax.persistence.version>1.0.0.Final</javax.persistence.version>
         <javax.validation-api.version>1.1.0.Final</javax.validation-api.version>
         <jsr305.version>3.0.1</jsr305.version>
-        <spring.version>4.2.5.RELEASE</spring.version>
-        <stormpath-sdk-api.version>1.0.RC9.2</stormpath-sdk-api.version>
+        <stormpath-sdk-api.version>1.0.2</stormpath-sdk-api.version>
     </properties>
 
     <dependencies>
