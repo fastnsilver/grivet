@@ -154,3 +154,15 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m
+  
+  ### SPRING BOOT DASHBOARD
+  springboot-dashboard:
+    image: fastnsilver/grivet-dashboard
+    ports:
+      - 8088:8088
+    links:
+      - discovery-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx512m
