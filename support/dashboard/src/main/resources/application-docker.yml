@@ -1,0 +1,11 @@
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    enabled: true
+    healthcheck:
+      enabled: false
+    serviceUrl:
+      defaultZone: http://discovery-service:8761/eureka/
+    register-with-eureka: false
+      
