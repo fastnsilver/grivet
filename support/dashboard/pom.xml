@@ -19,7 +19,7 @@
 
     <properties>
         <!-- Third-party library versions -->
-        <dashboard.version>1.0.0</dashboard.version>
+        <dashboard.version>1.0.1</dashboard.version>
     </properties>
 
     <dependencies>
@@ -27,8 +27,30 @@
             <groupId>be.ordina</groupId>
             <artifactId>microservices-dashboard-server</artifactId>
             <version>${dashboard.version}</version>
+            <exclusions>
+              <exclusion>
+                <artifactId>microservices-dashboard-ui</artifactId>
+                <groupId>be.ordina</groupId>
+               </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>be.ordina</groupId>
+            <artifactId>microservices-dashboard-ui</artifactId>
+            <version>${dashboard.version}</version>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>oss-snapshots</id>
+            <name>JFrog OSS Snapshots</name>
+            <url>https://oss.jfrog.org/simple/oss-snapshot-local/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
