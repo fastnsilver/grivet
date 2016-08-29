@@ -17,14 +17,6 @@
     <inceptionYear>2016</inceptionYear>
     <url>https://github.com/fastnsilver/grivet</url>
 
-    <properties>
-        <!-- General -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
-        
-        <json.version>20160212</json.version>
-        <spring-security.version>4.0.4.RELEASE</spring-security.version>
-    </properties>
     
     <dependencies>
         <dependency>
@@ -37,12 +29,10 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>${json.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-json-org</artifactId>
-            <version>${jackson.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>json</artifactId>
@@ -98,7 +88,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
-            <version>${spring-security.version}</version>
             <scope>test</scope>
         </dependency>
         

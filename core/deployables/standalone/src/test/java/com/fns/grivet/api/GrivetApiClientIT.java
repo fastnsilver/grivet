@@ -18,9 +18,7 @@ package com.fns.grivet.api;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-import com.fns.grivet.TestInit;
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.response.Response;
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.io.IOUtils;
 import org.joda.time.LocalDateTime;
@@ -30,27 +28,28 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.boot.context.embedded.LocalServerPort;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.PostConstruct;
+import com.fns.grivet.TestInit;
+import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.response.Response;
 
 import net.javacrumbs.jsonunit.JsonAssert;
 
-@WebIntegrationTest({"server.port=0", "management.port=0"})
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { TestInit.class } )
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = TestInit.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class GrivetApiClientIT {
 
     @Autowired
     private ResourceLoader resolver;
     
     
-    @Value("${local.server.port}")
+    @LocalServerPort
     private int serverPort;
     
     @PostConstruct
