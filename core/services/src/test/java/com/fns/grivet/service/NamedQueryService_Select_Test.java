@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -15,10 +15,10 @@
  */
 package com.fns.grivet.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fns.grivet.TestInit;
-import com.fns.grivet.query.NamedQuery;
-import com.jayway.restassured.path.json.JsonPath;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
@@ -28,91 +28,89 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fns.grivet.TestInit;
+import com.fns.grivet.query.NamedQuery;
+import com.jayway.restassured.path.json.JsonPath;
 
-@WebAppConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = TestInit.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = TestInit.class)
 public class NamedQueryService_Select_Test {
 
-    @Autowired
-    private ResourceLoader resolver;
-    
-    @Autowired
-    private ClassRegistryService classRegistryService;
-    
-    @Autowired
-    private NamedQueryService namedQueryService;
-    
-    @Autowired
-    private ObjectMapper objectMapper;
-    
-    @Before
-    public void setUp() throws IOException {
-        Resource r = resolver.getResource("classpath:TestType.json");
-        String json = IOUtils.toString(r.getInputStream());
-        JSONObject payload = new JSONObject(json);
-        classRegistryService.register(payload);
-    }
-    
-    @Test
-    public void testCreateThenGet_happyPath() throws IOException {
-        Resource r = resolver.getResource("classpath:TestSelectQuery.json");
-        String json = IOUtils.toString(r.getInputStream());
-        NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
-        namedQueryService.create(namedQuery);
-        
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("createdTime", LocalDateTime.now().plusDays(1).toString());
-        String result = namedQueryService.get("getAttributesCreatedBefore", params);
-        String[] expected = { "bigint", "varchar", "decimal", "datetime", "int", "text", "json" };
-        List<String> actual = JsonPath.given(result).getList("name");
-        Assert.assertTrue(actual.containsAll(Arrays.asList(expected)));
-    }
-    
-    @Test(expected=IllegalArgumentException.class)
-    public void testGet_queryNotFound() throws IOException {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("createdTime", LocalDateTime.now().plusDays(1).toString());
-        namedQueryService.get("getAttributesCreatedBefore", params);
-    }
-    
-    @Test(expected=IllegalArgumentException.class)
-    public void testCreateThenGet_paramsNotSupplied() throws IOException {
-        Resource r = resolver.getResource("classpath:TestSelectQuery.json");
-        String json = IOUtils.toString(r.getInputStream());
-        NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
-        namedQueryService.create(namedQuery);
-        
-        namedQueryService.get("getAttributesCreatedBefore", null);
-    }
-    
-    @Test(expected=IllegalArgumentException.class)
-    public void testCreateThenGet_incorrectParamsSupplied() throws IOException {
-        Resource r = resolver.getResource("classpath:TestSelectQuery.json");
-        String json = IOUtils.toString(r.getInputStream());
-        NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
-        namedQueryService.create(namedQuery);
-        
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("timedCreated", LocalDateTime.now().plusDays(1).toString());
-        namedQueryService.get("getAttributesCreatedBefore", params);
-    }
-    
-    @After
-    public void tearDown() {
-        classRegistryService.deregister("TestType");
-        namedQueryService.delete("getAttributesCreatedBefore");
-    }
+	@Autowired
+	private ResourceLoader resolver;
+
+	@Autowired
+	private ClassRegistryService classRegistryService;
+
+	@Autowired
+	private NamedQueryService namedQueryService;
+
+	@Autowired
+	private ObjectMapper objectMapper;
+
+	@Before
+	public void setUp() throws IOException {
+		Resource r = resolver.getResource("classpath:TestType.json");
+		String json = IOUtils.toString(r.getInputStream());
+		JSONObject payload = new JSONObject(json);
+		classRegistryService.register(payload);
+	}
+
+	@Test
+	public void testCreateThenGet_happyPath() throws IOException {
+		Resource r = resolver.getResource("classpath:TestSelectQuery.json");
+		String json = IOUtils.toString(r.getInputStream());
+		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+		namedQueryService.create(namedQuery);
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("createdTime", LocalDateTime.now().plusDays(1).toString());
+		String result = namedQueryService.get("getAttributesCreatedBefore", params);
+		String[] expected = { "bigint", "varchar", "decimal", "datetime", "int", "text", "json" };
+		List<String> actual = JsonPath.given(result).getList("name");
+		Assert.assertTrue(actual.containsAll(Arrays.asList(expected)));
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testGet_queryNotFound() throws IOException {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("createdTime", LocalDateTime.now().plusDays(1).toString());
+		namedQueryService.get("getAttributesCreatedBefore", params);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testCreateThenGet_paramsNotSupplied() throws IOException {
+		Resource r = resolver.getResource("classpath:TestSelectQuery.json");
+		String json = IOUtils.toString(r.getInputStream());
+		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+		namedQueryService.create(namedQuery);
+
+		namedQueryService.get("getAttributesCreatedBefore", null);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testCreateThenGet_incorrectParamsSupplied() throws IOException {
+		Resource r = resolver.getResource("classpath:TestSelectQuery.json");
+		String json = IOUtils.toString(r.getInputStream());
+		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+		namedQueryService.create(namedQuery);
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("timedCreated", LocalDateTime.now().plusDays(1).toString());
+		namedQueryService.get("getAttributesCreatedBefore", params);
+	}
+
+	@After
+	public void tearDown() {
+		classRegistryService.deregister("TestType");
+		namedQueryService.delete("getAttributesCreatedBefore");
+	}
 }

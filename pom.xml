@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.3.7.RELEASE</version>
+        <version>1.4.1.BUILD-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
@@ -74,7 +74,7 @@
 
 
         <disruptor.version>3.3.4</disruptor.version>
-        <log4j2.version>2.6.1</log4j2.version>
+        <log4j2.version>2.6.2</log4j2.version>
         <logstash-logback-encoder.version>4.7</logstash-logback-encoder.version>
         <slf4j.version>1.7.21</slf4j.version>
 
@@ -113,7 +113,8 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-parent</artifactId>
-                <version>Brixton.SR4</version>
+                <!-- <version>Brixton.SR5</version> -->
+                <version>Camden.BUILD-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -122,19 +123,11 @@
 
     <repositories>
         <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>http://repo.spring.io/libs-milestone-local</url>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/libs-snapshot</url>
             <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-remote-releases</id>
-            <name>Spring Remote Releases</name>
-            <url>http://repo.spring.io/libs-release-remote</url>
-            <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </repository>
     </repositories>
@@ -142,9 +135,9 @@
         <pluginRepository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
-            <url>http://repo.spring.io/libs-milestone-local</url>
+            <url>http://repo.spring.io/libs-snapshot</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
@@ -772,7 +765,7 @@
 					        	<resource>
 					            	<targetPath>/</targetPath>
 					             	<directory>${project.build.directory}</directory>
-					             	<include>${project.artifactId}-${project.version}.jar</include>
+					             	<include>${project.artifactId}-${project.version}-exec.jar</include>
 					           	</resource>
 					        </resources>
 					        <serverId>docker.io</serverId>

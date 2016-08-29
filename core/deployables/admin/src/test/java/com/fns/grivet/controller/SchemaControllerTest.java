@@ -22,34 +22,32 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fns.grivet.service.SchemaService;
-
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.fns.grivet.TestInit;
+import com.fns.grivet.service.SchemaService;
+
+@AutoConfigureMockMvc
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = TestInit.class)
 public class SchemaControllerTest {
 
-    @Mock
+	@Autowired
+	private MockMvc mockMvc;
+	
+    @MockBean
     private SchemaService service;
     
-    @InjectMocks
-    private SchemaController controller;
-    
-    private MockMvc mockMvc;
-    
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-    }
 
     @Test
     public void testThatLinkSchemaSucceeds() throws Exception {
