@@ -52,7 +52,7 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                             <classifier>exec</classifier>
+                            <classifier>exec</classifier>
                         </configuration>
                     </execution>
                 </executions>
