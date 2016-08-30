@@ -10,9 +10,11 @@ import com.fns.grivet.query.DynamicQuery;
 
 public interface EntityRepository {
 
-    public Long id(Integer cid);
-    public void save(Long eid, Attribute attribute, AttributeType attributeType, Object value);
-    public List<EntityAttributeValue> findByCreatedTime(Integer cid, LocalDateTime createdTimeStart, LocalDateTime createdTimeEnd);
-    public List<EntityAttributeValue> executeDynamicQuery(Integer cid, DynamicQuery query);
-    
+	public Long newId(Integer cid, LocalDateTime createdTime);
+
+	public void save(Long eid, Attribute attribute, AttributeType attributeType, Object value,
+			LocalDateTime createdTime);
+	public List<EntityAttributeValue> findByCreatedTime(Integer cid, LocalDateTime createdTimeStart, LocalDateTime createdTimeEnd);
+	public List<EntityAttributeValue> executeDynamicQuery(Integer cid, DynamicQuery query);
+
 }
