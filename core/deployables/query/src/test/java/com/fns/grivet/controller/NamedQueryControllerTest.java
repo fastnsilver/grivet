@@ -60,7 +60,7 @@ public class NamedQueryControllerTest {
     
     
     @Test
-    public void testThatCreateSucceeds_sprocWithParams() throws Exception {
+    public void testThatCreateSprocWithParamsSucceeds() throws Exception {
         InputStream is = ClassLoader.class.getResourceAsStream("/TestSprocQuery.json");
         String json = IOUtils.toString(is);
         NamedQuery query = mapper.readValue(json, NamedQuery.class);
@@ -74,7 +74,7 @@ public class NamedQueryControllerTest {
     }
     
     @Test
-    public void testThatCreateSucceeds_selectWithParams() throws Exception {
+    public void testThatCreateSelectWithParamsSucceeds() throws Exception {
         InputStream is = ClassLoader.class.getResourceAsStream("/TestSelectQuery.json");
         String json = IOUtils.toString(is);
         NamedQuery query = mapper.readValue(json, NamedQuery.class);
@@ -88,7 +88,7 @@ public class NamedQueryControllerTest {
     }
     
     @Test
-    public void testThatCreateSucceeds_selectNoParams() throws Exception {
+    public void testThatCreateSelectNoParamsSucceeds() throws Exception {
         InputStream is = ClassLoader.class.getResourceAsStream("/TestSelectQuery2.json");
         String json = IOUtils.toString(is);
         NamedQuery query = mapper.readValue(json, NamedQuery.class);
@@ -103,7 +103,7 @@ public class NamedQueryControllerTest {
     }
     
     @Test
-    public void testThatCreateSucceeds_forSelect_withQueryTypeSupplied() throws Exception {
+    public void testThatCreateForSelectWithQueryTypeSuppliedSucceeds() throws Exception {
         InputStream is = ClassLoader.class.getResourceAsStream("/TestSelectQuery3.json");
         String json = IOUtils.toString(is);
         NamedQuery query = mapper.readValue(json, NamedQuery.class);
@@ -118,7 +118,7 @@ public class NamedQueryControllerTest {
     }
     
     @Test
-    public void testThatCreateSucceeds_forSproc_withQueryTypeSupplied() throws Exception {
+    public void testThatCreateForSprocWithQueryTypeSuppliedSucceeds() throws Exception {
         InputStream is = ClassLoader.class.getResourceAsStream("/TestSprocQuery2.json");
         String json = IOUtils.toString(is);
         NamedQuery query = mapper.readValue(json, NamedQuery.class);
