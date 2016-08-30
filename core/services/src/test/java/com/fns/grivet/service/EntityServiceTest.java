@@ -74,7 +74,7 @@ public class EntityServiceTest {
 	}
 
 	@Test
-	public void testCreateThenFindByType_variant() throws IOException {
+	public void testCreateThenFindByTypeVariant() throws IOException {
 		registerType("TestType2");
 		Resource r = resolver.getResource("classpath:TestTypeData2.json");
 		String json = IOUtils.toString(r.getInputStream());

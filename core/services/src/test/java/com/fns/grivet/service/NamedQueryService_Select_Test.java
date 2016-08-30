@@ -65,7 +65,7 @@ public class NamedQueryService_Select_Test {
 	}
 
 	@Test
-	public void testCreateThenGet_happyPath() throws IOException {
+	public void testCreateThenGetHappyPath() throws IOException {
 		Resource r = resolver.getResource("classpath:TestSelectQuery.json");
 		String json = IOUtils.toString(r.getInputStream());
 		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
@@ -80,14 +80,14 @@ public class NamedQueryService_Select_Test {
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testGet_queryNotFound() throws IOException {
+	public void testGetQueryNotFound() throws IOException {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("createdTime", LocalDateTime.now().plusDays(1).toString());
 		namedQueryService.get("getAttributesCreatedBefore", params);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testCreateThenGet_paramsNotSupplied() throws IOException {
+	public void testCreateThenGetParamsNotSupplied() throws IOException {
 		Resource r = resolver.getResource("classpath:TestSelectQuery.json");
 		String json = IOUtils.toString(r.getInputStream());
 		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
@@ -97,7 +97,7 @@ public class NamedQueryService_Select_Test {
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testCreateThenGet_incorrectParamsSupplied() throws IOException {
+	public void testCreateThenGetIncorrectParamsSupplied() throws IOException {
 		Resource r = resolver.getResource("classpath:TestSelectQuery.json");
 		String json = IOUtils.toString(r.getInputStream());
 		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
