@@ -15,6 +15,7 @@
  */
 package com.fns.grivet.api;
 
+import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,20 +43,28 @@ public class PersistRestDocTest {
 
 
     @Test
-    public void convertSwaggerToAsciiDoc() throws Exception {
-        this.mockMvc.perform(get("/v2/api-docs")
-                .accept(MediaType.APPLICATION_JSON))
-                .andDo(Swagger2MarkupResultHandler
-                    .outputDirectory("target/docs/asciidoc/generated").build())
-                .andExpect(status().isOk());
+    public void convertSwaggerToAsciiDoc() {
+        try {
+	    	this.mockMvc.perform(get("/v2/api-docs")
+	                .accept(MediaType.APPLICATION_JSON))
+	                .andDo(Swagger2MarkupResultHandler
+	                    .outputDirectory("target/docs/asciidoc/generated").build())
+	                .andExpect(status().isOk());
+        } catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
 
     @Test
-    public void convertSwaggerToMarkdown() throws Exception {
-        this.mockMvc.perform(get("/v2/api-docs")
-                .accept(MediaType.APPLICATION_JSON))
-                .andDo(Swagger2MarkupResultHandler.outputDirectory("target/docs/markdown/generated")
-                    .withMarkupLanguage(MarkupLanguage.MARKDOWN).build())
-                .andExpect(status().isOk());
+    public void convertSwaggerToMarkdown() {
+        try {
+	    	this.mockMvc.perform(get("/v2/api-docs")
+	                .accept(MediaType.APPLICATION_JSON))
+	                .andDo(Swagger2MarkupResultHandler.outputDirectory("target/docs/markdown/generated")
+	                    .withMarkupLanguage(MarkupLanguage.MARKDOWN).build())
+	                .andExpect(status().isOk());
+        } catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
 }

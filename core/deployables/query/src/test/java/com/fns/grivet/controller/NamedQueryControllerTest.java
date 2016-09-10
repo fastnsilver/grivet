@@ -15,6 +15,7 @@
  */
 package com.fns.grivet.controller;
 
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -60,112 +61,144 @@ public class NamedQueryControllerTest {
     
     
     @Test
-    public void testThatCreateSprocWithParamsSucceeds() throws Exception {
-        InputStream is = ClassLoader.class.getResourceAsStream("/TestSprocQuery.json");
-        String json = IOUtils.toString(is);
-        NamedQuery query = mapper.readValue(json, NamedQuery.class);
-        doCallRealMethod().when(service).create(query);
-        mockMvc.perform(
-                post("/namedQuery")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isNoContent());
+    public void testThatCreateSprocWithParamsSucceeds() {
+    	try {
+	        InputStream is = ClassLoader.class.getResourceAsStream("/TestSprocQuery.json");
+	        String json = IOUtils.toString(is);
+	        NamedQuery query = mapper.readValue(json, NamedQuery.class);
+	        doCallRealMethod().when(service).create(query);
+	        mockMvc.perform(
+	                post("/namedQuery")
+	                        .contentType(MediaType.APPLICATION_JSON)
+	                        .content(json)
+	                )
+	                .andExpect(status().isNoContent());
+    	} catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
     
     @Test
-    public void testThatCreateSelectWithParamsSucceeds() throws Exception {
-        InputStream is = ClassLoader.class.getResourceAsStream("/TestSelectQuery.json");
-        String json = IOUtils.toString(is);
-        NamedQuery query = mapper.readValue(json, NamedQuery.class);
-        doCallRealMethod().when(service).create(query);
-        mockMvc.perform(
-                post("/namedQuery")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isNoContent());
+    public void testThatCreateSelectWithParamsSucceeds() {
+    	try {
+	        InputStream is = ClassLoader.class.getResourceAsStream("/TestSelectQuery.json");
+	        String json = IOUtils.toString(is);
+	        NamedQuery query = mapper.readValue(json, NamedQuery.class);
+	        doCallRealMethod().when(service).create(query);
+	        mockMvc.perform(
+	                post("/namedQuery")
+	                        .contentType(MediaType.APPLICATION_JSON)
+	                        .content(json)
+	                )
+	                .andExpect(status().isNoContent());
+    	} catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
     
     @Test
-    public void testThatCreateSelectNoParamsSucceeds() throws Exception {
-        InputStream is = ClassLoader.class.getResourceAsStream("/TestSelectQuery2.json");
-        String json = IOUtils.toString(is);
-        NamedQuery query = mapper.readValue(json, NamedQuery.class);
-        doCallRealMethod().when(service).create(query);
-        mockMvc.perform(
-                post("/namedQuery")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/namedQuery/getAttributesCreatedToday"));
+    public void testThatCreateSelectNoParamsSucceeds() {
+    	try {
+	        InputStream is = ClassLoader.class.getResourceAsStream("/TestSelectQuery2.json");
+	        String json = IOUtils.toString(is);
+	        NamedQuery query = mapper.readValue(json, NamedQuery.class);
+	        doCallRealMethod().when(service).create(query);
+	        mockMvc.perform(
+	                post("/namedQuery")
+	                        .contentType(MediaType.APPLICATION_JSON)
+	                        .content(json)
+	                )
+	                .andExpect(status().isCreated())
+	                .andExpect(header().string("Location", "/namedQuery/getAttributesCreatedToday"));
+    	} catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
     
     @Test
-    public void testThatCreateForSelectWithQueryTypeSuppliedSucceeds() throws Exception {
-        InputStream is = ClassLoader.class.getResourceAsStream("/TestSelectQuery3.json");
-        String json = IOUtils.toString(is);
-        NamedQuery query = mapper.readValue(json, NamedQuery.class);
-        doCallRealMethod().when(service).create(query);
-        mockMvc.perform(
-                post("/namedQuery")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/namedQuery/getClassesCreatedToday"));
+    public void testThatCreateForSelectWithQueryTypeSuppliedSucceeds() {
+    	try {
+	        InputStream is = ClassLoader.class.getResourceAsStream("/TestSelectQuery3.json");
+	        String json = IOUtils.toString(is);
+	        NamedQuery query = mapper.readValue(json, NamedQuery.class);
+	        doCallRealMethod().when(service).create(query);
+	        mockMvc.perform(
+	                post("/namedQuery")
+	                        .contentType(MediaType.APPLICATION_JSON)
+	                        .content(json)
+	                )
+	                .andExpect(status().isCreated())
+	                .andExpect(header().string("Location", "/namedQuery/getClassesCreatedToday"));
+    	} catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
     
     @Test
-    public void testThatCreateForSprocWithQueryTypeSuppliedSucceeds() throws Exception {
-        InputStream is = ClassLoader.class.getResourceAsStream("/TestSprocQuery2.json");
-        String json = IOUtils.toString(is);
-        NamedQuery query = mapper.readValue(json, NamedQuery.class);
-        doCallRealMethod().when(service).create(query);
-        mockMvc.perform(
-                post("/namedQuery")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isNoContent());
+    public void testThatCreateForSprocWithQueryTypeSuppliedSucceeds() {
+    	try {
+	        InputStream is = ClassLoader.class.getResourceAsStream("/TestSprocQuery2.json");
+	        String json = IOUtils.toString(is);
+	        NamedQuery query = mapper.readValue(json, NamedQuery.class);
+	        doCallRealMethod().when(service).create(query);
+	        mockMvc.perform(
+	                post("/namedQuery")
+	                        .contentType(MediaType.APPLICATION_JSON)
+	                        .content(json)
+	                )
+	                .andExpect(status().isNoContent());
+    	} catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
     
     @Test
-    public void testThatGetSucceeds() throws Exception {
-        InputStream is = ClassLoader.class.getResourceAsStream("/TestSelectQuery2-sample-response.json");
-        String response = IOUtils.toString(is);
-        when(service.get("getAttributesCreatedToday", new LinkedMultiValueMap<String, String>())).thenReturn(response);
-        mockMvc.perform(
-                get("/namedQuery/getAttributesCreatedToday")
-                    .contentType(MediaType.APPLICATION_JSON)
-            )
-            .andExpect(status().isOk())
-            .andExpect(content().json(response));
+    public void testThatGetSucceeds() {
+        try {
+	    	InputStream is = ClassLoader.class.getResourceAsStream("/TestSelectQuery2-sample-response.json");
+	        String response = IOUtils.toString(is);
+	        when(service.get("getAttributesCreatedToday", new LinkedMultiValueMap<String, String>())).thenReturn(response);
+	        mockMvc.perform(
+	                get("/namedQuery/getAttributesCreatedToday")
+	                    .contentType(MediaType.APPLICATION_JSON)
+	            )
+	            .andExpect(status().isOk())
+	            .andExpect(content().json(response));
+        } catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
     
 
     @Test
-    public void testThatAllSucceeds() throws Exception {
-        String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestSelectQuery2.json"));
-        JSONArray response = new JSONArray();
-        response.put(new JSONObject(json));
-        when(service.all()).thenReturn(response);
-        mockMvc.perform(
-                get("/namedQuery?showAll=true")
-                    .contentType(MediaType.APPLICATION_JSON)
-            )
-            .andExpect(status().isOk())
-                .andExpect(content().json(response.toString()));
+    public void testThatAllSucceeds() {
+    	try {
+	        String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestSelectQuery2.json"));
+	        JSONArray response = new JSONArray();
+	        response.put(new JSONObject(json));
+	        when(service.all()).thenReturn(response);
+	        mockMvc.perform(
+	                get("/namedQuery?showAll=true")
+	                    .contentType(MediaType.APPLICATION_JSON)
+	            )
+	            .andExpect(status().isOk())
+	                .andExpect(content().json(response.toString()));
+    	} catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testThatDeleteSucceeds() throws Exception {
-        mockMvc.perform(
-                delete("/namedQuery/TestSelectQuery")
-                    .contentType(MediaType.APPLICATION_JSON)
-            )
-            .andExpect(status().isNoContent());
+    public void testThatDeleteSucceeds() {
+    	try {
+	        mockMvc.perform(
+	                delete("/namedQuery/TestSelectQuery")
+	                    .contentType(MediaType.APPLICATION_JSON)
+	            )
+	            .andExpect(status().isNoContent());
+    	} catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
 
 }

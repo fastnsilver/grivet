@@ -15,6 +15,7 @@
  */
 package com.fns.grivet.controller;
 
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -50,37 +51,49 @@ public class ClassRegistryControllerTest2 {
 
 
 	@Test
-	public void testThatDeleteSucceeds() throws Exception {
-		mockMvc.perform(
-				delete("/register/TestType")
-				.contentType(MediaType.APPLICATION_JSON)
-				)
-		.andExpect(status().isNoContent());
+	public void testThatDeleteSucceeds() {
+		try {
+			mockMvc.perform(
+					delete("/register/TestType")
+					.contentType(MediaType.APPLICATION_JSON)
+					)
+			.andExpect(status().isNoContent());
+		} catch (Exception e) {
+        	fail(e.getMessage());
+        }
 	}
 
 	@Test
-	public void testThatGetSucceeds() throws Exception {
-		String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestType.json"));
-		when(service.get("TestType")).thenReturn(new JSONObject(json));
-		mockMvc.perform(
-				get("/register/TestType")
-				.contentType(MediaType.APPLICATION_JSON)
-				)
-		.andExpect(status().isOk())
-		.andExpect(content().json(json));
+	public void testThatGetSucceeds() {
+		try {
+			String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestType.json"));
+			when(service.get("TestType")).thenReturn(new JSONObject(json));
+			mockMvc.perform(
+					get("/register/TestType")
+					.contentType(MediaType.APPLICATION_JSON)
+					)
+			.andExpect(status().isOk())
+			.andExpect(content().json(json));
+		} catch (Exception e) {
+        	fail(e.getMessage());
+        }
 	}
 
 	@Test
-	public void testThatAllSucceeds() throws Exception {
-		String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestType.json"));
-		String arr = String.format("[%s]", json);
-		when(service.all()).thenReturn(new JSONArray(arr));
-		mockMvc.perform(
-				get("/register?showAll=true")
-				.contentType(MediaType.APPLICATION_JSON)
-				)
-		.andExpect(status().isOk())
-		.andExpect(content().json(arr));
+	public void testThatAllSucceeds() {
+		try {
+			String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestType.json"));
+			String arr = String.format("[%s]", json);
+			when(service.all()).thenReturn(new JSONArray(arr));
+			mockMvc.perform(
+					get("/register?showAll=true")
+					.contentType(MediaType.APPLICATION_JSON)
+					)
+			.andExpect(status().isOk())
+			.andExpect(content().json(arr));
+		} catch (Exception e) {
+        	fail(e.getMessage());
+        }
 	}
 
 	// TODO More testing; unhappy path cases
