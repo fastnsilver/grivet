@@ -42,7 +42,7 @@ import com.jayway.restassured.path.json.JsonPath;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestInit.class)
-public class NamedQueryService_Select_Test {
+public class NamedQueryServiceSelectTest {
 
 	@Autowired
 	private ResourceLoader resolver;

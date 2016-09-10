@@ -45,7 +45,7 @@ import com.jayway.restassured.path.json.JsonPath;
 @ActiveProfiles(value = { "hsqldb", "insecure" })
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestInit.class)
-public class NamedQueryService_Sproc_Test {
+public class NamedQueryServiceSprocTest {
 
 	@Autowired
 	private ResourceLoader resolver;
@@ -68,7 +68,7 @@ public class NamedQueryService_Sproc_Test {
 	}
 
 	@Test
-	public void testCreateThenGetHappyPath() throws IOException {
+	public void testSuccessfulNamedQueryExecution() throws IOException {
 		Resource r = resolver.getResource("classpath:TestSprocQuery.json");
 		String json = IOUtils.toString(r.getInputStream());
 		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
@@ -85,7 +85,7 @@ public class NamedQueryService_Sproc_Test {
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testGet_queryNotFound() throws IOException {
+	public void testNamedQueryNotFound() throws IOException {
 		MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
 		Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
 		params.add("createdTime", tomorrow);
@@ -93,7 +93,7 @@ public class NamedQueryService_Sproc_Test {
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testCreateThenGetParamsNotSupplied() throws IOException {
+	public void testNamedQueryNotExecutedBecauseItDidNotContainRequiredParamForExecution() throws IOException {
 		Resource r = resolver.getResource("classpath:TestSprocQuery.json");
 		String json = IOUtils.toString(r.getInputStream());
 		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
@@ -103,7 +103,7 @@ public class NamedQueryService_Sproc_Test {
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testCreateThenGetIncorrectParamsSupplied() throws IOException {
+	public void testNamedQueryNotExecutedBecauseParamSuppliedForExecutionNotCorrectlyNamed() throws IOException {
 		Resource r = resolver.getResource("classpath:TestSprocQuery.json");
 		String json = IOUtils.toString(r.getInputStream());
 		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);

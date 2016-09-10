@@ -15,6 +15,7 @@
  */
 package com.fns.grivet.controller;
 
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,15 +48,19 @@ public class EntityControllerTest2 {
     
     
     @Test
-    public void testThatStoringASingleTestTypeSucceeds() throws Exception {
-        String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestTypeData.json"));
-        doNothing().when(service).create("TestType", new JSONObject(json));
-        mockMvc.perform(
-                    post("/store/TestType")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isNoContent());
+    public void testThatStoringASingleTestTypeSucceeds() {
+    	try {
+	        String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestTypeData.json"));
+	        doNothing().when(service).create("TestType", new JSONObject(json));
+	        mockMvc.perform(
+	                    post("/store/TestType")
+	                        .contentType(MediaType.APPLICATION_JSON)
+	                        .content(json)
+	                )
+	                .andExpect(status().isNoContent());
+    	} catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
 
     // TODO More testing; unhappy path cases

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -15,8 +15,7 @@
  */
 package com.fns.grivet.controller;
 
-import com.codahale.metrics.MetricRegistry;
-import com.fns.grivet.service.Ingester;
+import java.io.IOException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +36,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import com.codahale.metrics.MetricRegistry;
+import com.fns.grivet.service.Ingester;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,7 +47,7 @@ import io.swagger.annotations.ApiResponses;
 
 /**
  * Ingestion end-points
- * 
+ *
  * @author Chris Phillipson
  */
 @RestController
@@ -55,71 +55,71 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "ingester", produces = "application/json")
 public class IngestController {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
-    
-    @Value("${grivet.ingest.batch-size:100}")
-    int batchSize;
-    
-    private final Ingester ingestService;
-    
-    private final MetricRegistry metricRegistry;
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    public IngestController(Ingester entityService, MetricRegistry metricRegistry) {
-        this.ingestService = entityService;
-        this.metricRegistry = metricRegistry;
-    }
-    
-    @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-    @RequestMapping(value = "/{type}", method = RequestMethod.POST, 
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Store a type.", value = "/ingester/{type}")
-    @ApiResponses({ @ApiResponse(code = 204, message = "Successfully ingest type."),
-            @ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody JSONObject json)
-            throws IOException {
-        ingestService.ingest(MessageBuilder.withPayload(json).setHeader("type", type).build());
-        metricRegistry.counter(MetricRegistry.name("ingest", type, "count")).inc();
-        log.info("Successfully ingested type [{}]", type);
-        return ResponseEntity.accepted().build();
-    }
+	@Value("${grivet.ingest.batch-size:100}")
+	private int batchSize;
 
-    @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-    @RequestMapping(value = "/batch/{type}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/ingester/batch/{type}")
-    @ApiResponses({ @ApiResponse(code = 204, message = "Successfully ingest types."),
-            @ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody JSONArray json)
-            throws IOException, JSONException {
-        int numberOfTypesToCreate = json.length();
-        Assert.isTrue(numberOfTypesToCreate <= batchSize,
-                String.format(
-                        "The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries.",
-                        batchSize, numberOfTypesToCreate));
-        JSONObject jsonObject = null;
-        HttpHeaders headers = new HttpHeaders();
-        // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
-        for (int i = 0; i < numberOfTypesToCreate; i++) {
-            try {
-                jsonObject = json.getJSONObject(i);
-                ingestService.ingest(MessageBuilder.withPayload(jsonObject).setHeader("type", type).build());
-                metricRegistry.counter(MetricRegistry.name("ingest", type, "count")).inc();
-                log.info("Successfully ingested type [{}]", type);
-            } catch (Exception e) {
-                String message = LogUtil.toLog(jsonObject,
-                        String.format("Problems ingesting type! Portion of payload @ index[%d]\n", i + 1));
-                log.error(message, e);
-                if (numberOfTypesToCreate == 1) {
-                    throw e;
-                }
-                headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());
-            }
-        }
-        return ResponseEntity.accepted().headers(headers).build();
-    }
-    
+	private final Ingester ingestService;
+
+	private final MetricRegistry metricRegistry;
+
+	@Autowired
+	public IngestController(Ingester entityService, MetricRegistry metricRegistry) {
+		this.ingestService = entityService;
+		this.metricRegistry = metricRegistry;
+	}
+
+	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
+	@RequestMapping(value = "/{type}", method = RequestMethod.POST,
+	consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "POST", notes = "Store a type.", value = "/ingester/{type}")
+	@ApiResponses({ @ApiResponse(code = 204, message = "Successfully ingest type."),
+		@ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
+		@ApiResponse(code = 400, message = "Bad request."),
+		@ApiResponse(code = 500, message = "Internal server error.") })
+	public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody JSONObject json)
+			throws IOException {
+		ingestService.ingest(MessageBuilder.withPayload(json).setHeader("type", type).build());
+		metricRegistry.counter(MetricRegistry.name("ingest", type, "count")).inc();
+		log.info("Successfully ingested type [{}]", type);
+		return ResponseEntity.accepted().build();
+	}
+
+	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
+	@RequestMapping(value = "/batch/{type}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/ingester/batch/{type}")
+	@ApiResponses({ @ApiResponse(code = 204, message = "Successfully ingest types."),
+		@ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
+		@ApiResponse(code = 400, message = "Bad request."),
+		@ApiResponse(code = 500, message = "Internal server error.") })
+	public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody JSONArray json)
+			throws IOException, JSONException {
+		int numberOfTypesToCreate = json.length();
+		Assert.isTrue(numberOfTypesToCreate <= batchSize,
+				String.format(
+						"The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries.",
+						batchSize, numberOfTypesToCreate));
+		JSONObject jsonObject = null;
+		HttpHeaders headers = new HttpHeaders();
+		// allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
+		for (int i = 0; i < numberOfTypesToCreate; i++) {
+			try {
+				jsonObject = json.getJSONObject(i);
+				ingestService.ingest(MessageBuilder.withPayload(jsonObject).setHeader("type", type).build());
+				metricRegistry.counter(MetricRegistry.name("ingest", type, "count")).inc();
+				log.info("Successfully ingested type [{}]", type);
+			} catch (Exception e) {
+				String message = LogUtil.toLog(jsonObject,
+						String.format("Problems ingesting type! Portion of payload @ index[%d]\n", i + 1));
+				log.error(message, e);
+				if (numberOfTypesToCreate == 1) {
+					throw e;
+				}
+				headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());
+			}
+		}
+		return ResponseEntity.accepted().headers(headers).build();
+	}
+
 }

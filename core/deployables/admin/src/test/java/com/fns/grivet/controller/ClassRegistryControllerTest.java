@@ -15,6 +15,7 @@
  */
 package com.fns.grivet.controller;
 
+import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -47,59 +48,71 @@ public class ClassRegistryControllerTest {
     
     
     @Test
-    public void testThatRegisteringASingleTypeResultsInABadRequest() throws Exception {
-        Resource r = resolver.getResource("classpath:BadTestType.json");
-        String json = IOUtils.toString(r.getInputStream());
-        mockMvc.perform(
-                post("/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isBadRequest());
+    public void testThatRegisteringASingleTypeResultsInABadRequest() {
+        try {
+	    	Resource r = resolver.getResource("classpath:BadTestType.json");
+	        String json = IOUtils.toString(r.getInputStream());
+	        mockMvc.perform(
+	                post("/register")
+	                        .contentType(MediaType.APPLICATION_JSON)
+	                        .content(json)
+	                )
+	                .andExpect(status().isBadRequest());
+        } catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
     
     @Test
-    public void testThatRegisteringASingleTypeSucceeds() throws Exception {
-        Resource r = resolver.getResource("classpath:TestType.json");
-        String json = IOUtils.toString(r.getInputStream());
-        mockMvc.perform(
-                post("/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/register/TestType"));
-        
-        mockMvc.perform(
-                delete("/register/TestType")
-                    .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isNoContent());
+    public void testThatRegisteringASingleTypeSucceeds() {
+    	try {
+	        Resource r = resolver.getResource("classpath:TestType.json");
+	        String json = IOUtils.toString(r.getInputStream());
+	        mockMvc.perform(
+	                post("/register")
+	                        .contentType(MediaType.APPLICATION_JSON)
+	                        .content(json)
+	                )
+	                .andExpect(status().isCreated())
+	                .andExpect(header().string("Location", "/register/TestType"));
+	        
+	        mockMvc.perform(
+	                delete("/register/TestType")
+	                    .contentType(MediaType.APPLICATION_JSON)
+	                )
+	                .andExpect(status().isNoContent());
+    	} catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testThatRegisteringMultipleTypesSucceeds() throws Exception {
-        Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
-        String json = IOUtils.toString(r.getInputStream());
-        mockMvc.perform(
-                post("/register/types")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                    )
-                    .andExpect(status().isCreated())
-                .andExpect(header().string("Location[1]", "/register/Contact"))
-                .andExpect(header().string("Location[2]", "/register/Course"));
-        
-        mockMvc.perform(
-                delete("/register/Contact")
-                    .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isNoContent());
-        mockMvc.perform(
-                delete("/register/Course")
-                    .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isNoContent());
+    public void testThatRegisteringMultipleTypesSucceeds() {
+    	try {
+	    	Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
+	        String json = IOUtils.toString(r.getInputStream());
+	        mockMvc.perform(
+	                post("/register/types")
+	                        .contentType(MediaType.APPLICATION_JSON)
+	                        .content(json)
+	                    )
+	                    .andExpect(status().isCreated())
+	                .andExpect(header().string("Location[1]", "/register/Contact"))
+	                .andExpect(header().string("Location[2]", "/register/Course"));
+	        
+	        mockMvc.perform(
+	                delete("/register/Contact")
+	                    .contentType(MediaType.APPLICATION_JSON)
+	                )
+	                .andExpect(status().isNoContent());
+	        mockMvc.perform(
+	                delete("/register/Course")
+	                    .contentType(MediaType.APPLICATION_JSON)
+	                )
+	                .andExpect(status().isNoContent());
+    	} catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
         
     // TODO More testing; unhappy path cases

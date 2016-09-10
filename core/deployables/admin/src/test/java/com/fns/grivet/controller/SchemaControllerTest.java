@@ -15,6 +15,7 @@
  */
 package com.fns.grivet.controller;
 
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -50,30 +51,38 @@ public class SchemaControllerTest {
     
 
     @Test
-    public void testThatLinkSchemaSucceeds() throws Exception {
-        String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestTypeSchema.json"));
-        when(service.isJsonSchema(any(JSONObject.class))).thenReturn(true);
-        com.fns.grivet.model.Class clazz = new com.fns.grivet.model.Class("TestType", "A type for testing purposes", null);
-        when(service.linkSchema(any(JSONObject.class))).thenReturn(clazz);
-        mockMvc.perform(
-                    post("/schema")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().string("JSON Schema for type [TestType] linked!  Store requests for this type will be validated henceforth!"));
+    public void testThatLinkSchemaSucceeds() {
+    	try {
+	        String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestTypeSchema.json"));
+	        when(service.isJsonSchema(any(JSONObject.class))).thenReturn(true);
+	        com.fns.grivet.model.Class clazz = new com.fns.grivet.model.Class("TestType", "A type for testing purposes", null);
+	        when(service.linkSchema(any(JSONObject.class))).thenReturn(clazz);
+	        mockMvc.perform(
+	                    post("/schema")
+	                        .contentType(MediaType.APPLICATION_JSON)
+	                        .content(json)
+	                )
+	                .andExpect(status().isOk())
+	                .andExpect(content().string("JSON Schema for type [TestType] linked!  Store requests for this type will be validated henceforth!"));
+    	} catch (Exception e) {
+        	fail(e.getMessage());
+        }
     }
     
     @Test
-    public void testThatUnlinkSchemaSucceeds() throws Exception {
-        com.fns.grivet.model.Class clazz = new com.fns.grivet.model.Class("TestType", "A type for testing purposes", null);
-        when(service.unlinkSchema("TestType")).thenReturn(clazz);
-        mockMvc.perform(
-                    delete("/schema/TestType")
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().string("JSON Schema for type [TestType] unlinked!  Store requests for this type will no longer be validated!"));
+    public void testThatUnlinkSchemaSucceeds() {
+    	try {
+	        com.fns.grivet.model.Class clazz = new com.fns.grivet.model.Class("TestType", "A type for testing purposes", null);
+	        when(service.unlinkSchema("TestType")).thenReturn(clazz);
+	        mockMvc.perform(
+	                    delete("/schema/TestType")
+	                        .contentType(MediaType.APPLICATION_JSON)
+	                )
+	                .andExpect(status().isOk())
+	                .andExpect(content().string("JSON Schema for type [TestType] unlinked!  Store requests for this type will no longer be validated!"));
+	    } catch (Exception e) {
+	    	fail(e.getMessage());
+	    }
     }
     
     // TODO More testing; unhappy path cases

@@ -65,7 +65,7 @@ public class EntityController {
     private final Logger log = LoggerFactory.getLogger(getClass());
     
     @Value("${grivet.store.batch-size:100}")
-    int batchSize;
+    private int batchSize;
     
     private final EntityService entityService;
     

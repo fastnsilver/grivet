@@ -15,6 +15,7 @@
  */
 package com.fns.grivet.controller;
 
+import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,101 +48,129 @@ public class EntityControllerTest {
 	private MockMvc mockMvc;
 
 
-	private void registerTestType2() throws Exception {
-		Resource r = resolver.getResource("classpath:TestType2.json");
-		String json = IOUtils.toString(r.getInputStream());
-		mockMvc.perform(
-				post("/register")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(json)
-				)
-		.andExpect(status().isCreated());
+	private void registerTestType2() {
+		try {
+			Resource r = resolver.getResource("classpath:TestType2.json");
+			String json = IOUtils.toString(r.getInputStream());
+			mockMvc.perform(
+					post("/register")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)
+					)
+			.andExpect(status().isCreated());
+		} catch (Exception e) {
+	    	fail(e.getMessage());
+	    }
 	}
 
-	private void storeTestType2() throws Exception {
-		Resource r = resolver.getResource("classpath:TestTypeData2.json");
-		String json = IOUtils.toString(r.getInputStream());
-		mockMvc.perform(
-				post("/store/TestType2")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(json)
-				)
-		.andExpect(status().isNoContent());
+	private void storeTestType2() {
+		try {
+			Resource r = resolver.getResource("classpath:TestTypeData2.json");
+			String json = IOUtils.toString(r.getInputStream());
+			mockMvc.perform(
+					post("/store/TestType2")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)
+					)
+			.andExpect(status().isNoContent());
+		} catch (Exception e) {
+        	fail(e.getMessage());
+        }
 	}
 
-	private void unregisterTestType2() throws Exception {
-		mockMvc.perform(
-				delete("/register/TestType2")
-				.contentType(MediaType.APPLICATION_JSON)
-				)
-		.andExpect(status().isNoContent());
+	private void unregisterTestType2() {
+		try {
+			mockMvc.perform(
+					delete("/register/TestType2")
+					.contentType(MediaType.APPLICATION_JSON)
+					)
+			.andExpect(status().isNoContent());
+		} catch (Exception e) {
+        	fail(e.getMessage());
+        }
 	}
 
-	private void registerMultipleTypes() throws Exception {
-		Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
-		String json = IOUtils.toString(r.getInputStream());
-		mockMvc.perform(
-				post("/register/types")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(json)
-				)
-		.andExpect(status().isCreated());
+	private void registerMultipleTypes() {
+		try {
+			Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
+			String json = IOUtils.toString(r.getInputStream());
+			mockMvc.perform(
+					post("/register/types")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)
+					)
+			.andExpect(status().isCreated());
+		} catch (Exception e) {
+        	fail(e.getMessage());
+        }
 	}
 
-	private void storeMultipleContacts() throws Exception {
-		Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
-		String json = IOUtils.toString(r.getInputStream());
-		mockMvc.perform(
-				post("/store/batch/Contact")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(json)
-				)
-		.andExpect(status().isNoContent());
+	private void storeMultipleContacts() {
+		try {
+			Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
+			String json = IOUtils.toString(r.getInputStream());
+			mockMvc.perform(
+					post("/store/batch/Contact")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)
+					)
+			.andExpect(status().isNoContent());
+		} catch (Exception e) {
+        	fail(e.getMessage());
+        }
 	}
 
-	private void unregisterMultipleTypes() throws Exception {
-		mockMvc.perform(
-				delete("/register/Contact")
-				.contentType(MediaType.APPLICATION_JSON)
-				)
-		.andExpect(status().isNoContent());
-		mockMvc.perform(
-				delete("/register/Course")
-				.contentType(MediaType.APPLICATION_JSON)
-				)
-		.andExpect(status().isNoContent());
+	private void unregisterMultipleTypes() {
+		try {
+			mockMvc.perform(
+					delete("/register/Contact")
+					.contentType(MediaType.APPLICATION_JSON)
+					)
+			.andExpect(status().isNoContent());
+			mockMvc.perform(
+					delete("/register/Course")
+					.contentType(MediaType.APPLICATION_JSON)
+					)
+			.andExpect(status().isNoContent());
+		} catch (Exception e) {
+        	fail(e.getMessage());
+        }
 	}
 
 	@Test
-	public void testThatGetSucceeds() throws Exception {
+	public void testThatGetSucceeds() {
 		// register, store, fetch, then unregister
 		registerTestType2();
 		storeTestType2();
 
-		Resource r = resolver.getResource("classpath:TestTypeData2.json");
-		String response = String.format("[%s]", IOUtils.toString(r.getInputStream()));
-
-		// GET (with default constraints)
-		mockMvc.perform(
-				get("/store/TestType2")
-				.contentType(MediaType.APPLICATION_JSON)
-				)
-		.andExpect(status().isOk())
-		.andExpect(content().json(response));
-
-		// GET (with startsWith constraint)
-		mockMvc.perform(
-				get("/store/TestType2?c=first-name|startsWith|J")
-				.contentType(MediaType.APPLICATION_JSON)
-				)
-		.andExpect(status().isOk())
-		.andExpect(content().json(response));
+		try {
+			Resource r = resolver.getResource("classpath:TestTypeData2.json");
+			String response = String.format("[%s]", IOUtils.toString(r.getInputStream()));
+	
+			// GET (with default constraints)
+			mockMvc.perform(
+					get("/store/TestType2")
+					.contentType(MediaType.APPLICATION_JSON)
+					)
+			.andExpect(status().isOk())
+			.andExpect(content().json(response));
+	
+			// GET (with startsWith constraint)
+			mockMvc.perform(
+					get("/store/TestType2?c=first-name|startsWith|J")
+					.contentType(MediaType.APPLICATION_JSON)
+					)
+			.andExpect(status().isOk())
+			.andExpect(content().json(response));
+		} catch (Exception e) {
+        	fail(e.getMessage());
+        }
 
 		unregisterTestType2();
 	}
 
 	@Test
-	public void testThatStoringMultipleContactsSucceeds() throws Exception {
+	public void testThatStoringMultipleContactsSucceeds() {
 		// register, then store
 		registerMultipleTypes();
 		storeMultipleContacts();

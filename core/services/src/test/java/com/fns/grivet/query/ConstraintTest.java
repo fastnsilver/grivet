@@ -16,7 +16,7 @@ public class ConstraintTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testConstraint_partsLessThan3() {
+	public void testThatLessThan3PartConstraintThrowsException() {
 		new Constraint(new String[] { "foo", "equals" });
 	}
 
@@ -53,7 +53,7 @@ public class ConstraintTest {
 	}
 
 	@Test
-	public void testConstraint_withConjunction() {
+	public void testThatConstraintWithProperOrConjunctionSucceeds() {
 		Constraint c = new Constraint(new String[] { "foo", "startsWith", "f", "or" });
 		Assert.assertEquals("foo", c.getAttributeName());
 		Assert.assertEquals(Operator.STARTS_WITH, c.getOperator());
