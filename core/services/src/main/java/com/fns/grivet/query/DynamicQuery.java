@@ -111,7 +111,7 @@ public class DynamicQuery {
             attributeTypeId = attributeToAttributeTypeMap.get(attributeId);
             Assert.notNull(attributeTypeId, String.format("Invalid query constraint! No attribute type identifier found for attribute name [%s]", attributeName));
             at = AttributeType.fromId(attributeTypeId);
-            Assert.notNull(attributeTypeId, String.format("Invalid query constraint! No matching attribute type found for attribute name [%s]", attributeName));
+            Assert.notNull(at, String.format("Invalid query constraint! No matching attribute type found for attribute type identifier [%d]", attributeTypeId));
             if (c.getOperator().equals(Operator.BETWEEN)) {
                 paramValues.add(getSqlParameterValue(at, c.getOperator(), c.getValues()[0]));
                 paramValues.add(getSqlParameterValue(at, c.getOperator(), c.getValues()[1]));

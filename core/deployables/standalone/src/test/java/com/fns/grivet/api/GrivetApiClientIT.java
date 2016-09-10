@@ -90,25 +90,25 @@ public class GrivetApiClientIT {
     }
 
     @Test
-    public void testRegisterType_happyPath() throws Exception {
+    public void testRegisterTypeHappyPath() throws Exception {
         registerTestType();
         deregisterType();
     }
     
     @Test
-    public void testRegisterMultipleTypes_happyPath() throws Exception {
+    public void testRegisterMultipleTypesHappyPath() throws Exception {
         registerMultipleTypes();
         deregisterTypes();
     }
 
     @Test
-    public void testRegisterType_emptyBody() throws Exception {
+    public void testRegisterTypeEmptyBody() throws Exception {
         given().contentType("application/json").request().body("").then().expect().statusCode(equalTo(400)).when()
                 .post("/register");
     }
     
     @Test
-    public void testRegisterType_badRequest() throws Exception {
+    public void testRegisterTypeBadRequest() throws Exception {
         Resource r = resolver.getResource("classpath:BadTestType.json");
         String json = IOUtils.toString(r.getInputStream());
         given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(400)).when()
@@ -116,7 +116,7 @@ public class GrivetApiClientIT {
     }
     
     @Test
-    public void testGetRegisteredType_happyPath() throws Exception {
+    public void testGetRegisteredTypeHappyPath() throws Exception {
         String json = registerTestType();
         Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
                 .when().get("/register/TestType");
@@ -125,7 +125,7 @@ public class GrivetApiClientIT {
     }
     
     @Test
-    public void testAllRegisteredTypes_happyPath() throws Exception {
+    public void testAllRegisteredTypesHappyPath() throws Exception {
         String json = registerTestType();
         Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
                 .when().get("/register?showAll");
@@ -135,7 +135,7 @@ public class GrivetApiClientIT {
     }
 
     @Test
-    public void testLinkAndUnlinkJsonSchema_happyPath() throws Exception {
+    public void testLinkAndUnlinkJsonSchemaHappyPath() throws Exception {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestTypeSchema.json");
         String schema = IOUtils.toString(r.getInputStream());
@@ -147,7 +147,7 @@ public class GrivetApiClientIT {
     }
     
     @Test
-    public void testRegisterAndLinkAndStoreAndGetType_happyPath() throws Exception {
+    public void testRegisterAndLinkAndStoreAndGetTypeHappyPath() throws Exception {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestTypeSchema.json");
         String schema = IOUtils.toString(r.getInputStream());
@@ -195,7 +195,7 @@ public class GrivetApiClientIT {
     }
     
     @Test
-    public void testRegisterAndStoreMultipleContacts_happyPath() throws Exception {
+    public void testRegisterAndStoreMultipleContactsHappyPath() throws Exception {
         registerMultipleTypes();
         Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
         String contacts = IOUtils.toString(r.getInputStream());
@@ -205,7 +205,7 @@ public class GrivetApiClientIT {
     }
     
     @Test
-    public void testRegisterAndStoreMultipleCourses_accepted() throws Exception {
+    public void testRegisterAndStoreMultipleCoursesAccepted() throws Exception {
         registerMultipleTypes();
         Resource r = resolver.getResource("classpath:BadCourseData.json");
         String courses = IOUtils.toString(r.getInputStream());
@@ -222,7 +222,7 @@ public class GrivetApiClientIT {
     }
     
     @Test
-    public void testAllRegisteredNamedQueries_happyPath() throws Exception {
+    public void testAllRegisteredNamedQueriesHappyPath() throws Exception {
         Resource r = resolver.getResource("classpath:TestSelectQuery.json");
         String select = IOUtils.toString(r.getInputStream());
         given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(204)).when()
@@ -236,7 +236,7 @@ public class GrivetApiClientIT {
     }
     
     @Test
-    public void testNamedQueryRegistrationAndRetrieval_select_happyPath() throws Exception {
+    public void testNamedQueryRegistrationAndRetrievalSelectHappyPath() throws Exception {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestSelectQuery3.json");
         String select = IOUtils.toString(r.getInputStream());
@@ -254,7 +254,7 @@ public class GrivetApiClientIT {
     
     @Test
     @Ignore("Cannot test w/ H2")
-    public void testNamedQueryRegistrationAndRetrieval_sproc_happyPath() throws Exception {
+    public void testNamedQueryRegistrationAndRetrievalSprocHappyPath() throws Exception {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestSprocQuery.json");
         String sproc = IOUtils.toString(r.getInputStream());
