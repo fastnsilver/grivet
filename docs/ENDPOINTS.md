@@ -41,7 +41,7 @@
 
   * Sample POST request [TestTypeData.json](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/TestTypeData.json)
 
-* POST `/store/batch/{type}`
+* POST `/store/{type}/batch`
 
   * Sample POST request [TestMultipleContactsData.json](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/TestMultipleContactsData.json)
 

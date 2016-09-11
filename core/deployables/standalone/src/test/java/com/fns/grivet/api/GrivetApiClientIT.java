@@ -226,7 +226,7 @@ public class GrivetApiClientIT {
         try {
 	        String contacts = IOUtils.toString(r.getInputStream());
 	        given().contentType("application/json").request().body(contacts).then().expect().statusCode(equalTo(204)).when()
-	                .post("/store/batch/Contact");
+	                .post("/store/Contact/batch");
         } catch (IOException e) {
         	fail(e.getMessage());
         }
@@ -247,7 +247,7 @@ public class GrivetApiClientIT {
 	                .post("/schema");
 	        
 	        given().contentType("application/json").request().body(courses).then().expect().statusCode(equalTo(202)).when()
-	                .post("/store/batch/Course");
+	                .post("/store/Course/batch");
         } catch (IOException e) {
         	fail(e.getMessage());
         }

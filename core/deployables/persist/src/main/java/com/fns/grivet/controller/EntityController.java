@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -15,9 +15,11 @@
  */
 package com.fns.grivet.controller;
 
-import com.codahale.metrics.MetricRegistry;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fns.grivet.service.EntityService;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,11 +42,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
-import javax.servlet.http.HttpServletRequest;
+import com.codahale.metrics.MetricRegistry;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fns.grivet.service.EntityService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,7 +54,7 @@ import io.swagger.annotations.ApiResponses;
 
 /**
  * Provides end-points for type storage and retrieval
- * 
+ *
  * @author Chris Phillipson
  */
 @RestController
@@ -62,90 +62,90 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "store", produces = "application/json")
 public class EntityController {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
-    
-    @Value("${grivet.store.batch-size:100}")
-    private int batchSize;
-    
-    private final EntityService entityService;
-    
-    private final MetricRegistry metricRegistry;
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    public EntityController(EntityService entityService, MetricRegistry metricRegistry) {
-        this.entityService = entityService;
-        this.metricRegistry = metricRegistry;
-    }
-    
-    @Profile("!no-http")
-    @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-    @RequestMapping(value = "/{type}", method = RequestMethod.POST, 
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Store a type.", value = "/store/{type}")
-    @ApiResponses({ @ApiResponse(code = 204, message = "Successfully store type."),
-            @ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody JSONObject json)
-            throws IOException {
-        entityService.create(type, json);
-        metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();
-        log.info("Successfully stored type [{}]", type);
-        return ResponseEntity.noContent().build();
-    }
+	@Value("${grivet.store.batch-size:100}")
+	private int batchSize;
 
-    @Profile("!no-http")
-    @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-    @RequestMapping(value = "/batch/{type}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/store/batch/{type}")
-    @ApiResponses({ @ApiResponse(code = 204, message = "Successfully store types."),
-            @ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody JSONArray json)
-            throws IOException, JSONException {
-        int numberOfTypesToCreate = json.length();
-        Assert.isTrue(numberOfTypesToCreate <= batchSize,
-                String.format(
-                        "The total number of entries in a request must not exceed %d! Your store request contained [%d] entries.",
-                        batchSize, numberOfTypesToCreate));
-        int errorCount = 0;
-        JSONObject jsonObject = null;
-        HttpHeaders headers = new HttpHeaders();
-        // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
-        for (int i = 0; i < numberOfTypesToCreate; i++) {
-            try {
-                jsonObject = json.getJSONObject(i);
-                entityService.create(type, jsonObject);
-                metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();
-                log.info("Successfully stored type [{}]", type);
-            } catch (Exception e) {
-                String message = LogUtil.toLog(jsonObject, String.format("Problems storing type! Portion of payload @ index[%d]\n", i+1));
-                log.error(message, e);
-                if (numberOfTypesToCreate == 1) {
-                    throw e;
-                }
-                headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());
-                errorCount++;
-            }
-        }
-        return new ResponseEntity<>(headers, ((errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED));
-    }
-    
-    @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-    @RequestMapping(value = "/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "GET", notes = "Retrieve type matching criteria.", value = "/store/{type}")
-    @ApiResponses({ @ApiResponse(code = 200, message = "Successfully retrieve type matching criteria."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> get(@PathVariable("type") String type,
-            @RequestParam(value = "createdTimeStart", required = false) LocalDateTime createdTimeStart,
-            @RequestParam(value = "createdTimeEnd", required = false) LocalDateTime createdTimeEnd,
-            HttpServletRequest request) throws JsonProcessingException {
-        LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7) : createdTimeStart;
-        LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : createdTimeEnd;
-        Assert.isTrue(ChronoUnit.SECONDS.between(start, end) >= 0, "Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");
-        return ResponseEntity.ok(entityService.findByCreatedTime(type, start, end, request.getParameterMap()));
-    }
-    
+	private final EntityService entityService;
+
+	private final MetricRegistry metricRegistry;
+
+	@Autowired
+	public EntityController(EntityService entityService, MetricRegistry metricRegistry) {
+		this.entityService = entityService;
+		this.metricRegistry = metricRegistry;
+	}
+
+	@Profile("!no-http")
+	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
+	@RequestMapping(value = "/{type}", method = RequestMethod.POST,
+	consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "POST", notes = "Store a type.", value = "/store/{type}")
+	@ApiResponses({ @ApiResponse(code = 204, message = "Successfully store type."),
+		@ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
+		@ApiResponse(code = 400, message = "Bad request."),
+		@ApiResponse(code = 500, message = "Internal server error.") })
+	public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody JSONObject json)
+			throws IOException {
+		entityService.create(type, json);
+		metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();
+		log.info("Successfully stored type [{}]", type);
+		return ResponseEntity.noContent().build();
+	}
+
+	@Profile("!no-http")
+	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
+	@RequestMapping(value = "/{type}/batch", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/store/{type}/batch")
+	@ApiResponses({ @ApiResponse(code = 204, message = "Successfully store types."),
+		@ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
+		@ApiResponse(code = 400, message = "Bad request."),
+		@ApiResponse(code = 500, message = "Internal server error.") })
+	public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody JSONArray json)
+			throws IOException, JSONException {
+		int numberOfTypesToCreate = json.length();
+		Assert.isTrue(numberOfTypesToCreate <= batchSize,
+				String.format(
+						"The total number of entries in a request must not exceed %d! Your store request contained [%d] entries.",
+						batchSize, numberOfTypesToCreate));
+		int errorCount = 0;
+		JSONObject jsonObject = null;
+		HttpHeaders headers = new HttpHeaders();
+		// allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
+		for (int i = 0; i < numberOfTypesToCreate; i++) {
+			try {
+				jsonObject = json.getJSONObject(i);
+				entityService.create(type, jsonObject);
+				metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();
+				log.info("Successfully stored type [{}]", type);
+			} catch (Exception e) {
+				String message = LogUtil.toLog(jsonObject, String.format("Problems storing type! Portion of payload @ index[%d]\n", i+1));
+				log.error(message, e);
+				if (numberOfTypesToCreate == 1) {
+					throw e;
+				}
+				headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());
+				errorCount++;
+			}
+		}
+		return new ResponseEntity<>(headers, ((errorCount == 0) ? HttpStatus.NO_CONTENT : HttpStatus.ACCEPTED));
+	}
+
+	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
+	@RequestMapping(value = "/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "GET", notes = "Retrieve type matching criteria.", value = "/store/{type}")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully retrieve type matching criteria."),
+		@ApiResponse(code = 400, message = "Bad request."),
+		@ApiResponse(code = 500, message = "Internal server error.") })
+	public ResponseEntity<?> get(@PathVariable("type") String type,
+			@RequestParam(value = "createdTimeStart", required = false) LocalDateTime createdTimeStart,
+			@RequestParam(value = "createdTimeEnd", required = false) LocalDateTime createdTimeEnd,
+			HttpServletRequest request) throws JsonProcessingException {
+		LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7) : createdTimeStart;
+		LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : createdTimeEnd;
+		Assert.isTrue(ChronoUnit.SECONDS.between(start, end) >= 0, "Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");
+		return ResponseEntity.ok(entityService.findByCreatedTime(type, start, end, request.getParameterMap()));
+	}
+
 }

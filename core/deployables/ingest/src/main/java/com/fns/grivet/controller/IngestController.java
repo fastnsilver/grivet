@@ -87,8 +87,8 @@ public class IngestController {
 	}
 
 	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-	@RequestMapping(value = "/batch/{type}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/ingester/batch/{type}")
+	@RequestMapping(value = "/{type}/batch", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/ingester/{type}/batch")
 	@ApiResponses({ @ApiResponse(code = 204, message = "Successfully ingest types."),
 		@ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
 		@ApiResponse(code = 400, message = "Bad request."),

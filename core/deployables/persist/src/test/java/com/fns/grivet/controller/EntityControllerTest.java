@@ -59,8 +59,8 @@ public class EntityControllerTest {
 					)
 			.andExpect(status().isCreated());
 		} catch (Exception e) {
-	    	fail(e.getMessage());
-	    }
+			fail(e.getMessage());
+		}
 	}
 
 	private void storeTestType2() {
@@ -74,8 +74,8 @@ public class EntityControllerTest {
 					)
 			.andExpect(status().isNoContent());
 		} catch (Exception e) {
-        	fail(e.getMessage());
-        }
+			fail(e.getMessage());
+		}
 	}
 
 	private void unregisterTestType2() {
@@ -86,8 +86,8 @@ public class EntityControllerTest {
 					)
 			.andExpect(status().isNoContent());
 		} catch (Exception e) {
-        	fail(e.getMessage());
-        }
+			fail(e.getMessage());
+		}
 	}
 
 	private void registerMultipleTypes() {
@@ -101,8 +101,8 @@ public class EntityControllerTest {
 					)
 			.andExpect(status().isCreated());
 		} catch (Exception e) {
-        	fail(e.getMessage());
-        }
+			fail(e.getMessage());
+		}
 	}
 
 	private void storeMultipleContacts() {
@@ -110,14 +110,14 @@ public class EntityControllerTest {
 			Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
 			String json = IOUtils.toString(r.getInputStream());
 			mockMvc.perform(
-					post("/store/batch/Contact")
+					post("/store/Contact/batch")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(json)
 					)
 			.andExpect(status().isNoContent());
 		} catch (Exception e) {
-        	fail(e.getMessage());
-        }
+			fail(e.getMessage());
+		}
 	}
 
 	private void unregisterMultipleTypes() {
@@ -133,8 +133,8 @@ public class EntityControllerTest {
 					)
 			.andExpect(status().isNoContent());
 		} catch (Exception e) {
-        	fail(e.getMessage());
-        }
+			fail(e.getMessage());
+		}
 	}
 
 	@Test
@@ -146,7 +146,7 @@ public class EntityControllerTest {
 		try {
 			Resource r = resolver.getResource("classpath:TestTypeData2.json");
 			String response = String.format("[%s]", IOUtils.toString(r.getInputStream()));
-	
+
 			// GET (with default constraints)
 			mockMvc.perform(
 					get("/store/TestType2")
@@ -154,7 +154,7 @@ public class EntityControllerTest {
 					)
 			.andExpect(status().isOk())
 			.andExpect(content().json(response));
-	
+
 			// GET (with startsWith constraint)
 			mockMvc.perform(
 					get("/store/TestType2?c=first-name|startsWith|J")
@@ -163,8 +163,8 @@ public class EntityControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(content().json(response));
 		} catch (Exception e) {
-        	fail(e.getMessage());
-        }
+			fail(e.getMessage());
+		}
 
 		unregisterTestType2();
 	}
