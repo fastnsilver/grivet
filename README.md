@@ -1,7 +1,7 @@
 # Grivet
 [![Build Status](https://drone.io/github.com/fastnsilver/grivet/status.png)](https://drone.io/github.com/fastnsilver/grivet/latest)
 [![codecov.io](https://codecov.io/github/fastnsilver/grivet/coverage.svg?branch=master)](https://codecov.io/github/fastnsilver/grivet?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e206eec36c8d4738b38cdfc3fad224eb)](https://www.codacy.com/app/fastnsilver/grivet?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fastnsilver/grivet&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f0aa306c09724c5f9a3ad153cd9d74ac)](https://www.codacy.com/app/fastnsilver/grivet?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fastnsilver/grivet&amp;utm_campaign=Badge_Grade)
 [![Apache License 2](https://img.shields.io/badge/license-ASF2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 ![codecov.io](https://codecov.io/github/fastnsilver/grivet/branch.svg?branch=master)
