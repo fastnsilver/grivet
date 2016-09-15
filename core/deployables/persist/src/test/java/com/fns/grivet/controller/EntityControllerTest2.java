@@ -57,7 +57,7 @@ public class EntityControllerTest2 {
 	                        .contentType(MediaType.APPLICATION_JSON)
 	                        .content(json)
 	                )
-	                .andExpect(status().isNoContent());
+	                .andExpect(status().isCreated());
     	} catch (Exception e) {
         	fail(e.getMessage());
         }

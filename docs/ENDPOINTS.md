@@ -53,6 +53,13 @@
 
   * returns records that were created between `createdTimeStart` and `createdTimeEnd`
 
+* GET `/store?oid={oid}`
+  
+  * returns record(s) that match the object identifier
+  
+* GET `/store/{type}/noAudit`
+
+  * return all records for type. No audit trail, only most recent records.
 
 #### Named Queries
 
