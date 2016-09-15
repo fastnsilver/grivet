@@ -54,8 +54,7 @@ public class EntityControllerTest {
 			String json = IOUtils.toString(r.getInputStream());
 			mockMvc.perform(
 					post("/register")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(json)
+							.contentType(MediaType.APPLICATION_JSON).content(json)
 					)
 			.andExpect(status().isCreated());
 		} catch (Exception e) {
@@ -69,10 +68,9 @@ public class EntityControllerTest {
 			String json = IOUtils.toString(r.getInputStream());
 			mockMvc.perform(
 					post("/store/TestType2")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(json)
+							.contentType(MediaType.APPLICATION_JSON).content(json)
 					)
-			.andExpect(status().isNoContent());
+			.andExpect(status().isCreated());
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -82,7 +80,7 @@ public class EntityControllerTest {
 		try {
 			mockMvc.perform(
 					delete("/register/TestType2")
-					.contentType(MediaType.APPLICATION_JSON)
+							.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isNoContent());
 		} catch (Exception e) {
@@ -96,8 +94,7 @@ public class EntityControllerTest {
 			String json = IOUtils.toString(r.getInputStream());
 			mockMvc.perform(
 					post("/register/types")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(json)
+							.contentType(MediaType.APPLICATION_JSON).content(json)
 					)
 			.andExpect(status().isCreated());
 		} catch (Exception e) {
@@ -111,10 +108,9 @@ public class EntityControllerTest {
 			String json = IOUtils.toString(r.getInputStream());
 			mockMvc.perform(
 					post("/store/Contact/batch")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(json)
+							.contentType(MediaType.APPLICATION_JSON).content(json)
 					)
-			.andExpect(status().isNoContent());
+			.andExpect(status().isCreated());
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -124,12 +120,12 @@ public class EntityControllerTest {
 		try {
 			mockMvc.perform(
 					delete("/register/Contact")
-					.contentType(MediaType.APPLICATION_JSON)
+							.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isNoContent());
 			mockMvc.perform(
 					delete("/register/Course")
-					.contentType(MediaType.APPLICATION_JSON)
+							.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isNoContent());
 		} catch (Exception e) {
@@ -150,7 +146,7 @@ public class EntityControllerTest {
 			// GET (with default constraints)
 			mockMvc.perform(
 					get("/store/TestType2")
-					.contentType(MediaType.APPLICATION_JSON)
+							.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isOk())
 			.andExpect(content().json(response));
@@ -158,7 +154,7 @@ public class EntityControllerTest {
 			// GET (with startsWith constraint)
 			mockMvc.perform(
 					get("/store/TestType2?c=first-name|startsWith|J")
-					.contentType(MediaType.APPLICATION_JSON)
+							.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isOk())
 			.andExpect(content().json(response));

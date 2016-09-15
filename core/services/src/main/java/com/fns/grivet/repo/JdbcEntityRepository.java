@@ -103,6 +103,30 @@ public class JdbcEntityRepository implements EntityRepository {
 	}
 
 	@Override
+	public Integer getClassIdForEntityId(Long eid) {
+		String sql = "SELECT cid FROM entity WHERE eid = ?";
+		log.trace(String.format("JdbcEntityRepository.getClassIdForEntityId[sql=%s]", sql));
+		return jdbcTemplate.queryForObject(sql, new Object[] { eid }, Integer.class);
+	}
+
+	@Override
+	public List<EntityAttributeValue> findOneEntity(Long eid) {
+		String sql = QueryBuilder.newInstance().obtainValuesForOneEntity().build();
+		log.trace(String.format("JdbcEntityRepository.findOne[sql=%s]", sql));
+		return mapRows(
+				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(),
+						new SqlParameterValue(Types.BIGINT, eid)));
+	}
+
+	@Override
+	public List<EntityAttributeValue> findAllEntitiesByCid(Integer cid) {
+		String sql = QueryBuilder.newInstance().obtainValuesForEntitiesByCid().build();
+		log.trace(String.format("JdbcEntityRepository.findAllByCid[sql=%s]", sql));
+		return mapRows(
+				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid)));
+	}
+
+	@Override
 	public List<EntityAttributeValue> executeDynamicQuery(Integer cid, DynamicQuery query) {
 		Assert.isTrue(query.areConjunctionsHomogenous(), "Query cannot be executed! All conjunctions must be homogenous!");
 		String sql = QueryBuilder.newInstance().append(query).build();

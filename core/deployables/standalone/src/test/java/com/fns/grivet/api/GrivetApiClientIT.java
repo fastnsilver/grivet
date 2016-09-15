@@ -177,7 +177,7 @@ public class GrivetApiClientIT {
 	                .post("/schema");
 	        r = resolver.getResource("classpath:TestTypeData.json");
 	        String type = IOUtils.toString(r.getInputStream());
-	        given().contentType("application/json").request().body(type).then().expect().statusCode(equalTo(204)).when()
+	        given().contentType("application/json").request().body(type).then().expect().statusCode(equalTo(201)).when()
 	                .post("/store/TestType");
 	        
 	        // GET (default)
@@ -225,7 +225,7 @@ public class GrivetApiClientIT {
         Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
         try {
 	        String contacts = IOUtils.toString(r.getInputStream());
-	        given().contentType("application/json").request().body(contacts).then().expect().statusCode(equalTo(204)).when()
+	        given().contentType("application/json").request().body(contacts).then().expect().statusCode(equalTo(201)).when()
 	                .post("/store/Contact/batch");
         } catch (IOException e) {
         	fail(e.getMessage());

@@ -14,7 +14,15 @@ public interface EntityRepository {
 
 	public void save(Long eid, Attribute attribute, AttributeType attributeType, Object value,
 			LocalDateTime createdTime);
+
 	public List<EntityAttributeValue> findByCreatedTime(Integer cid, LocalDateTime createdTimeStart, LocalDateTime createdTimeEnd);
+
+	public Integer getClassIdForEntityId(Long eid);
+
+	public List<EntityAttributeValue> findOneEntity(Long eid);
+
+	public List<EntityAttributeValue> findAllEntitiesByCid(Integer cid);
+
 	public List<EntityAttributeValue> executeDynamicQuery(Integer cid, DynamicQuery query);
 
 }
