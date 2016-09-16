@@ -56,6 +56,10 @@
 * GET `/store?oid={oid}`
   
   * returns record(s) that match the object identifier
+
+* PATCH `/store?oid={oid}`
+
+  * update one or more existing type's attribute-value(s)
   
 * GET `/store/{type}/noAudit`
 
