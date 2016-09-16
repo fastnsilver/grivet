@@ -39,7 +39,8 @@ public enum AttributeType {
     INTEGER(5, "int", Types.INTEGER),
     BIG_INTEGER(6, "bigint", Types.BIGINT),
     DECIMAL(7, "decimal", Types.DECIMAL),
-    JSON_BLOB(8, "json", Types.LONGVARCHAR);
+    JSON_BLOB(8, "json", Types.LONGVARCHAR),
+    BOOLEAN(9, "boolean", Types.TINYINT);
     
     /** The id. Internally, uniquely and statically identifies this enum. */
     private final Integer id;

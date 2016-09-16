@@ -180,6 +180,7 @@ Services are accessible via the Docker host (or IP address) and port
 Service            |  Port
 -------------------|-------
 Spring Boot Admin  | 5555
+Microservices Dash | 8088
 Edge Service (Zuul)| 80
 Config Server      | 8888
 Discovery (Eureka) | 8761

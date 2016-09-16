@@ -74,7 +74,7 @@ public class NamedQueryServiceSelectTest {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("createdTime", LocalDateTime.now().plusDays(1).toString());
 		String result = namedQueryService.get("getAttributesCreatedBefore", params);
-		String[] expected = { "bigint", "varchar", "decimal", "datetime", "int", "text", "json" };
+		String[] expected = { "bigint", "varchar", "decimal", "datetime", "int", "text", "json", "boolean" };
 		List<String> actual = JsonPath.given(result).getList("name");
 		Assert.assertTrue(actual.containsAll(Arrays.asList(expected)));
 	}

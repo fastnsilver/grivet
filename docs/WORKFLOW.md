@@ -8,7 +8,7 @@ Assuming you've already deployed this service locally...
 ### Request
 
 ```
-curl -i -H "Content-Type: application/json" -X POST -d '{ "type": "TestType", "attributes": { "bigint": "bigint", "varchar": "varchar", "decimal": "decimal", "datetime": "datetime", "int": "int", "text": "text", "json": "json" } }' http://localhost:8080/register
+curl -i -H "Content-Type: application/json" -X POST -d '{ "type": "TestType", "attributes": { "bigint": "bigint", "varchar": "varchar", "decimal": "decimal", "datetime": "datetime", "int": "int", "text": "text", "json": "json", "boolean": "boolean" } }' http://localhost:8080/register
 ```
 
 ### Response
@@ -39,6 +39,7 @@ curl -H "Content-Type: application/json" "http://localhost:8080/register/TestTyp
 {
     "attributes": {
         "bigint": "bigint",
+        "boolean": "boolean",
         "datetime": "datetime",
         "decimal": "decimal",
         "int": "int",
@@ -54,6 +55,8 @@ curl -H "Content-Type: application/json" "http://localhost:8080/register/TestTyp
 ## Check all registered types
 
 ### Request
+
+Assumes one or more types were registered prior to registering type above.
 
 ```
 curl -H "Content-Type: application/json" "http://localhost:8080/register?showAll" | python -mjson.tool
@@ -80,6 +83,7 @@ curl -H "Content-Type: application/json" "http://localhost:8080/register?showAll
     {
         "attributes": {
             "bigint": "bigint",
+            "boolean": "boolean",
             "datetime": "datetime",
             "decimal": "decimal",
             "int": "int",

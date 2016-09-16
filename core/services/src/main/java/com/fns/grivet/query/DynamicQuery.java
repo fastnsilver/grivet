@@ -172,6 +172,10 @@ public class DynamicQuery {
 		case JSON_BLOB:
 			result = new SqlParameterValue(at.getSqlType(), getWildcardedValue(op, value));
 			break;
+		case BOOLEAN:
+			int val = Boolean.parseBoolean(value) ? 1 : 0;
+			result = new SqlParameterValue(at.getSqlType(), val);
+			break;
 		}
 		return result;
 	}

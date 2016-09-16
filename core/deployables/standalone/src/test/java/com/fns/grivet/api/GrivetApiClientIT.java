@@ -186,7 +186,13 @@ public class GrivetApiClientIT {
 	        JSONArray result = new JSONArray(response.body().asString());
 	        JsonAssert.assertJsonEquals(type, result.get(0).toString());
 	        
-	        // GET (with equals constraint)
+	        // GET (with equals constraint that is a boolean)
+	        response = given().param("c", "boolean|equals|false").contentType("application/json").request().then().expect()
+	                .statusCode(equalTo(200)).when().get("/store/TestType");
+	        result = new JSONArray(response.body().asString());
+	        JsonAssert.assertJsonEquals(type, result.get(0).toString());
+	        
+	        // GET (with equals constraint that is a varchar)
 	        response = given().param("c", "varchar|equals|Rush").contentType("application/json").request().then().expect()
 	                .statusCode(equalTo(200)).when().get("/store/TestType");
 	        result = new JSONArray(response.body().asString());

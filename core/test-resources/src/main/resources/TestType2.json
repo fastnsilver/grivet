@@ -11,6 +11,7 @@
 		"hair-color": "varchar",
 		"iq": "int",
 		"high-school-graduation-year": "int",
-		"next-scare-at": "iso_datetime"
+		"next-scare-at": "iso_datetime",
+		"is-minor": "boolean"
 	}
 }
