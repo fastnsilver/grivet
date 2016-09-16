@@ -86,14 +86,13 @@ public class EntityController {
 	consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "POST", notes = "Store a type.", value = "/store/{type}")
 	@ApiResponses({ @ApiResponse(code = 201, message = "Successfully store type."),
-		@ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
 		@ApiResponse(code = 400, message = "Bad request."),
 		@ApiResponse(code = 500, message = "Internal server error.") })
 	public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody JSONObject json)
 			throws IOException {
 		Long oid = entityService.create(type, json);
 		URI location = UriComponentsBuilder.newInstance().path("/store").queryParam("oid", oid).build().toUri();
-		metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();
+		metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
 		log.info("Successfully stored type [{}]", type);
 		return ResponseEntity.created(location).build();
 	}
@@ -129,7 +128,7 @@ public class EntityController {
 				} else {
 					headers.set(String.format("Location[%s]", String.valueOf(i + 1)), location.toASCIIString());
 				}
-				metricRegistry.counter(MetricRegistry.name("store", type, "count")).inc();
+				metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
 				log.info("Successfully stored type [{}]", type);
 			} catch (Exception e) {
 				String message = LogUtil.toLog(jsonObject, String.format("Problems storing type! Portion of payload @ index[%d]\n", i+1));
@@ -142,6 +141,25 @@ public class EntityController {
 			}
 		}
 		return new ResponseEntity<>(headers, ((errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED));
+	}
+
+	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
+	@RequestMapping(value = "", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "PATCH", notes = "Update an existing type.", value = "/store?oid={oid}")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully updated type."),
+		@ApiResponse(code = 400, message = "Bad request."),
+		@ApiResponse(code = 500, message = "Internal server error.") })
+	public ResponseEntity<?> update(
+			@ApiParam(value = "Object identifier", required = true) @RequestParam(value = "oid", required = true) Long oid,
+			@RequestBody JSONObject json)
+					throws IOException {
+		String type = entityService.update(oid, json);
+		HttpHeaders headers = new HttpHeaders();
+		URI location = UriComponentsBuilder.newInstance().path("/store").queryParam("oid", oid).build().toUri();
+		headers.setLocation(location);
+		metricRegistry.counter(MetricRegistry.name("store", "update", type, "count")).inc();
+		log.info("Successfully updated type [{}]", type);
+		return ResponseEntity.ok().headers(headers).build();
 	}
 
 	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
@@ -162,7 +180,7 @@ public class EntityController {
 
 	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
 	@RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "GET", notes = "Retrieve type by its object identifier.", value = "/store/type/{oid}")
+	@ApiOperation(httpMethod = "GET", notes = "Retrieve type by its object identifier.", value = "/store?oid={oid}")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully retrieve a type by its object identifier."),
 		@ApiResponse(code = 400, message = "Bad request."),
 		@ApiResponse(code = 500, message = "Internal server error.") })

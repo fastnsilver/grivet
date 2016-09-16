@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -15,11 +15,13 @@
  */
 package com.fns.grivet.controller;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fns.grivet.service.SchemaValidationException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.json.JSONException;
@@ -30,65 +32,73 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.time.format.DateTimeParseException;
-
-import javax.servlet.http.HttpServletRequest;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fns.grivet.service.SchemaValidationException;
 
 @ControllerAdvice
 class GlobalControllerExceptionHandler {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
-    
-    @ExceptionHandler({ 
-        IOException.class, IllegalArgumentException.class, DataAccessException.class, 
-        DateTimeParseException.class, NumberFormatException.class, JSONException.class, 
-        SQLException.class, SchemaValidationException.class 
-    })
-    protected ResponseEntity<ErrorResponse> badRequest(Exception e, HttpServletRequest hsr) {
-        ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),
-                e.getMessage());
-        log.error(er.asLog());
-        return ResponseEntity.badRequest().body(er);
-    }
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @JsonPropertyOrder(value = { "error", "method", "uri", "query" })
-    class ErrorResponse {
-        private String method;
-        private String uri;
-        private String query;
-        private String error;
+	@ExceptionHandler({
+		IOException.class, IllegalArgumentException.class, DataAccessException.class,
+		DateTimeParseException.class, NumberFormatException.class, JSONException.class,
+			SQLException.class
+	})
+	protected ResponseEntity<ErrorResponse> badRequest(Exception e, HttpServletRequest hsr) {
+		ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),
+				Arrays.asList(e.getMessage()));
+		log.error(er.asLog());
+		return ResponseEntity.badRequest().body(er);
+	}
 
-        @JsonCreator
-        public ErrorResponse(@JsonProperty String method, @JsonProperty String uri, @JsonProperty String query,
-                @JsonProperty String error) {
-            this.method = method;
-            this.uri = uri;
-            this.query = query;
-            this.error = error;
-        }
+	@ExceptionHandler({ SchemaValidationException.class })
+	protected ResponseEntity<ErrorResponse> invalid(SchemaValidationException e, HttpServletRequest hsr) {
+		ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),
+				e.getProcessingFailures());
+		log.error(er.asLog());
+		return ResponseEntity.badRequest().body(er);
+	}
 
-        public String getMethod() {
-            return method;
-        }
+	@JsonPropertyOrder(value = { "errors", "method", "uri", "query" })
+	private class ErrorResponse {
+		private String method;
+		private String uri;
+		private String query;
+		private List<Object> errors;
 
-        public String getUri() {
-            return uri;
-        }
+		@JsonCreator
+		public ErrorResponse(@JsonProperty String method, @JsonProperty String uri, @JsonProperty String query,
+				@JsonProperty List<Object> errors) {
+			this.method = method;
+			this.uri = uri;
+			this.query = query;
+			this.errors = errors;
+		}
 
-        public String getQuery() {
-            return query;
-        }
+		public String getMethod() {
+			return method;
+		}
 
-        public String getError() {
-            return error;
-        }
+		public String getUri() {
+			return uri;
+		}
 
-        @JsonIgnore
-        public String asLog() {
-            return ToStringBuilder.reflectionToString(this);
-        }
+		public String getQuery() {
+			return query;
+		}
 
-    }
+		public List<Object> getErrors() {
+			return errors;
+		}
+
+		@JsonIgnore
+		public String asLog() {
+			return ToStringBuilder.reflectionToString(this);
+		}
+
+	}
 }
