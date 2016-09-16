@@ -78,9 +78,9 @@ public class NamedQueryServiceSprocTest {
 		Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
 		params.add("createdTime", tomorrow);
 		String result = namedQueryService.get("sproc.getAttributesCreatedBefore", params);
-		String[] expected = { "bigint", "varchar", "decimal", "datetime", "int", "text", "json" };
+		String[] expected = { "bigint", "varchar", "decimal", "datetime", "int", "text", "json", "boolean" };
 		List<String> actual = JsonPath.given(result).getList("NAME");
-		Assert.assertTrue("Result should contain 7 attributes", actual.size() == 7);
+		Assert.assertTrue("Result should contain 8 attributes", actual.size() == 8);
 		Assert.assertTrue(actual.containsAll(Arrays.asList(expected)));
 	}
 

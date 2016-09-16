@@ -9,6 +9,7 @@
 		"datetime": "iso_instant",
 		"int": "int",
 		"text": "text",
-		"json": "json"
+		"json": "json",
+		"boolean": "boolean"
 	}
 }
