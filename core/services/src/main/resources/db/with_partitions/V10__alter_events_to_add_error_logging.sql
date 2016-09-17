@@ -13,7 +13,7 @@ DELIMITER |
 CREATE EVENT entity_add_daily_partition
   ON SCHEDULE
     EVERY 1 DAY STARTS CURDATE()
-  COMMENT 'Adds daily partition to entity table 2 days ahead of the current day'
+  COMMENT 'Adds partition to entity +2 days ahead'
 DO
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -35,7 +35,7 @@ END |
 CREATE EVENT entityav_varchar_add_daily_partition
   ON SCHEDULE
     EVERY 1 DAY STARTS CURDATE()
-  COMMENT 'Adds daily partition to entityav_varchar table 2 days ahead of the current day'
+  COMMENT 'Adds partition to entityav_varchar +2 days ahead'
 DO
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -56,7 +56,7 @@ END |
 CREATE EVENT entityav_text_add_daily_partition
   ON SCHEDULE
     EVERY 1 DAY STARTS CURDATE()
-  COMMENT 'Adds daily partition to entityav_text table 2 days ahead of the current day'
+  COMMENT 'Adds partition to entityav_text +2 days ahead'
 DO
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -77,7 +77,7 @@ END |
 CREATE EVENT entityav_iso_datetime_add_daily_partition
   ON SCHEDULE
     EVERY 1 DAY STARTS CURDATE()
-  COMMENT 'Adds daily partition to entityav_iso_datetime table 2 days ahead of the current day'
+  COMMENT 'Adds partition to entityav_iso_datetime +2 days ahead'
 DO
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -98,7 +98,7 @@ END |
 CREATE EVENT entityav_int_add_daily_partition
   ON SCHEDULE
     EVERY 1 DAY STARTS CURDATE()
-  COMMENT 'Adds daily partition to entityav_int table 2 days ahead of the current day'
+  COMMENT 'Adds partition to entityav_int +2 days ahead'
 DO
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -119,7 +119,7 @@ END |
 CREATE EVENT entityav_bigint_add_daily_partition
   ON SCHEDULE
     EVERY 1 DAY STARTS CURDATE()
-  COMMENT 'Adds daily partition to entityav_bigint table 2 days ahead of the current day'
+  COMMENT 'Adds partition to entityav_bigint +2 days ahead'
 DO
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -140,7 +140,7 @@ END |
 CREATE EVENT entityav_decimal_add_daily_partition
   ON SCHEDULE
     EVERY 1 DAY STARTS CURDATE()
-  COMMENT 'Adds daily partition to entityav_decimal table 2 days ahead of the current day'
+  COMMENT 'Adds partition to entityav_decimal +2 days ahead'
 DO
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -161,7 +161,7 @@ END |
 CREATE EVENT entityav_json_add_daily_partition
   ON SCHEDULE
     EVERY 1 DAY STARTS CURDATE()
-  COMMENT 'Adds daily partition to entityav_json table 2 days ahead of the current day'
+  COMMENT 'Adds partition to entityav_json +2 days ahead'
 DO
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION

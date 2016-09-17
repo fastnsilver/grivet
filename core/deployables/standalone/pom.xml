@@ -25,10 +25,26 @@
             <artifactId>grivet-admin</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- TODO There's an architectural smell here having to do this... -->
+        <!-- In a standalone-mode we don't want to stream data -->
         <dependency>
             <groupId>com.fns</groupId>
             <artifactId>grivet-persist</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+            	<exclusion>
+            		<groupId>org.springframework.cloud</groupId>
+            		<artifactId>spring-cloud-stream</artifactId>
+            	</exclusion>
+            	<exclusion>
+            		<groupId>org.springframework.cloud</groupId>
+            		<artifactId>spring-cloud-starter-stream-kafka</artifactId>
+            	</exclusion>
+            	<exclusion>
+            		<groupId>com.101tec</groupId>
+            		<artifactId>zkclient</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.fns</groupId>

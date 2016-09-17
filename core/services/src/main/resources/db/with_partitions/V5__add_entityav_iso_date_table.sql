@@ -17,7 +17,7 @@ DELIMITER |
 CREATE EVENT entityav_iso_date_add_daily_partition
   ON SCHEDULE
     EVERY 1 DAY STARTS CURDATE()
-  COMMENT 'Adds daily partition to entityav_iso_date table 2 days ahead of the current day'
+  COMMENT 'Adds partition to entityav_iso_date +2 days ahead'
 DO
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
