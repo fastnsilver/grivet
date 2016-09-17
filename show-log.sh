@@ -3,7 +3,7 @@
 set -e
 
 if [ $# -ne 2 ]; then
-    echo "Usage: ./show-logs.sh standalone|pipeline {docker_image}"
+    echo "Usage: ./show-log.sh standalone|pipeline {docker_image}"
     exit 1
 fi
 

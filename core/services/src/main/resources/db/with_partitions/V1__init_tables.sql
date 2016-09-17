@@ -5,7 +5,7 @@ CREATE TABLE class (
     name VARCHAR(255) ${varcharQualifier} NOT NULL UNIQUE,
     description VARCHAR(1000) ${varcharQualifier},
     validatable BOOLEAN,
-    json_chema VARCHAR(2000) ${varcharQualifier},
+    json_schema VARCHAR(2000) ${varcharQualifier},
     created_time DATETIME(3) NOT NULL,
     updated_time DATETIME(3) NOT NULL,
     PRIMARY KEY (id)
@@ -115,7 +115,7 @@ PARTITION BY RANGE COLUMNS(created_time) (
   PARTITION p0 VALUES LESS THAN ('1970-07-14 00:00:00')
 );
 
-CREATE VIEW all_entity_values AS 
+CREATE VIEW all_entity_values AS
 	SELECT eid, aid, CAST(val AS CHAR) AS v, created_time FROM entityav_json
 	UNION
 	SELECT eid, aid, CAST(val AS CHAR) AS v, created_time FROM entityav_text

@@ -67,7 +67,7 @@ services:
       - kafka
       - zookeeper:zk
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=docker,pipeline
       - MONITORING_STATSD_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
@@ -102,7 +102,7 @@ services:
       - kafka
       - zookeeper:zk
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,no-http
+      - SPRING_PROFILES_ACTIVE=docker,pipeline
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
       - MONITORING_STATSD_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
@@ -120,7 +120,7 @@ services:
       - db
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true
       - MONITORING_STATSD_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication

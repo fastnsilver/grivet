@@ -101,7 +101,7 @@ services:
       
   ### DATABASE
   db:
-    image: mariadb:10.1
+    image: mysql:5.7.15
     privileged: true
     ports:
       - 3306:3306

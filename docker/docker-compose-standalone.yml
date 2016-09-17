@@ -34,7 +34,7 @@ services:
       - db
     environment:
       - SPRING_PROFILES_ACTIVE=docker,standalone
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true
       - MONITORING_STATSD_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx2G -XX:+UseG1GC -XX:+UseStringDeduplication

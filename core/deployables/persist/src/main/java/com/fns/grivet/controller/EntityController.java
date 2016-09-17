@@ -80,7 +80,7 @@ public class EntityController {
 		this.metricRegistry = metricRegistry;
 	}
 
-	@Profile("!no-http")
+	@Profile("!pipeline")
 	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
 	@RequestMapping(value = "/{type}", method = RequestMethod.POST,
 	consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -97,7 +97,7 @@ public class EntityController {
 		return ResponseEntity.created(location).build();
 	}
 
-	@Profile("!no-http")
+	@Profile("!pipeline")
 	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
 	@RequestMapping(value = "/{type}/batch", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/store/{type}/batch")
@@ -183,6 +183,7 @@ public class EntityController {
 	@ApiOperation(httpMethod = "GET", notes = "Retrieve type by its object identifier.", value = "/store?oid={oid}")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully retrieve a type by its object identifier."),
 		@ApiResponse(code = 400, message = "Bad request."),
+		@ApiResponse(code = 404, message = "Type not found."),
 		@ApiResponse(code = 500, message = "Internal server error.") })
 	public ResponseEntity<?> get(
 			@ApiParam(value = "Object identifier", required = true)

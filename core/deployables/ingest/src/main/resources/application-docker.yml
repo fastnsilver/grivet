@@ -7,8 +7,3 @@ spring:
             - kafka
           zkNodes:
             - zk
-
-app:
-  ingest:
-    source:
-      enabled: true
