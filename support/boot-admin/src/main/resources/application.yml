@@ -1,5 +1,10 @@
 server:
   port: 5555
+  compression:
+    enabled: true
+  undertow:
+    accesslog:
+      enabled: true
 
 ribbon:
   ServerListRefreshInterval: 1000

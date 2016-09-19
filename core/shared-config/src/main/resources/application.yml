@@ -40,6 +40,13 @@ logging:
     org.springframework: INFO
     com.zaxxer.hikari: WARN
     com.fns.grivet: INFO
+    
+server:
+  compression:
+    enabled: true
+  undertow:
+    accesslog:
+      enabled: true
      
 ---
 

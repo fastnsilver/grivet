@@ -1,5 +1,10 @@
 server:
   port: 80
+  compression:
+    enabled: true
+  undertow:
+    accesslog:
+      enabled: true
 
 zuul:
   ignored-services: '*'
