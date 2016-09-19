@@ -12,15 +12,15 @@ import org.springframework.util.Assert;
 
 public class PersistenceService {
     
-<span class="nc" id="L15">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+<span class="fc" id="L15">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
 
     private final EntityService entityService;
     private final MetricRegistry metricRegistry;
 
-<span class="nc" id="L20">    public PersistenceService(EntityService entityService, MetricRegistry metricRegistry) {</span>
-<span class="nc" id="L21">        this.entityService = entityService;</span>
-<span class="nc" id="L22">        this.metricRegistry = metricRegistry;</span>
-<span class="nc" id="L23">    }</span>
+<span class="fc" id="L20">    public PersistenceService(EntityService entityService, MetricRegistry metricRegistry) {</span>
+<span class="fc" id="L21">        this.entityService = entityService;</span>
+<span class="fc" id="L22">        this.metricRegistry = metricRegistry;</span>
+<span class="fc" id="L23">    }</span>
 
     @StreamListener(Sink.INPUT)
     public void store(Message&lt;JSONObject&gt; message) {

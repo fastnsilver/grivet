@@ -61,7 +61,7 @@ public class ClassRegistryController {
 <span class="fc" id="L61">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
     
     @Value(&quot;${grivet.register.batch-size:100}&quot;)
-    int batchSize;
+    private int batchSize;
     
     private final ClassRegistryService classRegistryService;
     

@@ -433,8 +433,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_paths">Paths</a>
 <ul class="sectlevel2">
-<li><a href="#__ingester_batch_type">/ingester/batch/{type}</a></li>
 <li><a href="#__ingester_type">/ingester/{type}</a></li>
+<li><a href="#__ingester_type_batch">/ingester/{type}/batch</a></li>
 </ul>
 </li>
 </ul>
@@ -484,16 +484,16 @@ BasePath: /</p>
 <h2 id="_paths">Paths</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="__ingester_batch_type">/ingester/batch/{type}</h3>
+<h3 id="__ingester_type">/ingester/{type}</h3>
 <div class="listingblock">
 <div class="content">
-<pre>POST /ingester/batch/{type}</pre>
+<pre>POST /ingester/{type}</pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_description">Description</h4>
 <div class="paragraph">
-<p>Store multiple types.</p>
+<p>Store a type.</p>
 </div>
 </div>
 <div class="sect3">
@@ -531,7 +531,7 @@ BasePath: /</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">json</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">json</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#JSONArray">[JSONArray]</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#JSONObject">[JSONObject]</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
@@ -570,7 +570,7 @@ BasePath: /</p>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">204</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully ingest types.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully ingest type.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
 </tr>
 <tr>
@@ -633,16 +633,16 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__ingester_type">/ingester/{type}</h3>
+<h3 id="__ingester_type_batch">/ingester/{type}/batch</h3>
 <div class="listingblock">
 <div class="content">
-<pre>POST /ingester/{type}</pre>
+<pre>POST /ingester/{type}/batch</pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_description_2">Description</h4>
 <div class="paragraph">
-<p>Store a type.</p>
+<p>Store multiple types.</p>
 </div>
 </div>
 <div class="sect3">
@@ -680,7 +680,7 @@ BasePath: /</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">json</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">json</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#JSONObject">[JSONObject]</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#JSONArray">[JSONArray]</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
@@ -719,7 +719,7 @@ BasePath: /</p>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">204</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully ingest type.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully ingest types.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
 </tr>
 <tr>
