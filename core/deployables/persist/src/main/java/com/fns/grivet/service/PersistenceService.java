@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.messaging.Processor;
+import org.springframework.integration.MessageRejectedException;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
@@ -28,7 +29,7 @@ public class PersistenceService {
 	public Object store(Message<JSONObject> message) {
 		log.trace("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
 				message.getPayload().toString());
-		Object result = message;
+		Object result = null;
 		try {
 			Assert.notNull(message.getHeaders(), "No message headers!");
 			Assert.notNull(message.getPayload(), "Message must have non-null payload!");
@@ -46,7 +47,6 @@ public class PersistenceService {
 					entityService.create(type, message.getPayload());
 					metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
 					log.info("Successfully created type [{}]", type);
-					result = MessageBuilder.fromMessage(message).setHeader("processed", true);
 					break;
 				case UPDATE:
 					oid = message.getHeaders().get("oid", Long.class);
@@ -54,7 +54,6 @@ public class PersistenceService {
 					type = entityService.update(oid, message.getPayload());
 					metricRegistry.counter(MetricRegistry.name("store", "update", type, "count")).inc();
 					log.info("Successfully updated type [{}]", type);
-					result = MessageBuilder.fromMessage(message).setHeader("processed", true);
 					break;
 				case DELETE:
 					oid = message.getHeaders().get("oid", Long.class);
@@ -62,11 +61,12 @@ public class PersistenceService {
 					type = entityService.delete(oid);
 					metricRegistry.counter(MetricRegistry.name("store", "delete", type, "count")).inc();
 					log.info("Successfully deleted type [{}]", type);
-					result = MessageBuilder.fromMessage(message).setHeader("processed", true);
 					break;
 				default:
-					throw new RuntimeException("Bad message payload!");
+					throw new MessageRejectedException(message, "Bad payload!");
 			}
+			result = MessageBuilder.fromMessage(message).setHeader("processed", true);
+			
 		} catch (Exception e) {
 			log.error("Op not available.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
 					message.getPayload().toString());
