@@ -15,7 +15,6 @@
  */
 package com.fns.grivet.controller;
 
-import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -23,7 +22,6 @@ import java.time.temporal.ChronoUnit;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,12 +86,11 @@ public class EntityController {
 	@ApiResponses({ @ApiResponse(code = 201, message = "Successfully store type."),
 		@ApiResponse(code = 400, message = "Bad request."),
 		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody JSONObject json)
-			throws IOException {
+	public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody JSONObject json) {
 		Long oid = entityService.create(type, json);
 		URI location = UriComponentsBuilder.newInstance().path("/store").queryParam("oid", oid).build().toUri();
 		metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
-		log.info("Successfully stored type [{}]", type);
+		log.info("Successfully created type [{}]", type);
 		return ResponseEntity.created(location).build();
 	}
 
@@ -105,8 +102,7 @@ public class EntityController {
 		@ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
 		@ApiResponse(code = 400, message = "Bad request."),
 		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody JSONArray json)
-			throws IOException, JSONException {
+	public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody JSONArray json) {
 		int numberOfTypesToCreate = json.length();
 		Assert.isTrue(numberOfTypesToCreate <= batchSize,
 				String.format(
@@ -129,7 +125,7 @@ public class EntityController {
 					headers.set(String.format("Location[%s]", String.valueOf(i + 1)), location.toASCIIString());
 				}
 				metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
-				log.info("Successfully stored type [{}]", type);
+				log.info("Successfully created type [{}]", type);
 			} catch (Exception e) {
 				String message = LogUtil.toLog(jsonObject, String.format("Problems storing type! Portion of payload @ index[%d]\n", i+1));
 				log.error(message, e);
@@ -143,6 +139,7 @@ public class EntityController {
 		return new ResponseEntity<>(headers, ((errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED));
 	}
 
+	@Profile("!pipeline")
 	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
 	@RequestMapping(value = "", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "PATCH", notes = "Update an existing type.", value = "/store?oid={oid}")
@@ -151,8 +148,7 @@ public class EntityController {
 		@ApiResponse(code = 500, message = "Internal server error.") })
 	public ResponseEntity<?> update(
 			@ApiParam(value = "Object identifier", required = true) @RequestParam(value = "oid", required = true) Long oid,
-			@RequestBody JSONObject json)
-					throws IOException {
+			@RequestBody JSONObject json) {
 		String type = entityService.update(oid, json);
 		HttpHeaders headers = new HttpHeaders();
 		URI location = UriComponentsBuilder.newInstance().path("/store").queryParam("oid", oid).build().toUri();
@@ -160,6 +156,21 @@ public class EntityController {
 		metricRegistry.counter(MetricRegistry.name("store", "update", type, "count")).inc();
 		log.info("Successfully updated type [{}]", type);
 		return ResponseEntity.ok().headers(headers).build();
+	}
+
+	@Profile("!pipeline")
+	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
+	@RequestMapping(value = "", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "DELETE", notes = "Delete an existing type.", value = "/store?oid={oid}")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully deleted type."),
+		@ApiResponse(code = 400, message = "Bad request."),
+		@ApiResponse(code = 500, message = "Internal server error.") })
+	public ResponseEntity<?> delete(
+			@ApiParam(value = "Object identifier", required = true) @RequestParam(value = "oid", required = true) Long oid) {
+		String type = entityService.delete(oid);
+		metricRegistry.counter(MetricRegistry.name("store", "delete", type, "count")).inc();
+		log.info("Successfully delete type [{}]", type);
+		return ResponseEntity.ok().build();
 	}
 
 	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
@@ -187,7 +198,7 @@ public class EntityController {
 		@ApiResponse(code = 500, message = "Internal server error.") })
 	public ResponseEntity<?> get(
 			@ApiParam(value = "Object identifier", required = true)
-			@RequestParam(value = "oid", required = true) Long oid) throws JsonProcessingException {
+			@RequestParam(value = "oid", required = true) Long oid) {
 		return ResponseEntity.ok(entityService.findOne(oid));
 	}
 
@@ -197,7 +208,7 @@ public class EntityController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully retrieve type all records for type."),
 		@ApiResponse(code = 400, message = "Bad request."),
 		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> get(@PathVariable("type") String type) throws JsonProcessingException {
+	public ResponseEntity<?> get(@PathVariable("type") String type) {
 		return ResponseEntity.ok(entityService.findAllByType(type));
 	}
 

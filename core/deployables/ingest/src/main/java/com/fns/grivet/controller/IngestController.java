@@ -34,13 +34,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.MetricRegistry;
+import com.fns.grivet.model.Op;
 import com.fns.grivet.service.Ingester;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -78,14 +81,14 @@ public class IngestController {
 		@ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
 		@ApiResponse(code = 400, message = "Bad request."),
 		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody JSONObject json)
-			throws IOException {
-		ingestService.ingest(MessageBuilder.withPayload(json).setHeader("type", type).build());
-		metricRegistry.counter(MetricRegistry.name("ingest", type, "count")).inc();
-		log.info("Successfully ingested type [{}]", type);
+	public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody JSONObject json) {
+		ingestService
+				.ingest(MessageBuilder.withPayload(json).setHeader("type", type).setHeader("op", Op.CREATE).build());
+		metricRegistry.counter(MetricRegistry.name("ingest", "create", type, "count")).inc();
+		log.info("Successfully ingested create request for type [{}]", type);
 		return ResponseEntity.accepted().build();
 	}
-
+	
 	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
 	@RequestMapping(value = "/{type}/batch", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/ingester/{type}/batch")
@@ -93,8 +96,7 @@ public class IngestController {
 		@ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
 		@ApiResponse(code = 400, message = "Bad request."),
 		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody JSONArray json)
-			throws IOException, JSONException {
+	public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody JSONArray json) {
 		int numberOfTypesToCreate = json.length();
 		Assert.isTrue(numberOfTypesToCreate <= batchSize,
 				String.format(
@@ -106,9 +108,10 @@ public class IngestController {
 		for (int i = 0; i < numberOfTypesToCreate; i++) {
 			try {
 				jsonObject = json.getJSONObject(i);
-				ingestService.ingest(MessageBuilder.withPayload(jsonObject).setHeader("type", type).build());
-				metricRegistry.counter(MetricRegistry.name("ingest", type, "count")).inc();
-				log.info("Successfully ingested type [{}]", type);
+				ingestService.ingest(MessageBuilder.withPayload(jsonObject).setHeader("type", type)
+						.setHeader("op", Op.CREATE).build());
+				metricRegistry.counter(MetricRegistry.name("ingest", "create", type, "count")).inc();
+				log.info("Successfully ingested create request for type [{}]", type);
 			} catch (Exception e) {
 				String message = LogUtil.toLog(jsonObject,
 						String.format("Problems ingesting type! Portion of payload @ index[%d]\n", i + 1));
@@ -120,6 +123,36 @@ public class IngestController {
 			}
 		}
 		return ResponseEntity.accepted().headers(headers).build();
+	}
+
+	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
+	@RequestMapping(value = "", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "PATCH", notes = "Update an existing type.", value = "/ingester?oid={oid}")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully updated type."),
+		@ApiResponse(code = 400, message = "Bad request."),
+		@ApiResponse(code = 500, message = "Internal server error.") })
+	public ResponseEntity<?> updateSingle(
+		@ApiParam(value = "Object identifier", required = true) @RequestParam(value = "oid", required = true) Long oid,
+		@RequestBody JSONObject json) {
+		ingestService.ingest(MessageBuilder.withPayload(json).setHeader("oid", oid).setHeader("op", Op.UPDATE).build());
+		metricRegistry.counter(MetricRegistry.name("ingest", "update", "count")).inc();
+		log.info("Successfully ingested update request for type w/ oid = [{}]", oid);
+		return ResponseEntity.accepted().build();
+	}
+	
+	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
+	@RequestMapping(value = "", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "DELETE", notes = "Delete an existing type.", value = "/ingester?oid={oid}")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully updated type."),
+		@ApiResponse(code = 400, message = "Bad request."),
+		@ApiResponse(code = 500, message = "Internal server error.") })
+	public ResponseEntity<?> deleteSingle(
+		@ApiParam(value = "Object identifier", required = true) @RequestParam(value = "oid", required = true) Long oid,
+		@RequestBody JSONObject json) {
+		ingestService.ingest(MessageBuilder.withPayload(json).setHeader("oid", oid).setHeader("op", Op.DELETE).build());
+		metricRegistry.counter(MetricRegistry.name("ingest", "delete", "count")).inc();
+		log.info("Successfully ingested update request for type w/ oid = [{}]", oid);
+		return ResponseEntity.accepted().build();
 	}
 
 }

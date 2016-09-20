@@ -21,6 +21,8 @@ public interface EntityRepository {
 
 	public List<EntityAttributeValue> findOneEntity(Long eid);
 
+	public void delete(Long eid);
+
 	public List<EntityAttributeValue> findAllEntitiesByCid(Integer cid);
 
 	public List<EntityAttributeValue> executeDynamicQuery(Integer cid, DynamicQuery query);

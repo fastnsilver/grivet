@@ -8,4 +8,8 @@ eureka:
     serviceUrl:
       defaultZone: http://discovery-service:8761/eureka/
     register-with-eureka: false
+    
+spring:
+  redis:
+    host: redis
       

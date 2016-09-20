@@ -32,6 +32,10 @@
                 <artifactId>microservices-dashboard-ui</artifactId>
                 <groupId>be.ordina</groupId>
                </exclusion>
+              <exclusion>
+              	<groupId>ch.qos.logback</groupId>
+              	<artifactId>logback-classic</artifactId>
+              </exclusion>
             </exclusions>
         </dependency>
         <dependency>
