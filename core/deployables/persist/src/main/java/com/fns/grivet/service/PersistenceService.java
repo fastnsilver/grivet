@@ -26,18 +26,19 @@ public class PersistenceService {
 
 	@ServiceActivator(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
 	public Object store(Message<JSONObject> message) {
-		Object result = message;
-		Assert.notNull(message.getHeaders(), "No message headers!");
-		Assert.notNull(message.getPayload(), "Message must have non-null payload!");
-		log.debug("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
+		log.trace("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
 				message.getPayload().toString());
-
-		Op op = message.getHeaders().get("op", Op.class);
-		Assert.notNull(op, "Message header must contain an op code!");
-
-		String type = null;
-		Long oid = null;
+		Object result = message;
 		try {
+			Assert.notNull(message.getHeaders(), "No message headers!");
+			Assert.notNull(message.getPayload(), "Message must have non-null payload!");
+	
+			Op op = message.getHeaders().get("op", Op.class);
+			Assert.notNull(op, "Message header must contain an op code!");
+	
+			String type = null;
+			Long oid = null;
+		
 			switch (op) {
 				case CREATE:
 					type = message.getHeaders().get("type", String.class);
@@ -64,11 +65,11 @@ public class PersistenceService {
 					result = MessageBuilder.fromMessage(message).setHeader("processed", true);
 					break;
 				default:
-					log.error("Bad payload! Op not available.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
-							message.getPayload().toString());
-					result = MessageBuilder.fromMessage(message).setHeader("processed", false);
+					throw new RuntimeException("Bad message payload!");
 			}
 		} catch (Exception e) {
+			log.error("Op not available.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
+					message.getPayload().toString());
 			result = MessageBuilder.fromMessage(message)
 						.setHeader("processed", false)
 						.setHeader("exception", e.getMessage());
