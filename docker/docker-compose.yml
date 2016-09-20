@@ -131,7 +131,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx256m
+      - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
   
   ### EUREKA, DISCOVERY
   discovery-service:
@@ -141,7 +141,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx256m
+      - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
   
   ### SPRING BOOT SERVICE ADMINISTRATION
   springboot-admin:
@@ -153,7 +153,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx512m
+      - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
   
   ### SPRING BOOT DASHBOARD
   springboot-dashboard:
@@ -162,7 +162,8 @@ services:
       - 8088:8088
     links:
       - discovery-service
+      - redis
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx512m
+      - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication

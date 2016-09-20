@@ -3,8 +3,8 @@ package com.fns.grivet.service;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.stream.messaging.Processor;
+import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 
@@ -23,8 +23,8 @@ public class PersistenceService {
 		this.metricRegistry = metricRegistry;
 	}
 
-	@StreamListener(Sink.INPUT)
-	public void store(Message<JSONObject> message) {
+	@ServiceActivator(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
+	public Object store(Message<JSONObject> message) {
 		Assert.notNull(message.getHeaders(), "No message headers!");
 		Assert.notNull(message.getPayload(), "Message must have non-null payload!");
 		log.debug("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
@@ -58,5 +58,6 @@ public class PersistenceService {
 				log.info("Successfully deleted type [{}]", type);
 				break;
 		}
+		return message;
 	}
 }

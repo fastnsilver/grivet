@@ -1,9 +1,16 @@
 spring:
   cloud:
     stream:
+      bindings:
+        input:
+          binder: kafka
+        output:
+          binder: redis
       kafka:
         binder:
           brokers:
             - kafka
           zkNodes:
             - zk
+  redis:
+    host: redis
