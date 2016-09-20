@@ -20,11 +20,14 @@ import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -116,6 +119,23 @@ public class JdbcEntityRepository implements EntityRepository {
 		return mapRows(
 				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(),
 						new SqlParameterValue(Types.BIGINT, eid)));
+	}
+
+	@Override
+	public void delete(Long eid) {
+		String entitySql = "DELETE FROM entity WHERE eid = ?";
+		log.trace(String.format("JdbcEntityRepository.delete[sql=%s]", entitySql));
+		jdbcTemplate.execute(entitySql);
+
+		Collection<String> eavSql =
+				Stream.of(AttributeType.values())
+						.collect(Collectors.toMap(k -> k.getType(),
+								v -> String.format("DELETE FROM entityav_%s WHERE eid = ?", v.getType())))
+							.values();
+		for (String sql : eavSql) {
+			log.trace(String.format("JdbcEntityRepository.delete[sql=%s]", sql));
+			jdbcTemplate.execute(sql);
+		}
 	}
 
 	@Override

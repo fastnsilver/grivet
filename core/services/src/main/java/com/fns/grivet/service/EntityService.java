@@ -150,6 +150,16 @@ public class EntityService {
 		return type;
 	}
 
+	@Transactional
+	public String delete(Long eid) {
+		Integer cid = entityRepository.getClassIdForEntityId(eid);
+		Assert.notNull(cid, String.format("No type registered for entity with oid = [%d]", eid));
+		com.fns.grivet.model.Class c = classRepository.findOne(cid);
+		String type = c.getName();
+		entityRepository.delete(eid);
+		return type;
+	}
+
 	@Transactional(readOnly=true)
 	public String findByCreatedTime(String type, LocalDateTime createdTimeStart, LocalDateTime createdTimeEnd,
 			Map<String, String[]> parameters) throws JsonProcessingException {

@@ -41,7 +41,7 @@ This project will remain humble in its design and has no aspirations to match th
 
 - [x] Introduce reverse [proxy](https://github.com/fastnsilver/grivet/issues/9), adjust endpoints behind this gateway
 - [x] Add registration, storage and retrieval support for `boolean` entity attribute values
-- [x] Allow for querying and updating an entity by its object identifier
+- [x] Allow for querying, updating, and deleting an entity by its object identifier
 - [x] [Upgrade](https://github.com/fastnsilver/grivet/issues/8) Docker Compose configuration
 - [ ] Password-protect service administration and discovery
 - [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)

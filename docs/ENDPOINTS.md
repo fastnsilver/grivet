@@ -56,6 +56,10 @@
 * GET `/store?oid={oid}`
   
   * returns record(s) that match the object identifier
+  
+* DELETE `/store?oid={oid}`
+  
+  * deletes records (including attribute-values) that match the object identifier
 
 * PATCH `/store?oid={oid}`
 
