@@ -93,7 +93,7 @@ public class EntityController {
 		Long oid = entityService.create(type, json);
 		URI location = UriComponentsBuilder.newInstance().path("/store").queryParam("oid", oid).build().toUri();
 		metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
-		log.info("Successfully stored type [{}]", type);
+		log.info("Successfully created type [{}]", type);
 		return ResponseEntity.created(location).build();
 	}
 
@@ -129,7 +129,7 @@ public class EntityController {
 					headers.set(String.format("Location[%s]", String.valueOf(i + 1)), location.toASCIIString());
 				}
 				metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
-				log.info("Successfully stored type [{}]", type);
+				log.info("Successfully created type [{}]", type);
 			} catch (Exception e) {
 				String message = LogUtil.toLog(jsonObject, String.format("Problems storing type! Portion of payload @ index[%d]\n", i+1));
 				log.error(message, e);
@@ -143,6 +143,7 @@ public class EntityController {
 		return new ResponseEntity<>(headers, ((errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED));
 	}
 
+	@Profile("!pipeline")
 	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
 	@RequestMapping(value = "", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "PATCH", notes = "Update an existing type.", value = "/store?oid={oid}")
