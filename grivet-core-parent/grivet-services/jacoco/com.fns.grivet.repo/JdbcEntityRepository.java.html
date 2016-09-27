@@ -20,11 +20,14 @@ import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -51,7 +54,7 @@ import com.google.common.collect.ImmutableMap;
 @Repository
 public class JdbcEntityRepository implements EntityRepository {
 
-<span class="fc" id="L54">	private final Logger log = LoggerFactory.getLogger(getClass());</span>
+<span class="fc" id="L57">	private final Logger log = LoggerFactory.getLogger(getClass());</span>
 
 	private final JdbcTemplate jdbcTemplate;
 
@@ -59,106 +62,123 @@ public class JdbcEntityRepository implements EntityRepository {
 	private SecurityFacade securityFacade;
 
 	@Autowired
-<span class="fc" id="L62">	public JdbcEntityRepository(JdbcTemplate jdbcTemplate) {</span>
-<span class="fc" id="L63">		this.jdbcTemplate = jdbcTemplate;</span>
-<span class="fc" id="L64">	}</span>
+<span class="fc" id="L65">	public JdbcEntityRepository(JdbcTemplate jdbcTemplate) {</span>
+<span class="fc" id="L66">		this.jdbcTemplate = jdbcTemplate;</span>
+<span class="fc" id="L67">	}</span>
 
 
 	@Override
 	public Long newId(Integer cid, LocalDateTime createdTime) {
-<span class="fc" id="L69">		return Long.valueOf(String.valueOf(new SimpleJdbcInsert(jdbcTemplate).withTableName(&quot;entity&quot;)</span>
-<span class="fc" id="L70">				.usingGeneratedKeyColumns(&quot;eid&quot;).usingColumns(&quot;cid&quot;, &quot;created_time&quot;).executeAndReturnKey(</span>
-<span class="fc" id="L71">						ImmutableMap.of(&quot;cid&quot;, cid, &quot;created_time&quot;, Timestamp.valueOf(createdTime)))));</span>
+<span class="fc" id="L72">		return Long.valueOf(String.valueOf(new SimpleJdbcInsert(jdbcTemplate).withTableName(&quot;entity&quot;)</span>
+<span class="fc" id="L73">				.usingGeneratedKeyColumns(&quot;eid&quot;).usingColumns(&quot;cid&quot;, &quot;created_time&quot;).executeAndReturnKey(</span>
+<span class="fc" id="L74">						ImmutableMap.of(&quot;cid&quot;, cid, &quot;created_time&quot;, Timestamp.valueOf(createdTime)))));</span>
 	}
 
 	@Override
 	public void save(Long eid, Attribute attribute, AttributeType attributeType, Object rawValue,
 			LocalDateTime createdTime) {
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">		Assert.isTrue(rawValue != null, String.format(&quot;Attempt to persist value failed! %s's value must not be null!&quot;, attribute.getName()));</span>
-<span class="fc" id="L78">		Object value = ValueHelper.toValue(attributeType, rawValue);</span>
-<span class="fc" id="L79">		User user = getCurrentUser();</span>
-<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		String createdBy = user == null ? null : user.getUsername();</span>
-<span class="fc" id="L81">		String[] columns = { &quot;eid&quot;, &quot;aid&quot;, &quot;val&quot;, &quot;created_time&quot; };</span>
-<span class="fc" id="L82">		Map&lt;String, Object&gt; keyValuePairs = ImmutableMap.of(&quot;eid&quot;, eid, &quot;aid&quot;, attribute.getId(), &quot;val&quot;, value,</span>
-<span class="fc" id="L83">				&quot;created_time&quot;, Timestamp.valueOf(createdTime));</span>
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">		if (createdBy != null) {</span>
-<span class="nc" id="L85">			columns = Arrays.copyOf(columns, columns.length + 1);</span>
-<span class="nc" id="L86">			columns[columns.length - 1] = &quot;created_by&quot;;</span>
-<span class="nc" id="L87">			Map&lt;String, Object&gt; keyValuePairsWithCreatedBy = new HashMap&lt;&gt;(keyValuePairs);</span>
-<span class="nc" id="L88">			keyValuePairsWithCreatedBy.put(&quot;created_by&quot;, createdBy);</span>
-<span class="nc" id="L89">			keyValuePairs = keyValuePairsWithCreatedBy;</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		Assert.isTrue(rawValue != null, String.format(&quot;Attempt to persist value failed! %s's value must not be null!&quot;, attribute.getName()));</span>
+<span class="fc" id="L81">		Object value = ValueHelper.toValue(attributeType, rawValue);</span>
+<span class="fc" id="L82">		User user = getCurrentUser();</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">		String createdBy = user == null ? null : user.getUsername();</span>
+<span class="fc" id="L84">		String[] columns = { &quot;eid&quot;, &quot;aid&quot;, &quot;val&quot;, &quot;created_time&quot; };</span>
+<span class="fc" id="L85">		Map&lt;String, Object&gt; keyValuePairs = ImmutableMap.of(&quot;eid&quot;, eid, &quot;aid&quot;, attribute.getId(), &quot;val&quot;, value,</span>
+<span class="fc" id="L86">				&quot;created_time&quot;, Timestamp.valueOf(createdTime));</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">		if (createdBy != null) {</span>
+<span class="nc" id="L88">			columns = Arrays.copyOf(columns, columns.length + 1);</span>
+<span class="nc" id="L89">			columns[columns.length - 1] = &quot;created_by&quot;;</span>
+<span class="nc" id="L90">			Map&lt;String, Object&gt; keyValuePairsWithCreatedBy = new HashMap&lt;&gt;(keyValuePairs);</span>
+<span class="nc" id="L91">			keyValuePairsWithCreatedBy.put(&quot;created_by&quot;, createdBy);</span>
+<span class="nc" id="L92">			keyValuePairs = keyValuePairsWithCreatedBy;</span>
 		}
-<span class="fc" id="L91">		new SimpleJdbcInsert(jdbcTemplate).withTableName(String.join(&quot;_&quot;, &quot;entityav&quot;, attributeType.getType()))</span>
-<span class="fc" id="L92">		.usingColumns(columns).execute(keyValuePairs);</span>
-<span class="fc" id="L93">	}</span>
+<span class="fc" id="L94">		new SimpleJdbcInsert(jdbcTemplate).withTableName(String.join(&quot;_&quot;, &quot;entityav&quot;, attributeType.getType()))</span>
+<span class="fc" id="L95">		.usingColumns(columns).execute(keyValuePairs);</span>
+<span class="fc" id="L96">	}</span>
 
 	@Override
 	public List&lt;EntityAttributeValue&gt; findByCreatedTime(Integer cid, LocalDateTime createdTimeStart,
 			LocalDateTime createdTimeEnd) {
-<span class="fc" id="L98">		String sql = QueryBuilder.newInstance().appendCreatedTimeRange().build();</span>
-<span class="fc" id="L99">		log.trace(String.format(&quot;JdbcEntityRepository.findByCreatedTime[sql=%s]&quot;, sql));</span>
-<span class="fc" id="L100">		return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid),</span>
-<span class="fc" id="L101">				new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeStart)),</span>
-<span class="fc" id="L102">				new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeEnd))));</span>
+<span class="fc" id="L101">		String sql = QueryBuilder.newInstance().appendCreatedTimeRange().build();</span>
+<span class="fc" id="L102">		log.trace(String.format(&quot;JdbcEntityRepository.findByCreatedTime[sql=%s]&quot;, sql));</span>
+<span class="fc" id="L103">		return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid),</span>
+<span class="fc" id="L104">				new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeStart)),</span>
+<span class="fc" id="L105">				new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeEnd))));</span>
 	}
 
 	@Override
 	public Integer getClassIdForEntityId(Long eid) {
-<span class="nc" id="L107">		String sql = &quot;SELECT cid FROM entity WHERE eid = ?&quot;;</span>
-<span class="nc" id="L108">		log.trace(String.format(&quot;JdbcEntityRepository.getClassIdForEntityId[sql=%s]&quot;, sql));</span>
-<span class="nc" id="L109">		return jdbcTemplate.queryForObject(sql, new Object[] { eid }, Integer.class);</span>
+<span class="nc" id="L110">		String sql = &quot;SELECT cid FROM entity WHERE eid = ?&quot;;</span>
+<span class="nc" id="L111">		log.trace(String.format(&quot;JdbcEntityRepository.getClassIdForEntityId[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L112">		return jdbcTemplate.queryForObject(sql, new Object[] { eid }, Integer.class);</span>
 	}
 
 	@Override
 	public List&lt;EntityAttributeValue&gt; findOneEntity(Long eid) {
-<span class="nc" id="L114">		String sql = QueryBuilder.newInstance().obtainValuesForOneEntity().build();</span>
-<span class="nc" id="L115">		log.trace(String.format(&quot;JdbcEntityRepository.findOne[sql=%s]&quot;, sql));</span>
-<span class="nc" id="L116">		return mapRows(</span>
-<span class="nc" id="L117">				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(),</span>
+<span class="nc" id="L117">		String sql = QueryBuilder.newInstance().obtainValuesForOneEntity().build();</span>
+<span class="nc" id="L118">		log.trace(String.format(&quot;JdbcEntityRepository.findOne[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L119">		return mapRows(</span>
+<span class="nc" id="L120">				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(),</span>
 						new SqlParameterValue(Types.BIGINT, eid)));
 	}
 
 	@Override
+	public void delete(Long eid) {
+<span class="nc" id="L126">		String entitySql = &quot;DELETE FROM entity WHERE eid = ?&quot;;</span>
+<span class="nc" id="L127">		log.trace(String.format(&quot;JdbcEntityRepository.delete[sql=%s]&quot;, entitySql));</span>
+<span class="nc" id="L128">		jdbcTemplate.execute(entitySql);</span>
+
+		Collection&lt;String&gt; eavSql =
+<span class="nc" id="L131">				Stream.of(AttributeType.values())</span>
+<span class="nc" id="L132">						.collect(Collectors.toMap(k -&gt; k.getType(),</span>
+<span class="nc" id="L133">								v -&gt; String.format(&quot;DELETE FROM entityav_%s WHERE eid = ?&quot;, v.getType())))</span>
+<span class="nc" id="L134">							.values();</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		for (String sql : eavSql) {</span>
+<span class="nc" id="L136">			log.trace(String.format(&quot;JdbcEntityRepository.delete[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L137">			jdbcTemplate.execute(sql);</span>
+<span class="nc" id="L138">		}</span>
+<span class="nc" id="L139">	}</span>
+
+	@Override
 	public List&lt;EntityAttributeValue&gt; findAllEntitiesByCid(Integer cid) {
-<span class="nc" id="L123">		String sql = QueryBuilder.newInstance().obtainValuesForEntitiesByCid().build();</span>
-<span class="nc" id="L124">		log.trace(String.format(&quot;JdbcEntityRepository.findAllByCid[sql=%s]&quot;, sql));</span>
-<span class="nc" id="L125">		return mapRows(</span>
-<span class="nc" id="L126">				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid)));</span>
+<span class="nc" id="L143">		String sql = QueryBuilder.newInstance().obtainValuesForEntitiesByCid().build();</span>
+<span class="nc" id="L144">		log.trace(String.format(&quot;JdbcEntityRepository.findAllByCid[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L145">		return mapRows(</span>
+<span class="nc" id="L146">				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid)));</span>
 	}
 
 	@Override
 	public List&lt;EntityAttributeValue&gt; executeDynamicQuery(Integer cid, DynamicQuery query) {
-<span class="nc" id="L131">		Assert.isTrue(query.areConjunctionsHomogenous(), &quot;Query cannot be executed! All conjunctions must be homogenous!&quot;);</span>
-<span class="nc" id="L132">		String sql = QueryBuilder.newInstance().append(query).build();</span>
-<span class="nc" id="L133">		log.trace(String.format(&quot;JdbcEntityRepository.executeDynamicQuery[sql=%s]&quot;, sql));</span>
-<span class="nc" id="L134">		List&lt;SqlParameterValue&gt; values = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L135">		values.add(new SqlParameterValue(Types.INTEGER, cid));</span>
-<span class="nc" id="L136">		values.addAll(Arrays.asList(query.asSqlParameterValues()));</span>
-<span class="nc" id="L137">		return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), values.toArray(new Object[values.size()])));</span>
+<span class="nc" id="L151">		Assert.isTrue(query.areConjunctionsHomogenous(), &quot;Query cannot be executed! All conjunctions must be homogenous!&quot;);</span>
+<span class="nc" id="L152">		String sql = QueryBuilder.newInstance().append(query).build();</span>
+<span class="nc" id="L153">		log.trace(String.format(&quot;JdbcEntityRepository.executeDynamicQuery[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L154">		List&lt;SqlParameterValue&gt; values = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L155">		values.add(new SqlParameterValue(Types.INTEGER, cid));</span>
+<span class="nc" id="L156">		values.addAll(Arrays.asList(query.asSqlParameterValues()));</span>
+<span class="nc" id="L157">		return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), values.toArray(new Object[values.size()])));</span>
 	}
 
 	private List&lt;EntityAttributeValue&gt; mapRows(SqlRowSet rowSet) {
-<span class="fc" id="L141">		List&lt;EntityAttributeValue&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L142">		EntityAttributeValue eav = null;</span>
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (rowSet != null) {</span>
-<span class="fc bfc" id="L144" title="All 2 branches covered.">			while(rowSet.next()) {</span>
-<span class="fc" id="L145">				eav = new EntityAttributeValue((Long) rowSet.getObject(&quot;eid&quot;), (Integer) rowSet.getObject(&quot;attribute_id&quot;), (String) rowSet.getObject(&quot;attribute_name&quot;), rowSet.getObject(&quot;attribute_value&quot;), ((Timestamp) rowSet.getObject(&quot;created_time&quot;)).toLocalDateTime(), getCurrentUser());</span>
-<span class="fc" id="L146">				result.add(eav);</span>
+<span class="fc" id="L161">		List&lt;EntityAttributeValue&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L162">		EntityAttributeValue eav = null;</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">		if (rowSet != null) {</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">			while(rowSet.next()) {</span>
+<span class="fc" id="L165">				eav = new EntityAttributeValue((Long) rowSet.getObject(&quot;eid&quot;), (Integer) rowSet.getObject(&quot;attribute_id&quot;), (String) rowSet.getObject(&quot;attribute_name&quot;), rowSet.getObject(&quot;attribute_value&quot;), ((Timestamp) rowSet.getObject(&quot;created_time&quot;)).toLocalDateTime(), getCurrentUser());</span>
+<span class="fc" id="L166">				result.add(eav);</span>
 			}
 		}
-<span class="fc" id="L149">		Collections.sort(result, new EAVComparator());</span>
-<span class="fc" id="L150">		return result;</span>
+<span class="fc" id="L169">		Collections.sort(result, new EAVComparator());</span>
+<span class="fc" id="L170">		return result;</span>
 	}
 
 	private User getCurrentUser() {
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		return securityFacade == null ? null : securityFacade.getCurrentUser();</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		return securityFacade == null ? null : securityFacade.getCurrentUser();</span>
 	}
 
-<span class="fc" id="L157">	private static class EAVComparator implements Comparator&lt;EntityAttributeValue&gt; {</span>
+<span class="fc" id="L177">	private static class EAVComparator implements Comparator&lt;EntityAttributeValue&gt; {</span>
 
 		@Override
 		public int compare(EntityAttributeValue eav1, EntityAttributeValue eav2) {
-<span class="fc" id="L161">			return ObjectUtils.compare(eav1.getId(), eav2.getId());</span>
+<span class="fc" id="L181">			return ObjectUtils.compare(eav1.getId(), eav2.getId());</span>
 		}
 
 	}

@@ -8,41 +8,83 @@
 <div id="overview"><a href="../../../../../apidocs/com/fns/grivet/service/PersistenceService.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.fns.grivet.service;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
-<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> com.codahale.metrics.MetricRegistry;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.json.JSONObject;
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.slf4j.Logger;
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.slf4j.LoggerFactory;
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> org.springframework.cloud.stream.annotation.StreamListener;
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> org.springframework.cloud.stream.messaging.Sink;
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> org.json.JSONObject;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> org.slf4j.Logger;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.slf4j.LoggerFactory;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.springframework.cloud.stream.messaging.Processor;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.springframework.integration.MessageRejectedException;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> org.springframework.integration.annotation.ServiceActivator;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> org.springframework.integration.support.MessageBuilder;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> org.springframework.messaging.Message;
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> org.springframework.util.Assert;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/fns/grivet/service/PersistenceService.html">PersistenceService</a> {
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>      
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Logger log = LoggerFactory.getLogger(getClass());
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a href="../../../../com/fns/grivet/service/EntityService.html">EntityService</a> entityService;
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> MetricRegistry metricRegistry;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> com.codahale.metrics.MetricRegistry;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> com.fns.grivet.model.Op;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/fns/grivet/service/PersistenceService.html">PersistenceService</a> {
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Logger log = LoggerFactory.getLogger(getClass());
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/fns/grivet/service/PersistenceService.html">PersistenceService</a>(<a href="../../../../com/fns/grivet/service/EntityService.html">EntityService</a> entityService, MetricRegistry metricRegistry) {
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>          <strong class="jxr_keyword">this</strong>.entityService = entityService;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>          <strong class="jxr_keyword">this</strong>.metricRegistry = metricRegistry;
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>      }
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>      @StreamListener(Sink.INPUT)
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> store(Message&lt;JSONObject&gt; message) {
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>          Assert.notNull(message.getHeaders(), <span class="jxr_string">"No message headers!"</span>);
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>          String type = message.getHeaders().get(<span class="jxr_string">"type"</span>, String.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>          Assert.hasText(type, <span class="jxr_string">"Type must not be null or empty!"</span>);
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>          Assert.notNull(message.getPayload(), <span class="jxr_string">"Message must have non-null payload!"</span>);
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>          log.debug(<span class="jxr_string">"Received message.  Headers - {}.  Payload - {}"</span>, message.getHeaders().toString(),
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>                  message.getPayload().toString());
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>          entityService.create(type, message.getPayload());
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>          metricRegistry.counter(MetricRegistry.name(<span class="jxr_string">"store"</span>, type, <span class="jxr_string">"count"</span>)).inc();
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>          log.info(<span class="jxr_string">"Successfully stored type [{}]"</span>, type);
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>      }
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  }
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a href="../../../../com/fns/grivet/service/EntityService.html">EntityService</a> entityService;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> MetricRegistry metricRegistry;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  	<strong class="jxr_keyword">public</strong> <a href="../../../../com/fns/grivet/service/PersistenceService.html">PersistenceService</a>(<a href="../../../../com/fns/grivet/service/EntityService.html">EntityService</a> entityService, MetricRegistry metricRegistry) {
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  		<strong class="jxr_keyword">this</strong>.entityService = entityService;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  		<strong class="jxr_keyword">this</strong>.metricRegistry = metricRegistry;
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  	}
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  	@ServiceActivator(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  	<strong class="jxr_keyword">public</strong> Object store(Message&lt;JSONObject&gt; message) {
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  		log.trace(<span class="jxr_string">"Received message.  Headers - {}.  Payload - {}"</span>, message.getHeaders().toString(),
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  				message.getPayload().toString());
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  		Object result = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  		<strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  			Assert.notNull(message.getHeaders(), <span class="jxr_string">"No message headers!"</span>);
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  			Assert.notNull(message.getPayload(), <span class="jxr_string">"Message must have non-null payload!"</span>);
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  	
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  			Op op = message.getHeaders().get(<span class="jxr_string">"op"</span>, Op.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  			Assert.notNull(op, <span class="jxr_string">"Message header must contain an op code!"</span>);
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  	
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  			String type = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  			Long oid = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  		
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  			<strong class="jxr_keyword">switch</strong> (op) {
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  				<strong class="jxr_keyword">case</strong> CREATE:
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  					type = message.getHeaders().get(<span class="jxr_string">"type"</span>, String.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  					Assert.hasText(type, <span class="jxr_string">"Message header must contain a type for create requests!"</span>);
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  					entityService.create(type, message.getPayload());
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  					metricRegistry.counter(MetricRegistry.name(<span class="jxr_string">"store"</span>, <span class="jxr_string">"create"</span>, type, <span class="jxr_string">"count"</span>)).inc();
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>  					log.info(<span class="jxr_string">"Successfully created type [{}]"</span>, type);
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  					<strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  				<strong class="jxr_keyword">case</strong> UPDATE:
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  					oid = message.getHeaders().get(<span class="jxr_string">"oid"</span>, Long.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  					Assert.notNull(oid, <span class="jxr_string">"Message header must contain an oid for update requests!"</span>);
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>  					type = entityService.update(oid, message.getPayload());
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  					metricRegistry.counter(MetricRegistry.name(<span class="jxr_string">"store"</span>, <span class="jxr_string">"update"</span>, type, <span class="jxr_string">"count"</span>)).inc();
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>  					log.info(<span class="jxr_string">"Successfully updated type [{}]"</span>, type);
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  					<strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>  				<strong class="jxr_keyword">case</strong> DELETE:
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>  					oid = message.getHeaders().get(<span class="jxr_string">"oid"</span>, Long.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>  					Assert.notNull(oid, <span class="jxr_string">"Message header must contain an oid for delete requests!"</span>);
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>  					type = entityService.delete(oid);
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>  					metricRegistry.counter(MetricRegistry.name(<span class="jxr_string">"store"</span>, <span class="jxr_string">"delete"</span>, type, <span class="jxr_string">"count"</span>)).inc();
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>  					log.info(<span class="jxr_string">"Successfully deleted type [{}]"</span>, type);
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>  					<strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>  				<strong class="jxr_keyword">default</strong>:
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>  					<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MessageRejectedException(message, <span class="jxr_string">"Bad payload!"</span>);
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>  			}
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>  			result = MessageBuilder.fromMessage(message).setHeader(<span class="jxr_string">"processed"</span>, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>  			
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>  		} <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>  			log.error(<span class="jxr_string">"Op not available.  Headers - {}.  Payload - {}"</span>, message.getHeaders().toString(),
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>  					message.getPayload().toString());
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>  			result = MessageBuilder.fromMessage(message)
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>  						.setHeader(<span class="jxr_string">"processed"</span>, false)
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>  						.setHeader(<span class="jxr_string">"exception"</span>, e.getMessage());
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>  		}
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>  		<strong class="jxr_keyword">return</strong> result;
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>  	}
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2016 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
