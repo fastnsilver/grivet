@@ -433,12 +433,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_paths">Paths</a>
 <ul class="sectlevel2">
-<li><a href="#__namedquery">/namedQuery</a></li>
 <li><a href="#__namedquery_showall">/namedQuery?showAll</a></li>
+<li><a href="#__namedquery">/namedQuery</a></li>
 <li><a href="#__namedquery_name">/namedQuery/{name}</a></li>
 <li><a href="#__namedquery_name_2">/namedQuery/{name}</a></li>
-<li><a href="#__register">/register</a></li>
 <li><a href="#__register_showall">/register?showAll</a></li>
+<li><a href="#__register">/register</a></li>
 <li><a href="#__register_types">/register/types</a></li>
 <li><a href="#__register_type">/register/{type}</a></li>
 <li><a href="#__register_type_2">/register/{type}</a></li>
@@ -515,6 +515,132 @@ BasePath: /</p>
 <h2 id="_paths">Paths</h2>
 <div class="sectionbody">
 <div class="sect2">
+<h3 id="__namedquery_showall">/namedQuery?showAll</h3>
+<div class="listingblock">
+<div class="content">
+<pre>GET /namedQuery</pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_description">Description</h4>
+<div class="paragraph">
+<p>Available Named Queries.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_parameters">Parameters</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Schema</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">QueryParameter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">showAll</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show all registered queries?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_responses">Responses</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">HTTP Code</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Schema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">200</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List available Named Queries.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">204</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bad request.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">401</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unauthorized</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">403</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Forbidden</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal server error.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_consumes">Consumes</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>application/json</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_produces">Produces</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>application/json</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_tags_2">Tags</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>named-query-controller</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="__namedquery">/namedQuery</h3>
 <div class="listingblock">
 <div class="content">
@@ -522,13 +648,13 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_description">Description</h4>
+<h4 id="_description_2">Description</h4>
 <div class="paragraph">
 <p>Register a Named Query.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_parameters">Parameters</h4>
+<h4 id="_parameters_2">Parameters</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 16%;">
@@ -561,7 +687,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_responses">Responses</h4>
+<h4 id="_responses_2">Responses</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33%;">
@@ -609,132 +735,6 @@ BasePath: /</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">404</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Not Found</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">500</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Internal server error.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_consumes">Consumes</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>application/json</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_produces">Produces</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>application/json</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_tags_2">Tags</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>named-query-controller</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="__namedquery_showall">/namedQuery?showAll</h3>
-<div class="listingblock">
-<div class="content">
-<pre>GET /namedQuery</pre>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_description_2">Description</h4>
-<div class="paragraph">
-<p>Available Named Queries.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_parameters_2">Parameters</h4>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 16%;">
-<col style="width: 16%;">
-<col style="width: 16%;">
-<col style="width: 16%;">
-<col style="width: 16%;">
-<col style="width: 16%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Required</th>
-<th class="tableblock halign-left valign-top">Schema</th>
-<th class="tableblock halign-left valign-top">Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">QueryParameter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">showAll</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Show all registered queries?</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_responses_2">Responses</h4>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33%;">
-<col style="width: 33%;">
-<col style="width: 33%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">HTTP Code</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Schema</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">200</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">List available Named Queries.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">204</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Bad request.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">401</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">403</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Forbidden</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
 </tr>
 <tr>
@@ -1037,6 +1037,132 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect2">
+<h3 id="__register_showall">/register?showAll</h3>
+<div class="listingblock">
+<div class="content">
+<pre>GET /register</pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_description_5">Description</h4>
+<div class="paragraph">
+<p>All registered types.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_parameters_5">Parameters</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+<col style="width: 16%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Schema</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">QueryParameter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">showAll</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show all registered types?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_responses_5">Responses</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">HTTP Code</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Schema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">200</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List all registered types.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">204</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bad request.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">401</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unauthorized</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">403</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Forbidden</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Internal server error.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_consumes_5">Consumes</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>application/json</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_produces_5">Produces</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>application/json</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_tags_6">Tags</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>class-registry-controller</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="__register">/register</h3>
 <div class="listingblock">
 <div class="content">
@@ -1044,13 +1170,13 @@ BasePath: /</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_description_5">Description</h4>
+<h4 id="_description_6">Description</h4>
 <div class="paragraph">
 <p>Register a type</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_parameters_5">Parameters</h4>
+<h4 id="_parameters_6">Parameters</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 16%;">
@@ -1083,7 +1209,7 @@ BasePath: /</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_responses_5">Responses</h4>
+<h4 id="_responses_6">Responses</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33%;">
@@ -1131,132 +1257,6 @@ BasePath: /</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">404</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Not Found</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">500</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Internal server error.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_consumes_5">Consumes</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>application/json</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_produces_5">Produces</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>application/json</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_tags_6">Tags</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>class-registry-controller</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="__register_showall">/register?showAll</h3>
-<div class="listingblock">
-<div class="content">
-<pre>GET /register</pre>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_description_6">Description</h4>
-<div class="paragraph">
-<p>All registered types.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_parameters_6">Parameters</h4>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 16%;">
-<col style="width: 16%;">
-<col style="width: 16%;">
-<col style="width: 16%;">
-<col style="width: 16%;">
-<col style="width: 16%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Required</th>
-<th class="tableblock halign-left valign-top">Schema</th>
-<th class="tableblock halign-left valign-top">Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">QueryParameter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">showAll</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Show all registered types?</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_responses_6">Responses</h4>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33%;">
-<col style="width: 33%;">
-<col style="width: 33%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">HTTP Code</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Schema</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">200</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">List all registered types.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">204</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Bad request.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">401</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">403</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Forbidden</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
 </tr>
 <tr>
@@ -1952,13 +1952,13 @@ BasePath: /</p>
 <h3 id="__store_oid_oid">/store?oid={oid}</h3>
 <div class="listingblock">
 <div class="content">
-<pre>GET /store</pre>
+<pre>PATCH /store</pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_description_12">Description</h4>
 <div class="paragraph">
-<p>Retrieve type by its object identifier.</p>
+<p>Update an existing type.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1991,6 +1991,14 @@ BasePath: /</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">integer (int64)</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BodyParameter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">json</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">json</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#JSONObject">[JSONObject]</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -2012,7 +2020,7 @@ BasePath: /</p>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">200</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully retrieve a type by its object identifier.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully updated type.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
 </tr>
 <tr>
@@ -2033,11 +2041,6 @@ BasePath: /</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">403</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">404</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Type not found.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
 </tr>
 <tr>
@@ -2083,13 +2086,13 @@ BasePath: /</p>
 <h3 id="__store_oid_oid_2">/store?oid={oid}</h3>
 <div class="listingblock">
 <div class="content">
-<pre>DELETE /store</pre>
+<pre>GET /store</pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_description_13">Description</h4>
 <div class="paragraph">
-<p>Delete an existing type.</p>
+<p>Retrieve type by its object identifier.</p>
 </div>
 </div>
 <div class="sect3">
@@ -2143,7 +2146,7 @@ BasePath: /</p>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">200</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully deleted type.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully retrieve a type by its object identifier.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
 </tr>
 <tr>
@@ -2164,6 +2167,11 @@ BasePath: /</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">403</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Forbidden</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">404</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type not found.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
 </tr>
 <tr>
@@ -2209,13 +2217,13 @@ BasePath: /</p>
 <h3 id="__store_oid_oid_3">/store?oid={oid}</h3>
 <div class="listingblock">
 <div class="content">
-<pre>PATCH /store</pre>
+<pre>DELETE /store</pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_description_14">Description</h4>
 <div class="paragraph">
-<p>Update an existing type.</p>
+<p>Delete an existing type.</p>
 </div>
 </div>
 <div class="sect3">
@@ -2248,14 +2256,6 @@ BasePath: /</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">integer (int64)</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BodyParameter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">json</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">json</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#JSONObject">[JSONObject]</a></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -2277,7 +2277,7 @@ BasePath: /</p>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">200</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully updated type.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully deleted type.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
 </tr>
 <tr>
@@ -2343,13 +2343,13 @@ BasePath: /</p>
 <h3 id="__store_type">/store/{type}</h3>
 <div class="listingblock">
 <div class="content">
-<pre>POST /store/{type}</pre>
+<pre>GET /store/{type}</pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_description_15">Description</h4>
 <div class="paragraph">
-<p>Store a type.</p>
+<p>Retrieve type matching criteria.</p>
 </div>
 </div>
 <div class="sect3">
@@ -2383,11 +2383,19 @@ BasePath: /</p>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BodyParameter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">json</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">json</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#JSONObject">[JSONObject]</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">QueryParameter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">createdTimeStart</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">createdTimeStart</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">QueryParameter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">createdTimeEnd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">createdTimeEnd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
@@ -2411,13 +2419,13 @@ BasePath: /</p>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">200</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully retrieve type matching criteria.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">201</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully store type.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">204</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
@@ -2432,11 +2440,6 @@ BasePath: /</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">403</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">404</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Not Found</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
 </tr>
 <tr>
@@ -2482,13 +2485,13 @@ BasePath: /</p>
 <h3 id="__store_type_2">/store/{type}</h3>
 <div class="listingblock">
 <div class="content">
-<pre>GET /store/{type}</pre>
+<pre>POST /store/{type}</pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_description_16">Description</h4>
 <div class="paragraph">
-<p>Retrieve type matching criteria.</p>
+<p>Store a type.</p>
 </div>
 </div>
 <div class="sect3">
@@ -2522,19 +2525,11 @@ BasePath: /</p>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">QueryParameter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">createdTimeStart</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">createdTimeStart</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">QueryParameter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">createdTimeEnd</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">createdTimeEnd</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BodyParameter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">json</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">json</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#JSONObject">[JSONObject]</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
@@ -2558,13 +2553,13 @@ BasePath: /</p>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">200</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully retrieve type matching criteria.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OK</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">204</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">201</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Successfully store type.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">400</p></td>
@@ -2579,6 +2574,11 @@ BasePath: /</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">403</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Forbidden</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">404</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not Found</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">No Content</p></td>
 </tr>
 <tr>
