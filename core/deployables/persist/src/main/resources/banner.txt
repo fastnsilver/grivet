@@ -5,6 +5,6 @@
                                                       
                                                                                                   
  Version:  @project.version@ 
- CommitId: @git.commit.id@
+ 
  
  

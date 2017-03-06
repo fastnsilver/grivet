@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.0.RELEASE</version>
+        <version>1.5.2.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -74,7 +74,7 @@
 
 
         <disruptor.version>3.3.4</disruptor.version>
-        <log4j2.version>2.6.2</log4j2.version>
+        <log4j2.version>2.8</log4j2.version>
         <logstash-logback-encoder.version>4.7</logstash-logback-encoder.version>
         <slf4j.version>1.7.21</slf4j.version>
 
@@ -85,11 +85,11 @@
         <downloads-maven-plugin.version>0.6</downloads-maven-plugin.version>
         <doxia-module-markdown.version>1.6</doxia-module-markdown.version>
         <findbugs-maven-plugin.version>3.0.3</findbugs-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.7.6.201602180812</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
         <maven-changes-plugin.version>2.11</maven-changes-plugin.version>
         <maven-changelog-plugin.version>2.3</maven-changelog-plugin.version>
         <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
-        <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
         <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
         <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
         <maven-plugin-plugin.version>3.4</maven-plugin-plugin.version>
@@ -112,9 +112,9 @@
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-parent</artifactId>
+                <artifactId>spring-cloud-dependencies</artifactId>
                 <!-- <version>Brixton.SR5</version> -->
-                <version>Camden.RC1</version>
+                <version>Dalston.M1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
