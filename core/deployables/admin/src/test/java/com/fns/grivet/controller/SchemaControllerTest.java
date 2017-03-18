@@ -35,12 +35,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fns.grivet.TestInit;
+import com.fns.grivet.AdminInit;
 import com.fns.grivet.service.SchemaService;
 
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestInit.class)
+@SpringBootTest(classes = AdminInit.class)
 public class SchemaControllerTest {
 
 	@Autowired
@@ -58,7 +58,7 @@ public class SchemaControllerTest {
 	        com.fns.grivet.model.Class clazz = new com.fns.grivet.model.Class("TestType", "A type for testing purposes", null);
 	        when(service.linkSchema(any(JSONObject.class))).thenReturn(clazz);
 	        mockMvc.perform(
-	                    post("/schema")
+	                    post("/api/v1/schema")
 	                        .contentType(MediaType.APPLICATION_JSON)
 	                        .content(json)
 	                )
@@ -75,7 +75,7 @@ public class SchemaControllerTest {
 	        com.fns.grivet.model.Class clazz = new com.fns.grivet.model.Class("TestType", "A type for testing purposes", null);
 	        when(service.unlinkSchema("TestType")).thenReturn(clazz);
 	        mockMvc.perform(
-	                    delete("/schema/TestType")
+	                    delete("/api/v1/schema/TestType")
 	                        .contentType(MediaType.APPLICATION_JSON)
 	                )
 	                .andExpect(status().isOk())

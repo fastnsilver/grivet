@@ -15,9 +15,17 @@
  */
 package com.fns.grivet.model;
 
-import com.stormpath.sdk.account.Account;
+import java.util.Map;
 
-public interface User extends Account {
+import com.auth0.spring.security.api.Auth0UserDetails;
+import com.auth0.spring.security.api.authority.AuthorityStrategy;
 
+public class User extends Auth0UserDetails {
+
+    private static final long serialVersionUID = 1L;
+
+    public User(Map<String, Object> map, AuthorityStrategy authorityStrategy) {
+        super(map, authorityStrategy);
+    }
 
 }

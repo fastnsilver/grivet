@@ -34,11 +34,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fns.grivet.TestInit;
+import com.fns.grivet.PersistInit;
 
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestInit.class)
+@SpringBootTest(classes = PersistInit.class)
 public class EntityControllerTest {
 
 	@Autowired
@@ -53,7 +53,7 @@ public class EntityControllerTest {
 			Resource r = resolver.getResource("classpath:TestType2.json");
 			String json = IOUtils.toString(r.getInputStream());
 			mockMvc.perform(
-					post("/register")
+					post("/api/v1/definition")
 							.contentType(MediaType.APPLICATION_JSON).content(json)
 					)
 			.andExpect(status().isCreated());
@@ -67,7 +67,8 @@ public class EntityControllerTest {
 			Resource r = resolver.getResource("classpath:TestTypeData2.json");
 			String json = IOUtils.toString(r.getInputStream());
 			mockMvc.perform(
-					post("/store/TestType2")
+					post("/api/v1/type")
+					        .header("Type", "TestType2")
 							.contentType(MediaType.APPLICATION_JSON).content(json)
 					)
 			.andExpect(status().isCreated());
@@ -79,7 +80,7 @@ public class EntityControllerTest {
 	private void unregisterTestType2() {
 		try {
 			mockMvc.perform(
-					delete("/register/TestType2")
+					delete("/api/v1/definition/TestType2")
 							.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isNoContent());
@@ -93,7 +94,7 @@ public class EntityControllerTest {
 			Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
 			String json = IOUtils.toString(r.getInputStream());
 			mockMvc.perform(
-					post("/register/types")
+					post("/api/v1/definitions")
 							.contentType(MediaType.APPLICATION_JSON).content(json)
 					)
 			.andExpect(status().isCreated());
@@ -107,7 +108,8 @@ public class EntityControllerTest {
 			Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
 			String json = IOUtils.toString(r.getInputStream());
 			mockMvc.perform(
-					post("/store/Contact/batch")
+					post("/api/v1/types")
+					        .header("Type", "Contact")
 							.contentType(MediaType.APPLICATION_JSON).content(json)
 					)
 			.andExpect(status().isCreated());
@@ -119,12 +121,12 @@ public class EntityControllerTest {
 	private void unregisterMultipleTypes() {
 		try {
 			mockMvc.perform(
-					delete("/register/Contact")
+					delete("/api/v1/definition/Contact")
 							.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isNoContent());
 			mockMvc.perform(
-					delete("/register/Course")
+					delete("/api/v1/definition/Course")
 							.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isNoContent());
@@ -145,7 +147,7 @@ public class EntityControllerTest {
 
 			// GET (with default constraints)
 			mockMvc.perform(
-					get("/store/TestType2")
+					get("/api/v1/type/TestType2")
 							.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isOk())
@@ -153,7 +155,7 @@ public class EntityControllerTest {
 
 			// GET (with startsWith constraint)
 			mockMvc.perform(
-					get("/store/TestType2?c=first-name|startsWith|J")
+					get("/api/v1/type/TestType2?c=first-name|startsWith|J")
 							.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isOk())

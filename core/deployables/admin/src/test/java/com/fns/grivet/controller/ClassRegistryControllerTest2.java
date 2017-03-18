@@ -28,19 +28,17 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fns.grivet.TestInit;
+import com.fns.grivet.AdminInit;
 import com.fns.grivet.service.ClassRegistryService;
 
-@AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestInit.class)
+@SpringBootTest(classes = AdminInit.class)
 public class ClassRegistryControllerTest2 {
 
 	@Autowired
@@ -54,7 +52,7 @@ public class ClassRegistryControllerTest2 {
 	public void testThatDeleteSucceeds() {
 		try {
 			mockMvc.perform(
-					delete("/register/TestType")
+					delete("/api/v1/definition/TestType")
 					.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isNoContent());
@@ -69,7 +67,7 @@ public class ClassRegistryControllerTest2 {
 			String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestType.json"));
 			when(service.get("TestType")).thenReturn(new JSONObject(json));
 			mockMvc.perform(
-					get("/register/TestType")
+					get("/api/v1/definition/TestType")
 					.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isOk())
@@ -86,7 +84,7 @@ public class ClassRegistryControllerTest2 {
 			String arr = String.format("[%s]", json);
 			when(service.all()).thenReturn(new JSONArray(arr));
 			mockMvc.perform(
-					get("/register?showAll=true")
+					get("/api/v1/definitions")
 					.contentType(MediaType.APPLICATION_JSON)
 					)
 			.andExpect(status().isOk())

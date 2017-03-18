@@ -15,10 +15,7 @@
  */
 package com.fns.grivet.controller;
 
-import java.io.IOException;
-
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,22 +27,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.MetricRegistry;
 import com.fns.grivet.model.Op;
 import com.fns.grivet.service.Ingester;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 
 /**
@@ -54,8 +47,7 @@ import io.swagger.annotations.ApiResponses;
  * @author Chris Phillipson
  */
 @RestController
-@RequestMapping("/ingester")
-@Api(value = "ingester", produces = "application/json")
+@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class IngestController {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
@@ -73,47 +65,36 @@ public class IngestController {
 		this.metricRegistry = metricRegistry;
 	}
 
-	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-	@RequestMapping(value = "/{type}", method = RequestMethod.POST,
-	consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "POST", notes = "Store a type.", value = "/ingester/{type}")
-	@ApiResponses({ @ApiResponse(code = 204, message = "Successfully ingest type."),
-		@ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
-		@ApiResponse(code = 400, message = "Bad request."),
-		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody JSONObject json) {
-		ingestService
-				.ingest(MessageBuilder.withPayload(json).setHeader("type", type).setHeader("op", Op.CREATE).build());
+	@PreAuthorize("hasAuthority('write:type')")
+	@PostMapping("/api/v1/type")
+	public ResponseEntity<?> createSingle(@RequestHeader("Type") String type, @RequestBody JSONObject payload) {
+	    ingestService
+				.ingest(MessageBuilder.withPayload(payload).setHeader("type", type).setHeader("op", Op.CREATE).build());
 		metricRegistry.counter(MetricRegistry.name("ingest", "create", type, "count")).inc();
 		log.info("Successfully ingested create request for type [{}]", type);
 		return ResponseEntity.accepted().build();
 	}
 	
-	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-	@RequestMapping(value = "/{type}/batch", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/ingester/{type}/batch")
-	@ApiResponses({ @ApiResponse(code = 204, message = "Successfully ingest types."),
-		@ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
-		@ApiResponse(code = 400, message = "Bad request."),
-		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody JSONArray json) {
-		int numberOfTypesToCreate = json.length();
+	@PreAuthorize("hasAuthority('write:type')")
+	@PostMapping("/api/v1/types")
+	public ResponseEntity<?> createMultiple(@RequestHeader("Type") String type, @RequestBody JSONArray array) {
+		int numberOfTypesToCreate = array.length();
 		Assert.isTrue(numberOfTypesToCreate <= batchSize,
 				String.format(
 						"The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries.",
 						batchSize, numberOfTypesToCreate));
-		JSONObject jsonObject = null;
+		JSONObject payload = null;
 		HttpHeaders headers = new HttpHeaders();
 		// allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
 		for (int i = 0; i < numberOfTypesToCreate; i++) {
 			try {
-				jsonObject = json.getJSONObject(i);
-				ingestService.ingest(MessageBuilder.withPayload(jsonObject).setHeader("type", type)
+				payload = array.getJSONObject(i);
+				ingestService.ingest(MessageBuilder.withPayload(payload).setHeader("type", type)
 						.setHeader("op", Op.CREATE).build());
 				metricRegistry.counter(MetricRegistry.name("ingest", "create", type, "count")).inc();
 				log.info("Successfully ingested create request for type [{}]", type);
 			} catch (Exception e) {
-				String message = LogUtil.toLog(jsonObject,
+				String message = LogUtil.toLog(payload,
 						String.format("Problems ingesting type! Portion of payload @ index[%d]\n", i + 1));
 				log.error(message, e);
 				if (numberOfTypesToCreate == 1) {
@@ -125,31 +106,23 @@ public class IngestController {
 		return ResponseEntity.accepted().headers(headers).build();
 	}
 
-	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-	@RequestMapping(value = "", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "PATCH", notes = "Update an existing type.", value = "/ingester?oid={oid}")
-	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully updated type."),
-		@ApiResponse(code = 400, message = "Bad request."),
-		@ApiResponse(code = 500, message = "Internal server error.") })
+	@PreAuthorize("hasAuthority('write:type')")
+	@PatchMapping("/api/v1/type")
 	public ResponseEntity<?> updateSingle(
-		@ApiParam(value = "Object identifier", required = true) @RequestParam(value = "oid", required = true) Long oid,
-		@RequestBody JSONObject json) {
-		ingestService.ingest(MessageBuilder.withPayload(json).setHeader("oid", oid).setHeader("op", Op.UPDATE).build());
+		@RequestParam(value = "oid", required = true) Long oid,
+		@RequestBody JSONObject payload) {
+		ingestService.ingest(MessageBuilder.withPayload(payload).setHeader("oid", oid).setHeader("op", Op.UPDATE).build());
 		metricRegistry.counter(MetricRegistry.name("ingest", "update", "count")).inc();
 		log.info("Successfully ingested update request for type w/ oid = [{}]", oid);
 		return ResponseEntity.accepted().build();
 	}
 	
-	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-	@RequestMapping(value = "", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "DELETE", notes = "Delete an existing type.", value = "/ingester?oid={oid}")
-	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully updated type."),
-		@ApiResponse(code = 400, message = "Bad request."),
-		@ApiResponse(code = 500, message = "Internal server error.") })
+	@PreAuthorize("hasAuthority('delete:type')")
+	@DeleteMapping(value = "/api/v1/type")
 	public ResponseEntity<?> deleteSingle(
-		@ApiParam(value = "Object identifier", required = true) @RequestParam(value = "oid", required = true) Long oid,
-		@RequestBody JSONObject json) {
-		ingestService.ingest(MessageBuilder.withPayload(json).setHeader("oid", oid).setHeader("op", Op.DELETE).build());
+		@RequestParam(value = "oid", required = true) Long oid,
+		@RequestBody JSONObject payload) {
+		ingestService.ingest(MessageBuilder.withPayload(payload).setHeader("oid", oid).setHeader("op", Op.DELETE).build());
 		metricRegistry.counter(MetricRegistry.name("ingest", "delete", "count")).inc();
 		log.info("Successfully ingested update request for type w/ oid = [{}]", oid);
 		return ResponseEntity.accepted().build();

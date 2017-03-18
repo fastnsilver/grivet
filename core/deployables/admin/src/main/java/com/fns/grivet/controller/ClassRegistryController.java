@@ -15,7 +15,8 @@
  */
 package com.fns.grivet.controller;
 
-import com.fns.grivet.service.ClassRegistryService;
+import java.io.IOException;
+import java.net.URI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,22 +31,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
-import java.net.URI;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import com.fns.grivet.service.ClassRegistryService;
 
 
 /**
@@ -54,8 +49,7 @@ import io.swagger.annotations.ApiResponses;
  * @author Chris Phillipson
  */
 @RestController
-@RequestMapping("/register")
-@Api(value = "register", produces = "application/json")
+@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ClassRegistryController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -70,35 +64,24 @@ public class ClassRegistryController {
         this.classRegistryService = classRegistryService;
     }
     
-    @PreAuthorize("hasRole(@roles.ADMIN)")
-    @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Register a type", value = "/register")
-    @ApiResponses({ @ApiResponse(code = 201, message = "Successfully registered type."),
-            @ApiResponse(code = 202, message = "Partial success. Location info for registered type(s). Error details for type(s) that could not be registered."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> registerSingle(@RequestBody JSONObject json) throws IOException {
-        String type = classRegistryService.register(json);
+    @PreAuthorize("hasAuthority('write:typedef')")
+    @PostMapping("/api/v1/definition")
+    public ResponseEntity<?> registerSingle(@RequestBody JSONObject oayload) throws IOException {
+        String type = classRegistryService.register(oayload);
         UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
         log.info("Type [{}] successfully registered!", type);
-        return ResponseEntity.created(ucb.path("/register/{type}").buildAndExpand(type).toUri()).build();
+        return ResponseEntity.created(ucb.path("/api/v1/definition/{type}").buildAndExpand(type).toUri()).build();
     }
 
-    @PreAuthorize("hasRole(@roles.ADMIN)")
-    @RequestMapping(value = "/types", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Register multiple types", value = "/register/types")
-    @ApiResponses({ @ApiResponse(code = 201, message = "Successfully registered types."),
-            @ApiResponse(code = 202, message = "Partial success. Location info for registered type(s). Error details for type(s) that could not be registered."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> registerMultiple(@RequestBody JSONArray json) throws IOException, JSONException {
-        int numberOfTypesToRegister = json.length();
+    @PreAuthorize("hasAuthority('write:typedef')")
+    @PostMapping("/api/v1/definitions")
+    public ResponseEntity<?> registerMultiple(@RequestBody JSONArray array) throws IOException, JSONException {
+        int numberOfTypesToRegister = array.length();
         Assert.isTrue(numberOfTypesToRegister <= batchSize,
                 String.format(
                         "The total number of entries in a type registration request must not exceed %d! Your registration request contained [%d] entries.",
                         batchSize, numberOfTypesToRegister));
-        JSONObject jsonObject = null;
+        JSONObject payload = null;
         String type = null;
         HttpHeaders headers = new HttpHeaders();
         URI location = null;
@@ -106,9 +89,9 @@ public class ClassRegistryController {
         // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
         for (int i = 0; i < numberOfTypesToRegister; i++) {
             try {
-                jsonObject = json.getJSONObject(i);
-                type = classRegistryService.register(jsonObject);
-                location = UriComponentsBuilder.newInstance().path("/register/{type}").buildAndExpand(type).toUri();
+                payload = array.getJSONObject(i);
+                type = classRegistryService.register(payload);
+                location = UriComponentsBuilder.newInstance().path("/api/v1/definition/{type}").buildAndExpand(type).toUri();
                 if (numberOfTypesToRegister == 1) {
                     headers.setLocation(location); 
                 } else {
@@ -116,7 +99,7 @@ public class ClassRegistryController {
                 }
                 log.info("Type [{}] successfully registered!", type);
             } catch (Exception e) {
-                String message = LogUtil.toLog(jsonObject, String.format("Problems registering type! Portion of payload @ index[%d]\n", i+1));
+                String message = LogUtil.toLog(payload, String.format("Problems registering type! Portion of payload @ index[%d]\n", i+1));
                 log.error(message, e);
                 if (numberOfTypesToRegister == 1) {
                     throw e;
@@ -128,28 +111,18 @@ public class ClassRegistryController {
         return new ResponseEntity<>(headers, ((errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED));
     }
 
-    @PreAuthorize("hasRole(@roles.ADMIN)")
-    @RequestMapping(value = "/{type}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "DELETE", notes = "Delete the registered type.", value = "/register/{type}")
-    @ApiResponses({ @ApiResponse(code = 204, message = "Successfully deleted a registered type."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
+    @PreAuthorize("hasAuthority('delete:typedef')")
+    @DeleteMapping("/api/v1/definition/{type}")
     public ResponseEntity<?> delete(
-            @ApiParam(value = "Type name", required = true)
             @PathVariable("type") String type) {
         classRegistryService.deregister(type);
         log.info("Type [{}] successfully deregistered!", type);
         return ResponseEntity.noContent().build();
     }
     
-    @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-    @RequestMapping(value = "/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "GET", notes = "Retrieve the registered type.", value = "/register/{type}")
-    @ApiResponses({ @ApiResponse(code = 200, message = "Successfully retrieved a registered type."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
+    @PreAuthorize("hasAuthority('read:typedef')")
+    @GetMapping("/api/v1/definition/{type}")
     public ResponseEntity<?> get(
-            @ApiParam(value = "Type name", required = true)
             @PathVariable("type") String type) {
         JSONObject payload = classRegistryService.get(type);
         String message = LogUtil.toLog(payload, String.format("Successfully retrieved type [%s]\n", type));
@@ -157,15 +130,9 @@ public class ClassRegistryController {
         return ResponseEntity.ok(payload.toString());
     }
     
-    @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-    @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "GET", notes = "All registered types.", value = "/register?showAll")
-    @ApiResponses({ @ApiResponse(code = 200, message = "List all registered types."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> all(
-            @ApiParam(value = "Show all registered types?", required = true)
-            @RequestParam(value = "showAll", required = true) String showAll) {
+    @PreAuthorize("hasAuthority('read:typedef')")
+    @GetMapping("/api/v1/definitions")
+    public ResponseEntity<?> all() {
         return ResponseEntity.ok(classRegistryService.all().toString());
     }
         

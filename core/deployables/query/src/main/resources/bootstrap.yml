@@ -4,7 +4,3 @@ server:
 spring:
   application:
     name: @project.artifactId@
-    
-info:
-  title: @project.name@
-    

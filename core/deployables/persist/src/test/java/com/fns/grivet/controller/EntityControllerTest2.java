@@ -32,12 +32,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fns.grivet.TestInit;
+import com.fns.grivet.PersistInit;
 import com.fns.grivet.service.EntityService;
 
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestInit.class)
+@SpringBootTest(classes = PersistInit.class)
 public class EntityControllerTest2 {
 
 	@Autowired
@@ -53,7 +53,8 @@ public class EntityControllerTest2 {
 	        String json = IOUtils.toString(ClassLoader.class.getResourceAsStream("/TestTypeData.json"));
 	        doNothing().when(service).create("TestType", new JSONObject(json));
 	        mockMvc.perform(
-	                    post("/store/TestType")
+	                    post("/api/v1/type")
+	                        .header("Type", "TestType")
 	                        .contentType(MediaType.APPLICATION_JSON)
 	                        .content(json)
 	                )

@@ -42,13 +42,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fns.grivet.TestInit;
+import com.fns.grivet.QueryInit;
 import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.service.NamedQueryService;
 
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestInit.class)
+@SpringBootTest(classes = QueryInit.class)
 public class NamedQueryControllerTest {
 
 	@Autowired
@@ -68,7 +68,7 @@ public class NamedQueryControllerTest {
 	        NamedQuery query = mapper.readValue(json, NamedQuery.class);
 	        doCallRealMethod().when(service).create(query);
 	        mockMvc.perform(
-	                post("/namedQuery")
+	                post("/api/v1/query")
 	                        .contentType(MediaType.APPLICATION_JSON)
 	                        .content(json)
 	                )
@@ -86,7 +86,7 @@ public class NamedQueryControllerTest {
 	        NamedQuery query = mapper.readValue(json, NamedQuery.class);
 	        doCallRealMethod().when(service).create(query);
 	        mockMvc.perform(
-	                post("/namedQuery")
+	                post("/api/v1/query")
 	                        .contentType(MediaType.APPLICATION_JSON)
 	                        .content(json)
 	                )
@@ -104,7 +104,7 @@ public class NamedQueryControllerTest {
 	        NamedQuery query = mapper.readValue(json, NamedQuery.class);
 	        doCallRealMethod().when(service).create(query);
 	        mockMvc.perform(
-	                post("/namedQuery")
+	                post("/api/v1/query")
 	                        .contentType(MediaType.APPLICATION_JSON)
 	                        .content(json)
 	                )
@@ -123,7 +123,7 @@ public class NamedQueryControllerTest {
 	        NamedQuery query = mapper.readValue(json, NamedQuery.class);
 	        doCallRealMethod().when(service).create(query);
 	        mockMvc.perform(
-	                post("/namedQuery")
+	                post("/api/v1/query")
 	                        .contentType(MediaType.APPLICATION_JSON)
 	                        .content(json)
 	                )
@@ -142,7 +142,7 @@ public class NamedQueryControllerTest {
 	        NamedQuery query = mapper.readValue(json, NamedQuery.class);
 	        doCallRealMethod().when(service).create(query);
 	        mockMvc.perform(
-	                post("/namedQuery")
+	                post("/api/v1/query")
 	                        .contentType(MediaType.APPLICATION_JSON)
 	                        .content(json)
 	                )
@@ -159,7 +159,7 @@ public class NamedQueryControllerTest {
 	        String response = IOUtils.toString(is);
 	        when(service.get("getAttributesCreatedToday", new LinkedMultiValueMap<String, String>())).thenReturn(response);
 	        mockMvc.perform(
-	                get("/namedQuery/getAttributesCreatedToday")
+	                get("/api/v1/query/getAttributesCreatedToday")
 	                    .contentType(MediaType.APPLICATION_JSON)
 	            )
 	            .andExpect(status().isOk())
@@ -178,7 +178,7 @@ public class NamedQueryControllerTest {
 	        response.put(new JSONObject(json));
 	        when(service.all()).thenReturn(response);
 	        mockMvc.perform(
-	                get("/namedQuery?showAll=true")
+	                get("/api/v1/queries")
 	                    .contentType(MediaType.APPLICATION_JSON)
 	            )
 	            .andExpect(status().isOk())
@@ -192,7 +192,7 @@ public class NamedQueryControllerTest {
     public void testThatDeleteSucceeds() {
     	try {
 	        mockMvc.perform(
-	                delete("/namedQuery/TestSelectQuery")
+	                delete("/api/v1/query/TestSelectQuery")
 	                    .contentType(MediaType.APPLICATION_JSON)
 	            )
 	            .andExpect(status().isNoContent());
