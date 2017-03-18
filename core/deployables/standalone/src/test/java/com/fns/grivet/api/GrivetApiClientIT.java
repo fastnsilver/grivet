@@ -268,7 +268,7 @@ public class GrivetApiClientIT {
 	        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(204)).when()
 	                .post("/api/v1/query");
 	        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
-	                .when().get("/api/v1/query?showAll");
+	                .when().get("/api/v1/queries");
 	        JSONArray result = new JSONArray(response.body().asString());
 	        Assert.assertEquals(1, result.length()); 
 	        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
