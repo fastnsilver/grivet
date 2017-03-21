@@ -43,7 +43,7 @@ public class ClassAttributeRepositoryTest {
     @Test
     public void testFindByCid() {
         ClassAttribute[] expected = seedClassAttributes();
-        List<ClassAttribute> actual = classAttributeRepository.findByCid(1);
+        List<ClassAttribute> actual = classAttributeRepository.findByCid(expected[0].getCid());
         Assert.assertNotNull("Expected a list of class attributes returned!", actual);
         Assert.assertTrue(actual.size() == 2);
         Assert.assertEquals(Arrays.asList(expected), actual);
