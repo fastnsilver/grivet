@@ -36,6 +36,7 @@ import com.fns.grivet.repo.AttributeRepository;
 import com.fns.grivet.repo.AttributeTypeRepository;
 import com.fns.grivet.repo.ClassAttributeRepository;
 import com.fns.grivet.repo.ClassRepository;
+import com.fns.grivet.repo.SecurityFacade;
 
 @Service
 public class ClassRegistryService {

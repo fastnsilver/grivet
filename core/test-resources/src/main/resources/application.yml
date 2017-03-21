@@ -60,6 +60,9 @@ spring:
     data-source-class-name: org.h2.jdbcx.JdbcDataSource
     username: sa
     password: sa
+  h2:
+    console:
+      enabled: true
 
 flyway:
   locations: classpath:db/migration, classpath:db/users

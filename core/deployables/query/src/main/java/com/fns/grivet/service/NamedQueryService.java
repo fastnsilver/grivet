@@ -46,6 +46,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fns.grivet.model.User;
 import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.repo.NamedQueryRepository;
+import com.fns.grivet.repo.SecurityFacade;
 
 @Service
 public class NamedQueryService {

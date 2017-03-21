@@ -67,7 +67,7 @@ public class IngestController {
 
 	@PreAuthorize("hasAuthority('write:type')")
 	@PostMapping("/api/v1/type")
-	public ResponseEntity<?> createSingle(@RequestHeader("Type") String type, @RequestBody JSONObject payload) {
+	public ResponseEntity<?> ingestCreateTypeRequest(@RequestHeader("Type") String type, @RequestBody JSONObject payload) {
 	    ingestService
 				.ingest(MessageBuilder.withPayload(payload).setHeader("type", type).setHeader("op", Op.CREATE).build());
 		metricRegistry.counter(MetricRegistry.name("ingest", "create", type, "count")).inc();
@@ -77,7 +77,7 @@ public class IngestController {
 	
 	@PreAuthorize("hasAuthority('write:type')")
 	@PostMapping("/api/v1/types")
-	public ResponseEntity<?> createMultiple(@RequestHeader("Type") String type, @RequestBody JSONArray array) {
+	public ResponseEntity<?> ingestCreateTypesRequest(@RequestHeader("Type") String type, @RequestBody JSONArray array) {
 		int numberOfTypesToCreate = array.length();
 		Assert.isTrue(numberOfTypesToCreate <= batchSize,
 				String.format(
@@ -108,7 +108,7 @@ public class IngestController {
 
 	@PreAuthorize("hasAuthority('write:type')")
 	@PatchMapping("/api/v1/type")
-	public ResponseEntity<?> updateSingle(
+	public ResponseEntity<?> ingestUpdateTypeRequest(
 		@RequestParam(value = "oid", required = true) Long oid,
 		@RequestBody JSONObject payload) {
 		ingestService.ingest(MessageBuilder.withPayload(payload).setHeader("oid", oid).setHeader("op", Op.UPDATE).build());
@@ -119,10 +119,9 @@ public class IngestController {
 	
 	@PreAuthorize("hasAuthority('delete:type')")
 	@DeleteMapping(value = "/api/v1/type")
-	public ResponseEntity<?> deleteSingle(
-		@RequestParam(value = "oid", required = true) Long oid,
-		@RequestBody JSONObject payload) {
-		ingestService.ingest(MessageBuilder.withPayload(payload).setHeader("oid", oid).setHeader("op", Op.DELETE).build());
+	public ResponseEntity<?> ingestDeleteTypeRequest(
+		@RequestParam(value = "oid", required = true) Long oid) {
+		ingestService.ingest(MessageBuilder.withPayload(new JSONObject()).setHeader("oid", oid).setHeader("op", Op.DELETE).build());
 		metricRegistry.counter(MetricRegistry.name("ingest", "delete", "count")).inc();
 		log.info("Successfully ingested update request for type w/ oid = [{}]", oid);
 		return ResponseEntity.accepted().build();

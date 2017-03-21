@@ -17,6 +17,7 @@
 
     <modules>
         <module>model</module>
+        <module>repositories</module>
         <module>common</module>
         <module>shared-config</module>
         <module>test-resources</module>

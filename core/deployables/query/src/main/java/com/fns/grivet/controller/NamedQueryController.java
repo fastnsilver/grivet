@@ -60,7 +60,7 @@ public class NamedQueryController {
     
     @PreAuthorize("hasAuthority('write:query')")
     @PostMapping("/api/v1/query")
-    public ResponseEntity<?> create(
+    public ResponseEntity<?> createNamedQuery(
             @RequestBody NamedQuery query) {
         ResponseEntity<?> result = ResponseEntity.unprocessableEntity().build();
         Assert.isTrue(StringUtils.isNotBlank(query.getName()), "Query name must not be null, empty or blank.");
@@ -75,7 +75,7 @@ public class NamedQueryController {
         log.info("Named Query \n\n{}\n\n successfully registered!", query);
         UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
         if (query.getParams().isEmpty()) {
-            result = ResponseEntity.created(ucb.path("/namedQuery/{name}").buildAndExpand(query.getName()).toUri())
+            result = ResponseEntity.created(ucb.path("/api/v1/query/{name}").buildAndExpand(query.getName()).toUri())
                     .build();
         } else {
             result = ResponseEntity.noContent().build();
@@ -85,7 +85,7 @@ public class NamedQueryController {
     
     @PreAuthorize("hasAuthority('execute:query')")
     @GetMapping("/api/v1/query/{name}")
-    public ResponseEntity<?> get(
+    public ResponseEntity<?> executeNamedQuery(
             @PathVariable("name") String name, 
             @RequestParam MultiValueMap<String, ?> parameters) {
         return ResponseEntity.ok(namedQueryService.get(name, parameters));
@@ -93,14 +93,14 @@ public class NamedQueryController {
     
     @PreAuthorize("hasAuthority('list:query')")
     @GetMapping("/api/v1/queries")
-    public ResponseEntity<?> all() {
+    public ResponseEntity<?> listNamedQueries() {
         JSONArray payload = namedQueryService.all();
         return ResponseEntity.ok(payload.toString());
     }
     
     @PreAuthorize("hasAuthority('delete:query')")
     @DeleteMapping(value = "/api/v1/query/{name}")
-    public ResponseEntity<?> delete(
+    public ResponseEntity<?> deleteNamedQuery(
             @PathVariable("name") String name) {
         namedQueryService.delete(name);
         log.info("Query with name [{}] successfully deleted!", name);

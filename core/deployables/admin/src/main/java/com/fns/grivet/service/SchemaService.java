@@ -26,6 +26,7 @@ import org.springframework.util.Assert;
 
 import com.fns.grivet.model.User;
 import com.fns.grivet.repo.ClassRepository;
+import com.fns.grivet.repo.SecurityFacade;
 
 @Service
 public class SchemaService {

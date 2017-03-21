@@ -44,7 +44,7 @@ import com.fns.grivet.service.ClassRegistryService;
 
 
 /**
- * Provides end-points for type registration and verification
+ * Provides end-points for type definition and verification
  * 
  * @author Chris Phillipson
  */
@@ -66,7 +66,7 @@ public class ClassRegistryController {
     
     @PreAuthorize("hasAuthority('write:typedef')")
     @PostMapping("/api/v1/definition")
-    public ResponseEntity<?> registerSingle(@RequestBody JSONObject oayload) throws IOException {
+    public ResponseEntity<?> defineType(@RequestBody JSONObject oayload) throws IOException {
         String type = classRegistryService.register(oayload);
         UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
         log.info("Type [{}] successfully registered!", type);
@@ -75,7 +75,7 @@ public class ClassRegistryController {
 
     @PreAuthorize("hasAuthority('write:typedef')")
     @PostMapping("/api/v1/definitions")
-    public ResponseEntity<?> registerMultiple(@RequestBody JSONArray array) throws IOException, JSONException {
+    public ResponseEntity<?> defineTypes(@RequestBody JSONArray array) throws IOException, JSONException {
         int numberOfTypesToRegister = array.length();
         Assert.isTrue(numberOfTypesToRegister <= batchSize,
                 String.format(
@@ -113,7 +113,7 @@ public class ClassRegistryController {
 
     @PreAuthorize("hasAuthority('delete:typedef')")
     @DeleteMapping("/api/v1/definition/{type}")
-    public ResponseEntity<?> delete(
+    public ResponseEntity<?> undefineType(
             @PathVariable("type") String type) {
         classRegistryService.deregister(type);
         log.info("Type [{}] successfully deregistered!", type);
@@ -122,7 +122,7 @@ public class ClassRegistryController {
     
     @PreAuthorize("hasAuthority('read:typedef')")
     @GetMapping("/api/v1/definition/{type}")
-    public ResponseEntity<?> get(
+    public ResponseEntity<?> getTypeDefinition(
             @PathVariable("type") String type) {
         JSONObject payload = classRegistryService.get(type);
         String message = LogUtil.toLog(payload, String.format("Successfully retrieved type [%s]\n", type));
@@ -132,7 +132,7 @@ public class ClassRegistryController {
     
     @PreAuthorize("hasAuthority('read:typedef')")
     @GetMapping("/api/v1/definitions")
-    public ResponseEntity<?> all() {
+    public ResponseEntity<?> getAllTypeDefinitions() {
         return ResponseEntity.ok(classRegistryService.all().toString());
     }
         

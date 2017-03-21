@@ -1,4 +1,4 @@
-= Admin Service Getting Started Guide
+= Grivet Standalone API
 Chris Phillipson;
 :doctype: book
 :icons: font
@@ -10,15 +10,15 @@ Chris Phillipson;
 [introduction]
 = Introduction
 
-Registration end-points.
+Provides end-points for type definition and verification.
+In addition provides end-points for linking and unlinking JSON Schema to pre-defined types.
 
 [[overview]]
 = Overview
 
 [[overview-http-verbs]]
 == HTTP verbs
-The Admin service tries to adhere as closely as possible to standard HTTP and REST conventions in its
-use of HTTP verbs.
+This service tries to adhere as closely as possible to standard HTTP and REST conventions in its use of HTTP verbs.
 |===
 | Verb | Usage
 
@@ -40,17 +40,16 @@ use of HTTP verbs.
 
 [[overview-http-status-codes]]
 == HTTP status codes
-The Admin service tries to adhere as closely as possible to standard HTTP and REST conventions in its
-use of HTTP status codes.
+This service tries to adhere as closely as possible to standard HTTP and REST conventions in its use of HTTP status codes.
 
 |===
 | Status code | Usage
 
 | `200 OK`
 | Standard response for successful HTTP requests.
-| The actual response will depend on the request method used.
-| In a GET request, the response will contain an entity corresponding to the requested resource.
-| In a POST request, the response will contain an entity describing or containing the result of the action.
+The actual response will depend on the request method used.
+In a GET request, the response will contain an entity corresponding to the requested resource.
+In a POST request, the response will contain an entity describing or containing the result of the action.
 
 | `201 Created`
 | The request has been fulfilled and resulted in a new resource being created.
@@ -67,3 +66,4 @@ use of HTTP status codes.
 
 [[resources]]
 = Resources
+

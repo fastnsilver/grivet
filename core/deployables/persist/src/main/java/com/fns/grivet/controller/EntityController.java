@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -78,7 +79,7 @@ public class EntityController {
 	@Profile("!pipeline")
 	@PreAuthorize("hasAuthority('write:type')")
 	@PostMapping("/api/v1/type")
-	public ResponseEntity<?> createSingle(@RequestHeader("Type") String type, @RequestBody JSONObject json) {
+	public ResponseEntity<?> createOne(@RequestHeader("Type") String type, @RequestBody JSONObject json) {
 		Long oid = entityService.create(type, json);
 		URI location = UriComponentsBuilder.newInstance().path("/api/v1/type").queryParam("oid", oid).build().toUri();
 		metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
@@ -129,7 +130,7 @@ public class EntityController {
 	@Profile("!pipeline")
 	@PreAuthorize("hasAuthority('write:type')")
 	@PatchMapping("/api/v1/type")
-	public ResponseEntity<?> update(
+	public ResponseEntity<?> updateOne(
 			@RequestParam(value = "oid", required = true) Long oid,
 			@RequestBody JSONObject json) {
 		String type = entityService.update(oid, json);
@@ -144,7 +145,7 @@ public class EntityController {
 	@Profile("!pipeline")
 	@PreAuthorize("hasAuthority('delete:type')")
 	@DeleteMapping("/api/v1/type")
-	public ResponseEntity<?> delete(
+	public ResponseEntity<?> deleteOne(
 			@RequestParam(value = "oid", required = true) Long oid) {
 		String type = entityService.delete(oid);
 		metricRegistry.counter(MetricRegistry.name("store", "delete", type, "count")).inc();
@@ -154,9 +155,9 @@ public class EntityController {
 
 	@PreAuthorize("hasAuthority('read:type')")
 	@GetMapping("/api/v1/type/{type}")
-	public ResponseEntity<?> get(@PathVariable("type") String type,
-			@RequestParam(value = "createdTimeStart", required = false) LocalDateTime createdTimeStart,
-			@RequestParam(value = "createdTimeEnd", required = false) LocalDateTime createdTimeEnd,
+	public ResponseEntity<?> fetch(@PathVariable("type") String type,
+			@RequestParam(value = "createdTimeStart", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeStart,
+			@RequestParam(value = "createdTimeEnd", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeEnd,
 			@RequestParam(value = "noAudit", defaultValue = "false") boolean noAudit,
 			HttpServletRequest request) throws JsonProcessingException {
 		LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7) : createdTimeStart;
@@ -171,7 +172,7 @@ public class EntityController {
 
 	@PreAuthorize("hasAuthority('read:type')")
 	@GetMapping("/api/v1/type")
-	public ResponseEntity<?> get(
+	public ResponseEntity<?> fetchOne(
 			@RequestParam(value = "oid", required = true) Long oid) {
 		return ResponseEntity.ok(entityService.findOne(oid));
 	}

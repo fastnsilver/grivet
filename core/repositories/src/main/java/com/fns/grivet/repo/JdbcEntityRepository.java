@@ -45,10 +45,9 @@ import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.EntityAttributeValue;
 import com.fns.grivet.model.User;
+import com.fns.grivet.model.ValueHelper;
 import com.fns.grivet.query.DynamicQuery;
 import com.fns.grivet.query.QueryBuilder;
-import com.fns.grivet.service.SecurityFacade;
-import com.fns.grivet.model.ValueHelper;
 import com.google.common.collect.ImmutableMap;
 
 @Repository
@@ -125,7 +124,7 @@ public class JdbcEntityRepository implements EntityRepository {
 	public void delete(Long eid) {
 		String entitySql = "DELETE FROM entity WHERE eid = ?";
 		log.trace(String.format("JdbcEntityRepository.delete[sql=%s]", entitySql));
-		jdbcTemplate.execute(entitySql);
+		jdbcTemplate.update(entitySql, new Object[] { eid });
 
 		Collection<String> eavSql =
 				Stream.of(AttributeType.values())
@@ -134,8 +133,25 @@ public class JdbcEntityRepository implements EntityRepository {
 							.values();
 		for (String sql : eavSql) {
 			log.trace(String.format("JdbcEntityRepository.delete[sql=%s]", sql));
-			jdbcTemplate.execute(sql);
+			jdbcTemplate.update(sql, new Object[] { eid });
 		}
+	}
+	
+	@Override
+	public void deleteAll() {
+	    String entitySql = "DELETE FROM entity";
+        log.trace(String.format("JdbcEntityRepository.delete[sql=%s]", entitySql));
+        jdbcTemplate.execute(entitySql);
+
+        Collection<String> eavSql =
+                Stream.of(AttributeType.values())
+                        .collect(Collectors.toMap(k -> k.getType(),
+                                v -> String.format("DELETE FROM entityav_%s", v.getType())))
+                            .values();
+        for (String sql : eavSql) {
+            log.trace(String.format("JdbcEntityRepository.delete[sql=%s]", sql));
+            jdbcTemplate.execute(sql);
+        }
 	}
 
 	@Override
