@@ -134,9 +134,10 @@ public class PersistDocumentationTest {
         try {
             defineTypes("TestMultipleTypes");
             createTypes("Course", "CourseData");
+            Long oid = fetchAType("Course");
             mockMvc.perform(
                     patch("/api/v1/type")
-                            .param("oid", "2")
+                            .param("oid", String.valueOf(oid))
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("CourseUpdateData"))
                     )
@@ -251,6 +252,13 @@ public class PersistDocumentationTest {
         } catch (Exception e) {
             fail(e.getMessage());
         }
+    }
+    
+    private Long fetchAType(String type) throws JSONException, IOException {
+        ClassRepository classRepo = context.getBean(ClassRepository.class);
+        Integer cid = classRepo.findByName(type).getId();
+        EntityRepository entityRepo = context.getBean(EntityRepository.class);
+        return entityRepo.findAllEntitiesByCid(cid).iterator().next().getId();
     }
     
 	private void createTypes(String type, String data) throws JSONException, IOException {
