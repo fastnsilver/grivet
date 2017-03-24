@@ -15,7 +15,7 @@
  */
 package com.fns.grivet.api;
 
-import static com.jayway.restassured.RestAssured.given;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.fail;
 
@@ -38,14 +38,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fns.grivet.TestInit;
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.response.Response;
+import com.fns.grivet.StandaloneInit;
 
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import net.javacrumbs.jsonunit.JsonAssert;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestInit.class, webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = StandaloneInit.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class GrivetApiClientIT {
 
     @Autowired
@@ -68,7 +68,7 @@ public class GrivetApiClientIT {
     	try {
 	        json = IOUtils.toString(r.getInputStream());
 	        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(201)).when()
-	        		.post("/register");
+	        		.post("/api/v1/definition");
     	} catch (IOException e) {
         	fail(e.getMessage());
         }
@@ -77,7 +77,7 @@ public class GrivetApiClientIT {
     
     private void deregisterType() {
         given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
-                .delete("/register/TestType");
+                .delete("/api/v1/definition/TestType");
     }
     
     
@@ -87,7 +87,7 @@ public class GrivetApiClientIT {
         try {
         	json = IOUtils.toString(r.getInputStream());
         	given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(201)).when()
-        			.post("/register/types");
+        			.post("/api/v1/definitions");
         } catch (IOException e) {
         	fail(e.getMessage());
         }
@@ -97,9 +97,9 @@ public class GrivetApiClientIT {
 
     private void deregisterTypes() {
         given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
-                .delete("/register/Contact");
+                .delete("/api/v1/definition/Contact");
         given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
-                .delete("/register/Course");
+                .delete("/api/v1/definition/Course");
     }
 
     @Test
@@ -117,7 +117,7 @@ public class GrivetApiClientIT {
     @Test
     public void testRegisterTypeEmptyBody() {
         given().contentType("application/json").request().body("").then().expect().statusCode(equalTo(400)).when()
-                .post("/register");
+                .post("/api/v1/definition");
     }
     
     @Test
@@ -126,7 +126,7 @@ public class GrivetApiClientIT {
         try {
 	        String json = IOUtils.toString(r.getInputStream());
 	        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(400)).when()
-	                .post("/register");
+	                .post("/api/v1/definition");
         } catch (IOException e) {
         	fail(e.getMessage());
         }
@@ -136,7 +136,7 @@ public class GrivetApiClientIT {
     public void testGetRegisteredTypeHappyPath() {
         String json = registerTestType();
         Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
-                .when().get("/register/TestType");
+                .when().get("/api/v1/definition/TestType");
         JsonAssert.assertJsonEquals(json, response.body().asString());
         deregisterType();
     }
@@ -145,7 +145,7 @@ public class GrivetApiClientIT {
     public void testAllRegisteredTypesHappyPath() {
         String json = registerTestType();
         Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
-                .when().get("/register?showAll");
+                .when().get("/api/v1/definitions");
         JSONArray result = new JSONArray(response.body().asString());
         JsonAssert.assertJsonEquals(json, result.get(0).toString());
         deregisterType();
@@ -158,9 +158,9 @@ public class GrivetApiClientIT {
         try {
 	        String schema = IOUtils.toString(r.getInputStream());
 	        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when()
-	                .post("/schema");
+	                .post("/api/v1/schema");
 	        given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when()
-	                .delete("/schema/TestType");
+	                .delete("/api/v1/schema/TestType");
         } catch (IOException e) {
         	fail(e.getMessage());
         }
@@ -174,39 +174,39 @@ public class GrivetApiClientIT {
         try {
 	        String schema = IOUtils.toString(r.getInputStream());
 	        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when()
-	                .post("/schema");
+	                .post("/api/v1/schema");
 	        r = resolver.getResource("classpath:TestTypeData.json");
 	        String type = IOUtils.toString(r.getInputStream());
-	        given().contentType("application/json").request().body(type).then().expect().statusCode(equalTo(201)).when()
-	                .post("/store/TestType");
+	        given().contentType("application/json").request().header("Type", "TestType").body(type).then().expect().statusCode(equalTo(201)).when()
+	                .post("/api/v1/type");
 	        
 	        // GET (default)
 	        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
-	                .when().get("/store/TestType");
+	                .when().get("/api/v1/type/TestType");
 	        JSONArray result = new JSONArray(response.body().asString());
 	        JsonAssert.assertJsonEquals(type, result.get(0).toString());
 	        
 	        // GET (with equals constraint that is a boolean)
 	        response = given().param("c", "boolean|equals|false").contentType("application/json").request().then().expect()
-	                .statusCode(equalTo(200)).when().get("/store/TestType");
+	                .statusCode(equalTo(200)).when().get("/api/v1/type/TestType");
 	        result = new JSONArray(response.body().asString());
 	        JsonAssert.assertJsonEquals(type, result.get(0).toString());
 	        
 	        // GET (with equals constraint that is a varchar)
 	        response = given().param("c", "varchar|equals|Rush").contentType("application/json").request().then().expect()
-	                .statusCode(equalTo(200)).when().get("/store/TestType");
+	                .statusCode(equalTo(200)).when().get("/api/v1/type/TestType");
 	        result = new JSONArray(response.body().asString());
 	        JsonAssert.assertJsonEquals(type, result.get(0).toString());
 	        
 	        // GET (with startsWith constraint)
 	        response = given().param("c", "text|startsWith|Grim-faced").contentType("application/json").request().then()
-	                .expect().statusCode(equalTo(200)).when().get("/store/TestType");
+	                .expect().statusCode(equalTo(200)).when().get("/api/v1/type/TestType");
 	        result = new JSONArray(response.body().asString());
 	        JsonAssert.assertJsonEquals(type, result.get(0).toString());
 	        
 	        // GET (with lessThanOrEqualTo constraint)
 	        response = given().param("c", "datetime|lessThanOrEqualTo|2016-01-01T00:00:00Z").contentType("application/json")
-	                .request().then().expect().statusCode(equalTo(200)).when().get("/store/TestType");
+	                .request().then().expect().statusCode(equalTo(200)).when().get("/api/v1/type/TestType");
 	        result = new JSONArray(response.body().asString());
 	        JsonAssert.assertJsonEquals(type, result.get(0).toString());
 	        
@@ -215,7 +215,7 @@ public class GrivetApiClientIT {
 	                    .param("c", "datetime|lessThanOrEqualTo|2016-01-01T00:00:00Z")
 	                    .param("c", "text|endsWith|city")
 	                .contentType("application/json").request().then().expect().statusCode(equalTo(200)).when()
-	                .get("/store/TestType");
+	                .get("/api/v1/type/TestType");
 	        result = new JSONArray(response.body().asString());
 	        JsonAssert.assertJsonEquals(type, result.get(0).toString());
         } catch (IOException e) {
@@ -231,8 +231,8 @@ public class GrivetApiClientIT {
         Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
         try {
 	        String contacts = IOUtils.toString(r.getInputStream());
-	        given().contentType("application/json").request().body(contacts).then().expect().statusCode(equalTo(201)).when()
-	                .post("/store/Contact/batch");
+	        given().contentType("application/json").request().header("Type", "Contact").body(contacts).then().expect().statusCode(equalTo(201)).when()
+	                .post("/api/v1/types");
         } catch (IOException e) {
         	fail(e.getMessage());
         }
@@ -250,10 +250,10 @@ public class GrivetApiClientIT {
 	        r = resolver.getResource("classpath:CourseSchema.json");
 	        String schema = IOUtils.toString(r.getInputStream());
 	        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when()
-	                .post("/schema");
+	                .post("/api/v1/schema");
 	        
-	        given().contentType("application/json").request().body(courses).then().expect().statusCode(equalTo(202)).when()
-	                .post("/store/Course/batch");
+	        given().contentType("application/json").request().header("Type", "Course").body(courses).then().expect().statusCode(equalTo(202)).when()
+	                .post("/api/v1/types");
         } catch (IOException e) {
         	fail(e.getMessage());
         }
@@ -266,13 +266,13 @@ public class GrivetApiClientIT {
         try {
 	        String select = IOUtils.toString(r.getInputStream());
 	        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(204)).when()
-	                .post("/namedQuery");
+	                .post("/api/v1/query");
 	        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
-	                .when().get("/namedQuery?showAll");
+	                .when().get("/api/v1/queries");
 	        JSONArray result = new JSONArray(response.body().asString());
 	        Assert.assertEquals(1, result.length()); 
 	        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
-	                .delete("/namedQuery/getAttributesCreatedBefore");
+	                .delete("/api/v1/query/getAttributesCreatedBefore");
         } catch (IOException e) {
         	fail(e.getMessage());
         }
@@ -285,13 +285,13 @@ public class GrivetApiClientIT {
         try {
 	        String select = IOUtils.toString(r.getInputStream());
 	        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(201)).when()
-	                .post("/namedQuery");
+	                .post("/api/v1/query");
 	        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
-	                .when().get("/namedQuery/getClassesCreatedToday");
+	                .when().get("/api/v1/query/getClassesCreatedToday");
 	        JSONArray result = new JSONArray(response.body().asString());
 	        Assert.assertEquals(1, result.length());
 	        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
-	                .delete("/namedQuery/getClassesCreatedToday");
+	                .delete("/api/v1/query/getClassesCreatedToday");
         } catch (IOException e) {
         	fail(e.getMessage());
         }
@@ -307,14 +307,14 @@ public class GrivetApiClientIT {
         try {
 	        String sproc = IOUtils.toString(r.getInputStream());
 	        given().contentType("application/json").request().body(sproc).then().expect().statusCode(equalTo(204)).when()
-	                .post("/namedQuery");
+	                .post("/api/v1/query");
 	        LocalDateTime now = LocalDateTime.now();
 	        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
-	                .when().get("/namedQuery/sproc.getAttributesCreatedBefore?createdTime=" + now.toString());
+	                .when().get("/api/v1/query/sproc.getAttributesCreatedBefore?createdTime=" + now.toString());
 	        JSONArray result = new JSONArray(response.body().asString());
 	        Assert.assertEquals(7, result.length());
 	        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
-	                .delete("/namedQuery/sproc.getAttributesCreatedBefore");
+	                .delete("/api/v1/query/sproc.getAttributesCreatedBefore");
         } catch (IOException e) {
         	fail(e.getMessage());
         }

@@ -22,6 +22,8 @@ import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 
+import com.fns.grivet.model.Op;
+
 
 public class IngestService implements Ingester {
 
@@ -36,8 +38,10 @@ public class IngestService implements Ingester {
     @Override
     public void ingest(Message<JSONObject> message) {
         Assert.notNull(message.getHeaders(), "No message headers!");
-        Assert.hasText(message.getHeaders().get("type", String.class), "Type must not be null or empty!");
-        Assert.notNull(message.getPayload(), "Message must have non-null payload!");
+        Assert.notNull(message.getHeaders().get("op", Op.class), "Op code must be specified!");
+        if (message.getHeaders().get("op").equals(Op.CREATE)) {
+            Assert.hasText(message.getHeaders().get("type", String.class), "Type must not be null or empty!");
+        }
         log.debug("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
                 message.getPayload().toString());
         source.output().send(message);

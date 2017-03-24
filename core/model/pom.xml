@@ -17,21 +17,13 @@
     <inceptionYear>2016</inceptionYear>
     <url>https://github.com/fastnsilver/grivet</url>
 
-
-    <properties>
-        <!-- General -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
-
-        <!-- Third-party library versions -->
-        <commons-lang3.version>3.4</commons-lang3.version>
-        <javax.persistence.version>1.0.0.Final</javax.persistence.version>
-        <javax.validation-api.version>1.1.0.Final</javax.validation-api.version>
-        <jsr305.version>3.0.1</jsr305.version>
-    </properties>
-
     <dependencies>
-
+        
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -55,33 +47,25 @@
             <artifactId>validation-api</artifactId>
             <version>${javax.validation-api.version}</version>
         </dependency>
-
+        
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
+            <groupId>com.auth0</groupId>
+            <artifactId>auth0-spring-security-api</artifactId>
+            <version>${auth0-api.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
+        
         <dependency>
-            <groupId>com.stormpath.sdk</groupId>
-            <artifactId>stormpath-sdk-api</artifactId>
-            <version>${stormpath.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
             <scope>provided</scope>
         </dependency>
-
+        
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

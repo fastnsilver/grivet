@@ -4,7 +4,7 @@ server:
 spring:
   application:
     name: @project.artifactId@
-    
+
 info:
-  title: @project.name@
-    
+  title: Grivet Query
+  description: Query end-points.

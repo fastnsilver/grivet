@@ -33,5 +33,5 @@ public class AdminInit {
     public static void main(String[] args) {
         SpringApplication.run(AdminInit.class, args);
     }
-
+    
 }

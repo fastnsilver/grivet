@@ -1,3 +1,108 @@
-include::{generated}/overview.adoc[]
-include::{generated}/paths.adoc[]
-include::{generated}/definitions.adoc[]
+= Grivet Ingest API
+Chris Phillipson;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+[introduction]
+= Introduction
+
+Provides ingestion end-points for type storage.
+
+[[overview]]
+= Overview
+
+[[overview-http-verbs]]
+== HTTP verbs
+This service tries to adhere as closely as possible to standard HTTP and REST conventions in its use of HTTP verbs.
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource
+
+| `POST`
+| Used to create a new resource
+
+| `PATCH`
+| Used to update an existing resource, including partial updates
+
+| `PUT`
+| Used to update an existing resource, full updates only
+
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+[[overview-http-status-codes]]
+== HTTP status codes
+This service tries to adhere as closely as possible to standard HTTP and REST conventions in its use of HTTP status codes.
+
+|===
+| Status code | Usage
+
+| `202 Accepted`
+| The request has been accepted and may result in a resource being created, updated or deleted depending on the op code.
+
+| `400 Bad Request`
+| The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+
+|===
+
+[[resources]]
+= Resources
+
+[[resources-ingestion]]
+== Ingestion requests
+Ingestion end-points are enabled only in a `pipeline` mode. Requests to create, update or delete types are processed asynchronously.
+
+
+[[resource-ingest-create-type-request]]
+=== Create a new type
+
+==== Example request
+
+include::{snippets}/ingest-create-type-request/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/ingest-create-type-request/http-response.adoc[]
+
+
+[[resource-ingest-create-types-request]]
+=== Create n types
+
+==== Example request
+
+include::{snippets}/ingest-create-types-request/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/ingest-create-types-request/http-response.adoc[]
+
+
+[[resource-ingest-update-type-request]]
+=== Update a type
+
+==== Example request
+
+include::{snippets}/ingest-update-type-request/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/ingest-update-type-request/http-response.adoc[]
+
+
+[[resource-ingest-delete-type-request]]
+=== Delete a type
+
+==== Example request
+
+include::{snippets}/ingest-delete-type-request/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/ingest-delete-type-request/http-response.adoc[]

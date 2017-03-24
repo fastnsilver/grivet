@@ -1,6 +1,6 @@
 {
     "type": "PurchaseOrder",
-    "description": "This seems like it should be a valid type definition for a purchase order, but Grivet currently lacks direct support for boolean attributes.  Work-around is to use an "int" (0/1) or a "varchar" ("true"/"false").
+    "description": "This description is missing an end-quote
     "attributes": 
     {
         "vendorId": "varchar",

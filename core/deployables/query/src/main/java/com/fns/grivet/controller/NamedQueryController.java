@@ -15,10 +15,6 @@
  */
 package com.fns.grivet.controller;
 
-import com.fns.grivet.query.NamedQuery;
-import com.fns.grivet.query.QueryType;
-import com.fns.grivet.service.NamedQueryService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.slf4j.Logger;
@@ -29,19 +25,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import com.fns.grivet.query.NamedQuery;
+import com.fns.grivet.query.QueryType;
+import com.fns.grivet.service.NamedQueryService;
 
 
 /**
@@ -50,8 +46,7 @@ import io.swagger.annotations.ApiResponses;
  * @author Chris Phillipson
  */
 @RestController
-@RequestMapping("/namedQuery")
-@Api(value = "namedQuery", produces = "application/json")
+@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class NamedQueryController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -63,17 +58,9 @@ public class NamedQueryController {
         this.namedQueryService = namedQueryService;
     }
     
-    @PreAuthorize("hasRole(@roles.ADMIN)")
-    @RequestMapping(method = RequestMethod.POST, 
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "POST", notes = "Register a Named Query.", value = "/namedQuery")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully registered Named Query requiring no parameters."),
-            @ApiResponse(code = 204, message = "Successfully registered Named Query that requires parameters."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> create(
-            @ApiParam(value = "Named Query payload", required = true)
+    @PreAuthorize("hasAuthority('write:query')")
+    @PostMapping("/api/v1/query")
+    public ResponseEntity<?> createNamedQuery(
             @RequestBody NamedQuery query) {
         ResponseEntity<?> result = ResponseEntity.unprocessableEntity().build();
         Assert.isTrue(StringUtils.isNotBlank(query.getName()), "Query name must not be null, empty or blank.");
@@ -88,7 +75,7 @@ public class NamedQueryController {
         log.info("Named Query \n\n{}\n\n successfully registered!", query);
         UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
         if (query.getParams().isEmpty()) {
-            result = ResponseEntity.created(ucb.path("/namedQuery/{name}").buildAndExpand(query.getName()).toUri())
+            result = ResponseEntity.created(ucb.path("/api/v1/query/{name}").buildAndExpand(query.getName()).toUri())
                     .build();
         } else {
             result = ResponseEntity.noContent().build();
@@ -96,41 +83,24 @@ public class NamedQueryController {
         return result;
     }
     
-    @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-    @RequestMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "GET", notes = "Execute a Named Query.", value = "/namedQuery/{name}")
-    @ApiResponses({ @ApiResponse(code = 200, message = "Successfully executed Named Query request."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> get(
-            @ApiParam(value = "The name of the query to execute", required = true)
+    @PreAuthorize("hasAuthority('execute:query')")
+    @GetMapping("/api/v1/query/{name}")
+    public ResponseEntity<?> executeNamedQuery(
             @PathVariable("name") String name, 
-            @ApiParam(value = "Named Query parameters (key-value pairs)", required = false)
             @RequestParam MultiValueMap<String, ?> parameters) {
         return ResponseEntity.ok(namedQueryService.get(name, parameters));
     }
     
-    @PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-    @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "GET", notes = "Available Named Queries.", value = "/namedQuery?showAll")
-    @ApiResponses({ @ApiResponse(code = 200, message = "List available Named Queries."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> all(
-            @ApiParam(value = "Show all registered queries?", required = true)
-            @RequestParam(value = "showAll", required = true) String showAll) {
+    @PreAuthorize("hasAuthority('list:query')")
+    @GetMapping("/api/v1/queries")
+    public ResponseEntity<?> listNamedQueries() {
         JSONArray payload = namedQueryService.all();
         return ResponseEntity.ok(payload.toString());
     }
     
-    @PreAuthorize("hasRole(@roles.ADMIN)")
-    @RequestMapping(value = "/{name}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = "DELETE", notes = "Delete the named query.", value = "/namedQuery/{name}")
-    @ApiResponses({ @ApiResponse(code = 204, message = "Successfully deleted a Named Query."),
-            @ApiResponse(code = 400, message = "Bad request."),
-            @ApiResponse(code = 500, message = "Internal server error.") })
-    public ResponseEntity<?> delete(
-            @ApiParam(value = "The name of the query to delete", required = true)
+    @PreAuthorize("hasAuthority('delete:query')")
+    @DeleteMapping(value = "/api/v1/query/{name}")
+    public ResponseEntity<?> deleteNamedQuery(
             @PathVariable("name") String name) {
         namedQueryService.delete(name);
         log.info("Query with name [{}] successfully deleted!", name);

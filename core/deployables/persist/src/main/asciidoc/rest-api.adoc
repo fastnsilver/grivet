@@ -1,3 +1,179 @@
-include::{generated}/overview.adoc[]
-include::{generated}/paths.adoc[]
-include::{generated}/definitions.adoc[]
+= Grivet Persistence API
+Chris Phillipson;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+[introduction]
+= Introduction
+
+Persistence end-points.
+
+[[overview]]
+= Overview
+
+[[overview-http-verbs]]
+== HTTP verbs
+This service tries to adhere as closely as possible to standard HTTP and REST conventions in its use of HTTP verbs.
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource
+
+| `POST`
+| Used to create a new resource
+
+| `PATCH`
+| Used to update an existing resource, including partial updates
+
+| `PUT`
+| Used to update an existing resource, full updates only
+
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+[[overview-http-status-codes]]
+== HTTP status codes
+This service tries to adhere as closely as possible to standard HTTP and REST conventions in its use of HTTP status codes.
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| Standard response for successful HTTP requests.
+The actual response will depend on the request method used.
+In a GET request, the response will contain an entity corresponding to the requested resource.
+In a POST request, the response will contain an entity describing or containing the result of the action.
+
+| `201 Created`
+| The request has been fulfilled and resulted in a new resource being created.
+
+| `204 No Content`
+| The server successfully processed the request, but is not returning any content.
+
+| `400 Bad Request`
+| The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+
+| `404 Not Found`
+| The requested resource could not be found but may be available again in the future. Subsequent requests by the client are permissible.
+|===
+
+[[resources]]
+= Resources
+
+[[resources-type]]
+== Type
+Type storage and retrieval of JSON. 
+
+
+[[resource-type-create-one]]
+=== Create a type record
+
+==== Example request
+
+include::{snippets}/create-one/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/create-one/http-response.adoc[]
+
+
+[[resource-type-create-multiple]]
+=== Create n type records
+
+==== Example request
+
+include::{snippets}/create-multiple/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/create-multiple/http-response.adoc[]
+
+
+[[resource-type-update-one]]
+=== Update a type record
+
+==== Example request
+
+include::{snippets}/update-one/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/update-one/http-response.adoc[]
+
+
+[[resource-type-delete-one]]
+=== Delete a type record
+
+==== Example request
+
+include::{snippets}/delete-one/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/delete-one/http-response.adoc[]
+
+
+[[resource-type-fetch-with-defaults]]
+=== Fetch type records created within the last 7 days
+
+==== Example request
+
+include::{snippets}/fetch-with-defaults/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/fetch-with-defaults/http-response.adoc[]
+
+
+[[resource-type-fetch-by-time-range]]
+=== Fetch type records by time range
+
+==== Example request
+
+include::{snippets}/fetch-by-time-range/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/fetch-by-time-range/http-response.adoc[]
+
+
+[[resource-type-fetch-with-constraints]]
+=== Fetch type records with constraints
+
+==== Example request
+
+include::{snippets}/fetch-with-constraints/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/fetch-with-constraints/http-response.adoc[]
+
+
+[[resource-type-fetch-with-no-audit]]
+=== Fetch type records (no audit trail)
+
+==== Example request
+
+include::{snippets}/fetch-with-no-audit/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/fetch-with-no-audit/http-response.adoc[]
+
+
+[[resource-type-fetch-one]]
+=== Fetch a type record
+
+==== Example request
+
+include::{snippets}/fetch-one/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/fetch-one/http-response.adoc[]

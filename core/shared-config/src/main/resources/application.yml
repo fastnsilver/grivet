@@ -1,6 +1,3 @@
-info:
-  version: @project.version@
-
 ribbon:
   ServerListRefreshInterval: 1000
 
@@ -165,11 +162,27 @@ monitoring:
 spring:
   profiles: secure
   
-stormpath:
-  authorized:
-    group:
-      admin: https://api.stormpath.com/v1/groups/kXMXDjb68vjzmjpCi8XVZ
-      user: https://api.stormpath.com/v1/groups/yEMNvN4kQmswQtWmR7eqv
+auth0:
+  # Your auth0 domain. You can find the correct value on the Settings tab of your client on https://manage.auth0.com/#/applications.
+  domain: grivet.auth0.com
+  # The issuer of the JWT Token. This is typically your auth0 domain with a https:// prefix and a / suffix. For example, if your auth0.domain is example.auth0.com then the auth0.issuer should be set to https://example.auth0.com/ (the trailing slash is important).
+  issuer: https://grivet.auth0.com/
+  # The unique identifier for your client. You can find the correct value on the Settings tab of your client on https://manage.auth0.com/#/applications.
+  clientId: CgD61juZc75K0DZOQvtLwwAKlqYBjTZX
+  # The secret used to sign and validate the tokens that will be used in the different authentication flows. You can find the correct value on the Settings tab of your client on https://manage.auth0.com/#/applications..
+  clientSecret: AuF0LVuG4IZIEfxHbWBtnyVidizrDV22okEP9nvDzAKH47aoHDiSHg1pMP565wvi
+  # The URL pattern that should map to the URL endpoint you wish to secure. You should replace its value with the correct value for your implementation. It should start with /. 
+  securedRoute: NOT_USED
+  # A boolean value indicating whether the Secret used to verify the JWT is base64 encoded. The default is false.
+  base64EncodedSecret: false
+  # Indicates whether authorization claims against the Principal shall be GROUPS, ROLES or SCOPE based. The default is ROLES.
+  authorityStrategy: ROLES
+  # A boolean value that switches having the default config enabled. It should be set to false.
+  defaultAuth0ApiSecurityEnabled: false
+  # Used when you want to use either HS256 or RS256 as a signing algorithm.
+  signingAlgorithm: RS256
+  # Indicates the certification in case you use RS256.
+  publicKeyPath: certificate/cert.pem
 ---
 
 spring:
@@ -182,9 +195,6 @@ management:
 security:
   basic:
     enabled: false
-    
-stormpath:
-  enabled: false
     
 ---
 

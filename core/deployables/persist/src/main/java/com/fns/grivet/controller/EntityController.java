@@ -28,16 +28,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -46,12 +51,6 @@ import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fns.grivet.service.EntityService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
 
 /**
  * Provides end-points for type storage and retrieval
@@ -59,8 +58,7 @@ import io.swagger.annotations.ApiResponses;
  * @author Chris Phillipson
  */
 @RestController
-@RequestMapping("/store")
-@Api(value = "store", produces = "application/json")
+@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class EntityController {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
@@ -79,30 +77,20 @@ public class EntityController {
 	}
 
 	@Profile("!pipeline")
-	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-	@RequestMapping(value = "/{type}", method = RequestMethod.POST,
-	consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "POST", notes = "Store a type.", value = "/store/{type}")
-	@ApiResponses({ @ApiResponse(code = 201, message = "Successfully store type."),
-		@ApiResponse(code = 400, message = "Bad request."),
-		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> createSingle(@PathVariable("type") String type, @RequestBody JSONObject json) {
+	@PreAuthorize("hasAuthority('write:type')")
+	@PostMapping("/api/v1/type")
+	public ResponseEntity<?> createOne(@RequestHeader("Type") String type, @RequestBody JSONObject json) {
 		Long oid = entityService.create(type, json);
-		URI location = UriComponentsBuilder.newInstance().path("/store").queryParam("oid", oid).build().toUri();
+		URI location = UriComponentsBuilder.newInstance().path("/api/v1/type").queryParam("oid", oid).build().toUri();
 		metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
 		log.info("Successfully created type [{}]", type);
 		return ResponseEntity.created(location).build();
 	}
 
 	@Profile("!pipeline")
-	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-	@RequestMapping(value = "/{type}/batch", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "POST", notes = "Store multiple types.", value = "/store/{type}/batch")
-	@ApiResponses({ @ApiResponse(code = 201, message = "Successfully store types."),
-		@ApiResponse(code = 202, message = "Partial success. Error details for type(s) that could not be registered."),
-		@ApiResponse(code = 400, message = "Bad request."),
-		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> createMultiple(@PathVariable("type") String type, @RequestBody JSONArray json) {
+	@PreAuthorize("hasAuthority('write:type')")
+	@PostMapping("/api/v1/types")
+	public ResponseEntity<?> createMultiple(@RequestHeader("Type") String type, @RequestBody JSONArray json) {
 		int numberOfTypesToCreate = json.length();
 		Assert.isTrue(numberOfTypesToCreate <= batchSize,
 				String.format(
@@ -118,7 +106,7 @@ public class EntityController {
 			try {
 				jsonObject = json.getJSONObject(i);
 				oid = entityService.create(type, jsonObject);
-				location = UriComponentsBuilder.newInstance().path("/store").queryParam("oid", oid).build().toUri();
+				location = UriComponentsBuilder.newInstance().path("/api/v1/type").queryParam("oid", oid).build().toUri();
 				if (numberOfTypesToCreate == 1) {
 					headers.setLocation(location);
 				} else {
@@ -140,18 +128,14 @@ public class EntityController {
 	}
 
 	@Profile("!pipeline")
-	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-	@RequestMapping(value = "", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "PATCH", notes = "Update an existing type.", value = "/store?oid={oid}")
-	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully updated type."),
-		@ApiResponse(code = 400, message = "Bad request."),
-		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> update(
-			@ApiParam(value = "Object identifier", required = true) @RequestParam(value = "oid", required = true) Long oid,
+	@PreAuthorize("hasAuthority('write:type')")
+	@PatchMapping("/api/v1/type")
+	public ResponseEntity<?> updateOne(
+			@RequestParam(value = "oid", required = true) Long oid,
 			@RequestBody JSONObject json) {
 		String type = entityService.update(oid, json);
 		HttpHeaders headers = new HttpHeaders();
-		URI location = UriComponentsBuilder.newInstance().path("/store").queryParam("oid", oid).build().toUri();
+		URI location = UriComponentsBuilder.newInstance().path("/api/v1/type").queryParam("oid", oid).build().toUri();
 		headers.setLocation(location);
 		metricRegistry.counter(MetricRegistry.name("store", "update", type, "count")).inc();
 		log.info("Successfully updated type [{}]", type);
@@ -159,57 +143,38 @@ public class EntityController {
 	}
 
 	@Profile("!pipeline")
-	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-	@RequestMapping(value = "", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "DELETE", notes = "Delete an existing type.", value = "/store?oid={oid}")
-	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully deleted type."),
-		@ApiResponse(code = 400, message = "Bad request."),
-		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> delete(
-			@ApiParam(value = "Object identifier", required = true) @RequestParam(value = "oid", required = true) Long oid) {
+	@PreAuthorize("hasAuthority('delete:type')")
+	@DeleteMapping("/api/v1/type")
+	public ResponseEntity<?> deleteOne(
+			@RequestParam(value = "oid", required = true) Long oid) {
 		String type = entityService.delete(oid);
 		metricRegistry.counter(MetricRegistry.name("store", "delete", type, "count")).inc();
 		log.info("Successfully delete type [{}]", type);
 		return ResponseEntity.ok().build();
 	}
 
-	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-	@RequestMapping(value = "/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "GET", notes = "Retrieve type matching criteria.", value = "/store/{type}")
-	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully retrieve type matching criteria."),
-		@ApiResponse(code = 400, message = "Bad request."),
-		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> get(@PathVariable("type") String type,
-			@RequestParam(value = "createdTimeStart", required = false) LocalDateTime createdTimeStart,
-			@RequestParam(value = "createdTimeEnd", required = false) LocalDateTime createdTimeEnd,
+	@PreAuthorize("hasAuthority('read:type')")
+	@GetMapping("/api/v1/type/{type}")
+	public ResponseEntity<?> fetch(@PathVariable("type") String type,
+			@RequestParam(value = "createdTimeStart", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeStart,
+			@RequestParam(value = "createdTimeEnd", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeEnd,
+			@RequestParam(value = "noAudit", defaultValue = "false") boolean noAudit,
 			HttpServletRequest request) throws JsonProcessingException {
 		LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7) : createdTimeStart;
 		LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : createdTimeEnd;
 		Assert.isTrue(ChronoUnit.SECONDS.between(start, end) >= 0, "Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");
-		return ResponseEntity.ok(entityService.findByCreatedTime(type, start, end, request.getParameterMap()));
+		if (noAudit) {
+		    return ResponseEntity.ok(entityService.findAllByType(type));
+		} else {
+		    return ResponseEntity.ok(entityService.findByCreatedTime(type, start, end, request.getParameterMap()));
+		}
 	}
 
-	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-	@RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "GET", notes = "Retrieve type by its object identifier.", value = "/store?oid={oid}")
-	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully retrieve a type by its object identifier."),
-		@ApiResponse(code = 400, message = "Bad request."),
-		@ApiResponse(code = 404, message = "Type not found."),
-		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> get(
-			@ApiParam(value = "Object identifier", required = true)
+	@PreAuthorize("hasAuthority('read:type')")
+	@GetMapping("/api/v1/type")
+	public ResponseEntity<?> fetchOne(
 			@RequestParam(value = "oid", required = true) Long oid) {
 		return ResponseEntity.ok(entityService.findOne(oid));
-	}
-
-	@PreAuthorize("hasRole(@roles.ADMIN) or hasRole(@roles.USER)")
-	@RequestMapping(value = "/{type}/noAudit", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(httpMethod = "GET", notes = "Retrieve all records for type. No audit trail, only most recent records.", value = "/store/{type}/noAudit")
-	@ApiResponses({ @ApiResponse(code = 200, message = "Successfully retrieve type all records for type."),
-		@ApiResponse(code = 400, message = "Bad request."),
-		@ApiResponse(code = 500, message = "Internal server error.") })
-	public ResponseEntity<?> get(@PathVariable("type") String type) {
-		return ResponseEntity.ok(entityService.findAllByType(type));
 	}
 
 }

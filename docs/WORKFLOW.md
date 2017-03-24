@@ -8,7 +8,7 @@ Assuming you've already deployed this service locally...
 ### Request
 
 ```
-curl -i -H "Content-Type: application/json" -X POST -d '{ "type": "TestType", "attributes": { "bigint": "bigint", "varchar": "varchar", "decimal": "decimal", "datetime": "datetime", "int": "int", "text": "text", "json": "json", "boolean": "boolean" } }' http://localhost:8080/register
+curl -i -H "Content-Type: application/json" -X POST -d '{ "type": "TestType", "attributes": { "bigint": "bigint", "varchar": "varchar", "decimal": "decimal", "datetime": "datetime", "int": "int", "text": "text", "json": "json", "boolean": "boolean" } }' http://localhost:8080/api/v1/definition
 ```
 
 ### Response
@@ -27,7 +27,7 @@ Date: Wed, 29 Jul 2015 13:37:38 GMT
 ### Request
 
 ```
-curl -H "Content-Type: application/json" "http://localhost:8080/register/TestType" | python -mjson.tool
+curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/definition/TestType" | python -mjson.tool
 ```
 
 ### Response
@@ -59,7 +59,7 @@ curl -H "Content-Type: application/json" "http://localhost:8080/register/TestTyp
 Assumes one or more types were registered prior to registering type above.
 
 ```
-curl -H "Content-Type: application/json" "http://localhost:8080/register?showAll" | python -mjson.tool
+curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/definitions" | python -mjson.tool
 ```
 
 ### Response
@@ -103,7 +103,7 @@ curl -H "Content-Type: application/json" "http://localhost:8080/register?showAll
 ### Request
 
 ```
-curl -i -H "Content-Type: application/json" -X POST -d '{ "artist": "Rush", "year": 1981, "price": 9.99, "label": "Anthem", "title": "Moving Pictures"}' http://localhost:8080/store/Album
+curl -i -H "Content-Type: application/json" -H "Type: Album" -X POST -d '{ "artist": "Rush", "year": 1981, "price": 9.99, "label": "Anthem", "title": "Moving Pictures"}' http://localhost:8080/api/v1/type
 ```
 
 ### Response
@@ -123,7 +123,7 @@ In this example request results constrained by `createdTime`
 ### Request
 
 ```
-curl -H "Content-Type: application/json" "http://localhost:8080/store/Album" | python -mjson.tool
+curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/type/Album" | python -mjson.tool
 ```
 
 ### Response
@@ -159,7 +159,7 @@ curl -k -v -X POST \
   https://localhost:8443/oauth/token
 ```
 
-replace `<username>` and `<password>` above with valid Stormpath credentials
+replace `<username>` and `<password>` above with valid Auth0 credentials
 
 ### Response
 
@@ -174,29 +174,4 @@ replace `<username>` and `<password>` above with valid Stormpath credentials
 
 `access_token` and `refresh_token` above represent encrypted Strings (and are much longer)
 
-
-Once you have have the `access_token`, you can verify a subset of account info for the current user.
-
-### Request
-
-```
-curl \
-  -k -H "Authorization: Bearer <your_access_token>" \
-  https://localhost:8443/me
-```
-
-### Response
-
-```
-{
-    "href" : "https://api.stormpath.com/v1/accounts/<account_id>",
-    "fullName" : "My Full Name",
-    "email" : "my@email.com"
-}
-```
-
-Note: the above response is contrived, but is representative of the type of information you will see.
-
-
-From here on out (for as long as the `access_token` is active) you can make similar requests of all
-other available Grivet endpoints, so long as the account is authorized to do so.
+From here on out (for as long as the `access_token` is active) you can make similar requests of all other available Grivet endpoints, so long as the account is authorized to do so.
