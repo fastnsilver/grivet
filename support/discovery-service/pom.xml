@@ -33,12 +33,16 @@
                     <execution>
                         <goals>
                             <goal>repackage</goal>
+                            <goal>build-info</goal>
                         </goals>
                         <configuration>
                             <classifier>exec</classifier>
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005</jvmArguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>

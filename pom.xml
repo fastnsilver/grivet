@@ -75,6 +75,7 @@
         <!-- Third-party library versions -->
         <auth0-api.version>0.3.3</auth0-api.version>
         <commons-lang3.version>3.5</commons-lang3.version>
+        <commons-io.version>2.5</commons-io.version>
         <disruptor.version>3.3.6</disruptor.version>
         <flyway.version>4.1.2</flyway.version>
         <guava.version>19.0</guava.version>
@@ -111,15 +112,16 @@
         <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
         <maven-plugin-plugin.version>3.4</maven-plugin-plugin.version>
         <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
-        <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
+        <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
         <maven-scm-provider-jgit.version>1.9.4</maven-scm-provider-jgit.version>
         <maven-site-plugin.version>3.4</maven-site-plugin.version>
         <maven-scm-publish-plugin.version>1.1</maven-scm-publish-plugin.version>
         <maven-surefire-report-plugin.version>2.19.1</maven-surefire-report-plugin.version>
         <plan-maven-plugin.version>1.2</plan-maven-plugin.version>
+        <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
         <reflow-velocity-tools.version>1.1.1</reflow-velocity-tools.version>
         <sonar-maven-plugin.version>2.7.1</sonar-maven-plugin.version>
-        <spring-banner-plugin.version>0.1</spring-banner-plugin.version>
+        <spring-banner-plugin.version>1.0</spring-banner-plugin.version>
         <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
         <velocity.version>1.7</velocity.version>
         <versions-maven-plugin.version>2.2</versions-maven-plugin.version>
@@ -131,7 +133,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Camden.SR6</version>
+                <version>Dalston.RC1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -160,27 +162,6 @@
     </pluginRepositories>
 
     <build>
-    	<resources>
-			<resource>
-				<directory>${basedir}/src/main/resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>**/application.yml</include>
-					<include>**/application.properties</include>
-					<include>**/bootstrap.yml</include>
-					<include>**/banner.txt</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>${basedir}/src/main/resources</directory>
-				<excludes>
-					<exclude>**/application.yml</exclude>
-					<exclude>**/application.properties</exclude>
-					<exclude>**/bootstrap.yml</exclude>
-					<exclude>**/banner.txt</exclude>
-				</excludes>
-			</resource>
-		</resources>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -282,7 +263,37 @@
         	<plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
+                <configuration>
+                    <!-- this is false by default, forces the plugin to generate the git.properties file -->
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <!-- The path for the properties file to be generated. See Super Pom for default variable reference https://maven.apache.org/guides/introduction/introduction-to-the-pom.html -->
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                    </execution>
+                </executions>
             </plugin>
+            <plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>${properties-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+						    <quiet>true</quiet>
+							<files>
+								<file>${project.build.outputDirectory}/git.properties</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
             <plugin>
                 <groupId>tk.skuro</groupId>
                 <artifactId>plan-maven-plugin</artifactId>

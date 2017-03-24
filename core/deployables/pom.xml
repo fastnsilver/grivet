@@ -30,6 +30,12 @@
 	</properties>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources-filtered</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>ch.acanda.maven</groupId>
@@ -45,7 +51,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <info>Commit: ${git.commit.id.describe}, Version: ${application.version}, Server: ${server.address}:${server.port}, Active Profiles: ${spring.active.profiles}</info>
+                    <outputDirectory>${project.basedir}/src/main/resources-filtered</outputDirectory>
+                    <info>Commit: ${git.commit.id}, Version: ${project.version}, Active Profiles: ${spring.profiles.active}</info>
                 </configuration>
             </plugin>
         </plugins>

@@ -121,6 +121,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
         </dependency>
 
         <!-- javax.validation provider implementation -->
@@ -211,9 +212,10 @@
                     <execution>
                         <goals>
                             <goal>repackage</goal>
+                            <goal>build-info</goal>
                         </goals>
                         <configuration>
-                             <classifier>exec</classifier>
+                            <classifier>exec</classifier>
                         </configuration>
                     </execution>
                 </executions>
