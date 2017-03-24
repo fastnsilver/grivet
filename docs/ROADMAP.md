@@ -39,6 +39,7 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 0.3.0
 
+- [x] Switch to [Codeship](https://app.codeship.com/projects/201927/) for builds and scan for vulnerabilities with [SourceClear](https://app.sourceclear.com/teams/OeetPR6/issues/vulnerabilities)
 - [x] Introduce reverse [proxy](https://github.com/fastnsilver/grivet/issues/9), adjust endpoints behind this gateway
 - [x] Add registration, storage and retrieval support for `boolean` entity attribute values
 - [x] Allow for querying, updating, and deleting an entity by its object identifier
