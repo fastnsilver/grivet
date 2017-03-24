@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JdbcEntityRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Repositories</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.repo</a> &gt; <span class="el_source">JdbcEntityRepository.java</span></div><h1>JdbcEntityRepository.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2015 - Chris Phillipson
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.fns.grivet.repo;
+
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.lang3.ObjectUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlParameterValue;
+import org.springframework.jdbc.core.SqlRowSetResultSetExtractor;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
+import com.fns.grivet.model.Attribute;
+import com.fns.grivet.model.AttributeType;
+import com.fns.grivet.model.EntityAttributeValue;
+import com.fns.grivet.model.User;
+import com.fns.grivet.model.ValueHelper;
+import com.fns.grivet.query.DynamicQuery;
+import com.fns.grivet.query.QueryBuilder;
+import com.google.common.collect.ImmutableMap;
+
+@Repository
+public class JdbcEntityRepository implements EntityRepository {
+
+<span class="fc" id="L56">	private final Logger log = LoggerFactory.getLogger(getClass());</span>
+
+	private final JdbcTemplate jdbcTemplate;
+
+	@Autowired(required=false)
+	private SecurityFacade securityFacade;
+
+	@Autowired
+<span class="fc" id="L64">	public JdbcEntityRepository(JdbcTemplate jdbcTemplate) {</span>
+<span class="fc" id="L65">		this.jdbcTemplate = jdbcTemplate;</span>
+<span class="fc" id="L66">	}</span>
+
+
+	@Override
+	public Long newId(Integer cid, LocalDateTime createdTime) {
+<span class="nc" id="L71">		return Long.valueOf(String.valueOf(new SimpleJdbcInsert(jdbcTemplate).withTableName(&quot;entity&quot;)</span>
+<span class="nc" id="L72">				.usingGeneratedKeyColumns(&quot;eid&quot;).usingColumns(&quot;cid&quot;, &quot;created_time&quot;).executeAndReturnKey(</span>
+<span class="nc" id="L73">						ImmutableMap.of(&quot;cid&quot;, cid, &quot;created_time&quot;, Timestamp.valueOf(createdTime)))));</span>
+	}
+
+	@Override
+	public void save(Long eid, Attribute attribute, AttributeType attributeType, Object rawValue,
+			LocalDateTime createdTime) {
+<span class="nc bnc" id="L79" title="All 2 branches missed.">		Assert.isTrue(rawValue != null, String.format(&quot;Attempt to persist value failed! %s's value must not be null!&quot;, attribute.getName()));</span>
+<span class="nc" id="L80">		Object value = ValueHelper.toValue(attributeType, rawValue);</span>
+<span class="nc" id="L81">		User user = getCurrentUser();</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		String createdBy = user == null ? null : user.getUsername();</span>
+<span class="nc" id="L83">		String[] columns = { &quot;eid&quot;, &quot;aid&quot;, &quot;val&quot;, &quot;created_time&quot; };</span>
+<span class="nc" id="L84">		Map&lt;String, Object&gt; keyValuePairs = ImmutableMap.of(&quot;eid&quot;, eid, &quot;aid&quot;, attribute.getId(), &quot;val&quot;, value,</span>
+<span class="nc" id="L85">				&quot;created_time&quot;, Timestamp.valueOf(createdTime));</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">		if (createdBy != null) {</span>
+<span class="nc" id="L87">			columns = Arrays.copyOf(columns, columns.length + 1);</span>
+<span class="nc" id="L88">			columns[columns.length - 1] = &quot;created_by&quot;;</span>
+<span class="nc" id="L89">			Map&lt;String, Object&gt; keyValuePairsWithCreatedBy = new HashMap&lt;&gt;(keyValuePairs);</span>
+<span class="nc" id="L90">			keyValuePairsWithCreatedBy.put(&quot;created_by&quot;, createdBy);</span>
+<span class="nc" id="L91">			keyValuePairs = keyValuePairsWithCreatedBy;</span>
+		}
+<span class="nc" id="L93">		new SimpleJdbcInsert(jdbcTemplate).withTableName(String.join(&quot;_&quot;, &quot;entityav&quot;, attributeType.getType()))</span>
+<span class="nc" id="L94">		.usingColumns(columns).execute(keyValuePairs);</span>
+<span class="nc" id="L95">	}</span>
+
+	@Override
+	public List&lt;EntityAttributeValue&gt; findByCreatedTime(Integer cid, LocalDateTime createdTimeStart,
+			LocalDateTime createdTimeEnd) {
+<span class="nc" id="L100">		String sql = QueryBuilder.newInstance().appendCreatedTimeRange().build();</span>
+<span class="nc" id="L101">		log.trace(String.format(&quot;JdbcEntityRepository.findByCreatedTime[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L102">		return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid),</span>
+<span class="nc" id="L103">				new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeStart)),</span>
+<span class="nc" id="L104">				new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeEnd))));</span>
+	}
+
+	@Override
+	public Integer getClassIdForEntityId(Long eid) {
+<span class="nc" id="L109">		String sql = &quot;SELECT cid FROM entity WHERE eid = ?&quot;;</span>
+<span class="nc" id="L110">		log.trace(String.format(&quot;JdbcEntityRepository.getClassIdForEntityId[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L111">		return jdbcTemplate.queryForObject(sql, new Object[] { eid }, Integer.class);</span>
+	}
+
+	@Override
+	public List&lt;EntityAttributeValue&gt; findOneEntity(Long eid) {
+<span class="nc" id="L116">		String sql = QueryBuilder.newInstance().obtainValuesForOneEntity().build();</span>
+<span class="nc" id="L117">		log.trace(String.format(&quot;JdbcEntityRepository.findOne[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L118">		return mapRows(</span>
+<span class="nc" id="L119">				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(),</span>
+						new SqlParameterValue(Types.BIGINT, eid)));
+	}
+
+	@Override
+	public void delete(Long eid) {
+<span class="nc" id="L125">		String entitySql = &quot;DELETE FROM entity WHERE eid = ?&quot;;</span>
+<span class="nc" id="L126">		log.trace(String.format(&quot;JdbcEntityRepository.delete[sql=%s]&quot;, entitySql));</span>
+<span class="nc" id="L127">		jdbcTemplate.update(entitySql, new Object[] { eid });</span>
+
+		Collection&lt;String&gt; eavSql =
+<span class="nc" id="L130">				Stream.of(AttributeType.values())</span>
+<span class="nc" id="L131">						.collect(Collectors.toMap(k -&gt; k.getType(),</span>
+<span class="nc" id="L132">								v -&gt; String.format(&quot;DELETE FROM entityav_%s WHERE eid = ?&quot;, v.getType())))</span>
+<span class="nc" id="L133">							.values();</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (String sql : eavSql) {</span>
+<span class="nc" id="L135">			log.trace(String.format(&quot;JdbcEntityRepository.delete[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L136">			jdbcTemplate.update(sql, new Object[] { eid });</span>
+<span class="nc" id="L137">		}</span>
+<span class="nc" id="L138">	}</span>
+	
+	@Override
+	public void deleteAll() {
+<span class="nc" id="L142">	    String entitySql = &quot;DELETE FROM entity&quot;;</span>
+<span class="nc" id="L143">        log.trace(String.format(&quot;JdbcEntityRepository.delete[sql=%s]&quot;, entitySql));</span>
+<span class="nc" id="L144">        jdbcTemplate.execute(entitySql);</span>
+
+        Collection&lt;String&gt; eavSql =
+<span class="nc" id="L147">                Stream.of(AttributeType.values())</span>
+<span class="nc" id="L148">                        .collect(Collectors.toMap(k -&gt; k.getType(),</span>
+<span class="nc" id="L149">                                v -&gt; String.format(&quot;DELETE FROM entityav_%s&quot;, v.getType())))</span>
+<span class="nc" id="L150">                            .values();</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        for (String sql : eavSql) {</span>
+<span class="nc" id="L152">            log.trace(String.format(&quot;JdbcEntityRepository.delete[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L153">            jdbcTemplate.execute(sql);</span>
+<span class="nc" id="L154">        }</span>
+<span class="nc" id="L155">	}</span>
+
+	@Override
+	public List&lt;EntityAttributeValue&gt; findAllEntitiesByCid(Integer cid) {
+<span class="nc" id="L159">		String sql = QueryBuilder.newInstance().obtainValuesForEntitiesByCid().build();</span>
+<span class="nc" id="L160">		log.trace(String.format(&quot;JdbcEntityRepository.findAllByCid[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L161">		return mapRows(</span>
+<span class="nc" id="L162">				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid)));</span>
+	}
+
+	@Override
+	public List&lt;EntityAttributeValue&gt; executeDynamicQuery(Integer cid, DynamicQuery query) {
+<span class="nc" id="L167">		Assert.isTrue(query.areConjunctionsHomogenous(), &quot;Query cannot be executed! All conjunctions must be homogenous!&quot;);</span>
+<span class="nc" id="L168">		String sql = QueryBuilder.newInstance().append(query).build();</span>
+<span class="nc" id="L169">		log.trace(String.format(&quot;JdbcEntityRepository.executeDynamicQuery[sql=%s]&quot;, sql));</span>
+<span class="nc" id="L170">		List&lt;SqlParameterValue&gt; values = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L171">		values.add(new SqlParameterValue(Types.INTEGER, cid));</span>
+<span class="nc" id="L172">		values.addAll(Arrays.asList(query.asSqlParameterValues()));</span>
+<span class="nc" id="L173">		return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), values.toArray(new Object[values.size()])));</span>
+	}
+
+	private List&lt;EntityAttributeValue&gt; mapRows(SqlRowSet rowSet) {
+<span class="nc" id="L177">		List&lt;EntityAttributeValue&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L178">		EntityAttributeValue eav = null;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		if (rowSet != null) {</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">			while(rowSet.next()) {</span>
+<span class="nc" id="L181">				eav = new EntityAttributeValue((Long) rowSet.getObject(&quot;eid&quot;), (Integer) rowSet.getObject(&quot;attribute_id&quot;), (String) rowSet.getObject(&quot;attribute_name&quot;), rowSet.getObject(&quot;attribute_value&quot;), ((Timestamp) rowSet.getObject(&quot;created_time&quot;)).toLocalDateTime(), getCurrentUser());</span>
+<span class="nc" id="L182">				result.add(eav);</span>
+			}
+		}
+<span class="nc" id="L185">		Collections.sort(result, new EAVComparator());</span>
+<span class="nc" id="L186">		return result;</span>
+	}
+
+	private User getCurrentUser() {
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		return securityFacade == null ? null : securityFacade.getCurrentUser();</span>
+	}
+
+<span class="nc" id="L193">	private static class EAVComparator implements Comparator&lt;EntityAttributeValue&gt; {</span>
+
+		@Override
+		public int compare(EntityAttributeValue eav1, EntityAttributeValue eav2) {
+<span class="nc" id="L197">			return ObjectUtils.compare(eav1.getId(), eav2.getId());</span>
+		}
+
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

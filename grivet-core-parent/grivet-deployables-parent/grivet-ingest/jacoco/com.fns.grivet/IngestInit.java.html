@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>IngestInit.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Ingest</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet</a> &gt; <span class="el_source">IngestInit.java</span></div><h1>IngestInit.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IngestInit.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Ingest</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet</a> &gt; <span class="el_source">IngestInit.java</span></div><h1>IngestInit.java</h1><pre class="source lang-java linenums">/*
  * Copyright 2015 - Chris Phillipson
  * 
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -18,6 +18,15 @@ package com.fns.grivet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Bean;
+
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Bootstraps the application
@@ -26,11 +35,33 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-<span class="fc" id="L29">public class IngestInit {</span>
+@EnableSwagger2
+<span class="fc" id="L39">public class IngestInit {</span>
     
     public static void main(String[] args) {
-<span class="nc" id="L32">        SpringApplication.run(IngestInit.class, args);</span>
-<span class="nc" id="L33">    }</span>
+<span class="nc" id="L42">        SpringApplication.run(IngestInit.class, args);</span>
+<span class="nc" id="L43">    }</span>
 
+    @Bean
+    public Docket api() { 
+<span class="fc" id="L47">        return new Docket(DocumentationType.SWAGGER_2)  </span>
+<span class="fc" id="L48">          .select()                                  </span>
+<span class="fc" id="L49">          .apis(RequestHandlerSelectors.basePackage(&quot;com.fns.grivet.controller&quot;))             </span>
+<span class="fc" id="L50">          .paths(PathSelectors.any())</span>
+<span class="fc" id="L51">          .build()                                          </span>
+<span class="fc" id="L52">              .apiInfo(apiInfo());</span>
+    }
+    
+    private ApiInfo apiInfo() {
+<span class="fc" id="L56">        ApiInfo apiInfo = new ApiInfo(</span>
+          &quot;Grivet Admin REST API&quot;,
+          &quot;Type and schema registration end-points.&quot;,
+          &quot;v1&quot;,
+          &quot;https://www.apache.org/licenses/LICENSE-2.0&quot;,
+          new Contact(&quot;Chris Phillipson&quot;, &quot;http://techblitz.io/grivet/&quot;, &quot;fastnsilver@gmail.com&quot;),
+          &quot;Apache License 2.0&quot;,
+          &quot;https://www.apache.org/licenses/LICENSE-2.0&quot;);
+<span class="fc" id="L64">        return apiInfo;</span>
+    }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

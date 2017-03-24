@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SchemaController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Admin</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.controller</a> &gt; <span class="el_source">SchemaController.java</span></div><h1>SchemaController.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SchemaController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Admin</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.controller</a> &gt; <span class="el_source">SchemaController.java</span></div><h1>SchemaController.java</h1><pre class="source lang-java linenums">/*
  * Copyright 2015 - Chris Phillipson
  * 
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -15,7 +15,7 @@
  */
 package com.fns.grivet.controller;
 
-import com.fns.grivet.service.SchemaService;
+import java.io.IOException;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -24,19 +24,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import com.fns.grivet.service.SchemaService;
 
 
 /**
@@ -45,53 +40,41 @@ import io.swagger.annotations.ApiResponses;
  * @author Chris Phillipson
  */
 @RestController
-@RequestMapping(&quot;/schema&quot;)
-@Api(value = &quot;schema&quot;, produces = &quot;application/json&quot;)
+@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class SchemaController {
 
-<span class="fc" id="L52">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+<span class="fc" id="L46">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
         
     private final SchemaService schemaService;
     
     @Autowired
-<span class="fc" id="L57">    public SchemaController(SchemaService schemaService) {</span>
-<span class="fc" id="L58">        this.schemaService = schemaService;</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L51">    public SchemaController(SchemaService schemaService) {</span>
+<span class="fc" id="L52">        this.schemaService = schemaService;</span>
+<span class="fc" id="L53">    }</span>
     
     
-    @PreAuthorize(&quot;hasRole(@roles.ADMIN)&quot;)
-    @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = &quot;POST&quot;, notes = &quot;Link a JSON Schema to a pre-registered type.&quot;, value = &quot;/schema&quot;)
-    @ApiResponses({ @ApiResponse(code = 200, message = &quot;Successfully link JSON Schema to registered type.&quot;),
-            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
-            @ApiResponse(code = 422, message = &quot;Unprocessable entity (e.g., invalid JSON schema).&quot;),
-            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;) })
-    public ResponseEntity&lt;?&gt; linkSchema(@RequestBody JSONObject json) throws IOException {
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (!schemaService.isJsonSchema(json)) {</span>
-<span class="nc" id="L72">            return ResponseEntity.unprocessableEntity().build();</span>
+    @PreAuthorize(&quot;hasAuthority('write:schema')&quot;)
+    @PostMapping(&quot;/api/v1/schema&quot;)
+    public ResponseEntity&lt;?&gt; linkSchema(@RequestBody JSONObject payload) throws IOException {
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (!schemaService.isJsonSchema(payload)) {</span>
+<span class="nc" id="L60">            return ResponseEntity.unprocessableEntity().build();</span>
         }
-<span class="fc" id="L74">        String id = schemaService.linkSchema(json).getName();</span>
-<span class="fc" id="L75">        String message = String.format(</span>
+<span class="fc" id="L62">        String id = schemaService.linkSchema(payload).getName();</span>
+<span class="fc" id="L63">        String message = String.format(</span>
                 &quot;JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!&quot;, id);
-<span class="fc" id="L77">        log.info(message);</span>
-<span class="fc" id="L78">        return ResponseEntity.ok(message);</span>
+<span class="fc" id="L65">        log.info(message);</span>
+<span class="fc" id="L66">        return ResponseEntity.ok(message);</span>
     }
     
-    @PreAuthorize(&quot;hasRole(@roles.ADMIN)&quot;)
-    @RequestMapping(value = &quot;/{type}&quot;, method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(httpMethod = &quot;DELETE&quot;, notes = &quot;Unlink JSON Schema from a pre-registered type.&quot;, value = &quot;/schema/{type}&quot;)
-    @ApiResponses({ @ApiResponse(code = 200, message = &quot;Unlinked JSON Schema from type.&quot;),
-            @ApiResponse(code = 400, message = &quot;Bad request.&quot;),
-            @ApiResponse(code = 500, message = &quot;Internal server error.&quot;) })
+    @PreAuthorize(&quot;hasAuthority('delete:schema')&quot;)
+    @DeleteMapping(&quot;/api/v1/schema/{type}&quot;)
     public ResponseEntity&lt;?&gt; unlinkSchema(
-            @ApiParam(value = &quot;Type name&quot;, required = true)
             @PathVariable(&quot;type&quot;) String type) {
-<span class="fc" id="L90">        schemaService.unlinkSchema(type);</span>
-<span class="fc" id="L91">        String message = String.format(&quot;JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!&quot;, type);</span>
-<span class="fc" id="L92">        log.info(message);</span>
-<span class="fc" id="L93">        return ResponseEntity.ok(message);</span>
+<span class="fc" id="L73">        schemaService.unlinkSchema(type);</span>
+<span class="fc" id="L74">        String message = String.format(&quot;JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!&quot;, type);</span>
+<span class="fc" id="L75">        log.info(message);</span>
+<span class="fc" id="L76">        return ResponseEntity.ok(message);</span>
     }
             
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
