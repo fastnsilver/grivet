@@ -77,14 +77,12 @@ public class PersistDocumentationTest {
         
     private MockMvc mockMvc;
     
-    private RestDocumentationResultHandler document;
-
     @Before
     public void setUp() {
-        this.document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
+        RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
                 .apply(documentationConfiguration(this.restDocumentation))
-                .alwaysDo(this.document)
+                .alwaysDo(document)
                 .build();
     }
     
