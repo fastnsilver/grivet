@@ -1,3 +1,8 @@
 spring:
   application:
     name: @project.artifactId@
+
+info:
+  title: Grivet Stand-alone
+  description: Standalone variant of Grivet integrating admin, persistence, and query end-points.
+    

@@ -66,8 +66,8 @@ public class ClassRegistryController {
     
     @PreAuthorize("hasAuthority('write:typedef')")
     @PostMapping("/api/v1/definition")
-    public ResponseEntity<?> defineType(@RequestBody JSONObject oayload) throws IOException {
-        String type = classRegistryService.register(oayload);
+    public ResponseEntity<?> defineType(@RequestBody JSONObject payload) throws IOException {
+        String type = classRegistryService.register(payload);
         UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
         log.info("Type [{}] successfully registered!", type);
         return ResponseEntity.created(ucb.path("/api/v1/definition/{type}").buildAndExpand(type).toUri()).build();

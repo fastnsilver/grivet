@@ -1,6 +1,7 @@
 server:
   port: 8085
 
-spring:
-  application:
-    name: @project.artifactId@
+info:
+  title: Grivet Admin
+  description: Type and schema registration end-points.
+    

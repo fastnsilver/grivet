@@ -4,3 +4,7 @@ server:
 spring:
   application:
     name: @project.artifactId@
+
+info:
+  title: Grivet Ingest
+  description: Ingestion end-points and service integration.
