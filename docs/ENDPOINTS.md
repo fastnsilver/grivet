@@ -20,17 +20,17 @@
 
 * POST `/api/v1/schema`
 
-  * links a JSON Schema with a pre-registered type; subsequent `/store/{type}` requests will be validated against schema
+  * links a JSON Schema with a pre-registered type; subsequent `/api/v1/type` requests will be validated against schema
 
   * Sample POST request [TestTypeSchema.json](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/TestTypeSchema.json)
 
 * DELETE `/api/v1/schema/{type}`
 
-  * unlinks existing JSON Schema from a pre-registered type; subsequent `/store/{type}` requests will NOT be validated against schema
+  * unlinks existing JSON Schema from a pre-registered type; subsequent `/api/v1/type` requests will NOT be validated against schema
 
 * DELETE `/api/v1/definition/{type}`
 
-  * deletes a registered type; default configuration has cascading deletes enabled which means that any persistent data from prior POST `/store/{type}` requests will also be deleted; so use with caution!
+  * deletes a registered type; default configuration has cascading deletes enabled which means that any persistent data from prior POST `/api/v1/type` requests will also be deleted; so use with caution!
 
   * However, if `spring.profiles.active` is set to `mysql` then when a DELETE request is made only the Class from the `class` table is deleted which orphans entries in other tables
 
@@ -56,17 +56,17 @@
   * returns records that were created between `createdTimeStart` and `createdTimeEnd`
 
 * GET `/api/v1/type?oid={oid}`
-  
+
   * returns record(s) that match the object identifier
-  
+
 * DELETE `/api/v1/type?oid={oid}`
-  
+
   * deletes records (including attribute-values) that match the object identifier
 
 * PATCH `/api/v1/type?oid={oid}`
 
   * update one or more existing type's attribute-value(s)
-  
+
 * GET `/api/v1/type/{type}?noAudit=true`
 
   * return all records for type. No audit trail, only most recent records.
