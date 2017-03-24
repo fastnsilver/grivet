@@ -119,6 +119,7 @@
         <plan-maven-plugin.version>1.2</plan-maven-plugin.version>
         <reflow-velocity-tools.version>1.1.1</reflow-velocity-tools.version>
         <sonar-maven-plugin.version>2.7.1</sonar-maven-plugin.version>
+        <spring-banner-plugin.version>0.1</spring-banner-plugin.version>
         <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
         <velocity.version>1.7</velocity.version>
         <versions-maven-plugin.version>2.2</versions-maven-plugin.version>

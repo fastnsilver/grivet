@@ -29,4 +29,25 @@
 		<spring-restdocs-mockmvc.version>1.1.2.RELEASE</spring-restdocs-mockmvc.version>
 	</properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>ch.acanda.maven</groupId>
+                <artifactId>spring-banner-plugin</artifactId>
+                <version>${spring-banner-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-spring-banner</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <info>Commit: ${git.commit.id.describe}, Version: ${application.version}, Server: ${server.address}:${server.port}, Active Profiles: ${spring.active.profiles}</info>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
