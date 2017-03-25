@@ -16,6 +16,7 @@
 package com.fns.grivet.service;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +39,7 @@ import org.springframework.util.MultiValueMap;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fns.grivet.QueryInit;
 import com.fns.grivet.query.NamedQuery;
+
 import io.restassured.path.json.JsonPath;
 
 @RunWith(SpringRunner.class)
@@ -59,7 +61,7 @@ public class NamedQueryServiceSelectTest {
 	@Before
 	public void setUp() throws IOException {
 		Resource r = resolver.getResource("classpath:TestType.json");
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		JSONObject payload = new JSONObject(json);
 		classRegistryService.register(payload);
 	}
@@ -67,7 +69,7 @@ public class NamedQueryServiceSelectTest {
 	@Test
 	public void testCreateThenGetHappyPath() throws IOException {
 		Resource r = resolver.getResource("classpath:TestSelectQuery.json");
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
 		namedQueryService.create(namedQuery);
 
@@ -89,7 +91,7 @@ public class NamedQueryServiceSelectTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateThenGetParamsNotSupplied() throws IOException {
 		Resource r = resolver.getResource("classpath:TestSelectQuery.json");
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
 		namedQueryService.create(namedQuery);
 
@@ -99,7 +101,7 @@ public class NamedQueryServiceSelectTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateThenGetIncorrectParamsSupplied() throws IOException {
 		Resource r = resolver.getResource("classpath:TestSelectQuery.json");
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
 		namedQueryService.create(namedQuery);
 

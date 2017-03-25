@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
 
@@ -66,7 +67,7 @@ public class GrivetApiClientIT {
     	String json = null;
     	Resource r = resolver.getResource("classpath:TestType.json");
     	try {
-	        json = IOUtils.toString(r.getInputStream());
+	        json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(201)).when()
 	        		.post("/api/v1/definition");
     	} catch (IOException e) {
@@ -85,7 +86,7 @@ public class GrivetApiClientIT {
     	String json = null;
         Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
         try {
-        	json = IOUtils.toString(r.getInputStream());
+        	json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
         	given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(201)).when()
         			.post("/api/v1/definitions");
         } catch (IOException e) {
@@ -124,7 +125,7 @@ public class GrivetApiClientIT {
     public void testRegisterTypeBadRequest() {
         Resource r = resolver.getResource("classpath:BadTestType.json");
         try {
-	        String json = IOUtils.toString(r.getInputStream());
+	        String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	        given().contentType("application/json").request().body(json).then().expect().statusCode(equalTo(400)).when()
 	                .post("/api/v1/definition");
         } catch (IOException e) {
@@ -156,7 +157,7 @@ public class GrivetApiClientIT {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestTypeSchema.json");
         try {
-	        String schema = IOUtils.toString(r.getInputStream());
+	        String schema = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when()
 	                .post("/api/v1/schema");
 	        given().contentType("application/json").request().then().expect().statusCode(equalTo(200)).when()
@@ -172,11 +173,11 @@ public class GrivetApiClientIT {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestTypeSchema.json");
         try {
-	        String schema = IOUtils.toString(r.getInputStream());
+	        String schema = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when()
 	                .post("/api/v1/schema");
 	        r = resolver.getResource("classpath:TestTypeData.json");
-	        String type = IOUtils.toString(r.getInputStream());
+	        String type = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	        given().contentType("application/json").request().header("Type", "TestType").body(type).then().expect().statusCode(equalTo(201)).when()
 	                .post("/api/v1/type");
 	        
@@ -230,7 +231,7 @@ public class GrivetApiClientIT {
         registerMultipleTypes();
         Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
         try {
-	        String contacts = IOUtils.toString(r.getInputStream());
+	        String contacts = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	        given().contentType("application/json").request().header("Type", "Contact").body(contacts).then().expect().statusCode(equalTo(201)).when()
 	                .post("/api/v1/types");
         } catch (IOException e) {
@@ -244,11 +245,11 @@ public class GrivetApiClientIT {
         registerMultipleTypes();
         Resource r = resolver.getResource("classpath:BadCourseData.json");
         try {
-	        String courses = IOUtils.toString(r.getInputStream());
+	        String courses = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	        
 	        // link Course schema
 	        r = resolver.getResource("classpath:CourseSchema.json");
-	        String schema = IOUtils.toString(r.getInputStream());
+	        String schema = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	        given().contentType("application/json").request().body(schema).then().expect().statusCode(equalTo(200)).when()
 	                .post("/api/v1/schema");
 	        
@@ -264,7 +265,7 @@ public class GrivetApiClientIT {
     public void testAllRegisteredNamedQueriesHappyPath() {
         Resource r = resolver.getResource("classpath:TestSelectQuery.json");
         try {
-	        String select = IOUtils.toString(r.getInputStream());
+	        String select = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(204)).when()
 	                .post("/api/v1/query");
 	        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
@@ -283,7 +284,7 @@ public class GrivetApiClientIT {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestSelectQuery3.json");
         try {
-	        String select = IOUtils.toString(r.getInputStream());
+	        String select = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	        given().contentType("application/json").request().body(select).then().expect().statusCode(equalTo(201)).when()
 	                .post("/api/v1/query");
 	        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
@@ -305,7 +306,7 @@ public class GrivetApiClientIT {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestSprocQuery.json");
         try {
-	        String sproc = IOUtils.toString(r.getInputStream());
+	        String sproc = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	        given().contentType("application/json").request().body(sproc).then().expect().statusCode(equalTo(204)).when()
 	                .post("/api/v1/query");
 	        LocalDateTime now = LocalDateTime.now();

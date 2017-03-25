@@ -28,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
@@ -209,6 +210,6 @@ public class QueryDocumentationTest {
     
     private String payload(String payload) throws IOException{
         Resource r = resolver.getResource(String.format("classpath:%s.json", payload));
-        return IOUtils.toString(r.getInputStream());
+        return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
     }
 }

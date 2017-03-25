@@ -16,6 +16,7 @@
 package com.fns.grivet.service;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -40,6 +41,7 @@ import org.springframework.util.MultiValueMap;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fns.grivet.QueryInit;
 import com.fns.grivet.query.NamedQuery;
+
 import io.restassured.path.json.JsonPath;
 
 @ActiveProfiles(value = { "hsqldb", "insecure" })
@@ -62,7 +64,7 @@ public class NamedQueryServiceSprocTest {
 	@Before
 	public void setUp() throws IOException {
 		Resource r = resolver.getResource("classpath:TestType.json");
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		JSONObject payload = new JSONObject(json);
 		classRegistryService.register(payload);
 	}
@@ -70,7 +72,7 @@ public class NamedQueryServiceSprocTest {
 	@Test
 	public void testSuccessfulNamedQueryExecution() throws IOException {
 		Resource r = resolver.getResource("classpath:TestSprocQuery.json");
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
 		namedQueryService.create(namedQuery);
 
@@ -95,7 +97,7 @@ public class NamedQueryServiceSprocTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testNamedQueryNotExecutedBecauseItDidNotContainRequiredParamForExecution() throws IOException {
 		Resource r = resolver.getResource("classpath:TestSprocQuery.json");
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
 		namedQueryService.create(namedQuery);
 
@@ -105,7 +107,7 @@ public class NamedQueryServiceSprocTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testNamedQueryNotExecutedBecauseParamSuppliedForExecutionNotCorrectlyNamed() throws IOException {
 		Resource r = resolver.getResource("classpath:TestSprocQuery.json");
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
 		namedQueryService.create(namedQuery);
 

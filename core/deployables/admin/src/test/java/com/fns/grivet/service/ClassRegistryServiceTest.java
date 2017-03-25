@@ -16,6 +16,7 @@
 package com.fns.grivet.service;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -45,7 +46,7 @@ public class ClassRegistryServiceTest {
 	@Test
 	public void testRegisterThenGetThenAll() throws IOException {
 		Resource r = resolver.getResource("classpath:TestType.json");
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		JSONObject payload = new JSONObject(json);
 
 		String type = classRegistryService.register(payload);

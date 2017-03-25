@@ -16,6 +16,7 @@
 package com.fns.grivet.service;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -54,7 +55,7 @@ public class EntityServiceTest {
 
 	protected void registerType(String type) throws IOException {
 		Resource r = resolver.getResource(String.format("classpath:%s.json", type));
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		JSONObject payload = new JSONObject(json);
 		classRegistryService.register(payload);
 	}
@@ -63,7 +64,7 @@ public class EntityServiceTest {
 	public void testCreateThenFindByType() throws IOException {
 		registerType("TestType");
 		Resource r = resolver.getResource("classpath:TestTypeData.json");
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		JSONObject payload = new JSONObject(json);
 
 		entityService.create("TestType", payload);
@@ -77,7 +78,7 @@ public class EntityServiceTest {
 	public void testCreateThenFindByTypeVariant() throws IOException {
 		registerType("TestType2");
 		Resource r = resolver.getResource("classpath:TestTypeData2.json");
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		JSONObject payload = new JSONObject(json);
 
 		entityService.create("TestType2", payload);
@@ -91,7 +92,7 @@ public class EntityServiceTest {
 	public void testSchemaLinkAndValidationSuccessThenUnlink() throws IOException {
 		registerType("TestType");
 		Resource r = resolver.getResource("classpath:TestTypeSchema.json");
-		String jsonSchema = IOUtils.toString(r.getInputStream());
+		String jsonSchema = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		JSONObject schemaObj = new JSONObject(jsonSchema);
 		com.fns.grivet.model.Class c = schemaService.linkSchema(schemaObj);
 		String type = c.getName();
@@ -100,7 +101,7 @@ public class EntityServiceTest {
 		JsonAssert.assertJsonEquals(c.getJsonSchema(), jsonSchema);
 
 		r = resolver.getResource("classpath:TestTypeData.json");
-		String json = IOUtils.toString(r.getInputStream());
+		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		JSONObject payload = new JSONObject(json);
 
 		entityService.create("TestType", payload);

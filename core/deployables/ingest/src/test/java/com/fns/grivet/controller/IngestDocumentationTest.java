@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Set;
 
@@ -131,6 +132,6 @@ public class IngestDocumentationTest {
     
     private String payload(String data) throws IOException{
         Resource r = resolver.getResource(String.format("classpath:%s.json", data));
-        return IOUtils.toString(r.getInputStream());
+        return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
     }
 }
