@@ -21,8 +21,6 @@ import java.net.URI;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -42,18 +40,19 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fns.grivet.service.ClassRegistryService;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * Provides end-points for type definition and verification
  * 
  * @author Chris Phillipson
  */
+@Slf4j
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ClassRegistryController {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
-    
     @Value("${grivet.register.batch-size:100}")
     private int batchSize;
     

@@ -17,8 +17,6 @@ package com.fns.grivet.controller;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -40,17 +38,18 @@ import com.codahale.metrics.MetricRegistry;
 import com.fns.grivet.model.Op;
 import com.fns.grivet.service.Ingester;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * Ingestion end-points
  *
  * @author Chris Phillipson
  */
+@Slf4j
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class IngestController {
-
-	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Value("${grivet.ingest.batch-size:100}")
 	private int batchSize;

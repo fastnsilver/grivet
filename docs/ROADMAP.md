@@ -39,6 +39,10 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 0.3.0
 
+- [x] Re-org modules to reduce coupling
+- [x] All-in w/ [Lombok](https://projectlombok.org/)
+- [x] Upgrade to Hibernate 5.2.x
+- [x] Leverage Spring Data's [AuditingEntityListener](http://docs.spring.io/spring-data/data-jpa/docs/1.7.0.DATAJPA-580-SNAPSHOT/reference/html/auditing.html) for entity auditing
 - [x] Endpoints now start with `/api/v1`; and another re-definition of resource names
 - [x] Switch UAA provider from [Stormpath](https://stormpath.com/blog/stormpaths-new-path) to [Auth0](https://manage.auth0.com/#/)
 - [x] Switch to [Codeship](https://app.codeship.com/projects/201927/) for builds and scan for vulnerabilities with [SourceClear](https://app.sourceclear.com/teams/OeetPR6/issues/vulnerabilities)
@@ -48,7 +52,6 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] [Upgrade](https://github.com/fastnsilver/grivet/issues/8) Docker Compose configuration
 - [ ] Password-protect service administration and discovery
 - [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
-- [x] Re-org modules to reduce coupling
 - [x] Switch documentation generation from Springfox Swagger to Spring RestDocs
 - [ ] Host demo site on AWS (bring up Kubernetes or Mesos Cluster w/ Terraform)
 - [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application

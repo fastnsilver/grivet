@@ -30,8 +30,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
@@ -50,15 +48,16 @@ import com.fns.grivet.query.DynamicQuery;
 import com.fns.grivet.query.QueryBuilder;
 import com.google.common.collect.ImmutableMap;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class JdbcEntityRepository implements EntityRepository {
-
-	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private final JdbcTemplate jdbcTemplate;
 
 	@Autowired(required=false)
-	private SecurityFacade securityFacade;
+	private AuditorProvider auditorProvider;
 
 	@Autowired
 	public JdbcEntityRepository(JdbcTemplate jdbcTemplate) {
@@ -78,8 +77,7 @@ public class JdbcEntityRepository implements EntityRepository {
 			LocalDateTime createdTime) {
 		Assert.isTrue(rawValue != null, String.format("Attempt to persist value failed! %s's value must not be null!", attribute.getName()));
 		Object value = ValueHelper.toValue(attributeType, rawValue);
-		User user = getCurrentUser();
-		String createdBy = user == null ? null : user.getUsername();
+		String createdBy = getCurrentUsername();
 		String[] columns = { "eid", "aid", "val", "created_time" };
 		Map<String, Object> keyValuePairs = ImmutableMap.of("eid", eid, "aid", attribute.getId(), "val", value,
 				"created_time", Timestamp.valueOf(createdTime));
@@ -178,7 +176,7 @@ public class JdbcEntityRepository implements EntityRepository {
 		EntityAttributeValue eav = null;
 		if (rowSet != null) {
 			while(rowSet.next()) {
-				eav = new EntityAttributeValue((Long) rowSet.getObject("eid"), (Integer) rowSet.getObject("attribute_id"), (String) rowSet.getObject("attribute_name"), rowSet.getObject("attribute_value"), ((Timestamp) rowSet.getObject("created_time")).toLocalDateTime(), getCurrentUser());
+				eav = EntityAttributeValue.of((Long) rowSet.getObject("eid"), (Integer) rowSet.getObject("attribute_id"), (String) rowSet.getObject("attribute_name"), rowSet.getObject("attribute_value"), ((Timestamp) rowSet.getObject("created_time")).toLocalDateTime(), getCurrentUsername());
 				result.add(eav);
 			}
 		}
@@ -186,8 +184,13 @@ public class JdbcEntityRepository implements EntityRepository {
 		return result;
 	}
 
-	private User getCurrentUser() {
-		return securityFacade == null ? null : securityFacade.getCurrentUser();
+	private String getCurrentUsername() {
+	    String username = null;
+	    User principal = auditorProvider == null ? null : auditorProvider.getCurrentUser();
+	    if (principal != null) {
+	        username = principal.getUsername();
+	    }
+	    return username;
 	}
 
 	private static class EAVComparator implements Comparator<EntityAttributeValue> {

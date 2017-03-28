@@ -2,6 +2,7 @@ ${preamble}
 
 CREATE TABLE class (
     id INT ${autoInc},
+    version INT,
     name VARCHAR(255) ${varcharQualifier} NOT NULL UNIQUE,
     description VARCHAR(1000) ${varcharQualifier},
     validatable BOOLEAN,
@@ -13,6 +14,7 @@ CREATE TABLE class (
 
 CREATE TABLE attribute (
     id INT ${autoInc},
+    version INT,
     name VARCHAR(255) ${varcharQualifier} NOT NULL UNIQUE,
     description VARCHAR(1000) ${varcharQualifier},
     created_time DATETIME(3) NOT NULL,
@@ -23,6 +25,7 @@ CREATE TABLE class_attribute (
 	cid INT NOT NULL,
 	aid INT NOT NULL,
 	tid INT NOT NULL,
+	version INT,
 	created_time DATETIME(3) NOT NULL,
 	PRIMARY KEY (cid, aid, tid)
 ) ${createTableSuffix};
@@ -132,6 +135,7 @@ CREATE VIEW all_entity_values AS
 
 CREATE TABLE named_query (
 	id INT ${autoInc},
+	version INT,
 	name VARCHAR(255) ${varcharQualifier} NOT NULL UNIQUE,
 	type VARCHAR(6) NOT NULL,
 	query VARCHAR(2000) NOT NULL,

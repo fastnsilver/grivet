@@ -76,11 +76,14 @@
         <auth0-api.version>0.3.3</auth0-api.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <commons-io.version>2.5</commons-io.version>
+        <dashboard.version>1.0.1</dashboard.version>
         <disruptor.version>3.3.6</disruptor.version>
         <flyway.version>4.1.2</flyway.version>
         <guava.version>19.0</guava.version>
+        <hibernate.version>5.2.9.Final</hibernate.version>
         <hikaricp.version>2.6.1</hikaricp.version>
         <jackson.version>2.9.0.pr1</jackson.version>
+        <jadira.version>6.0.1.GA</jadira.version>
         <javax.persistence.version>1.0.0.Final</javax.persistence.version>
         <javax.validation-api.version>1.1.0.Final</javax.validation-api.version>
         <json-unit.version>1.19.0</json-unit.version>
@@ -89,11 +92,13 @@
         <jsr305.version>3.0.1</jsr305.version>
         <log4j2.version>2.8.1</log4j2.version>
         <logstash-logback-encoder.version>4.9</logstash-logback-encoder.version>
+        <lombok.version>1.16.16</lombok.version>
         <mysql.version>6.0.6</mysql.version>
         <readytalk-metrics.version>4.2.0</readytalk-metrics.version>
         <rest-assured.version>3.0.2</rest-assured.version>
         <scala.version>2.10.6</scala.version>
         <slf4j.version>1.7.24</slf4j.version>
+        <spring-boot-admin.version>1.4.6</spring-boot-admin.version>
         <springfox-swagger2.version>2.6.1</springfox-swagger2.version>
 
         <!-- Maven -->
@@ -104,6 +109,7 @@
         <doxia-module-markdown.version>1.6</doxia-module-markdown.version>
         <findbugs-maven-plugin.version>3.0.3</findbugs-maven-plugin.version>
         <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
+        <lombok-maven-plugin.version>1.16.14.0</lombok-maven-plugin.version>
         <maven-changes-plugin.version>2.11</maven-changes-plugin.version>
         <maven-changelog-plugin.version>2.3</maven-changelog-plugin.version>
         <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
@@ -362,6 +368,48 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>delombok</id>
+            <properties>
+                <project.build.sourceDirectory>target/generated-sources</project.build.sourceDirectory>
+                <project.build.testSourceDirectory>target/generated-test-sources</project.build.testSourceDirectory>
+            </properties>
+            <build>
+				<plugins>
+					<plugin>
+						<groupId>org.projectlombok</groupId>
+						<artifactId>lombok-maven-plugin</artifactId>
+						<version>${lombok-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>delombok</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>delombok</goal>
+								</goals>
+								<configuration>
+								    <encoding>${project.build.sourceEncoding}</encoding>
+									<addOutputDirectory>false</addOutputDirectory>
+									<sourceDirectory>src/main/java</sourceDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>test-delombok</id>
+								<phase>generate-test-sources</phase>
+								<goals>
+									<goal>testDelombok</goal>
+								</goals>
+								<configuration>
+								    <encoding>${project.build.sourceEncoding}</encoding>
+									<addOutputDirectory>false</addOutputDirectory>
+									<sourceDirectory>src/test/java</sourceDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+        </profile>
         <profile>
             <id>documentation</id>
             <repositories>

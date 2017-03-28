@@ -16,15 +16,13 @@
 package com.fns.grivet.service;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class IngestStub implements Ingester {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Override
     public void ingest(Message<JSONObject> message) {

@@ -21,6 +21,7 @@
 * POST `/api/v1/schema`
 
   * links a JSON Schema with a pre-registered type; subsequent `/api/v1/type` requests will be validated against schema
+  * Validation failures will result in an HTTP/1.1 422 Unprocessable Entity
 
   * Sample POST request [TestTypeSchema.json](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/TestTypeSchema.json)
 

@@ -17,8 +17,6 @@ package com.fns.grivet.controller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,18 +37,19 @@ import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.query.QueryType;
 import com.fns.grivet.service.NamedQueryService;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * Provides end-points for registration, verification and execution of named queries
  * 
  * @author Chris Phillipson
  */
+@Slf4j
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class NamedQueryController {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
-    
     private final NamedQueryService namedQueryService;
     
     @Autowired

@@ -1,8 +1,6 @@
 package com.fns.grivet.service;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.integration.MessageRejectedException;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -13,9 +11,10 @@ import org.springframework.util.Assert;
 import com.codahale.metrics.MetricRegistry;
 import com.fns.grivet.model.Op;
 
-public class PersistenceService {
+import lombok.extern.slf4j.Slf4j;
 
-	private final Logger log = LoggerFactory.getLogger(getClass());
+@Slf4j
+public class PersistenceService {
 
 	private final EntityService entityService;
 	private final MetricRegistry metricRegistry;

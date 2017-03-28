@@ -18,11 +18,6 @@
     <description>Provides an overview of all running Spring Boot Micro Services in Grivet environment.</description>
     <inceptionYear>2015</inceptionYear>
 
-    <properties>
-        <!-- Third-party library versions -->
-        <spring-boot-admin.version>1.4.1</spring-boot-admin.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>de.codecentric</groupId>

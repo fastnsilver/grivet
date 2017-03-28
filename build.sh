@@ -16,4 +16,4 @@ done
 
 # Build the project and docker images
 echo "Building Grivet modules..."
-mvn clean install
+mvn clean install -Pdelombok

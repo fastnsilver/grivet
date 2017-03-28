@@ -23,8 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -51,17 +49,18 @@ import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fns.grivet.service.EntityService;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * Provides end-points for type storage and retrieval
  *
  * @author Chris Phillipson
  */
+@Slf4j
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class EntityController {
-
-	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Value("${grivet.store.batch-size:100}")
 	private int batchSize;
