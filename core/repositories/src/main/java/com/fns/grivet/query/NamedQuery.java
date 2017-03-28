@@ -16,22 +16,7 @@
 
 package com.fns.grivet.query;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fns.grivet.model.AttributeType;
-import com.fns.grivet.model.Audited;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.MultiValueMap;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,8 +26,10 @@ import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -50,8 +37,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fns.grivet.model.AttributeType;
+import com.fns.grivet.model.Auditable;
+
+import lombok.Builder;
+import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
@@ -60,10 +70,44 @@ import javax.validation.constraints.Size;
     "query",
     "params"
 })
+@Data
+@Builder
 @Entity
-public class NamedQuery extends Audited {
+@EntityListeners(AuditingEntityListener.class)
+public class NamedQuery implements Auditable<String> {
 
+    /** 
+     * Version number used during deserialization to verify that the sender and receiver 
+     * of this serialized object have loaded classes for this object that 
+     * are compatible with respect to serialization. 
+     */
     private static final long serialVersionUID = 1L;
+    
+    @Column
+    @CreatedBy
+    private String createdBy;
+    
+    @Column
+    @LastModifiedBy
+    private String updatedBy;
+    
+    /** The time this entity was created. */
+    @Column(nullable=false, updatable = false)
+    @Convert(disableConversion = true)
+    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
+    @CreatedDate
+    private LocalDateTime createdTime;
+    
+    /** The time this entity was last modified. */
+    @Column
+    @Convert(disableConversion = true)
+    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
+    @LastModifiedDate
+    private LocalDateTime updatedTime;
+    
+    @Version
+    @Column
+    private long version;
     
     @JsonIgnore
     @Id
@@ -75,69 +119,60 @@ public class NamedQuery extends Audited {
     @Column(nullable=false, unique=true)
     private String name;
     
-    @JsonProperty("type")
-    @Enumerated(EnumType.STRING)
-    private QueryType type;
     
-    @JsonProperty("query")
     @Size(max=2000)
     @Column(length=2000, nullable=false)
     private String query;
     
-    @JsonProperty("params")
+    @JsonProperty("type")
+    @Enumerated(EnumType.STRING)
+    private QueryType type;
+    
+    
     @Valid
     @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(name="named_query_parameter", joinColumns=@JoinColumn(name="id"))
     @MapKeyColumn(name="parameter_name")
     @Column(name="parameter_type", nullable=false)
     private Map<String, String> params;
-    
-    protected NamedQuery() {
-        super();
+        
+    NamedQuery() {
+        setParams(null);
     }
     
-    @JsonCreator
-    public NamedQuery(@JsonProperty("name") String name, @JsonProperty("type") QueryType type, @JsonProperty("query") String query, @JsonProperty("params") Map<String, String> params) {
+    NamedQuery(String createdBy, String updatedBy, LocalDateTime createdTime, LocalDateTime updatedTime,
+            long version, Integer id, String name, String query, QueryType type, Map<String, String> params) {
+        this.createdBy = createdBy;
+        this.updatedBy = updatedBy;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
+        this.version = version;
+        this.id = id;
         this.name = name;
-        this.query = query;
-        setType(type);
-        this.params = params;
+        setQuery(query);
+        this.type = type;
+        setParams(params);
     }
     
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-    
-    private void setType(QueryType type) {
-       if (type == null) {
+    @JsonProperty("query")
+    public void setQuery(String query) {
+       this.query = query;
+       if (StringUtils.hasText(query)) {
            if (query.toUpperCase().startsWith("SELECT")) {
                this.type = QueryType.SELECT;
            }
            if (query.toUpperCase().startsWith("CALL")) {
                this.type = QueryType.SPROC;
            }
-       } else {
-           this.type = type;
-       }
+       } 
     }
     
-    public QueryType getType() {
-        return type;
-    }
-
-    public String getQuery() {
-        return query;
-    }
-
-    public Map<String, String> getParams() {
+    @JsonProperty("params")
+    public void setParams(Map<String, String> params) {
+        this.params = params;
         if (params == null) {
-            params = new HashMap<String, String>();
+            this.params = new HashMap<>();
         }
-        return params;
     }
     
     // only when parameter values are not null, empty, or blank 
@@ -185,19 +220,5 @@ public class NamedQuery extends Audited {
         }
         return sqlParams;
     }
-    
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
 
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(this, object);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
 }

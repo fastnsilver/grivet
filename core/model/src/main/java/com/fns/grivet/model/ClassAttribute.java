@@ -15,12 +15,28 @@
  */
 package com.fns.grivet.model;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.time.LocalDateTime;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.Version;
+
+import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * A {@code ClassAttribute} expresses a three-way relationship between a
@@ -29,16 +45,47 @@ import javax.persistence.IdClass;
  * 
  * @author Chris Phillipson
  */
+@Data
+@Builder
+@NoArgsConstructor(access=AccessLevel.PACKAGE)
+@AllArgsConstructor(access=AccessLevel.PACKAGE)
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @IdClass(ClassAttributePK.class)
-public class ClassAttribute extends Audited {
+public class ClassAttribute implements Auditable<String> {
 
-    /**
-     * Version number used during deserialization to verify that the sender and
-     * receiver of this serialized object have loaded classes for this object
-     * that are compatible with respect to serialization.
+    /** 
+     * Version number used during deserialization to verify that the sender and receiver 
+     * of this serialized object have loaded classes for this object that 
+     * are compatible with respect to serialization. 
      */
     private static final long serialVersionUID = 1L;
+    
+    @Column
+    @CreatedBy
+    private String createdBy;
+    
+    @Column
+    @LastModifiedBy
+    private String updatedBy;
+    
+    /** The time this entity was created. */
+    @Column(nullable=false, updatable = false)
+    @Convert(disableConversion = true)
+    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
+    @CreatedDate
+    private LocalDateTime createdTime;
+    
+    /** The time this entity was last modified. */
+    @Column
+    @Convert(disableConversion = true)
+    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
+    @LastModifiedDate
+    private LocalDateTime updatedTime;
+    
+    @Version
+    @Column
+    private long version;
 
     /** A {@code Class} identifier */
     @Id
@@ -51,38 +98,5 @@ public class ClassAttribute extends Audited {
     /** A {@code AttributeType} identifier */
     @Id
     private Integer tid;
-
-    protected ClassAttribute() {
-        super();
-    }
-
-    public ClassAttribute(Integer cid, Integer aid, Integer tid, User user) {
-        super(user);
-        this.cid = cid;
-        this.aid = aid;
-        this.tid = tid;
-    }
-
-    public Integer getCid() {
-        return cid;
-    }
-
-    public Integer getAid() {
-        return aid;
-    }
-
-    public Integer getTid() {
-        return tid;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(this, object);
-    }
     
 }

@@ -24,9 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.fns.grivet.model.User;
 import com.fns.grivet.repo.ClassRepository;
-import com.fns.grivet.repo.SecurityFacade;
 
 @Service
 public class SchemaService {
@@ -37,9 +35,6 @@ public class SchemaService {
 	private static final String PROPERTIES = "properties";
 
 	private final ClassRepository classRepository;
-
-	@Autowired(required=false)
-	private SecurityFacade securityFacade;
 
 	@Autowired
 	public SchemaService(ClassRepository classRepository) {
@@ -80,9 +75,6 @@ public class SchemaService {
 		Assert.notNull(c, String.format("Type [%s] must be registered before unlinking a JSON Schema!", type));
 		c.setValidatable(false);
 		c.setJsonSchema(null);
-		c.setUpdatedTime(LocalDateTime.now());
-		User user = securityFacade != null ? securityFacade.getCurrentUser(): null;
-		c.setUpdater(user);
 		classRepository.save(c);
 		return c;
 	}

@@ -31,12 +31,10 @@ import org.springframework.util.Assert;
 import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.ClassAttribute;
-import com.fns.grivet.model.User;
 import com.fns.grivet.repo.AttributeRepository;
 import com.fns.grivet.repo.AttributeTypeRepository;
 import com.fns.grivet.repo.ClassAttributeRepository;
 import com.fns.grivet.repo.ClassRepository;
-import com.fns.grivet.repo.SecurityFacade;
 
 @Service
 public class ClassRegistryService {
@@ -49,9 +47,6 @@ public class ClassRegistryService {
 	private final AttributeTypeRepository attributeTypeRepository;
 	private final ClassRepository classRepository;
 	private final ClassAttributeRepository classAttributeRepository;
-
-	@Autowired(required=false)
-	private SecurityFacade securityFacade;
 
 	@Autowired
 	public ClassRegistryService(AttributeRepository attributeRepository,
@@ -77,10 +72,9 @@ public class ClassRegistryService {
 		String type = payload.getString(TYPE);
 		String description = payload.optString(DESCRIPTION);
 		com.fns.grivet.model.Class persistentClass = classRepository.findByName(type);
-		User user = securityFacade != null ? securityFacade.getCurrentUser(): null;
 		if (persistentClass == null) {
 			LocalDateTime createdTime = LocalDateTime.now();
-			com.fns.grivet.model.Class detachedClass = new com.fns.grivet.model.Class(type, description, user);
+			com.fns.grivet.model.Class detachedClass = com.fns.grivet.model.Class.builder().name(type).description(description).build();
 			detachedClass.setCreatedTime(createdTime);
 			persistentClass = classRepository.save(detachedClass);
 			JSONObject attributes = payload.getJSONObject(ATTRIBUTES);
@@ -93,7 +87,7 @@ public class ClassRegistryService {
 			for (String attributeName: attributeNames) {
 				persistentAttribute = attributeRepository.findByName(attributeName);
 				if (persistentAttribute == null) {
-					Attribute detachedAttribute = new Attribute(attributeName, user);
+					Attribute detachedAttribute = Attribute.builder().name(attributeName).build();
 					detachedAttribute.setCreatedTime(createdTime);
 					persistentAttribute = attributeRepository.save(detachedAttribute);
 				}
@@ -101,8 +95,11 @@ public class ClassRegistryService {
 				Assert.notNull(at, String.format("[%s].[%s] must declare an attribute type in registration request!", type, attributeName));
 				attributeType = attributeTypeRepository.findByType(at);
 				Assert.notNull(attributeType, String.format("Attribute type [%s] is not supported!", at));
-				ClassAttribute detachedClassAttribute = new ClassAttribute(persistentClass.getId(),
-						persistentAttribute.getId(), attributeType.getId(), user);
+				ClassAttribute detachedClassAttribute = 
+				        ClassAttribute.builder()
+				            .cid(persistentClass.getId())
+				            .aid(persistentAttribute.getId())
+				            .tid(attributeType.getId()).build();
 				detachedClassAttribute.setCreatedTime(createdTime);
 				classAttributeRepository.save(detachedClassAttribute);
 			}

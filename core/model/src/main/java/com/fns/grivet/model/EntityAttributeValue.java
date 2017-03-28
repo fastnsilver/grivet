@@ -15,13 +15,14 @@
  */
 package com.fns.grivet.model;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.annotation.concurrent.Immutable;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 
 /**
@@ -30,6 +31,9 @@ import javax.annotation.concurrent.Immutable;
  * @author Chris Phillipson
  */
 @Immutable
+@RequiredArgsConstructor(staticName = "of")
+@Getter
+@EqualsAndHashCode
 public class EntityAttributeValue implements Serializable {
 
     /** 
@@ -50,52 +54,6 @@ public class EntityAttributeValue implements Serializable {
     /** The time this {@code EntityAttributeValue} was created */
     private final LocalDateTime createdTime;
     
-    private String createdBy;
-    
-    public EntityAttributeValue(Long id, Integer attributeId, String attributeName, Object attributeValue, 
-            LocalDateTime createdTime, User user) {
-        this.id = id;
-        this.attributeId = attributeId;
-        this.attributeName = attributeName;
-        this.attributeValue = attributeValue;
-        this.createdTime = createdTime;
-        if (user != null) {
-            this.createdBy = user.getUsername();
-        }
-    }
-
-    public Long getId() {
-        return id;
-    }
-    
-    public Integer getAttributeId() {
-        return attributeId;
-    }
-
-    public String getAttributeName() {
-        return attributeName;
-    }
-
-    public Object getAttributeValue() {
-        return attributeValue;
-    }
-
-    public LocalDateTime getCreatedTime() {
-        return createdTime;
-    }
-    
-    public String getCreatedBy() {
-        return createdBy;
-    }
-    
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(this, object);
-    }
+    private final String createdBy;
 
 }

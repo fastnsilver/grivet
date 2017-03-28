@@ -23,8 +23,6 @@ import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.CallableStatementCallback;
@@ -43,23 +41,19 @@ import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fns.grivet.model.User;
 import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.repo.NamedQueryRepository;
-import com.fns.grivet.repo.SecurityFacade;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class NamedQueryService {
-    
-    private final Logger log = LoggerFactory.getLogger(getClass());
     
     private final NamedQueryRepository namedQueryRepository;
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final ObjectMapper mapper;
-    
-    @Autowired(required=false)
-    private SecurityFacade securityFacade;
     
     @Autowired
     public NamedQueryService(NamedQueryRepository namedQueryRepository, JdbcTemplate jdbcTemplate, ObjectMapper mapper) {
@@ -71,8 +65,6 @@ public class NamedQueryService {
     
     @Transactional
     public void create(NamedQuery namedQuery) {
-        User user = securityFacade != null ? securityFacade.getCurrentUser(): null;
-        namedQuery.setCreator(user);
         namedQueryRepository.save(namedQuery);
     }
     

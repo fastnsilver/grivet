@@ -17,11 +17,6 @@
     <description>Provides visual monitoring for all running Spring Boot Micro Services in Grivet environment.</description>
     <inceptionYear>2016</inceptionYear>
 
-    <properties>
-        <!-- Third-party library versions -->
-        <dashboard.version>1.0.1</dashboard.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>be.ordina</groupId>

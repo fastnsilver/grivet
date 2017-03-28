@@ -18,8 +18,6 @@ package com.fns.grivet.controller;
 import java.io.IOException;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,18 +31,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fns.grivet.service.SchemaService;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * Provides end-points for linking and unlinking JSON Schema to pre-registered types
  * 
  * @author Chris Phillipson
  */
+@Slf4j
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class SchemaController {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
-        
     private final SchemaService schemaService;
     
     @Autowired
