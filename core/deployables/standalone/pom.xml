@@ -127,19 +127,23 @@
                 <version>${asciidoctor-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>generate-docs</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <backend>html</backend>
-                            <doctype>book</doctype>
-                            <attributes>
-                                <snippets>${snippetsDirectory}</snippets>
-                            </attributes>
-                        </configuration>
-                    </execution>
+                         <id>generate-docs</id>
+                         <phase>prepare-package</phase>
+                         <goals>
+                             <goal>process-asciidoc</goal>
+                         </goals>
+                         <configuration>
+                             <backend>html</backend>
+                             <doctype>book</doctype>
+                             <attributes>
+                                 <toclevels>2</toclevels>
+                                 <toc>left</toc>
+                                 <generated>${project.build.directory}/docs/asciidoc/generated</generated>
+                                 <snippets>${snippetsDirectory}</snippets>
+                             </attributes>
+                             <outputDirectory>${project.build.directory}/site</outputDirectory>
+                         </configuration>
+                     </execution>
                 </executions>
             </plugin>
             <plugin>

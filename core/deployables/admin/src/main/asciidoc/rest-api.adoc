@@ -120,16 +120,16 @@ include::{snippets}/get-type-definition/curl-request.adoc[]
 include::{snippets}/get-type-definition/http-response.adoc[]
 
 
-[[resource-get-all-type-definitions]]
+[[resource-all-type-definitions]]
 === Fetch all type definitions
 
 ==== Example request
 
-include::{snippets}/get-all-type-definitions/curl-request.adoc[]
+include::{snippets}/all-type-definitions/curl-request.adoc[]
 
 ==== Example response
 
-include::{snippets}/get-all-type-definitions/http-response.adoc[]
+include::{snippets}/all-type-definitions/http-response.adoc[]
 
 
 [[resources-schema]]

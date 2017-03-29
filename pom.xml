@@ -114,7 +114,7 @@
         <maven-changelog-plugin.version>2.3</maven-changelog-plugin.version>
         <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
         <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
-        <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
         <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
         <maven-plugin-plugin.version>3.4</maven-plugin-plugin.version>
         <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
@@ -370,10 +370,6 @@
     <profiles>
         <profile>
             <id>delombok</id>
-            <properties>
-                <project.build.sourceDirectory>target/generated-sources</project.build.sourceDirectory>
-                <project.build.testSourceDirectory>target/generated-test-sources</project.build.testSourceDirectory>
-            </properties>
             <build>
 				<plugins>
 					<plugin>
@@ -551,6 +547,7 @@
                                 -link http://jsr311.java.net/nonav/releases/1.1
                                 -Xdoclint:none
                             </additionalparam>
+                            <sourcepath>target/generated-sources/delombok</sourcepath>
                         </configuration>
                         <reportSets>
                             <reportSet>
