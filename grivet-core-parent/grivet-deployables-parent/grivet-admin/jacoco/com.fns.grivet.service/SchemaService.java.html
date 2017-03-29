@@ -24,9 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.fns.grivet.model.User;
 import com.fns.grivet.repo.ClassRepository;
-import com.fns.grivet.repo.SecurityFacade;
 
 @Service
 public class SchemaService {
@@ -38,53 +36,47 @@ public class SchemaService {
 
 	private final ClassRepository classRepository;
 
-	@Autowired(required=false)
-	private SecurityFacade securityFacade;
-
 	@Autowired
-<span class="fc" id="L45">	public SchemaService(ClassRepository classRepository) {</span>
-<span class="fc" id="L46">		this.classRepository = classRepository;</span>
-<span class="fc" id="L47">	}</span>
+<span class="fc" id="L40">	public SchemaService(ClassRepository classRepository) {</span>
+<span class="fc" id="L41">		this.classRepository = classRepository;</span>
+<span class="fc" id="L42">	}</span>
 
 	public boolean isJsonSchema(JSONObject payload) {
-<span class="fc" id="L50">		boolean result = false;</span>
-<span class="fc" id="L51">		String schema = payload.optString(SCHEMA);</span>
-<span class="fc" id="L52">		String type = payload.optString(TYPE);</span>
-<span class="fc" id="L53">		String id = payload.optString(ID);</span>
-<span class="fc" id="L54">		String props = payload.optString(PROPERTIES);</span>
-<span class="pc bpc" id="L55" title="1 of 2 branches missed.">		if (&quot;http://json-schema.org/draft-04/schema#&quot;.equals(schema)</span>
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">				&amp;&amp; &quot;object&quot;.equals(type)</span>
-<span class="pc bpc" id="L57" title="1 of 2 branches missed.">				&amp;&amp; StringUtils.isNotBlank(id)</span>
-<span class="pc bpc" id="L58" title="1 of 2 branches missed.">				&amp;&amp; StringUtils.isNotBlank(props)) {</span>
-<span class="fc" id="L59">			result = true;</span>
+<span class="fc" id="L45">		boolean result = false;</span>
+<span class="fc" id="L46">		String schema = payload.optString(SCHEMA);</span>
+<span class="fc" id="L47">		String type = payload.optString(TYPE);</span>
+<span class="fc" id="L48">		String id = payload.optString(ID);</span>
+<span class="fc" id="L49">		String props = payload.optString(PROPERTIES);</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">		if (&quot;http://json-schema.org/draft-04/schema#&quot;.equals(schema)</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">				&amp;&amp; &quot;object&quot;.equals(type)</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">				&amp;&amp; StringUtils.isNotBlank(id)</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">				&amp;&amp; StringUtils.isNotBlank(props)) {</span>
+<span class="fc" id="L54">			result = true;</span>
 		}
-<span class="fc" id="L61">		return result;</span>
+<span class="fc" id="L56">		return result;</span>
 	}
 
 	@Transactional
 	public com.fns.grivet.model.Class linkSchema(JSONObject payload) {
-<span class="fc" id="L66">		String type = payload.getString(ID);</span>
-<span class="fc" id="L67">		Assert.notNull(type, &quot;JSON Schema must declare an id!&quot;);</span>
-<span class="fc" id="L68">		com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
-<span class="fc" id="L69">		Assert.notNull(c, String.format(&quot;Type [%s] must be registered before linking a JSON Schema!&quot;, type));</span>
-<span class="fc" id="L70">		c.setValidatable(true);</span>
-<span class="fc" id="L71">		c.setJsonSchema(payload.toString());</span>
-<span class="fc" id="L72">		c.setUpdatedTime(LocalDateTime.now());</span>
-<span class="fc" id="L73">		classRepository.save(c);</span>
-<span class="fc" id="L74">		return c;</span>
+<span class="fc" id="L61">		String type = payload.getString(ID);</span>
+<span class="fc" id="L62">		Assert.notNull(type, &quot;JSON Schema must declare an id!&quot;);</span>
+<span class="fc" id="L63">		com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
+<span class="fc" id="L64">		Assert.notNull(c, String.format(&quot;Type [%s] must be registered before linking a JSON Schema!&quot;, type));</span>
+<span class="fc" id="L65">		c.setValidatable(true);</span>
+<span class="fc" id="L66">		c.setJsonSchema(payload.toString());</span>
+<span class="fc" id="L67">		c.setUpdatedTime(LocalDateTime.now());</span>
+<span class="fc" id="L68">		classRepository.save(c);</span>
+<span class="fc" id="L69">		return c;</span>
 	}
 
 	@Transactional
 	public com.fns.grivet.model.Class unlinkSchema(String type) {
-<span class="fc" id="L79">		com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
-<span class="fc" id="L80">		Assert.notNull(c, String.format(&quot;Type [%s] must be registered before unlinking a JSON Schema!&quot;, type));</span>
-<span class="fc" id="L81">		c.setValidatable(false);</span>
-<span class="fc" id="L82">		c.setJsonSchema(null);</span>
-<span class="fc" id="L83">		c.setUpdatedTime(LocalDateTime.now());</span>
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">		User user = securityFacade != null ? securityFacade.getCurrentUser(): null;</span>
-<span class="fc" id="L85">		c.setUpdater(user);</span>
-<span class="fc" id="L86">		classRepository.save(c);</span>
-<span class="fc" id="L87">		return c;</span>
+<span class="fc" id="L74">		com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
+<span class="fc" id="L75">		Assert.notNull(c, String.format(&quot;Type [%s] must be registered before unlinking a JSON Schema!&quot;, type));</span>
+<span class="fc" id="L76">		c.setValidatable(false);</span>
+<span class="fc" id="L77">		c.setJsonSchema(null);</span>
+<span class="fc" id="L78">		classRepository.save(c);</span>
+<span class="fc" id="L79">		return c;</span>
 	}
 
 }

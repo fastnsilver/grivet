@@ -11,12 +11,12 @@ import javax.persistence.Converter;
 
     @Override
     public Timestamp convertToDatabaseColumn(LocalDateTime attribute) {
-<span class="fc" id="L14">        return Timestamp.valueOf(attribute);</span>
+<span class="nc" id="L14">        return Timestamp.valueOf(attribute);</span>
     }
 
     @Override
     public LocalDateTime convertToEntityAttribute(Timestamp dbData) {
-<span class="fc" id="L19">        return dbData.toLocalDateTime();</span>
+<span class="nc" id="L19">        return dbData.toLocalDateTime();</span>
     }
 
 }

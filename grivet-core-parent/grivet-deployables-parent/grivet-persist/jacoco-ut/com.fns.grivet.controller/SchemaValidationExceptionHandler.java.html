@@ -2,8 +2,6 @@
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,17 +9,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.fns.grivet.model.ErrorResponse;
 import com.fns.grivet.service.SchemaValidationException;
 
-@ControllerAdvice
-<span class="fc" id="L15">public class SchemaValidationExceptionHandler {</span>
+import lombok.extern.slf4j.Slf4j;
 
-<span class="fc" id="L17">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
+<span class="fc" id="L14">@Slf4j</span>
+@ControllerAdvice
+<span class="fc" id="L16">public class SchemaValidationExceptionHandler {</span>
 
     @ExceptionHandler({ SchemaValidationException.class })
     protected ResponseEntity&lt;ErrorResponse&gt; invalid(SchemaValidationException e, HttpServletRequest hsr) {
-<span class="nc" id="L21">        ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),</span>
-<span class="nc" id="L22">                e.getProcessingFailures());</span>
-<span class="nc" id="L23">        log.error(er.toString());</span>
-<span class="nc" id="L24">        return ResponseEntity.badRequest().body(er);</span>
+<span class="nc" id="L20">        ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),</span>
+<span class="nc" id="L21">                e.getProcessingFailures());</span>
+<span class="nc" id="L22">        log.error(er.toString());</span>
+<span class="nc" id="L23">        return ResponseEntity.unprocessableEntity().body(er);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

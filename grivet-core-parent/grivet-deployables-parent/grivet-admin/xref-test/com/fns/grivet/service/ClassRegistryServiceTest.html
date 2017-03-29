@@ -24,54 +24,55 @@
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">package</strong> com.fns.grivet.service;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.io.IOUtils;
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> org.json.JSONArray;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> org.json.JSONObject;
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> org.junit.After;
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> org.junit.Assert;
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> org.junit.runner.RunWith;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.annotation.Autowired;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> org.springframework.boot.test.context.SpringBootTest;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> org.springframework.core.io.Resource;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> org.springframework.core.io.ResourceLoader;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> org.springframework.test.context.junit4.SpringRunner;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> com.fns.grivet.AdminInit;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  @RunWith(SpringRunner.<strong class="jxr_keyword">class</strong>)
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  @SpringBootTest(classes = AdminInit.<strong class="jxr_keyword">class</strong>)
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/fns/grivet/service/ClassRegistryServiceTest.html">ClassRegistryServiceTest</a> {
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  	@Autowired
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  	<strong class="jxr_keyword">private</strong> ResourceLoader resolver;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  	@Autowired
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  	<strong class="jxr_keyword">private</strong> ClassRegistryService classRegistryService;
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  	@Test
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testRegisterThenGetThenAll() <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>  		Resource r = resolver.getResource(<span class="jxr_string">"classpath:TestType.json"</span>);
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  		String json = IOUtils.toString(r.getInputStream());
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>  		JSONObject payload = <strong class="jxr_keyword">new</strong> JSONObject(json);
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>  
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  		String type = classRegistryService.register(payload);
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  		Assert.assertEquals(<span class="jxr_string">"TestType"</span>, type);
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>  
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>  		JSONObject jo = classRegistryService.get(<span class="jxr_string">"TestType"</span>);
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>  		Assert.assertEquals(payload.toString(), jo.toString());
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>  
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>  		JSONArray ja = classRegistryService.all();
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>  		Assert.assertEquals(payload.toString(), ja.get(0).toString());
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>  	}
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>  
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>  	@After
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> tearDown() {
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>  		classRegistryService.deregister(<span class="jxr_string">"TestType"</span>);
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>  	}
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>  
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>  }
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.Charset;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.io.IOUtils;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> org.json.JSONArray;
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> org.json.JSONObject;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> org.junit.After;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> org.junit.Assert;
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> org.junit.runner.RunWith;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.annotation.Autowired;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> org.springframework.boot.test.context.SpringBootTest;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> org.springframework.core.io.Resource;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> org.springframework.core.io.ResourceLoader;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> org.springframework.test.context.junit4.SpringRunner;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> com.fns.grivet.AdminInit;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  @RunWith(SpringRunner.<strong class="jxr_keyword">class</strong>)
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  @SpringBootTest(classes = AdminInit.<strong class="jxr_keyword">class</strong>)
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/fns/grivet/service/ClassRegistryServiceTest.html">ClassRegistryServiceTest</a> {
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  	@Autowired
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  	<strong class="jxr_keyword">private</strong> ResourceLoader resolver;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  	@Autowired
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  	<strong class="jxr_keyword">private</strong> ClassRegistryService classRegistryService;
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  	@Test
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testRegisterThenGetThenAll() <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  		Resource r = resolver.getResource(<span class="jxr_string">"classpath:TestType.json"</span>);
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>  		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  		JSONObject payload = <strong class="jxr_keyword">new</strong> JSONObject(json);
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  		String type = classRegistryService.register(payload);
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  		Assert.assertEquals(<span class="jxr_string">"TestType"</span>, type);
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>  
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  		JSONObject jo = classRegistryService.get(<span class="jxr_string">"TestType"</span>);
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>  		Assert.assertEquals(payload.toString(), jo.toString());
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>  		JSONArray ja = classRegistryService.all();
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>  		Assert.assertEquals(payload.toString(), ja.get(0).toString());
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>  	}
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>  
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>  	@After
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> tearDown() {
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>  		classRegistryService.deregister(<span class="jxr_string">"TestType"</span>);
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>  	}
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>  
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2016&#x2013;2017 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>

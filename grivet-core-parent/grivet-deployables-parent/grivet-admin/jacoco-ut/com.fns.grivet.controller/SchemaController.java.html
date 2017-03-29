@@ -18,8 +18,6 @@ package com.fns.grivet.controller;
 import java.io.IOException;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,47 +31,48 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fns.grivet.service.SchemaService;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * Provides end-points for linking and unlinking JSON Schema to pre-registered types
  * 
  * @author Chris Phillipson
  */
+<span class="fc" id="L42">@Slf4j</span>
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class SchemaController {
 
-<span class="fc" id="L46">    private final Logger log = LoggerFactory.getLogger(getClass());</span>
-        
     private final SchemaService schemaService;
     
     @Autowired
-<span class="fc" id="L51">    public SchemaController(SchemaService schemaService) {</span>
-<span class="fc" id="L52">        this.schemaService = schemaService;</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L50">    public SchemaController(SchemaService schemaService) {</span>
+<span class="fc" id="L51">        this.schemaService = schemaService;</span>
+<span class="fc" id="L52">    }</span>
     
     
     @PreAuthorize(&quot;hasAuthority('write:schema')&quot;)
     @PostMapping(&quot;/api/v1/schema&quot;)
     public ResponseEntity&lt;?&gt; linkSchema(@RequestBody JSONObject payload) throws IOException {
-<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (!schemaService.isJsonSchema(payload)) {</span>
-<span class="nc" id="L60">            return ResponseEntity.unprocessableEntity().build();</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if (!schemaService.isJsonSchema(payload)) {</span>
+<span class="nc" id="L59">            return ResponseEntity.unprocessableEntity().build();</span>
         }
-<span class="fc" id="L62">        String id = schemaService.linkSchema(payload).getName();</span>
-<span class="fc" id="L63">        String message = String.format(</span>
+<span class="fc" id="L61">        String id = schemaService.linkSchema(payload).getName();</span>
+<span class="fc" id="L62">        String message = String.format(</span>
                 &quot;JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!&quot;, id);
-<span class="fc" id="L65">        log.info(message);</span>
-<span class="fc" id="L66">        return ResponseEntity.ok(message);</span>
+<span class="fc" id="L64">        log.info(message);</span>
+<span class="fc" id="L65">        return ResponseEntity.ok(message);</span>
     }
     
     @PreAuthorize(&quot;hasAuthority('delete:schema')&quot;)
     @DeleteMapping(&quot;/api/v1/schema/{type}&quot;)
     public ResponseEntity&lt;?&gt; unlinkSchema(
             @PathVariable(&quot;type&quot;) String type) {
-<span class="fc" id="L73">        schemaService.unlinkSchema(type);</span>
-<span class="fc" id="L74">        String message = String.format(&quot;JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!&quot;, type);</span>
-<span class="fc" id="L75">        log.info(message);</span>
-<span class="fc" id="L76">        return ResponseEntity.ok(message);</span>
+<span class="fc" id="L72">        schemaService.unlinkSchema(type);</span>
+<span class="fc" id="L73">        String message = String.format(&quot;JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!&quot;, type);</span>
+<span class="fc" id="L74">        log.info(message);</span>
+<span class="fc" id="L75">        return ResponseEntity.ok(message);</span>
     }
             
 }

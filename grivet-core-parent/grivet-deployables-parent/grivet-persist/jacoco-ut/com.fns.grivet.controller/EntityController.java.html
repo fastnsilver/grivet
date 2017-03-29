@@ -23,8 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -51,17 +49,18 @@ import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fns.grivet.service.EntityService;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * Provides end-points for type storage and retrieval
  *
  * @author Chris Phillipson
  */
+<span class="fc" id="L60">@Slf4j</span>
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class EntityController {
-
-<span class="fc" id="L64">	private final Logger log = LoggerFactory.getLogger(getClass());</span>
 
 	@Value(&quot;${grivet.store.batch-size:100}&quot;)
 	private int batchSize;
@@ -71,60 +70,60 @@ public class EntityController {
 	private final MetricRegistry metricRegistry;
 
 	@Autowired
-<span class="fc" id="L74">	public EntityController(EntityService entityService, MetricRegistry metricRegistry) {</span>
-<span class="fc" id="L75">		this.entityService = entityService;</span>
-<span class="fc" id="L76">		this.metricRegistry = metricRegistry;</span>
-<span class="fc" id="L77">	}</span>
+<span class="fc" id="L73">	public EntityController(EntityService entityService, MetricRegistry metricRegistry) {</span>
+<span class="fc" id="L74">		this.entityService = entityService;</span>
+<span class="fc" id="L75">		this.metricRegistry = metricRegistry;</span>
+<span class="fc" id="L76">	}</span>
 
 	@Profile(&quot;!pipeline&quot;)
 	@PreAuthorize(&quot;hasAuthority('write:type')&quot;)
 	@PostMapping(&quot;/api/v1/type&quot;)
 	public ResponseEntity&lt;?&gt; createOne(@RequestHeader(&quot;Type&quot;) String type, @RequestBody JSONObject json) {
-<span class="fc" id="L83">		Long oid = entityService.create(type, json);</span>
-<span class="fc" id="L84">		URI location = UriComponentsBuilder.newInstance().path(&quot;/api/v1/type&quot;).queryParam(&quot;oid&quot;, oid).build().toUri();</span>
-<span class="fc" id="L85">		metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, &quot;create&quot;, type, &quot;count&quot;)).inc();</span>
-<span class="fc" id="L86">		log.info(&quot;Successfully created type [{}]&quot;, type);</span>
-<span class="fc" id="L87">		return ResponseEntity.created(location).build();</span>
+<span class="fc" id="L82">		Long oid = entityService.create(type, json);</span>
+<span class="fc" id="L83">		URI location = UriComponentsBuilder.newInstance().path(&quot;/api/v1/type&quot;).queryParam(&quot;oid&quot;, oid).build().toUri();</span>
+<span class="fc" id="L84">		metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, &quot;create&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="fc" id="L85">		log.info(&quot;Successfully created type [{}]&quot;, type);</span>
+<span class="fc" id="L86">		return ResponseEntity.created(location).build();</span>
 	}
 
 	@Profile(&quot;!pipeline&quot;)
 	@PreAuthorize(&quot;hasAuthority('write:type')&quot;)
 	@PostMapping(&quot;/api/v1/types&quot;)
 	public ResponseEntity&lt;?&gt; createMultiple(@RequestHeader(&quot;Type&quot;) String type, @RequestBody JSONArray json) {
-<span class="fc" id="L94">		int numberOfTypesToCreate = json.length();</span>
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		Assert.isTrue(numberOfTypesToCreate &lt;= batchSize,</span>
-<span class="fc" id="L96">				String.format(</span>
+<span class="fc" id="L93">		int numberOfTypesToCreate = json.length();</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">		Assert.isTrue(numberOfTypesToCreate &lt;= batchSize,</span>
+<span class="fc" id="L95">				String.format(</span>
 						&quot;The total number of entries in a request must not exceed %d! Your store request contained [%d] entries.&quot;,
-<span class="fc" id="L98">						batchSize, numberOfTypesToCreate));</span>
-<span class="fc" id="L99">		int errorCount = 0;</span>
-<span class="fc" id="L100">		JSONObject jsonObject = null;</span>
-<span class="fc" id="L101">		HttpHeaders headers = new HttpHeaders();</span>
-<span class="fc" id="L102">		URI location = null;</span>
-<span class="fc" id="L103">		Long oid = null;</span>
+<span class="fc" id="L97">						batchSize, numberOfTypesToCreate));</span>
+<span class="fc" id="L98">		int errorCount = 0;</span>
+<span class="fc" id="L99">		JSONObject jsonObject = null;</span>
+<span class="fc" id="L100">		HttpHeaders headers = new HttpHeaders();</span>
+<span class="fc" id="L101">		URI location = null;</span>
+<span class="fc" id="L102">		Long oid = null;</span>
 		// allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
-<span class="fc bfc" id="L105" title="All 2 branches covered.">		for (int i = 0; i &lt; numberOfTypesToCreate; i++) {</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">		for (int i = 0; i &lt; numberOfTypesToCreate; i++) {</span>
 			try {
-<span class="fc" id="L107">				jsonObject = json.getJSONObject(i);</span>
-<span class="fc" id="L108">				oid = entityService.create(type, jsonObject);</span>
-<span class="fc" id="L109">				location = UriComponentsBuilder.newInstance().path(&quot;/api/v1/type&quot;).queryParam(&quot;oid&quot;, oid).build().toUri();</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">				if (numberOfTypesToCreate == 1) {</span>
-<span class="nc" id="L111">					headers.setLocation(location);</span>
+<span class="fc" id="L106">				jsonObject = json.getJSONObject(i);</span>
+<span class="fc" id="L107">				oid = entityService.create(type, jsonObject);</span>
+<span class="fc" id="L108">				location = UriComponentsBuilder.newInstance().path(&quot;/api/v1/type&quot;).queryParam(&quot;oid&quot;, oid).build().toUri();</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">				if (numberOfTypesToCreate == 1) {</span>
+<span class="nc" id="L110">					headers.setLocation(location);</span>
 				} else {
-<span class="fc" id="L113">					headers.set(String.format(&quot;Location[%s]&quot;, String.valueOf(i + 1)), location.toASCIIString());</span>
+<span class="fc" id="L112">					headers.set(String.format(&quot;Location[%s]&quot;, String.valueOf(i + 1)), location.toASCIIString());</span>
 				}
-<span class="fc" id="L115">				metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, &quot;create&quot;, type, &quot;count&quot;)).inc();</span>
-<span class="fc" id="L116">				log.info(&quot;Successfully created type [{}]&quot;, type);</span>
-<span class="nc" id="L117">			} catch (Exception e) {</span>
-<span class="nc" id="L118">				String message = LogUtil.toLog(jsonObject, String.format(&quot;Problems storing type! Portion of payload @ index[%d]\n&quot;, i+1));</span>
-<span class="nc" id="L119">				log.error(message, e);</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">				if (numberOfTypesToCreate == 1) {</span>
-<span class="nc" id="L121">					throw e;</span>
+<span class="fc" id="L114">				metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, &quot;create&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="fc" id="L115">				log.info(&quot;Successfully created type [{}]&quot;, type);</span>
+<span class="nc" id="L116">			} catch (Exception e) {</span>
+<span class="nc" id="L117">				String message = LogUtil.toLog(jsonObject, String.format(&quot;Problems storing type! Portion of payload @ index[%d]\n&quot;, i+1));</span>
+<span class="nc" id="L118">				log.error(message, e);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">				if (numberOfTypesToCreate == 1) {</span>
+<span class="nc" id="L120">					throw e;</span>
 				}
-<span class="nc" id="L123">				headers.set(String.format(&quot;Error[%s]&quot;, String.valueOf(i+1)), e.getMessage());</span>
-<span class="nc" id="L124">				errorCount++;</span>
-<span class="fc" id="L125">			}</span>
+<span class="nc" id="L122">				headers.set(String.format(&quot;Error[%s]&quot;, String.valueOf(i+1)), e.getMessage());</span>
+<span class="nc" id="L123">				errorCount++;</span>
+<span class="fc" id="L124">			}</span>
 		}
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		return new ResponseEntity&lt;&gt;(headers, ((errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED));</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		return new ResponseEntity&lt;&gt;(headers, ((errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED));</span>
 	}
 
 	@Profile(&quot;!pipeline&quot;)
@@ -133,13 +132,13 @@ public class EntityController {
 	public ResponseEntity&lt;?&gt; updateOne(
 			@RequestParam(value = &quot;oid&quot;, required = true) Long oid,
 			@RequestBody JSONObject json) {
-<span class="fc" id="L136">		String type = entityService.update(oid, json);</span>
-<span class="fc" id="L137">		HttpHeaders headers = new HttpHeaders();</span>
-<span class="fc" id="L138">		URI location = UriComponentsBuilder.newInstance().path(&quot;/api/v1/type&quot;).queryParam(&quot;oid&quot;, oid).build().toUri();</span>
-<span class="fc" id="L139">		headers.setLocation(location);</span>
-<span class="fc" id="L140">		metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, &quot;update&quot;, type, &quot;count&quot;)).inc();</span>
-<span class="fc" id="L141">		log.info(&quot;Successfully updated type [{}]&quot;, type);</span>
-<span class="fc" id="L142">		return ResponseEntity.ok().headers(headers).build();</span>
+<span class="fc" id="L135">		String type = entityService.update(oid, json);</span>
+<span class="fc" id="L136">		HttpHeaders headers = new HttpHeaders();</span>
+<span class="fc" id="L137">		URI location = UriComponentsBuilder.newInstance().path(&quot;/api/v1/type&quot;).queryParam(&quot;oid&quot;, oid).build().toUri();</span>
+<span class="fc" id="L138">		headers.setLocation(location);</span>
+<span class="fc" id="L139">		metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, &quot;update&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="fc" id="L140">		log.info(&quot;Successfully updated type [{}]&quot;, type);</span>
+<span class="fc" id="L141">		return ResponseEntity.ok().headers(headers).build();</span>
 	}
 
 	@Profile(&quot;!pipeline&quot;)
@@ -147,10 +146,10 @@ public class EntityController {
 	@DeleteMapping(&quot;/api/v1/type&quot;)
 	public ResponseEntity&lt;?&gt; deleteOne(
 			@RequestParam(value = &quot;oid&quot;, required = true) Long oid) {
-<span class="fc" id="L150">		String type = entityService.delete(oid);</span>
-<span class="fc" id="L151">		metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, &quot;delete&quot;, type, &quot;count&quot;)).inc();</span>
-<span class="fc" id="L152">		log.info(&quot;Successfully delete type [{}]&quot;, type);</span>
-<span class="fc" id="L153">		return ResponseEntity.ok().build();</span>
+<span class="fc" id="L149">		String type = entityService.delete(oid);</span>
+<span class="fc" id="L150">		metricRegistry.counter(MetricRegistry.name(&quot;store&quot;, &quot;delete&quot;, type, &quot;count&quot;)).inc();</span>
+<span class="fc" id="L151">		log.info(&quot;Successfully delete type [{}]&quot;, type);</span>
+<span class="fc" id="L152">		return ResponseEntity.ok().build();</span>
 	}
 
 	@PreAuthorize(&quot;hasAuthority('read:type')&quot;)
@@ -160,13 +159,13 @@ public class EntityController {
 			@RequestParam(value = &quot;createdTimeEnd&quot;, required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeEnd,
 			@RequestParam(value = &quot;noAudit&quot;, defaultValue = &quot;false&quot;) boolean noAudit,
 			HttpServletRequest request) throws JsonProcessingException {
-<span class="fc bfc" id="L163" title="All 2 branches covered.">		LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7) : createdTimeStart;</span>
-<span class="fc bfc" id="L164" title="All 2 branches covered.">		LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : createdTimeEnd;</span>
-<span class="pc bpc" id="L165" title="1 of 2 branches missed.">		Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, &quot;Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!&quot;);</span>
-<span class="fc bfc" id="L166" title="All 2 branches covered.">		if (noAudit) {</span>
-<span class="fc" id="L167">		    return ResponseEntity.ok(entityService.findAllByType(type));</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">		LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7) : createdTimeStart;</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : createdTimeEnd;</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">		Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, &quot;Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!&quot;);</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">		if (noAudit) {</span>
+<span class="fc" id="L166">		    return ResponseEntity.ok(entityService.findAllByType(type));</span>
 		} else {
-<span class="fc" id="L169">		    return ResponseEntity.ok(entityService.findByCreatedTime(type, start, end, request.getParameterMap()));</span>
+<span class="fc" id="L168">		    return ResponseEntity.ok(entityService.findByCreatedTime(type, start, end, request.getParameterMap()));</span>
 		}
 	}
 
@@ -174,7 +173,7 @@ public class EntityController {
 	@GetMapping(&quot;/api/v1/type&quot;)
 	public ResponseEntity&lt;?&gt; fetchOne(
 			@RequestParam(value = &quot;oid&quot;, required = true) Long oid) {
-<span class="fc" id="L177">		return ResponseEntity.ok(entityService.findOne(oid));</span>
+<span class="fc" id="L176">		return ResponseEntity.ok(entityService.findOne(oid));</span>
 	}
 
 }

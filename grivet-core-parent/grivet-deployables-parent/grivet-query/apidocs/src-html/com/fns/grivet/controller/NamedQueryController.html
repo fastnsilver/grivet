@@ -6,124 +6,114 @@
 </head>
 <body>
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2015 - Chris Phillipson<a name="line.2"></a>
-<span class="sourceLineNo">003</span> * <a name="line.3"></a>
-<span class="sourceLineNo">004</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.4"></a>
-<span class="sourceLineNo">005</span> * you may not use this file except in compliance with the License.<a name="line.5"></a>
-<span class="sourceLineNo">006</span> *<a name="line.6"></a>
-<span class="sourceLineNo">007</span> * You may obtain a copy of the License at<a name="line.7"></a>
-<span class="sourceLineNo">008</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.8"></a>
-<span class="sourceLineNo">009</span> *<a name="line.9"></a>
-<span class="sourceLineNo">010</span> * Unless required by applicable law or agreed to in writing, software<a name="line.10"></a>
-<span class="sourceLineNo">011</span> * distributed under the License is distributed on an "AS IS" BASIS,<a name="line.11"></a>
-<span class="sourceLineNo">012</span> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.12"></a>
-<span class="sourceLineNo">013</span> * See the License for the specific language governing permissions and<a name="line.13"></a>
-<span class="sourceLineNo">014</span> * limitations under the License.<a name="line.14"></a>
-<span class="sourceLineNo">015</span> */<a name="line.15"></a>
-<span class="sourceLineNo">016</span>package com.fns.grivet.controller;<a name="line.16"></a>
-<span class="sourceLineNo">017</span><a name="line.17"></a>
-<span class="sourceLineNo">018</span>import org.apache.commons.lang3.StringUtils;<a name="line.18"></a>
-<span class="sourceLineNo">019</span>import org.json.JSONArray;<a name="line.19"></a>
-<span class="sourceLineNo">020</span>import org.slf4j.Logger;<a name="line.20"></a>
-<span class="sourceLineNo">021</span>import org.slf4j.LoggerFactory;<a name="line.21"></a>
-<span class="sourceLineNo">022</span>import org.springframework.beans.factory.annotation.Autowired;<a name="line.22"></a>
-<span class="sourceLineNo">023</span>import org.springframework.http.MediaType;<a name="line.23"></a>
-<span class="sourceLineNo">024</span>import org.springframework.http.ResponseEntity;<a name="line.24"></a>
-<span class="sourceLineNo">025</span>import org.springframework.security.access.prepost.PreAuthorize;<a name="line.25"></a>
-<span class="sourceLineNo">026</span>import org.springframework.util.Assert;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import org.springframework.util.MultiValueMap;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import org.springframework.web.bind.annotation.DeleteMapping;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import org.springframework.web.bind.annotation.GetMapping;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import org.springframework.web.bind.annotation.PathVariable;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import org.springframework.web.bind.annotation.PostMapping;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import org.springframework.web.bind.annotation.RequestBody;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import org.springframework.web.bind.annotation.RequestMapping;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import org.springframework.web.bind.annotation.RequestParam;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import org.springframework.web.bind.annotation.RestController;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import org.springframework.web.util.UriComponentsBuilder;<a name="line.36"></a>
-<span class="sourceLineNo">037</span><a name="line.37"></a>
-<span class="sourceLineNo">038</span>import com.fns.grivet.query.NamedQuery;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import com.fns.grivet.query.QueryType;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import com.fns.grivet.service.NamedQueryService;<a name="line.40"></a>
-<span class="sourceLineNo">041</span><a name="line.41"></a>
-<span class="sourceLineNo">042</span><a name="line.42"></a>
-<span class="sourceLineNo">043</span>/**<a name="line.43"></a>
-<span class="sourceLineNo">044</span> * Provides end-points for registration, verification and execution of named queries<a name="line.44"></a>
-<span class="sourceLineNo">045</span> * <a name="line.45"></a>
-<span class="sourceLineNo">046</span> * @author Chris Phillipson<a name="line.46"></a>
-<span class="sourceLineNo">047</span> */<a name="line.47"></a>
-<span class="sourceLineNo">048</span>@RestController<a name="line.48"></a>
-<span class="sourceLineNo">049</span>@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)<a name="line.49"></a>
-<span class="sourceLineNo">050</span>public class NamedQueryController {<a name="line.50"></a>
-<span class="sourceLineNo">051</span><a name="line.51"></a>
-<span class="sourceLineNo">052</span>    private final Logger log = LoggerFactory.getLogger(getClass());<a name="line.52"></a>
-<span class="sourceLineNo">053</span>    <a name="line.53"></a>
-<span class="sourceLineNo">054</span>    private final NamedQueryService namedQueryService;<a name="line.54"></a>
-<span class="sourceLineNo">055</span>    <a name="line.55"></a>
-<span class="sourceLineNo">056</span>    @Autowired<a name="line.56"></a>
-<span class="sourceLineNo">057</span>    public NamedQueryController(NamedQueryService namedQueryService) {<a name="line.57"></a>
-<span class="sourceLineNo">058</span>        this.namedQueryService = namedQueryService;<a name="line.58"></a>
-<span class="sourceLineNo">059</span>    }<a name="line.59"></a>
-<span class="sourceLineNo">060</span>    <a name="line.60"></a>
-<span class="sourceLineNo">061</span>    @PreAuthorize("hasAuthority('write:query')")<a name="line.61"></a>
-<span class="sourceLineNo">062</span>    @PostMapping("/api/v1/query")<a name="line.62"></a>
-<span class="sourceLineNo">063</span>    public ResponseEntity&lt;?&gt; createNamedQuery(<a name="line.63"></a>
-<span class="sourceLineNo">064</span>            @RequestBody NamedQuery query) {<a name="line.64"></a>
-<span class="sourceLineNo">065</span>        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();<a name="line.65"></a>
-<span class="sourceLineNo">066</span>        Assert.isTrue(StringUtils.isNotBlank(query.getName()), "Query name must not be null, empty or blank.");<a name="line.66"></a>
-<span class="sourceLineNo">067</span>        Assert.notNull(query.getQuery(), "Query string must not be null!");<a name="line.67"></a>
-<span class="sourceLineNo">068</span>        Assert.isTrue(isSupportedQuery(query), "Query must start with either CALL or SELECT");<a name="line.68"></a>
-<span class="sourceLineNo">069</span>        // check for named parameters; but only if they exist<a name="line.69"></a>
-<span class="sourceLineNo">070</span>        if (!query.getParams().isEmpty()) {<a name="line.70"></a>
-<span class="sourceLineNo">071</span>            query.getParams().keySet()<a name="line.71"></a>
-<span class="sourceLineNo">072</span>                .forEach(k -&gt; Assert.isTrue(query.getQuery().contains(String.format(":%s", k)), String.format("Query must contain named parameter [%s]", k)));<a name="line.72"></a>
-<span class="sourceLineNo">073</span>        }<a name="line.73"></a>
-<span class="sourceLineNo">074</span>        namedQueryService.create(query);<a name="line.74"></a>
-<span class="sourceLineNo">075</span>        log.info("Named Query \n\n{}\n\n successfully registered!", query);<a name="line.75"></a>
-<span class="sourceLineNo">076</span>        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();<a name="line.76"></a>
-<span class="sourceLineNo">077</span>        if (query.getParams().isEmpty()) {<a name="line.77"></a>
-<span class="sourceLineNo">078</span>            result = ResponseEntity.created(ucb.path("/api/v1/query/{name}").buildAndExpand(query.getName()).toUri())<a name="line.78"></a>
-<span class="sourceLineNo">079</span>                    .build();<a name="line.79"></a>
-<span class="sourceLineNo">080</span>        } else {<a name="line.80"></a>
-<span class="sourceLineNo">081</span>            result = ResponseEntity.noContent().build();<a name="line.81"></a>
-<span class="sourceLineNo">082</span>        }<a name="line.82"></a>
-<span class="sourceLineNo">083</span>        return result;<a name="line.83"></a>
+<pre><span class="sourceLineNo">001</span>// Generated by delombok at Tue Mar 28 20:33:41 PDT 2017<a name="line.1"></a>
+<span class="sourceLineNo">002</span>/*<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * Copyright 2015 - Chris Phillipson<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * <a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * you may not use this file except in compliance with the License.<a name="line.6"></a>
+<span class="sourceLineNo">007</span> *<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * You may obtain a copy of the License at<a name="line.8"></a>
+<span class="sourceLineNo">009</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * Unless required by applicable law or agreed to in writing, software<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * distributed under the License is distributed on an "AS IS" BASIS,<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * See the License for the specific language governing permissions and<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * limitations under the License.<a name="line.15"></a>
+<span class="sourceLineNo">016</span> */<a name="line.16"></a>
+<span class="sourceLineNo">017</span>package com.fns.grivet.controller;<a name="line.17"></a>
+<span class="sourceLineNo">018</span><a name="line.18"></a>
+<span class="sourceLineNo">019</span>import org.apache.commons.lang3.StringUtils;<a name="line.19"></a>
+<span class="sourceLineNo">020</span>import org.json.JSONArray;<a name="line.20"></a>
+<span class="sourceLineNo">021</span>import org.springframework.beans.factory.annotation.Autowired;<a name="line.21"></a>
+<span class="sourceLineNo">022</span>import org.springframework.http.MediaType;<a name="line.22"></a>
+<span class="sourceLineNo">023</span>import org.springframework.http.ResponseEntity;<a name="line.23"></a>
+<span class="sourceLineNo">024</span>import org.springframework.security.access.prepost.PreAuthorize;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import org.springframework.util.Assert;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import org.springframework.util.MultiValueMap;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import org.springframework.web.bind.annotation.DeleteMapping;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import org.springframework.web.bind.annotation.GetMapping;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import org.springframework.web.bind.annotation.PathVariable;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import org.springframework.web.bind.annotation.PostMapping;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import org.springframework.web.bind.annotation.RequestBody;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.springframework.web.bind.annotation.RequestMapping;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.springframework.web.bind.annotation.RequestParam;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import org.springframework.web.bind.annotation.RestController;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import org.springframework.web.util.UriComponentsBuilder;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.fns.grivet.query.NamedQuery;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.fns.grivet.query.QueryType;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import com.fns.grivet.service.NamedQueryService;<a name="line.38"></a>
+<span class="sourceLineNo">039</span><a name="line.39"></a>
+<span class="sourceLineNo">040</span>/**<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * Provides end-points for registration, verification and execution of named queries<a name="line.41"></a>
+<span class="sourceLineNo">042</span> *<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * @author Chris Phillipson<a name="line.43"></a>
+<span class="sourceLineNo">044</span> */<a name="line.44"></a>
+<span class="sourceLineNo">045</span>@RestController<a name="line.45"></a>
+<span class="sourceLineNo">046</span>@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)<a name="line.46"></a>
+<span class="sourceLineNo">047</span>public class NamedQueryController {<a name="line.47"></a>
+<span class="sourceLineNo">048</span>    @java.lang.SuppressWarnings("all")<a name="line.48"></a>
+<span class="sourceLineNo">049</span>    @javax.annotation.Generated("lombok")<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(NamedQueryController.class);<a name="line.50"></a>
+<span class="sourceLineNo">051</span>    private final NamedQueryService namedQueryService;<a name="line.51"></a>
+<span class="sourceLineNo">052</span><a name="line.52"></a>
+<span class="sourceLineNo">053</span>    @Autowired<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    public NamedQueryController(NamedQueryService namedQueryService) {<a name="line.54"></a>
+<span class="sourceLineNo">055</span>        this.namedQueryService = namedQueryService;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>    }<a name="line.56"></a>
+<span class="sourceLineNo">057</span><a name="line.57"></a>
+<span class="sourceLineNo">058</span>    @PreAuthorize("hasAuthority(\'write:query\')")<a name="line.58"></a>
+<span class="sourceLineNo">059</span>    @PostMapping("/api/v1/query")<a name="line.59"></a>
+<span class="sourceLineNo">060</span>    public ResponseEntity&lt;?&gt; createNamedQuery(@RequestBody NamedQuery query) {<a name="line.60"></a>
+<span class="sourceLineNo">061</span>        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();<a name="line.61"></a>
+<span class="sourceLineNo">062</span>        Assert.isTrue(StringUtils.isNotBlank(query.getName()), "Query name must not be null, empty or blank.");<a name="line.62"></a>
+<span class="sourceLineNo">063</span>        Assert.notNull(query.getQuery(), "Query string must not be null!");<a name="line.63"></a>
+<span class="sourceLineNo">064</span>        Assert.isTrue(isSupportedQuery(query), "Query must start with either CALL or SELECT");<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        // check for named parameters; but only if they exist<a name="line.65"></a>
+<span class="sourceLineNo">066</span>        if (!query.getParams().isEmpty()) {<a name="line.66"></a>
+<span class="sourceLineNo">067</span>            query.getParams().keySet().forEach(k -&gt; Assert.isTrue(query.getQuery().contains(String.format(":%s", k)), String.format("Query must contain named parameter [%s]", k)));<a name="line.67"></a>
+<span class="sourceLineNo">068</span>        }<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        namedQueryService.create(query);<a name="line.69"></a>
+<span class="sourceLineNo">070</span>        log.info("Named Query \n\n{}\n\n successfully registered!", query);<a name="line.70"></a>
+<span class="sourceLineNo">071</span>        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();<a name="line.71"></a>
+<span class="sourceLineNo">072</span>        if (query.getParams().isEmpty()) {<a name="line.72"></a>
+<span class="sourceLineNo">073</span>            result = ResponseEntity.created(ucb.path("/api/v1/query/{name}").buildAndExpand(query.getName()).toUri()).build();<a name="line.73"></a>
+<span class="sourceLineNo">074</span>        } else {<a name="line.74"></a>
+<span class="sourceLineNo">075</span>            result = ResponseEntity.noContent().build();<a name="line.75"></a>
+<span class="sourceLineNo">076</span>        }<a name="line.76"></a>
+<span class="sourceLineNo">077</span>        return result;<a name="line.77"></a>
+<span class="sourceLineNo">078</span>    }<a name="line.78"></a>
+<span class="sourceLineNo">079</span><a name="line.79"></a>
+<span class="sourceLineNo">080</span>    @PreAuthorize("hasAuthority(\'execute:query\')")<a name="line.80"></a>
+<span class="sourceLineNo">081</span>    @GetMapping("/api/v1/query/{name}")<a name="line.81"></a>
+<span class="sourceLineNo">082</span>    public ResponseEntity&lt;?&gt; executeNamedQuery(@PathVariable("name") String name, @RequestParam MultiValueMap&lt;String, ?&gt; parameters) {<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        return ResponseEntity.ok(namedQueryService.get(name, parameters));<a name="line.83"></a>
 <span class="sourceLineNo">084</span>    }<a name="line.84"></a>
-<span class="sourceLineNo">085</span>    <a name="line.85"></a>
-<span class="sourceLineNo">086</span>    @PreAuthorize("hasAuthority('execute:query')")<a name="line.86"></a>
-<span class="sourceLineNo">087</span>    @GetMapping("/api/v1/query/{name}")<a name="line.87"></a>
-<span class="sourceLineNo">088</span>    public ResponseEntity&lt;?&gt; executeNamedQuery(<a name="line.88"></a>
-<span class="sourceLineNo">089</span>            @PathVariable("name") String name, <a name="line.89"></a>
-<span class="sourceLineNo">090</span>            @RequestParam MultiValueMap&lt;String, ?&gt; parameters) {<a name="line.90"></a>
-<span class="sourceLineNo">091</span>        return ResponseEntity.ok(namedQueryService.get(name, parameters));<a name="line.91"></a>
-<span class="sourceLineNo">092</span>    }<a name="line.92"></a>
-<span class="sourceLineNo">093</span>    <a name="line.93"></a>
-<span class="sourceLineNo">094</span>    @PreAuthorize("hasAuthority('list:query')")<a name="line.94"></a>
-<span class="sourceLineNo">095</span>    @GetMapping("/api/v1/queries")<a name="line.95"></a>
-<span class="sourceLineNo">096</span>    public ResponseEntity&lt;?&gt; listNamedQueries() {<a name="line.96"></a>
-<span class="sourceLineNo">097</span>        JSONArray payload = namedQueryService.all();<a name="line.97"></a>
-<span class="sourceLineNo">098</span>        return ResponseEntity.ok(payload.toString());<a name="line.98"></a>
+<span class="sourceLineNo">085</span><a name="line.85"></a>
+<span class="sourceLineNo">086</span>    @PreAuthorize("hasAuthority(\'list:query\')")<a name="line.86"></a>
+<span class="sourceLineNo">087</span>    @GetMapping("/api/v1/queries")<a name="line.87"></a>
+<span class="sourceLineNo">088</span>    public ResponseEntity&lt;?&gt; listNamedQueries() {<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        JSONArray payload = namedQueryService.all();<a name="line.89"></a>
+<span class="sourceLineNo">090</span>        return ResponseEntity.ok(payload.toString());<a name="line.90"></a>
+<span class="sourceLineNo">091</span>    }<a name="line.91"></a>
+<span class="sourceLineNo">092</span><a name="line.92"></a>
+<span class="sourceLineNo">093</span>    @PreAuthorize("hasAuthority(\'delete:query\')")<a name="line.93"></a>
+<span class="sourceLineNo">094</span>    @DeleteMapping("/api/v1/query/{name}")<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    public ResponseEntity&lt;?&gt; deleteNamedQuery(@PathVariable("name") String name) {<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        namedQueryService.delete(name);<a name="line.96"></a>
+<span class="sourceLineNo">097</span>        log.info("Query with name [{}] successfully deleted!", name);<a name="line.97"></a>
+<span class="sourceLineNo">098</span>        return ResponseEntity.noContent().build();<a name="line.98"></a>
 <span class="sourceLineNo">099</span>    }<a name="line.99"></a>
-<span class="sourceLineNo">100</span>    <a name="line.100"></a>
-<span class="sourceLineNo">101</span>    @PreAuthorize("hasAuthority('delete:query')")<a name="line.101"></a>
-<span class="sourceLineNo">102</span>    @DeleteMapping(value = "/api/v1/query/{name}")<a name="line.102"></a>
-<span class="sourceLineNo">103</span>    public ResponseEntity&lt;?&gt; deleteNamedQuery(<a name="line.103"></a>
-<span class="sourceLineNo">104</span>            @PathVariable("name") String name) {<a name="line.104"></a>
-<span class="sourceLineNo">105</span>        namedQueryService.delete(name);<a name="line.105"></a>
-<span class="sourceLineNo">106</span>        log.info("Query with name [{}] successfully deleted!", name);<a name="line.106"></a>
-<span class="sourceLineNo">107</span>        return ResponseEntity.noContent().build();<a name="line.107"></a>
-<span class="sourceLineNo">108</span>    }<a name="line.108"></a>
-<span class="sourceLineNo">109</span>    <a name="line.109"></a>
-<span class="sourceLineNo">110</span>    private boolean isSupportedQuery(NamedQuery query) {<a name="line.110"></a>
-<span class="sourceLineNo">111</span>        boolean result = false;<a name="line.111"></a>
-<span class="sourceLineNo">112</span>        if ((query.getQuery().toUpperCase().startsWith("SELECT") &amp;&amp; query.getType().equals(QueryType.SELECT)) <a name="line.112"></a>
-<span class="sourceLineNo">113</span>                || (query.getQuery().toUpperCase().startsWith("CALL") &amp;&amp; query.getType().equals(QueryType.SPROC))) {<a name="line.113"></a>
-<span class="sourceLineNo">114</span>            result = true;<a name="line.114"></a>
-<span class="sourceLineNo">115</span>        }<a name="line.115"></a>
-<span class="sourceLineNo">116</span>        return result;<a name="line.116"></a>
-<span class="sourceLineNo">117</span>    }<a name="line.117"></a>
-<span class="sourceLineNo">118</span>}<a name="line.118"></a>
+<span class="sourceLineNo">100</span><a name="line.100"></a>
+<span class="sourceLineNo">101</span>    private boolean isSupportedQuery(NamedQuery query) {<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        boolean result = false;<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        if ((query.getQuery().toUpperCase().startsWith("SELECT") &amp;&amp; query.getType().equals(QueryType.SELECT)) || (query.getQuery().toUpperCase().startsWith("CALL") &amp;&amp; query.getType().equals(QueryType.SPROC))) {<a name="line.103"></a>
+<span class="sourceLineNo">104</span>            result = true;<a name="line.104"></a>
+<span class="sourceLineNo">105</span>        }<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        return result;<a name="line.106"></a>
+<span class="sourceLineNo">107</span>    }<a name="line.107"></a>
+<span class="sourceLineNo">108</span>}<a name="line.108"></a>
 
 
 
