@@ -22,7 +22,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-stream-dependencies</artifactId>
-				<version>Chelsea.RC1</version>
+				<version>Chelsea.SR1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

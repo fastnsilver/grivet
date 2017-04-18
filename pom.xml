@@ -98,7 +98,7 @@
         <rest-assured.version>3.0.2</rest-assured.version>
         <scala.version>2.10.6</scala.version>
         <slf4j.version>1.7.24</slf4j.version>
-        <spring-boot-admin.version>1.4.6</spring-boot-admin.version>
+        <spring-boot-admin.version>1.5.0</spring-boot-admin.version>
         <springfox-swagger2.version>2.6.1</springfox-swagger2.version>
 
         <!-- Maven -->
@@ -139,7 +139,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Dalston.RC1</version>
+                <version>Dalston.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
