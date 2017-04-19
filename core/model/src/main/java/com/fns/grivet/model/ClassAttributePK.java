@@ -15,18 +15,22 @@
  */
 package com.fns.grivet.model;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import java.io.Serializable;
 
-import javax.annotation.concurrent.Immutable;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * A {@code ClassAttributePK} defines the primary key for an instance of {@link ClassAttribute}.
  * @author Chris Phillipson
  */
-@Immutable
+@Getter
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor(access=AccessLevel.PROTECTED)
 public class ClassAttributePK implements Serializable {
 
     /** 
@@ -39,35 +43,5 @@ public class ClassAttributePK implements Serializable {
     private Integer cid;
     private Integer aid;
     private Integer tid;
-
-    protected ClassAttributePK() {}
-    
-    public ClassAttributePK(Integer cid, Integer aid, Integer tid) {
-        this.cid = cid;
-        this.aid = aid;
-        this.tid = tid;
-    }
-    
-    public Integer getCid() {
-        return cid;
-    }
-
-    public Integer getAid() {
-        return aid;
-    }
-
-    public Integer getTid() {
-        return tid;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(this, object);
-    }
 
 }
