@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.2.RELEASE</version>
+        <version>1.5.3.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -78,11 +78,12 @@
         <commons-io.version>2.5</commons-io.version>
         <dashboard.version>1.0.1</dashboard.version>
         <disruptor.version>3.3.6</disruptor.version>
+        <dropwizard-metrics.version>3.2.2</dropwizard-metrics.version>
         <flyway.version>4.1.2</flyway.version>
         <guava.version>19.0</guava.version>
-        <hibernate.version>5.2.9.Final</hibernate.version>
+        <hibernate.version>5.2.10.Final</hibernate.version>
         <hikaricp.version>2.6.1</hikaricp.version>
-        <jackson.version>2.9.0.pr1</jackson.version>
+        <jackson.version>2.9.0.pr3</jackson.version>
         <jadira.version>6.0.1.GA</jadira.version>
         <javax.persistence.version>1.0.0.Final</javax.persistence.version>
         <javax.validation-api.version>1.1.0.Final</javax.validation-api.version>
@@ -90,7 +91,7 @@
         <json.version>20160810</json.version>
         <json-schema-validator.version>2.2.6</json-schema-validator.version>
         <jsr305.version>3.0.1</jsr305.version>
-        <log4j2.version>2.8.1</log4j2.version>
+        <log4j2.version>2.8.2</log4j2.version>
         <logstash-logback-encoder.version>4.9</logstash-logback-encoder.version>
         <lombok.version>1.16.16</lombok.version>
         <mysql.version>6.0.6</mysql.version>
@@ -130,7 +131,7 @@
         <spring-banner-plugin.version>1.0</spring-banner-plugin.version>
         <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
         <velocity.version>1.7</velocity.version>
-        <versions-maven-plugin.version>2.2</versions-maven-plugin.version>
+        <versions-maven-plugin.version>2.3</versions-maven-plugin.version>
         <wagon-webdav-jackrabbit.version>2.8</wagon-webdav-jackrabbit.version>
     </properties>
 
