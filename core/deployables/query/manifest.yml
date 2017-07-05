@@ -1,0 +1,8 @@
+---
+applications:
+- name: grivet-query
+  host: grivet-query 
+  memory: 1G
+  instances: 1
+  path: ./target/grivet-query-0.3.0-SNAPSHOT-exec.jar
+  timeout: 120

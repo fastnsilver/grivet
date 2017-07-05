@@ -173,7 +173,7 @@ public class EntityController {
 	@GetMapping("/api/v1/type")
 	public ResponseEntity<?> fetchOne(
 			@RequestParam(value = "oid", required = true) Long oid) {
-		return ResponseEntity.ok(entityService.findOne(oid));
+		return ResponseEntity.ok(entityService.findById(oid));
 	}
 
 }

@@ -36,13 +36,13 @@ import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.ClassAttribute;
 import com.fns.grivet.model.EntityAttributeValue;
+import com.fns.grivet.model.ValueHelper;
 import com.fns.grivet.query.DynamicQuery;
 import com.fns.grivet.repo.AttributeRepository;
 import com.fns.grivet.repo.AttributeTypeRepository;
 import com.fns.grivet.repo.ClassAttributeRepository;
 import com.fns.grivet.repo.ClassRepository;
 import com.fns.grivet.repo.EntityRepository;
-import com.fns.grivet.model.ValueHelper;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.google.common.collect.Lists;
 
@@ -92,7 +92,7 @@ public class EntityService {
 			Assert.notNull(a, String.format("Attribute [%s] is not registered!", key));
 			ca = classAttributeRepository.findByCidAndAid(c.getId(), a.getId());
 			Assert.notNull(ca, String.format("[%s] is not a valid attribute of [%s]", key, type));
-			at = attributeTypeRepository.findOne(ca.getTid());
+			at = attributeTypeRepository.findById(ca.getTid());
 			Assert.notNull(at, String.format("Attribute type [%s] is not supported!", at));
 			entityRepository.save(eid, a, at, val, createdTime);
 		}
@@ -103,7 +103,7 @@ public class EntityService {
 	public String update(Long eid, JSONObject payload) {
 		Integer cid = entityRepository.getClassIdForEntityId(eid);
 		Assert.notNull(cid, String.format("No type registered for entity with oid = [%d]", eid));
-		com.fns.grivet.model.Class c = classRepository.findOne(cid);
+        com.fns.grivet.model.Class c = classRepository.findById(cid).get();
 		String type = c.getName();
 		if (c.isValidatable()) {
 			executeSchemaValidation(type, payload);
@@ -116,7 +116,7 @@ public class EntityService {
 
 		// get currently persisted entity's attribute values; make sure the oid
 		// passed actually exists!
-		String currentEntity = findOne(eid);
+		String currentEntity = findById(eid);
 
 		// keys (attribute names) of the currently persisted entity
 		JSONObject persistentObject = new JSONObject(currentEntity);
@@ -143,7 +143,7 @@ public class EntityService {
 			Assert.notNull(a, String.format("Attribute [%s] is not registered!", key));
 			ca = classAttributeRepository.findByCidAndAid(c.getId(), a.getId());
 			Assert.notNull(ca, String.format("[%s] is not a valid attribute of [%s]", key, type));
-			at = attributeTypeRepository.findOne(ca.getTid());
+			at = attributeTypeRepository.findById(ca.getTid());
 			Assert.notNull(at, String.format("Attribute type [%s] is not supported!", at));
 			entityRepository.save(eid, a, at, val, createdTime);
 		}
@@ -154,7 +154,7 @@ public class EntityService {
 	public String delete(Long eid) {
 		Integer cid = entityRepository.getClassIdForEntityId(eid);
 		Assert.notNull(cid, String.format("No type registered for entity with oid = [%d]", eid));
-		com.fns.grivet.model.Class c = classRepository.findOne(cid);
+        com.fns.grivet.model.Class c = classRepository.findById(cid).get();
 		String type = c.getName();
 		entityRepository.delete(eid);
 		return type;
@@ -180,13 +180,13 @@ public class EntityService {
 	}
 
 	@Transactional(readOnly=true)
-	public String findOne(Long eid) {
-		List<EntityAttributeValue> rows = entityRepository.findOneEntity(eid);
+	public String findById(Long eid) {
+		List<EntityAttributeValue> rows = entityRepository.findByIdEntity(eid);
 		if (rows == null) {
 			throw new ResourceNotFoundException(String.format("No entity exists with oid =[%d]", eid));
 		}
 		Integer cid = entityRepository.getClassIdForEntityId(eid);
-		com.fns.grivet.model.Class c = classRepository.findOne(cid);
+        com.fns.grivet.model.Class c = classRepository.findById(cid).get();
 		Map<Integer, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
 		return mapRows(attributeToAttributeTypeMap, rows).getJSONObject(0).toString();
 	}
@@ -212,7 +212,7 @@ public class EntityService {
 				jsonArray.put(jsonObject);
 			}
 			Integer tid = attributeToAttributeTypeMap.get(row.getAttributeId());
-			jsonObject.put(row.getAttributeName(), ValueHelper.getValue(attributeTypeRepository.findOne(tid), row.getAttributeValue()));
+			jsonObject.put(row.getAttributeName(), ValueHelper.getValue(attributeTypeRepository.findById(tid), row.getAttributeValue()));
 			previous = current;
 		}
 		return jsonArray;

@@ -124,9 +124,9 @@ public class ClassRegistryService {
 		Attribute a = null;
 		AttributeType at = null;
 		for (ClassAttribute ca: cas) {
-			a = attributeRepository.findOne(ca.getAid());
+            a = attributeRepository.findById(ca.getAid()).get();
 			Assert.notNull(a, String.format("Attribute id [%s] is not registered!", ca.getAid()));
-			at = attributeTypeRepository.findOne(ca.getTid());
+			at = attributeTypeRepository.findById(ca.getTid());
 			Assert.notNull(a, String.format("Attribute Type id [%s] is not registered!", ca.getTid()));
 			attributes.put(a.getName(), at.getType());
 		}

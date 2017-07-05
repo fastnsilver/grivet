@@ -110,9 +110,9 @@ public class JdbcEntityRepository implements EntityRepository {
 	}
 
 	@Override
-	public List<EntityAttributeValue> findOneEntity(Long eid) {
+	public List<EntityAttributeValue> findByIdEntity(Long eid) {
 		String sql = QueryBuilder.newInstance().obtainValuesForOneEntity().build();
-		log.trace(String.format("JdbcEntityRepository.findOne[sql=%s]", sql));
+		log.trace(String.format("JdbcEntityRepository.findById[sql=%s]", sql));
 		return mapRows(
 				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(),
 						new SqlParameterValue(Types.BIGINT, eid)));

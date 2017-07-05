@@ -18,7 +18,7 @@ public class AttributeTypeRepository {
         return nameMap.get(type);
     }
     
-    public AttributeType findOne(Integer id) {
+    public AttributeType findById(Integer id) {
         return idMap.get(id);
     }
     

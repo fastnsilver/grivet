@@ -34,7 +34,7 @@ public class JdbcEntityRepositoryTest {
     }
 
     @Test
-    public void testFindOneEntity() {
+    public void testfindByIdEntity() {
         fail("Not yet implemented");
     }
 

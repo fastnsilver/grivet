@@ -26,9 +26,9 @@ public class AttributeTypeRepositoryTest {
     }
 
     @Test
-    public void testFindOne() {
+    public void testfindById() {
         AttributeType expected = AttributeType.ISO_INSTANT;
-        AttributeType actual = repo.findOne(4);
+        AttributeType actual = repo.findById(4);
         Assert.assertNotNull("Expected matching attribute type!", actual);
         Assert.assertEquals(expected, actual);
     }
