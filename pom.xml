@@ -19,7 +19,7 @@
 	<description>A collection of services and UI that support a Grivet installation. All Grivet modules inherit profiles, properties, dependencies, plugins from here.</description>
 
     <prerequisites>
-        <maven>3.3.9</maven>
+        <maven>3.5.0</maven>
     </prerequisites>
     
 	<modules>
@@ -76,7 +76,7 @@
         <java.version>1.8</java.version>
 
         <!-- Third-party library versions -->
-        <auth0-api.version>0.3.3</auth0-api.version>
+        <auth0-api.version>0.4.0</auth0-api.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <commons-io.version>2.5</commons-io.version>
         <dashboard.version>1.0.1</dashboard.version>
@@ -102,8 +102,8 @@
         <rest-assured.version>3.0.2</rest-assured.version>
         <scala.version>2.10.6</scala.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <spring-boot-admin.version>1.5.0</spring-boot-admin.version>
-        <springfox-swagger2.version>2.6.1</springfox-swagger2.version>
+        <spring-boot-admin.version>1.5.4</spring-boot-admin.version>
+        <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
 
         <!-- Maven -->
         <apiviz.version>1.3.2.GA</apiviz.version>
@@ -138,29 +138,69 @@
         <wagon-webdav-jackrabbit.version>2.8</wagon-webdav-jackrabbit.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Finchley.BUILD-SNAPSHOT</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-releasetrain</artifactId>
+				<version>Kay-RC2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<!-- <version>Finchley.M2</version> -->
+				<version>Finchley.BUILD-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-stream-dependencies</artifactId>
+				<!-- <version>Elmhurst.M1</version> -->
+				<version>Elmhurst.BUILD-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
     <repositories>
         <repository>
             <id>spring-snapshots</id>
             <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/libs-snapshot</url>
+            <url>https://repo.spring.io/snapshot</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>readytalk-stuff</id>
+            <name>Readytalk Libraries</name>
+            <url>https://dl.bintray.com/readytalk/maven/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
     <pluginRepositories>
+    		<pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
         <pluginRepository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
