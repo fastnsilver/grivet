@@ -38,7 +38,7 @@ logging:
     com.fns.grivet: INFO
 
 endpoints:
-  all:
+  default:
     web:
       enabled: true
            
@@ -103,8 +103,8 @@ spring:
   profiles: insecure
 
 management:
-  security:
-    enabled: false
+  jolokia:
+    enabled: true
     
 security:
   basic:
