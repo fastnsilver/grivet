@@ -15,44 +15,57 @@
  */
 package com.fns.grivet.config;
 
+import java.util.Collection;
+
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.actuate.metrics.jdbc.DataSourcePoolMetrics;
+import org.springframework.boot.jdbc.metadata.DataSourcePoolMetadataProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.codahale.metrics.MetricRegistry;
 import com.fns.grivet.repo.AuditorProvider;
-import com.zaxxer.hikari.HikariDataSource;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tags;
 
 @Configuration
 @EnableTransactionManagement
 @EnableJpaAuditing(auditorAwareRef="auditorProvider")
 public class DataSourceConfig {
+    
+    @Autowired
+    private DataSource dataSource;
 
-    @Value("${spring.datasource.data-source-class-name}")
-    private String dataSourceClassName;
-    
     @Autowired
-    private DataSourceProperties dataSourceProperties;
-    
+    private Collection<DataSourcePoolMetadataProvider> metadataProviders;
+
     @Autowired
-    private MetricRegistry metricRegistry;
+    private MeterRegistry registry;
+
+    @Autowired
+    private Environment env;
+
+    @PostConstruct
+    private void instrumentDataSource() {
+        new DataSourcePoolMetrics(
+            dataSource,
+            metadataProviders,
+            "data.source",
+            Tags.zip(
+                    "stack", 
+                    env.acceptsProfiles("h2") ? "in-memory" : "external-datasource")
+        ).bindTo(registry);
+    }
     
-    @Bean
-    public HikariDataSource dataSource() {
-        final HikariDataSource ds = new HikariDataSource();
-        ds.setMaximumPoolSize(25); 
-        ds.setDataSourceClassName(dataSourceClassName); 
-        ds.addDataSourceProperty("url", dataSourceProperties.getUrl()); 
-        ds.addDataSourceProperty("user", dataSourceProperties.getUsername());
-        ds.addDataSourceProperty("password", dataSourceProperties.getPassword());
-        ds.setMetricRegistry(metricRegistry);
-        return ds;
-    } 
+    
+    
     
         
     @Bean

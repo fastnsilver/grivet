@@ -45,10 +45,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fns.grivet.service.EntityService;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -67,12 +67,12 @@ public class EntityController {
 
 	private final EntityService entityService;
 
-	private final MetricRegistry metricRegistry;
+	private final MeterRegistry meterRegistry;
 
 	@Autowired
-	public EntityController(EntityService entityService, MetricRegistry metricRegistry) {
+	public EntityController(EntityService entityService, MeterRegistry meterRegistry) {
 		this.entityService = entityService;
-		this.metricRegistry = metricRegistry;
+		this.meterRegistry = meterRegistry;
 	}
 
 	@Profile("!pipeline")
@@ -81,7 +81,7 @@ public class EntityController {
 	public ResponseEntity<?> createOne(@RequestHeader("Type") String type, @RequestBody JSONObject json) {
 		Long oid = entityService.create(type, json);
 		URI location = UriComponentsBuilder.newInstance().path("/api/v1/type").queryParam("oid", oid).build().toUri();
-		metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
+		meterRegistry.counter(String.join("store", "create", type)).increment();
 		log.info("Successfully created type [{}]", type);
 		return ResponseEntity.created(location).build();
 	}
@@ -111,7 +111,7 @@ public class EntityController {
 				} else {
 					headers.set(String.format("Location[%s]", String.valueOf(i + 1)), location.toASCIIString());
 				}
-				metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
+				meterRegistry.counter(String.join("store", "create", type)).increment();
 				log.info("Successfully created type [{}]", type);
 			} catch (Exception e) {
 				String message = LogUtil.toLog(jsonObject, String.format("Problems storing type! Portion of payload @ index[%d]\n", i+1));
@@ -136,7 +136,7 @@ public class EntityController {
 		HttpHeaders headers = new HttpHeaders();
 		URI location = UriComponentsBuilder.newInstance().path("/api/v1/type").queryParam("oid", oid).build().toUri();
 		headers.setLocation(location);
-		metricRegistry.counter(MetricRegistry.name("store", "update", type, "count")).inc();
+		meterRegistry.counter(String.join("store", "update", type)).increment();
 		log.info("Successfully updated type [{}]", type);
 		return ResponseEntity.ok().headers(headers).build();
 	}
@@ -147,7 +147,7 @@ public class EntityController {
 	public ResponseEntity<?> deleteOne(
 			@RequestParam(value = "oid", required = true) Long oid) {
 		String type = entityService.delete(oid);
-		metricRegistry.counter(MetricRegistry.name("store", "delete", type, "count")).inc();
+		meterRegistry.counter(String.join("store", "delete", type)).increment();
 		log.info("Successfully delete type [{}]", type);
 		return ResponseEntity.ok().build();
 	}

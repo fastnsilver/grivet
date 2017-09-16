@@ -12,7 +12,7 @@
 
     <groupId>com.fns</groupId>
     <artifactId>grivet-parent</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
 	<name>Grivet</name>
@@ -81,7 +81,6 @@
         <commons-io.version>2.5</commons-io.version>
         <dashboard.version>1.0.1</dashboard.version>
         <disruptor.version>3.3.6</disruptor.version>
-        <dropwizard-metrics.version>3.2.2</dropwizard-metrics.version>
         <flyway.version>4.2.0</flyway.version>
         <guava.version>19.0</guava.version>
         <hibernate.version>5.2.10.Final</hibernate.version>
@@ -97,8 +96,8 @@
         <log4j2.version>2.8.2</log4j2.version>
         <logstash-logback-encoder.version>4.9</logstash-logback-encoder.version>
         <lombok.version>1.16.16</lombok.version>
+        <micrometer.version>1.0.0-rc.1</micrometer.version>
         <mysql.version>6.0.6</mysql.version>
-        <readytalk-metrics.version>4.2.0</readytalk-metrics.version>
         <rest-assured.version>3.0.2</rest-assured.version>
         <scala.version>2.10.6</scala.version>
         <slf4j.version>1.7.25</slf4j.version>
@@ -143,14 +142,13 @@
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-releasetrain</artifactId>
-				<version>Kay-RC2</version>
+				<version>Kay-RC3</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
-				<!-- <version>Finchley.M2</version> -->
 				<version>Finchley.BUILD-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -158,7 +156,6 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-stream-dependencies</artifactId>
-				<!-- <version>Elmhurst.M1</version> -->
 				<version>Elmhurst.BUILD-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -179,14 +176,6 @@
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
             <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>readytalk-stuff</id>
-            <name>Readytalk Libraries</name>
-            <url>https://dl.bintray.com/readytalk/maven/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>

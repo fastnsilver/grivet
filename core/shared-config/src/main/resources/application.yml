@@ -7,12 +7,15 @@ spring:
   
   # (2017-09-02) As of Spring Cloud Finchley.M2+ certain auto-config and config don't work, so disable!
   # E.g., we get java.lang.NoClassDefFoundError: org/springframework/boot/actuate/endpoint/Endpoint
+  # or java.lang.NoClassDefFoundError: org/springframework/boot/autoconfigure/web/servlet/error/ErrorController 
   autoconfigure:
     exclude: 
       - org.springframework.cloud.autoconfigure.LifecycleMvcEndpointAutoConfiguration
       - org.springframework.cloud.autoconfigure.RefreshEndpointAutoConfiguration
       - org.springframework.cloud.netflix.hystrix.HystrixAutoConfiguration
       - org.springframework.cloud.stream.config.BindersHealthIndicatorAutoConfiguration
+      - org.springframework.cloud.sleuth.metric.TraceMetricsAutoConfiguration
+      - org.springframework.cloud.sleuth.instrument.web.TraceWebServletAutoConfiguration
       
   cloud:
     config:
@@ -38,7 +41,7 @@ spring:
   metrics:
     servo:
       enabled: false
-    
+      
 logging:
   level:
     org.flyway: WARN
@@ -201,14 +204,20 @@ auth0:
 
 spring:
   profiles: insecure
-
+  # @see https://github.com/spring-projects/spring-boot/issues/10306
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+      - org.springframework.cloud.autoconfigure.LifecycleMvcEndpointAutoConfiguration
+      - org.springframework.cloud.autoconfigure.RefreshEndpointAutoConfiguration
+      - org.springframework.cloud.netflix.hystrix.HystrixAutoConfiguration
+      - org.springframework.cloud.stream.config.BindersHealthIndicatorAutoConfiguration
+      - org.springframework.cloud.sleuth.metric.TraceMetricsAutoConfiguration
+      - org.springframework.cloud.sleuth.instrument.web.TraceWebServletAutoConfiguration
+      
 management:
   jolokia:
     enabled: true
-    
-security:
-  basic:
-    enabled: false
     
 ---
 

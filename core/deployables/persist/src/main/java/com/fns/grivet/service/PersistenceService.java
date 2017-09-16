@@ -8,20 +8,20 @@ import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 
-import com.codahale.metrics.MetricRegistry;
 import com.fns.grivet.model.Op;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PersistenceService {
 
 	private final EntityService entityService;
-	private final MetricRegistry metricRegistry;
+	private final MeterRegistry meterRegistry;
 
-	public PersistenceService(EntityService entityService, MetricRegistry metricRegistry) {
+	public PersistenceService(EntityService entityService, MeterRegistry meterRegistry) {
 		this.entityService = entityService;
-		this.metricRegistry = metricRegistry;
+		this.meterRegistry = meterRegistry;
 	}
 
 	@ServiceActivator(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
@@ -44,21 +44,21 @@ public class PersistenceService {
 					type = message.getHeaders().get("type", String.class);
 					Assert.hasText(type, "Message header must contain a type for create requests!");
 					entityService.create(type, message.getPayload());
-					metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
+					meterRegistry.counter(String.join("store", "create", type)).increment();
 					log.info("Successfully created type [{}]", type);
 					break;
 				case UPDATE:
 					oid = message.getHeaders().get("oid", Long.class);
 					Assert.notNull(oid, "Message header must contain an oid for update requests!");
 					type = entityService.update(oid, message.getPayload());
-					metricRegistry.counter(MetricRegistry.name("store", "update", type, "count")).inc();
+					meterRegistry.counter(String.join("store", "update", type)).increment();
 					log.info("Successfully updated type [{}]", type);
 					break;
 				case DELETE:
 					oid = message.getHeaders().get("oid", Long.class);
 					Assert.notNull(oid, "Message header must contain an oid for delete requests!");
 					type = entityService.delete(oid);
-					metricRegistry.counter(MetricRegistry.name("store", "delete", type, "count")).inc();
+					meterRegistry.counter(String.join("store", "delete", type)).increment();
 					log.info("Successfully deleted type [{}]", type);
 					break;
 				default:
