@@ -13,6 +13,10 @@ services:
     ports:
       - 80:80
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/

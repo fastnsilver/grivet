@@ -1,11 +1,3 @@
-server:
-  port: 8088
-  compression:
-    enabled: true
-  undertow:
-    accesslog:
-      enabled: true
-
 spring:
   application:
     name: @project.artifactId@

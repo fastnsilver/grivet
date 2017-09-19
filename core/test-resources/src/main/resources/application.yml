@@ -1,3 +1,6 @@
+ribbon:
+  ServerListRefreshInterval: 1000
+
 spring:
   profiles:
     active: h2,insecure
@@ -13,6 +16,12 @@ spring:
       - org.springframework.cloud.stream.config.BindersHealthIndicatorAutoConfiguration
       - org.springframework.cloud.sleuth.metric.TraceMetricsAutoConfiguration
       - org.springframework.cloud.sleuth.instrument.web.TraceWebServletAutoConfiguration
+  
+  cloud:
+    config:
+      enabled: false
+    discovery:
+      enabled: false
       
   jpa:
     hibernate:

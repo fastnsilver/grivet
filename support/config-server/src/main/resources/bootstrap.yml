@@ -13,4 +13,5 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/fastnsilver/spring-boot-microservice-config.git
+          uri: https://github.com/fastnsilver/config-repo.git
+          searchPaths: '{application}'
