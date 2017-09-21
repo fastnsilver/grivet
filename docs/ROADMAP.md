@@ -50,16 +50,18 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Add registration, storage and retrieval support for `boolean` entity attribute values
 - [x] Allow for querying, updating, and deleting an entity by its object identifier
 - [x] [Upgrade](https://github.com/fastnsilver/grivet/issues/8) Docker Compose configuration
-- [ ] Password-protect service administration and discovery
 - [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
 - [x] Switch documentation generation from Springfox Swagger to Spring RestDocs
-- [ ] Host demo site on AWS (bring up Kubernetes or Mesos Cluster w/ Terraform)
-- [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
+- [ ] Host demo site on PWS
 - [x] Apache Kafka [integration](https://github.com/fastnsilver/grivet/issues/7)
 
 ## 0.4.0
 
 - [ ] Implement [Vaadin](https://vaadin.com/home)-based administrative UI
+- [x] Upgrade implementation to Spring Framework 5, Spring Boot 2.0 and Spring Cloud Finchley
+- [ ] Implement Kubernetes deployment option
+- [ ] Password-protect service administration and discovery
+- [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
 
 ## 0.5.0
 

@@ -4,13 +4,21 @@ This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.
 
 ## Prerequisites
 
-* [Docker Toolbox](http://docs.docker.com/mac/started/); `docker`, `docker-machine` and `docker-compose` are required
-* Java [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8.0_45 or better
-* [Maven](https://maven.apache.org/download.cgi) 3.3.3 or better
-* an RDBMS (H2 is the default w/ no additional configuration); see [application.yml](https://github.com/fastnsilver/grivet/blob/master/core/shared-config/src/main/resources/application.yml) for details
+* `docker` and `docker-compose` are required, you have options
+  * See [Docker Toolbox](https://www.docker.com/products/docker-toolbox) -- note that this is considered a legacy option
+  * See [Docker for Mac](https://docs.docker.com/docker-for-mac/)
+  * See [Docker for Windows 10](https://docs.docker.com/docker-for-windows/)
+* Java [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8u144 or better
+* [Maven](https://maven.apache.org/download.cgi) 3.5.0 or better
+* an RDBMS
+  * See [application.yml](https://github.com/fastnsilver/config-repo/blob/master/application.yml) for details
+  * Enable the `h2` profile for in-memory database
+  * Enable the `mysql` profile for MySQL database (assumes MySQL instance was provisioned)
 
 
 ## How to build
+
+> If you have installed `Docker for Mac` or `Docker for Windows` installed, create a file in project root named `.local`
 
 ```
 $ mvn clean install
@@ -19,63 +27,54 @@ $ mvn clean install
 
 ## How to run
 
-### with Spring Boot
+### with Spring Boot and Spring Cloud Services
 
-This option is only suitable for running the `grivet` service
+> Follow these steps to run the `grivet-standalone` service
 
-First, change directories
+Open 3 terminal shells:
 
-```
-cd core/deployables/grivet-standalone
-```
-
-Then
+#### 1
 
 ```
+$ cd support/config-server
 $ mvn spring-boot:run
 ```
 
-Or
+#### 2
 
 ```
+$ cd support/discovery-service
+$ mvn spring-boot:run
+```
+
+#### 3
+
+```
+$ cd core/deployables/grivet-standalone
 $ mvn spring-boot:run -Dspring.profiles.active=<profile-name>
 ```
 
-where `<profile-name>` could be replaced with `h2` or `mysql`
+where `<profile-name>` should be replaced with either `h2` or `mysql`
 
-Or 
+> If you activated the `mysql` profile you should already have provisioned a MySQL instance.
 
-```
-$ java -jar grivet-standalone-x.x.x.jar
-```
+> E.g., on a Mac, you could install [Homebrew](http://brew.sh/), then install MySQL with
 
-where `x.x.x` is a version like `0.0.1-SNAPSHOT`
+>```
+>brew install mysql
+>```
 
-Or
+> Then start the instance with `mysql.server start`
 
-```
-$ java -jar grivet-standalone-x.x.x.jar -Dspring.profiles.active=<profile-name>
-```
+> The instance will need to have a schema created before attempting to run the service as directed above.
 
-likewise replacing `<profile-name>`
-
-
-If you activate the `mysql` profile you will need to provision a MySQL instance.
-
-On a Mac, you could install [Homebrew](http://brew.sh/), then install MySQL with
-
-```
-brew install mysql
-```
-
-The instance will need to have a schema created before attempting to run the service as directed above.
-
-Consult [application.yml](https://github.com/fastnsilver/grivet/blob/master/core/shared-config/src/main/resources/application.yml) in order to override `spring.datasource.*` properties.
+> Consult [application.yml](https://github.com/fastnsilver/config-repo/blob/master/application.yml) in order to override `spring.datasource.*` properties.
 
 
 
 ### with Docker
 
+#### (Optional) Docker Toolbox pre-requisites
 Assuming you have installed VirtualBox, Docker Machine, Docker Compose and Docker.
 
 If not, it's highly recommended (on a Mac) to install each via [Homebrew](http://brew.sh/) with
@@ -124,33 +123,34 @@ where `{1}` above would be replaced with an existing docker-machine name
 
 Caution! This will remove the VM hosting all your Docker images.
 
+#### Onward with Docker
 
-#### Build images
+##### Build images
 
 ```
 ./build.sh
 ```
 
 
-#### Publish images
+##### Publish images
 
 Assumes proper authentication credentials have been added to `$HOME/.m2/settings.xml`. See:
 
-* [Authenticating with Private Registries](https://github.com/spotify/docker-maven-plugin#authenticating-with-private-registries)
+* [Authenticating with Private Registries](https://dmp.fabric8.io/#authentication)
 
 ```
-mvn clean install -DpushImage
+mvn docker:push
 ```
 
 
-#### Pull images
+##### Pull images
 
 Visit [Dockerhub](https://hub.docker.com/u/fastnsilver/)
 
 Pull all the `fastnsilver/grivet-*` images
 
 
-#### Run images
+##### Run images
 
 ```
 ./startup.sh {1}
@@ -159,7 +159,9 @@ Pull all the `fastnsilver/grivet-*` images
 where `{1}` above would be replaced with either `standalone` or `pipeline`
 
 
-##### Running a local development environment
+##### Running a local development environment (with Docker Toolbox)
+
+> The following holds true only if you opted to install Docker Toolbox
 
 @see https://forums.docker.com/t/using-localhost-for-to-access-running-container/3148
 
