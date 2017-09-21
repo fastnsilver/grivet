@@ -13,5 +13,5 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/fastnsilver/config-repo.git
+          uri: https://github.com/fastnsilver/grivet-config-repo.git
           searchPaths: '{application}'
