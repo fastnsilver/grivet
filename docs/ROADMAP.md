@@ -58,6 +58,8 @@ This project will remain humble in its design and has no aspirations to match th
 ## 0.4.0
 
 - [ ] Implement [Vaadin](https://vaadin.com/home)-based administrative UI
+- [x] Replace DropWizard with [Micrometer](http://micrometer.io)
+- [ ] Switch time-series back-end to [Prometheus](https://prometheus.io)
 - [x] Upgrade implementation to Spring Framework 5, Spring Boot 2.0 and Spring Cloud Finchley
 - [ ] Implement Kubernetes deployment option
 - [ ] Password-protect service administration and discovery
