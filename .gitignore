@@ -170,7 +170,8 @@ fabric.properties
 
 # Application #
 ###############
-logs/
+*.log
+.local
 
 # Docker #
 ##########
