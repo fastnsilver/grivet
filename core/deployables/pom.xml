@@ -90,6 +90,17 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>com.fns</groupId>
+            <artifactId>grivet-shared-config</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fns</groupId>
+            <artifactId>grivet-test-resources</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.skyscreamer</groupId>
             <artifactId>jsonassert</artifactId>
             <exclusions>
@@ -98,6 +109,7 @@
                     <artifactId>android-json</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

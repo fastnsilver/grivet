@@ -60,6 +60,7 @@ endpoints:
 spring:
   profiles: hsqldb
   datasource:
+    name: test-hsqldb
     url: jdbc:hsqldb:mem:grivetdb
     driver-class-name: org.hsqldb.jdbcDriver
     data-source-class-name: org.hsqldb.jdbc.JDBCDataSource
@@ -88,6 +89,7 @@ spring:
 spring:
   profiles: h2
   datasource:
+    name: test-h2
     url: jdbc:h2:mem:grivetdb;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
     driver-class-name: org.h2.Driver
     data-source-class-name: org.h2.jdbcx.JdbcDataSource

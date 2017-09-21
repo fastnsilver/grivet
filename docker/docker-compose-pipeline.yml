@@ -88,7 +88,7 @@ services:
       - db
     environment:
       - SPRING_PROFILES_ACTIVE=mysql,insecure
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
@@ -112,7 +112,7 @@ services:
       - zookeeper:zk
     environment:
       - SPRING_PROFILES_ACTIVE=mysql,insecure,pipeline
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
@@ -133,7 +133,7 @@ services:
       - db
     environment:
       - SPRING_PROFILES_ACTIVE=mysql,insecure
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888

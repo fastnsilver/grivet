@@ -85,7 +85,7 @@
         <guava.version>23.0-android</guava.version>
         <hibernate.version>5.2.11.Final</hibernate.version>
         <hikaricp.version>2.7.1</hikaricp.version>
-        <jackson.version>2.9.0.pr3</jackson.version>
+        <jackson.version>2.9.0</jackson.version>
         <jadira.version>6.0.1.GA</jadira.version>
         <javax.persistence.version>1.0.0.Final</javax.persistence.version>
         <javax.validation-api.version>2.0.0.Final</javax.validation-api.version>
@@ -107,7 +107,7 @@
         <!-- Maven -->
         <apiviz.version>1.3.2.GA</apiviz.version>
         <asciidoctor-maven-plugin.version>1.5.5</asciidoctor-maven-plugin.version>
-        <docker-maven-plugin.version>1.0.0</docker-maven-plugin.version>
+        <docker-maven-plugin.version>0.22.1</docker-maven-plugin.version>
         <downloads-maven-plugin.version>0.6</downloads-maven-plugin.version>
         <doxia-module-markdown.version>1.6</doxia-module-markdown.version>
         <findbugs-maven-plugin.version>3.0.3</findbugs-maven-plugin.version>
@@ -852,83 +852,63 @@
         </profile>
 
         <profile>
-        	<id>dockerize</id>
-        	<activation>
+        		<id>dockerize</id>
+        		<activation>
 	            <file>
 	                <exists>.dockerize</exists>
 	            </file>
 	        </activation>
-        	<build>
-        		<plugins>
-        			<plugin>
-  						<groupId>com.spotify</groupId>
+	        	<build>
+	        		<plugins>
+	        			<plugin>
+	 					<groupId>io.fabric8</groupId>
 						<artifactId>docker-maven-plugin</artifactId>
 						<version>${docker-maven-plugin.version}</version>
 						<configuration>
-							<imageName>fastnsilver/${project.artifactId}</imageName>
-							<dockerDirectory>${project.build.directory}/docker-ready</dockerDirectory>
-							<resources>
-					        	<resource>
-					            	<targetPath>/</targetPath>
-					             	<directory>${project.build.directory}</directory>
-					             	<include>${project.artifactId}-${project.version}-exec.jar</include>
-					           	</resource>
-					        </resources>
-					        <serverId>docker.io</serverId>
+							<images>
+								<image>
+									<name>fastnsilver/%a:%l</name>
+									<build>
+										<dockerFileDir>${project.build.directory}/docker-ready</dockerFileDir>
+									</build>
+								</image>
+							</images>
+							<skipMachine>true</skipMachine>
 						</configuration>
 						<executions>
-                            <execution>
-                                <id>remove-docker-image</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>removeImage</goal>
-                                </goals>
-                                <configuration>
-                                    <imageName>fastnsilver/${project.artifactId}</imageName>
-                                </configuration>
-                            </execution>
-							<execution>
-								<id>build-docker-image</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>build</goal>
-								</goals>
-                                <configuration>
-                                    <noCache>true</noCache>
-                                </configuration>
-							</execution>
-							<execution>
-								<id>tag-docker-image</id>
-								<phase>install</phase>
-								<goals>
-									<goal>tag</goal>
-								</goals>
-								<configuration>
-									<image>fastnsilver/${project.artifactId}</image>
-									<newName>fastnsilver/${project.artifactId}:${project.version}</newName>
-								</configuration>
-							</execution>
-							<execution>
-								<id>deploy-docker-image</id>
-								<phase>deploy</phase>
-								<goals>
-									<goal>tag</goal>
-								</goals>
-								<configuration>
-									<image>fastnsilver/${project.artifactId}:${project.version}</image>
-									<newName>docker.io/fastnsilver/${project.artifactId}:${project.version}</newName>
-									<pushImage>true</pushImage>
-								</configuration>
-							</execution>
-						</executions>
+    							<execution>
+    								<id>destroy-latest-docker-image</id>
+    								<phase>clean</phase>
+    								<goals>
+    									<goal>remove</goal>
+    								</goals>
+    								<configuration>
+    									<removeAll>true</removeAll>
+    								</configuration>
+    							</execution>
+    							<execution>
+    								<id>build-new-docker-image</id>
+    								<phase>install</phase>
+    								<goals>
+    									<goal>build</goal>
+    								</goals>
+    							</execution>
+    							<execution>
+    								<id>publish-docker-image</id>
+    								<phase>deploy</phase>
+    								<goals>
+    									<goal>push</goal>
+    								</goals>
+    							</execution>
+    						</executions>
 					</plugin>
 					<plugin>
 					    <artifactId>maven-resources-plugin</artifactId>
 					    <version>${maven-resources-plugin.version}</version>
 					    <executions>
 					        <execution>
-					            <id>prepare-dockerfile</id>
-					            <phase>validate</phase>
+					            <id>prepare-for-docker-build</id>
+					            <phase>verify</phase>
 					            <goals>
 					                <goal>copy-resources</goal>
 					            </goals>
@@ -939,13 +919,19 @@
 					                        <directory>src/main/docker</directory>
 					                        <filtering>true</filtering>
 					                    </resource>
+					                    <resource>
+					                        <directory>${project.build.directory}</directory>
+					                        <includes>
+					                            <include>${project.artifactId}-${project.version}-exec.jar</include>
+					                        </includes>
+					                    </resource>
 					                </resources>
 					            </configuration>
 					        </execution>
 					    </executions>
 					</plugin>
-        		</plugins>
-        	</build>
+	        		</plugins>
+        		</build>
         </profile>
 
     </profiles>

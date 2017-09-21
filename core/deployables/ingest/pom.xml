@@ -23,18 +23,6 @@
             <artifactId>grivet-common</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.fns</groupId>
-            <artifactId>grivet-shared-config</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fns</groupId>
-            <artifactId>grivet-test-resources</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
 
         <!-- Spring Boot -->
         <dependency>
@@ -109,7 +97,7 @@
 
         <!-- javax.validation provider implementation -->
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
 

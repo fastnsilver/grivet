@@ -30,11 +30,11 @@ services:
     links:
       - config-service
       - discovery-service
-      - graphite
+      - prometheus
       - db
     environment:
       - SPRING_PROFILES_ACTIVE=mysql,insecure,standalone
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx2g -XX:+UseG1GC -XX:+UseStringDeduplication
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
