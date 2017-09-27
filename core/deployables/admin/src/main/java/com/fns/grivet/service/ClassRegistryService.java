@@ -16,9 +16,9 @@
 package com.fns.grivet.service;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.StreamSupport;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -138,12 +138,9 @@ public class ClassRegistryService {
 		JSONArray result = new JSONArray();
 		Iterable<com.fns.grivet.model.Class> iterable = classRepository.findAll();
 		Assert.notNull(iterable, "No types are registered!");
-		Iterator<com.fns.grivet.model.Class> it = iterable.iterator();
-		com.fns.grivet.model.Class c = null;
-		while(it.hasNext()) {
-			c = it.next();
-			result.put(get(c.getName()));
-		}
+		StreamSupport
+		    .stream(iterable.spliterator(), false)
+		        .forEach(c -> result.put(get(c.getName())));
 		return result;
 	}
 

@@ -68,6 +68,10 @@
             		<groupId>org.springframework.boot</groupId>
             		<artifactId>spring-boot-starter-logging</artifactId>
             	</exclusion>
+            	<exclusion>
+            		<groupId>com.jayway.jsonpath</groupId>
+            		<artifactId>json-path</artifactId>
+            	</exclusion>
             </exclusions>
         </dependency>
         
@@ -103,6 +107,12 @@
             <groupId>org.skyscreamer</groupId>
             <artifactId>jsonassert</artifactId>
             <scope>test</scope>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.vaadin.external.google</groupId>
+            		<artifactId>android-json</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         
     </dependencies>

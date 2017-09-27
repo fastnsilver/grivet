@@ -14,14 +14,9 @@ spring:
       - org.springframework.cloud.autoconfigure.RefreshEndpointAutoConfiguration
       - org.springframework.cloud.netflix.hystrix.HystrixAutoConfiguration
       - org.springframework.cloud.stream.config.BindersHealthIndicatorAutoConfiguration
+      - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
       - org.springframework.cloud.sleuth.metric.TraceMetricsAutoConfiguration
       - org.springframework.cloud.sleuth.instrument.web.TraceWebServletAutoConfiguration
-  
-  cloud:
-    config:
-      enabled: false
-    discovery:
-      enabled: false
       
   jpa:
     hibernate:
@@ -124,6 +119,7 @@ spring:
       - org.springframework.cloud.autoconfigure.RefreshEndpointAutoConfiguration
       - org.springframework.cloud.netflix.hystrix.HystrixAutoConfiguration
       - org.springframework.cloud.stream.config.BindersHealthIndicatorAutoConfiguration
+      - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
       - org.springframework.cloud.sleuth.metric.TraceMetricsAutoConfiguration
       - org.springframework.cloud.sleuth.instrument.web.TraceWebServletAutoConfiguration
       
