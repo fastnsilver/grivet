@@ -142,7 +142,7 @@
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-releasetrain</artifactId>
-				<version>Kay-RC3</version>
+				<version>Kay-RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
