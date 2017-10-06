@@ -54,7 +54,7 @@ $ cd core/deployables/grivet-standalone
 $ mvn spring-boot:run -Dspring.profiles.active=<profile-name>
 ```
 
-where `<profile-name>` should be replaced with either `h2` or `mysql`
+where `<profile-name>` should be replaced with either `h2,insecure` or `mysql,insecure`
 
 > If you activated the `mysql` profile you should already have provisioned a MySQL instance.
 

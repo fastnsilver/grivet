@@ -80,7 +80,7 @@
         <commons-lang3.version>3.6</commons-lang3.version>
         <commons-io.version>2.5</commons-io.version>
         <dashboard.version>1.0.1</dashboard.version>
-        <disruptor.version>3.3.6</disruptor.version>
+        <disruptor.version>3.3.7</disruptor.version>
         <flyway.version>4.2.0</flyway.version>
         <guava.version>23.0-android</guava.version>
         <hibernate.version>5.2.11.Final</hibernate.version>
@@ -93,10 +93,10 @@
         <json.version>20170516</json.version>
         <json-schema-validator.version>2.2.6</json-schema-validator.version>
         <jsr305.version>3.0.1</jsr305.version>
-        <log4j2.version>2.9.0</log4j2.version>
+        <log4j2.version>2.9.1</log4j2.version>
         <logstash-logback-encoder.version>4.9</logstash-logback-encoder.version>
         <lombok.version>1.16.18</lombok.version>
-        <micrometer.version>1.0.0-rc.1</micrometer.version>
+        <micrometer.version>1.0.0-SNAPSHOT</micrometer.version>
         <mysql.version>8.0.7-dmr</mysql.version>
         <rest-assured.version>3.0.2</rest-assured.version>
         <scala.version>2.10.6</scala.version>
