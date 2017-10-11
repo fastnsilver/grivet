@@ -181,12 +181,11 @@ Services are accessible via the Docker host (or IP address) and port
 
 Service            |  Port
 -------------------|-------
-Spring Boot Admin  | 5555
 Microservices Dash | 8088
-Edge Service (Zuul)| 80
+Edge Service (Zuul)| 9999
 Config Server      | 8888
 Discovery (Eureka) | 8761
-Graphite           | 8000
+Prometheus         | 9090
 Grafana            | 3000
 Grivet Standalone  | 8080
 PHP MySQL Admin    | 4000

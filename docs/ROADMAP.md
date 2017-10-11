@@ -50,9 +50,7 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Add registration, storage and retrieval support for `boolean` entity attribute values
 - [x] Allow for querying, updating, and deleting an entity by its object identifier
 - [x] [Upgrade](https://github.com/fastnsilver/grivet/issues/8) Docker Compose configuration
-- [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
 - [x] Switch documentation generation from Springfox Swagger to Spring RestDocs
-- [ ] Host demo site on PWS
 - [x] Apache Kafka [integration](https://github.com/fastnsilver/grivet/issues/7)
 
 ## 0.4.0
@@ -61,15 +59,18 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Replace DropWizard with [Micrometer](http://micrometer.io)
 - [ ] Switch time-series back-end to [Prometheus](https://prometheus.io)
 - [x] Upgrade implementation to Spring Framework 5, Spring Boot 2.0 and Spring Cloud Finchley
-- [ ] Implement Kubernetes deployment option
 - [ ] Password-protect service administration and discovery
 - [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
+- [ ] Add [Zipkin](http://zipkin.io) integration for [real-time track and trace](http://cloud.spring.io/spring-cloud-sleuth/single/spring-cloud-sleuth.html#_sending_spans_to_zipkin)
 
 ## 0.5.0
 
 - [ ] Add cache provider (e.g., Redis)
+- [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
 - [ ] Plumb Hystrix/Turbine for latency and fault protection
+- [ ] Host demo site on PWS
 
 ## 0.6.0
 
 - [ ] Gradle build (as an alternative)
+- [ ] Implement Kubernetes deployment option
