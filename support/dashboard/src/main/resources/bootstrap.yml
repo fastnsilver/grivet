@@ -1,6 +1,6 @@
 spring:
   application:
-    name: @project.artifactId@
+    name: grivet-microservices-dashboard
 
 info:
-  title: @project.name@
+  title: Grivet Microservices Dashboard

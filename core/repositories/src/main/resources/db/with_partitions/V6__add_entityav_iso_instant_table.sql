@@ -9,6 +9,7 @@ PARTITION BY RANGE COLUMNS(created_time) (
   PARTITION p0 VALUES LESS THAN ('1970-07-14 00:00:00')
 );
 
+CALL CreatePreviousPartitions('entityav_iso_instant', 2);
 CALL CreateFuturePartitions('entityav_iso_instant', 2);
 CALL DropNamedPartition('entityav_iso_instant', 'p0');
 

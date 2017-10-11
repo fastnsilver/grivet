@@ -12,7 +12,7 @@
 	<artifactId>grivet-query</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Grivet Query</name>
+	<name>Grivet Query Service</name>
 	<description>Query end-points.</description>
 	<inceptionYear>2016</inceptionYear>
 	<url>https://github.com/fastnsilver/grivet</url>
@@ -44,10 +44,6 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-tomcat</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -56,19 +52,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-            <version>${disruptor.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         
         <dependency>

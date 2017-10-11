@@ -12,7 +12,7 @@
     <artifactId>grivet-discovery-service</artifactId>
     <packaging>jar</packaging>
 
-    <name>Discovery Service</name>
+    <name>Grivet Discovery Service</name>
     <description>This discovery service is powered by Eureka.  Eureka is a REST based service that is primarily used in the AWS cloud for locating services for the purpose of load balancing and fail-over of middle-tier servers.</description>
     <inceptionYear>2015</inceptionYear>
 

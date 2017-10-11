@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
 
 
-    <name>Spring Boot Application Admin</name>
+    <name>Grivet Microservices Console</name>
     <description>Provides an overview of all running Spring Boot Micro Services in Grivet environment.</description>
     <inceptionYear>2015</inceptionYear>
 

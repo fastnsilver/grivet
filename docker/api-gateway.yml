@@ -11,7 +11,7 @@ services:
   zuul:
     image: fastnsilver/grivet-api-gateway
     ports:
-      - 80:80
+      - 9999:9999
     environment:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication

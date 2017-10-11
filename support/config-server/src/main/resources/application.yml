@@ -1,12 +1,7 @@
 spring:
-  # (2017-09-02) As of Spring Cloud Finchley.M2+ certain auto-config and config don't work, so disable!
-  # E.g., we get java.lang.NoClassDefFoundError: org/springframework/boot/actuate/endpoint/Endpoint
-  # or java.lang.NoClassDefFoundError: org/springframework/boot/autoconfigure/web/servlet/error/ErrorController 
+  # (2017-10-02) As of Spring Cloud Finchley.M2+ certain auto-config and config don't work, so disable! 
   autoconfigure:
     exclude: 
-      - org.springframework.cloud.autoconfigure.LifecycleMvcEndpointAutoConfiguration
-      - org.springframework.cloud.autoconfigure.RefreshEndpointAutoConfiguration
       - org.springframework.cloud.netflix.hystrix.HystrixAutoConfiguration
       - org.springframework.cloud.stream.config.BindersHealthIndicatorAutoConfiguration
-      - org.springframework.cloud.sleuth.metric.TraceMetricsAutoConfiguration
-      - org.springframework.cloud.sleuth.instrument.web.TraceWebServletAutoConfiguration
+      - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration

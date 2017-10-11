@@ -76,12 +76,6 @@
 			<groupId>io.gatling</groupId>
 			<artifactId>gatling-app</artifactId>
 			<scope>test</scope>
-			<exclusions>
-			    <exclusion>
-			        <artifactId>logback-classic</artifactId>
-			        <groupId>ch.qos.logback</groupId>
-			    </exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.gatling</groupId>

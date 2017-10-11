@@ -8,10 +8,9 @@ server:
 
 spring:
   application:
-    name: @project.artifactId@
+    name: grivet-config-service
   cloud:
     config:
       server:
         git:
           uri: https://github.com/fastnsilver/grivet-config-repo.git
-          searchPaths: '{application}'

@@ -141,19 +141,19 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
   
   ### SPRING BOOT SERVICE ADMINISTRATION
-  springboot-admin:
-    image: fastnsilver/grivet-boot-admin
-    ports:
-      - 5555:5555
-    links:
-      - discovery-service
-    environment:
-      - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx1g -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
-      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/
+#  springboot-admin:
+#    image: fastnsilver/grivet-boot-admin
+#    ports:
+#      - 5555:5555
+#    links:
+#      - discovery-service
+#    environment:
+#      - DOCKER_IP=$DOCKER_IP
+#      - JAVA_OPTS=-Xmx1g -XX:+UseG1GC -XX:+UseStringDeduplication
+#      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+#      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+#      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
+#      - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/
   
   ### SPRING BOOT DASHBOARD
   springboot-dashboard:

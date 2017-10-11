@@ -17,7 +17,7 @@
 
 	<modules>
         <module>api-gateway</module>
-        <module>boot-admin</module>
+        <!-- <module>boot-admin</module> -->
         <module>config-server</module>
         <module>dashboard</module>
         <module>discovery-service</module>
@@ -28,12 +28,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -48,15 +42,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-            <version>${disruptor.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jolokia</groupId>
@@ -125,7 +110,7 @@
                 </executions>
                 <configuration>
                     <outputDirectory>${project.basedir}/src/main/resources-filtered</outputDirectory>
-                    <info>Commit: @git.commit.id@, Version: ${project.version}, Active Profiles: ${spring.profiles.active}</info>
+                    <info>Commit: @git.commit.id@, Version: ${project.version}, Active Profiles: ${spring.profiles.active:}</info>
                 </configuration>
             </plugin>
         </plugins>

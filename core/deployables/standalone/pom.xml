@@ -12,7 +12,7 @@
 	<artifactId>grivet-standalone</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Grivet Standalone</name>
+	<name>Grivet Standalone Service</name>
 	<description>Standalone variant of a micro-service capable of self-service modeling and persistence.</description>
 	<inceptionYear>2015</inceptionYear>
 	<url>https://github.com/fastnsilver/grivet</url>
@@ -64,14 +64,10 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
             <exclusions>
-            	<exclusion>
-            		<groupId>org.springframework.boot</groupId>
-            		<artifactId>spring-boot-starter-logging</artifactId>
-            	</exclusion>
-            	<exclusion>
-            		<groupId>com.jayway.jsonpath</groupId>
-            		<artifactId>json-path</artifactId>
-            	</exclusion>
+	            	<exclusion>
+	            		<groupId>com.jayway.jsonpath</groupId>
+	            		<artifactId>json-path</artifactId>
+	            	</exclusion>
             </exclusions>
         </dependency>
         

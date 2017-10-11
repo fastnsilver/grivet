@@ -17,7 +17,7 @@ services:
     links:
       - discovery-service
       - config-service
-      - springboot-admin
+#      - springboot-admin
       - grivet-ingest
       - grivet-admin
       - grivet-persist

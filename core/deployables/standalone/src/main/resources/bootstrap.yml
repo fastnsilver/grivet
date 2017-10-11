@@ -1,4 +1,4 @@
 spring:
   application:
-    name: @project.artifactId@
+    name: grivet-standalone-service
     
