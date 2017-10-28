@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
@@ -36,12 +37,14 @@ import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.ClassAttribute;
 import com.fns.grivet.model.EntityAttributeValue;
+import com.fns.grivet.model.EntityKey;
 import com.fns.grivet.model.ValueHelper;
 import com.fns.grivet.query.DynamicQuery;
 import com.fns.grivet.repo.AttributeRepository;
 import com.fns.grivet.repo.AttributeTypeRepository;
 import com.fns.grivet.repo.ClassAttributeRepository;
 import com.fns.grivet.repo.ClassRepository;
+import com.fns.grivet.repo.EntityKeyRepository;
 import com.fns.grivet.repo.EntityRepository;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.google.common.collect.Lists;
@@ -54,23 +57,25 @@ public class EntityService {
 	private final ClassAttributeRepository classAttributeRepository;
 	private final AttributeRepository attributeRepository;
 	private final AttributeTypeRepository attributeTypeRepository;
+	private final EntityKeyRepository entityKeyRepository;
 	private final EntityRepository entityRepository;
 	private final SchemaValidator schemaValidator;
 
 	@Autowired
 	public EntityService(ClassRepository classRepository, ClassAttributeRepository classAttributeRepository,
 			AttributeRepository attributeRepository, AttributeTypeRepository attributeTypeRepository,
-			EntityRepository entityRepository, SchemaValidator schemaValidator) {
+			EntityKeyRepository entityKeyRepository, EntityRepository entityRepository, SchemaValidator schemaValidator) {
 		this.classRepository = classRepository;
 		this.classAttributeRepository = classAttributeRepository;
 		this.attributeRepository = attributeRepository;
 		this.attributeTypeRepository = attributeTypeRepository;
+		this.entityKeyRepository = entityKeyRepository;
 		this.entityRepository = entityRepository;
 		this.schemaValidator = schemaValidator;
 	}
 
 	@Transactional
-	public Long create(String type, JSONObject payload) {
+	public UUID create(String type, JSONObject payload) {
 		com.fns.grivet.model.Class c = classRepository.findByName(type);
 		Assert.notNull(c, String.format("Type [%s] is not registered!", type));
 		if (c.isValidatable()) {
@@ -84,7 +89,7 @@ public class EntityService {
 		AttributeType at = null;
 		// entity and entity-attribute-values should be stamped with same date/time
 		LocalDateTime createdTime = LocalDateTime.now();
-		Long eid = entityRepository.newId(c.getId(), createdTime);
+		EntityKey ek = entityKeyRepository.save(EntityKey.builder().cid(c.getId()).createdTime(createdTime).build());
 		// TODO create an expiring cache of attribute names for faster lookups (friendlier database use)
 		for (String key: keys) {
 			val = payload.get(key);
@@ -94,14 +99,14 @@ public class EntityService {
 			Assert.notNull(ca, String.format("[%s] is not a valid attribute of [%s]", key, type));
 			at = attributeTypeRepository.findById(ca.getTid());
 			Assert.notNull(at, String.format("Attribute type [%s] is not supported!", at));
-			entityRepository.save(eid, a, at, val, createdTime);
+			entityRepository.save(ek.getEid(), a, at, val, createdTime);
 		}
-		return eid;
+		return ek.getEid();
 	}
 
 	@Transactional
-	public String update(Long eid, JSONObject payload) {
-		Integer cid = entityRepository.getClassIdForEntityId(eid);
+	public String update(UUID eid, JSONObject payload) {
+		UUID cid = entityRepository.getClassIdForEntityId(eid);
 		Assert.notNull(cid, String.format("No type registered for entity with oid = [%d]", eid));
         com.fns.grivet.model.Class c = classRepository.findById(cid).get();
 		String type = c.getName();
@@ -151,8 +156,8 @@ public class EntityService {
 	}
 
 	@Transactional
-	public String delete(Long eid) {
-		Integer cid = entityRepository.getClassIdForEntityId(eid);
+	public String delete(UUID eid) {
+		UUID cid = entityRepository.getClassIdForEntityId(eid);
 		Assert.notNull(cid, String.format("No type registered for entity with oid = [%d]", eid));
         com.fns.grivet.model.Class c = classRepository.findById(cid).get();
 		String type = c.getName();
@@ -165,9 +170,9 @@ public class EntityService {
 			Map<String, String[]> parameters) throws JsonProcessingException {
 		com.fns.grivet.model.Class c = classRepository.findByName(type);
 		Assert.notNull(c, String.format("Type [%s] is not registered!", type));
-		Map<Integer, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
+		Map<UUID, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
 		List<Attribute> attributes = Lists.newArrayList(attributeRepository.findAll());
-		Map<String, Integer> attributeNameToAttributeIdMap = attributes.stream().collect(Collectors.toMap(Attribute::getName, Attribute::getId));
+		Map<String, UUID> attributeNameToAttributeIdMap = attributes.stream().collect(Collectors.toMap(Attribute::getName, Attribute::getId));
 		Set<Entry<String, String[]>> params = parameters == null ? null : parameters.entrySet();
 		DynamicQuery query = new DynamicQuery(params, attributeToAttributeTypeMap, attributeNameToAttributeIdMap);
 		List<EntityAttributeValue> rows = null;
@@ -180,14 +185,14 @@ public class EntityService {
 	}
 
 	@Transactional(readOnly=true)
-	public String findById(Long eid) {
+	public String findById(UUID eid) {
 		List<EntityAttributeValue> rows = entityRepository.findByIdEntity(eid);
 		if (rows == null) {
 			throw new ResourceNotFoundException(String.format("No entity exists with oid =[%d]", eid));
 		}
-		Integer cid = entityRepository.getClassIdForEntityId(eid);
+		UUID cid = entityRepository.getClassIdForEntityId(eid);
         com.fns.grivet.model.Class c = classRepository.findById(cid).get();
-		Map<Integer, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
+		Map<UUID, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
 		return mapRows(attributeToAttributeTypeMap, rows).getJSONObject(0).toString();
 	}
 
@@ -196,11 +201,22 @@ public class EntityService {
 		com.fns.grivet.model.Class c = classRepository.findByName(type);
 		Assert.notNull(c, "Type [%s] is not registered!");
 		List<EntityAttributeValue> rows = entityRepository.findAllEntitiesByCid(c.getId());
-		Map<Integer, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
+		Map<UUID, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
 		return mapRows(attributeToAttributeTypeMap, rows).toString();
 	}
+	
+	// CAUTION! Destructive and highly inefficient for large data sets.
+	@Transactional
+    public void deleteAllByType(String type) {
+        com.fns.grivet.model.Class c = classRepository.findByName(type);
+        if (c != null) {
+            List<EntityAttributeValue> rows = entityRepository.findAllEntitiesByCid(c.getId());
+            rows.forEach(eav -> entityRepository.delete(eav.getId()));
+            rows.forEach(eav -> entityKeyRepository.deleteById(eav.getId()));
+        }
+    }
 
-	protected JSONArray mapRows(Map<Integer, Integer> attributeToAttributeTypeMap, List<EntityAttributeValue> rows) {
+	protected JSONArray mapRows(Map<UUID, Integer> attributeToAttributeTypeMap, List<EntityAttributeValue> rows) {
 		JSONArray jsonArray = new JSONArray();
 		String current = null;
 		String previous = null;
@@ -227,7 +243,7 @@ public class EntityService {
 		}
 	}
 
-	private Map<Integer, Integer> generateAttributeToAttributeTypeMap(com.fns.grivet.model.Class c) {
+	private Map<UUID, Integer> generateAttributeToAttributeTypeMap(com.fns.grivet.model.Class c) {
 		List<ClassAttribute> cas = classAttributeRepository.findByCid(c.getId());
 		return cas.stream().collect(Collectors.toMap(ClassAttribute::getAid, ClassAttribute::getTid));
 	}

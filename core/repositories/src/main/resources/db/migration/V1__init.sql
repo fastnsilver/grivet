@@ -1,7 +1,7 @@
 ${preamble}
 
 CREATE TABLE class (
-    id INT ${autoInc},
+    id BINARY(16) NOT NULL,
     version INT,
     name VARCHAR(255) ${varcharQualifier} NOT NULL UNIQUE,
     description VARCHAR(1000) ${varcharQualifier},
@@ -13,7 +13,7 @@ CREATE TABLE class (
 ) ${createTableSuffix};
 
 CREATE TABLE attribute (
-    id INT ${autoInc},
+    id BINARY(16) NOT NULL,
     version INT,
     name VARCHAR(255) ${varcharQualifier} NOT NULL UNIQUE,
     description VARCHAR(1000) ${varcharQualifier},
@@ -22,8 +22,8 @@ CREATE TABLE attribute (
 ) ${createTableSuffix};
 
 CREATE TABLE class_attribute (
-	cid INT NOT NULL,
-	aid INT NOT NULL,
+	cid BINARY(16) NOT NULL,
+	aid BINARY(16) NOT NULL,
 	tid INT NOT NULL,
 	version INT,
 	created_time TIMESTAMP NOT NULL,
@@ -33,16 +33,16 @@ CREATE TABLE class_attribute (
 ) ${createTableSuffix};
 
 CREATE TABLE entity (
-	cid INT NOT NULL,
-	eid BIGINT ${autoInc},
+	cid BINARY(16) NOT NULL,
+	eid BINARY(16) NOT NULL,
 	created_time TIMESTAMP NOT NULL,
 	PRIMARY KEY (eid),
 	FOREIGN KEY (cid) REFERENCES class(id) ON DELETE CASCADE
 ) ${createTableSuffix};
 
 CREATE TABLE entityav_varchar (
-	eid BIGINT NOT NULL,
-	aid INT NOT NULL,
+	eid BINARY(16) NOT NULL,
+	aid BINARY(16) NOT NULL,
 	val VARCHAR(255) ${varcharQualifier} NOT NULL,
 	created_time TIMESTAMP NOT NULL,
 	PRIMARY KEY (eid, aid, created_time),
@@ -51,8 +51,8 @@ CREATE TABLE entityav_varchar (
 ) ${createTableSuffix};
 
 CREATE TABLE entityav_text (
-	eid BIGINT NOT NULL,
-	aid INT NOT NULL,
+	eid BINARY(16) NOT NULL,
+	aid BINARY(16) NOT NULL,
 	val ${longTextColumnType} NOT NULL,
 	created_time TIMESTAMP NOT NULL,
 	PRIMARY KEY (eid, aid, created_time),
@@ -62,8 +62,8 @@ CREATE TABLE entityav_text (
 
 
 CREATE TABLE entityav_datetime (
-	eid BIGINT NOT NULL,
-	aid INT NOT NULL,
+	eid BINARY(16) NOT NULL,
+	aid BINARY(16) NOT NULL,
 	val DATETIME NOT NULL,
 	created_time TIMESTAMP NOT NULL,
 	PRIMARY KEY (eid, aid, created_time),
@@ -72,8 +72,8 @@ CREATE TABLE entityav_datetime (
 ) ${createTableSuffix};
 
 CREATE TABLE entityav_int (
-	eid BIGINT NOT NULL,
-	aid INT NOT NULL,
+	eid BINARY(16) NOT NULL,
+	aid BINARY(16) NOT NULL,
 	val INT NOT NULL,
 	created_time TIMESTAMP NOT NULL,
 	PRIMARY KEY (eid, aid, created_time),
@@ -82,8 +82,8 @@ CREATE TABLE entityav_int (
 ) ${createTableSuffix};
 
 CREATE TABLE entityav_bigint (
-	eid BIGINT NOT NULL,
-	aid INT NOT NULL,
+	eid BINARY(16) NOT NULL,
+	aid BINARY(16) NOT NULL,
 	val BIGINT NOT NULL,
 	created_time TIMESTAMP NOT NULL,
 	PRIMARY KEY (eid, aid, created_time),
@@ -92,8 +92,8 @@ CREATE TABLE entityav_bigint (
 ) ${createTableSuffix};
 
 CREATE TABLE entityav_decimal (
-	eid BIGINT NOT NULL,
-	aid INT NOT NULL,
+	eid BINARY(16) NOT NULL,
+	aid BINARY(16) NOT NULL,
 	val DECIMAL(20,5) NOT NULL,
 	created_time TIMESTAMP NOT NULL,
 	PRIMARY KEY (eid, aid, created_time),
@@ -102,8 +102,8 @@ CREATE TABLE entityav_decimal (
 ) ${createTableSuffix};
 
 CREATE TABLE entityav_json (
-	eid BIGINT NOT NULL,
-	aid INT NOT NULL,
+	eid BINARY(16) NOT NULL,
+	aid BINARY(16) NOT NULL,
 	val ${textColumnType} NOT NULL,
 	created_time TIMESTAMP NOT NULL,
 	PRIMARY KEY (eid, aid, created_time),
@@ -127,7 +127,7 @@ CREATE VIEW all_entity_values AS
 	SELECT eid, aid, CAST(val AS CHAR) AS v, created_time FROM entityav_int;
 
 CREATE TABLE named_query (
-	id INT ${autoInc},
+	id BINARY(16),
 	version INT,
 	name VARCHAR(255) ${varcharQualifier} NOT NULL UNIQUE,
 	type VARCHAR(6) NOT NULL,
@@ -137,7 +137,7 @@ CREATE TABLE named_query (
 ) ${createTableSuffix};
 
 CREATE TABLE named_query_parameter (
-	id INT NOT NULL,
+	id BINARY(16) NOT NULL,
     parameter_name VARCHAR(50) ${varcharQualifier} NOT NULL,
     parameter_type VARCHAR(10) ${varcharQualifier} NOT NULL,
     PRIMARY KEY (id, parameter_name),

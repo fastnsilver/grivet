@@ -26,6 +26,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -64,16 +65,8 @@ public class JdbcEntityRepository implements EntityRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-
 	@Override
-	public Long newId(Integer cid, LocalDateTime createdTime) {
-		return Long.valueOf(String.valueOf(new SimpleJdbcInsert(jdbcTemplate).withTableName("entity")
-				.usingGeneratedKeyColumns("eid").usingColumns("cid", "created_time").executeAndReturnKey(
-						ImmutableMap.of("cid", cid, "created_time", Timestamp.valueOf(createdTime)))));
-	}
-
-	@Override
-	public void save(Long eid, Attribute attribute, AttributeType attributeType, Object rawValue,
+	public void save(UUID eid, Attribute attribute, AttributeType attributeType, Object rawValue,
 			LocalDateTime createdTime) {
 		Assert.isTrue(rawValue != null, String.format("Attempt to persist value failed! %s's value must not be null!", attribute.getName()));
 		Object value = ValueHelper.toValue(attributeType, rawValue);
@@ -93,7 +86,7 @@ public class JdbcEntityRepository implements EntityRepository {
 	}
 
 	@Override
-	public List<EntityAttributeValue> findByCreatedTime(Integer cid, LocalDateTime createdTimeStart,
+	public List<EntityAttributeValue> findByCreatedTime(UUID cid, LocalDateTime createdTimeStart,
 			LocalDateTime createdTimeEnd) {
 		String sql = QueryBuilder.newInstance().appendCreatedTimeRange().build();
 		log.trace(String.format("JdbcEntityRepository.findByCreatedTime[sql=%s]", sql));
@@ -103,14 +96,14 @@ public class JdbcEntityRepository implements EntityRepository {
 	}
 
 	@Override
-	public Integer getClassIdForEntityId(Long eid) {
+	public UUID getClassIdForEntityId(UUID eid) {
 		String sql = "SELECT cid FROM entity WHERE eid = ?";
 		log.trace(String.format("JdbcEntityRepository.getClassIdForEntityId[sql=%s]", sql));
-		return jdbcTemplate.queryForObject(sql, new Object[] { eid }, Integer.class);
+		return jdbcTemplate.queryForObject(sql, new Object[] { eid }, UUID.class);
 	}
 
 	@Override
-	public List<EntityAttributeValue> findByIdEntity(Long eid) {
+	public List<EntityAttributeValue> findByIdEntity(UUID eid) {
 		String sql = QueryBuilder.newInstance().obtainValuesForOneEntity().build();
 		log.trace(String.format("JdbcEntityRepository.findById[sql=%s]", sql));
 		return mapRows(
@@ -119,7 +112,7 @@ public class JdbcEntityRepository implements EntityRepository {
 	}
 
 	@Override
-	public void delete(Long eid) {
+	public void delete(UUID eid) {
 		String entitySql = "DELETE FROM entity WHERE eid = ?";
 		log.trace(String.format("JdbcEntityRepository.delete[sql=%s]", entitySql));
 		jdbcTemplate.update(entitySql, new Object[] { eid });
@@ -153,7 +146,7 @@ public class JdbcEntityRepository implements EntityRepository {
 	}
 
 	@Override
-	public List<EntityAttributeValue> findAllEntitiesByCid(Integer cid) {
+	public List<EntityAttributeValue> findAllEntitiesByCid(UUID cid) {
 		String sql = QueryBuilder.newInstance().obtainValuesForEntitiesByCid().build();
 		log.trace(String.format("JdbcEntityRepository.findAllByCid[sql=%s]", sql));
 		return mapRows(
@@ -161,7 +154,7 @@ public class JdbcEntityRepository implements EntityRepository {
 	}
 
 	@Override
-	public List<EntityAttributeValue> executeDynamicQuery(Integer cid, DynamicQuery query) {
+	public List<EntityAttributeValue> executeDynamicQuery(UUID cid, DynamicQuery query) {
 		Assert.isTrue(query.areConjunctionsHomogenous(), "Query cannot be executed! All conjunctions must be homogenous!");
 		String sql = QueryBuilder.newInstance().append(query).build();
 		log.trace(String.format("JdbcEntityRepository.executeDynamicQuery[sql=%s]", sql));
@@ -176,7 +169,7 @@ public class JdbcEntityRepository implements EntityRepository {
 		EntityAttributeValue eav = null;
 		if (rowSet != null) {
 			while(rowSet.next()) {
-				eav = EntityAttributeValue.of((Long) rowSet.getObject("eid"), (Integer) rowSet.getObject("attribute_id"), (String) rowSet.getObject("attribute_name"), rowSet.getObject("attribute_value"), ((Timestamp) rowSet.getObject("created_time")).toLocalDateTime(), getCurrentUsername());
+				eav = EntityAttributeValue.of((UUID) rowSet.getObject("eid"), (UUID) rowSet.getObject("attribute_id"), (String) rowSet.getObject("attribute_name"), rowSet.getObject("attribute_value"), ((Timestamp) rowSet.getObject("created_time")).toLocalDateTime(), getCurrentUsername());
 				result.add(eav);
 			}
 		}

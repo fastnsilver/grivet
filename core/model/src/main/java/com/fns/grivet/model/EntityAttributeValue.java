@@ -17,6 +17,7 @@ package com.fns.grivet.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.annotation.concurrent.Immutable;
 
@@ -44,9 +45,9 @@ public class EntityAttributeValue implements Serializable {
     private static final long serialVersionUID = 1L;
     
     /** An entity identifier */
-    private final Long id;
+    private final UUID id;
     /** An {@code Attribute} identifier */
-    private final Integer attributeId;
+    private final UUID attributeId;
     /** An {@code Attribute} name */
     private final String attributeName;
     /** A value */

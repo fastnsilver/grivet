@@ -1,6 +1,6 @@
 CREATE TABLE entityav_iso_instant (
-	eid BIGINT NOT NULL,
-	aid INT NOT NULL,
+	eid BINARY(16) NOT NULL,
+	aid BINARY(16) NOT NULL,
 	val DATETIME(3) NOT NULL,
 	created_time DATETIME(3) NOT NULL,
 	PRIMARY KEY (eid, aid, created_time)

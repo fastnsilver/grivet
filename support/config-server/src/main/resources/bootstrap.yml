@@ -14,3 +14,4 @@ spring:
       server:
         git:
           uri: https://github.com/fastnsilver/grivet-config-repo.git
+          #uri: file://${user.home}/development/projects/personal/grivet-config-repo

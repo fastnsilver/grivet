@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.jdbc.core.SqlParameterValue;
@@ -39,12 +40,12 @@ import com.fns.grivet.model.AttributeType;
 public class DynamicQuery {
 
 	private final List<Constraint> constraints = new ArrayList<>();
-	private final Map<Integer, Integer> attributeToAttributeTypeMap;
-	private final Map<String, Integer> attributeNameToAttributeIdMap;
+	private final Map<UUID, Integer> attributeToAttributeTypeMap;
+	private final Map<String, UUID> attributeNameToAttributeIdMap;
 
 	public DynamicQuery(Set<Entry<String, String[]>> requestParams,
-			Map<Integer, Integer> attributeToAttributeTypeMap,
-			Map<String, Integer> attributeNameToAttributeIdMap) {
+			Map<UUID, Integer> attributeToAttributeTypeMap,
+			Map<String, UUID> attributeNameToAttributeIdMap) {
 		String k = null;
 		String[] v = null;
 		if (requestParams != null && !requestParams.isEmpty()) {
@@ -98,7 +99,7 @@ public class DynamicQuery {
 
 	public SqlParameterValue[] asSqlParameterValues() {
 		List<SqlParameterValue> paramValues = new ArrayList<>();
-		Integer attributeId = null;
+		UUID attributeId = null;
 		Integer attributeTypeId = null;
 		AttributeType at = null;
 		String attributeName = null;

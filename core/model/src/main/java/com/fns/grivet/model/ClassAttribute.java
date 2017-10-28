@@ -16,6 +16,7 @@
 package com.fns.grivet.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -89,11 +90,11 @@ public class ClassAttribute implements Auditable<String> {
 
     /** A {@code Class} identifier */
     @Id
-    private Integer cid;
+    private UUID cid;
 
     /** A {@code Attribute} identifier */
     @Id
-    private Integer aid;
+    private UUID aid;
 
     /** A {@code AttributeType} identifier */
     @Id

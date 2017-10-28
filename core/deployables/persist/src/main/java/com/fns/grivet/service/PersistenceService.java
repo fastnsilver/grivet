@@ -1,5 +1,7 @@
 package com.fns.grivet.service;
 
+import java.util.UUID;
+
 import org.json.JSONObject;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
@@ -38,7 +40,7 @@ public class PersistenceService {
 			Assert.notNull(op, "Message header must contain an op code!");
 	
 			String type = null;
-			Long oid = null;
+			UUID oid = null;
 		
 			switch (op) {
 				case CREATE:
@@ -49,14 +51,14 @@ public class PersistenceService {
 					log.info("Successfully created type [{}]", type);
 					break;
 				case UPDATE:
-					oid = message.getHeaders().get("oid", Long.class);
+					oid = message.getHeaders().get("oid", UUID.class);
 					Assert.notNull(oid, "Message header must contain an oid for update requests!");
 					type = entityService.update(oid, message.getPayload());
 					meterRegistry.counter(String.join("store", "update", type)).increment();
 					log.info("Successfully updated type [{}]", type);
 					break;
 				case DELETE:
-					oid = message.getHeaders().get("oid", Long.class);
+					oid = message.getHeaders().get("oid", UUID.class);
 					Assert.notNull(oid, "Message header must contain an oid for delete requests!");
 					type = entityService.delete(oid);
 					meterRegistry.counter(String.join("store", "delete", type)).increment();

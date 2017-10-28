@@ -16,6 +16,7 @@
 package com.fns.grivet.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -40,8 +41,8 @@ public class ClassAttributePK implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    private Integer cid;
-    private Integer aid;
+    private UUID cid;
+    private UUID aid;
     private Integer tid;
 
 }

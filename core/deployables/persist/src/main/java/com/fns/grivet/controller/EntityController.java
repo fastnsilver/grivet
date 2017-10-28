@@ -18,6 +18,7 @@ package com.fns.grivet.controller;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -81,7 +82,7 @@ public class EntityController {
 	@PreAuthorize("hasAuthority('write:type')")
 	@PostMapping("/api/v1/type")
 	public ResponseEntity<?> createOne(@RequestHeader("Type") String type, @RequestBody JSONObject json) {
-		Long oid = entityService.create(type, json);
+		UUID oid = entityService.create(type, json);
 		URI location = UriComponentsBuilder.newInstance().path("/api/v1/type").queryParam("oid", oid).build().toUri();
 		meterRegistry.counter(String.join("store", "create", type)).increment();
 		log.info("Successfully created type [{}]", type);
@@ -101,7 +102,7 @@ public class EntityController {
 		JSONObject jsonObject = null;
 		HttpHeaders headers = new HttpHeaders();
 		URI location = null;
-		Long oid = null;
+		UUID oid = null;
 		// allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
 		for (int i = 0; i < numberOfTypesToCreate; i++) {
 			try {
@@ -132,7 +133,7 @@ public class EntityController {
 	@PreAuthorize("hasAuthority('write:type')")
 	@PatchMapping("/api/v1/type")
 	public ResponseEntity<?> updateOne(
-			@RequestParam(value = "oid", required = true) Long oid,
+			@RequestParam(value = "oid", required = true) UUID oid,
 			@RequestBody JSONObject json) {
 		String type = entityService.update(oid, json);
 		HttpHeaders headers = new HttpHeaders();
@@ -147,7 +148,7 @@ public class EntityController {
 	@PreAuthorize("hasAuthority('delete:type')")
 	@DeleteMapping("/api/v1/type")
 	public ResponseEntity<?> deleteOne(
-			@RequestParam(value = "oid", required = true) Long oid) {
+			@RequestParam(value = "oid", required = true) UUID oid) {
 		String type = entityService.delete(oid);
 		meterRegistry.counter(String.join("store", "delete", type)).increment();
 		log.info("Successfully delete type [{}]", type);
@@ -174,7 +175,7 @@ public class EntityController {
 	@PreAuthorize("hasAuthority('read:type')")
 	@GetMapping("/api/v1/type")
 	public ResponseEntity<?> fetchOne(
-			@RequestParam(value = "oid", required = true) Long oid) {
+			@RequestParam(value = "oid", required = true) UUID oid) {
 		return ResponseEntity.ok(entityService.findById(oid));
 	}
 

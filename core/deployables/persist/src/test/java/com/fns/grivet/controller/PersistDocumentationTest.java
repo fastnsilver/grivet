@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -133,7 +134,7 @@ public class PersistDocumentationTest {
         try {
             defineTypes("TestMultipleTypes");
             createTypes("Course", "CourseData");
-            Long oid = fetchAType("Course");
+            UUID oid = fetchAType("Course");
             mockMvc.perform(
                     patch("/api/v1/type")
                             .param("oid", String.valueOf(oid))
@@ -150,7 +151,7 @@ public class PersistDocumentationTest {
     public void deleteOne() {
         try {
             defineType("TestType2");
-            Long oid = createType("TestType2", "TestTypeData2");
+            UUID oid = createType("TestType2", "TestTypeData2");
             mockMvc.perform(
                     delete("/api/v1/type")
                             .param("oid", String.valueOf(oid))
@@ -240,7 +241,7 @@ public class PersistDocumentationTest {
     public void fetchOne() {
         try {
             defineType("TestType2");
-            Long oid = createType("TestType2", "TestTypeData2");
+            UUID oid = createType("TestType2", "TestTypeData2");
             mockMvc.perform(
                     get("/api/v1/type")
                             .param("oid", String.valueOf(oid))
@@ -253,9 +254,9 @@ public class PersistDocumentationTest {
         }
     }
     
-    private Long fetchAType(String type) throws JSONException, IOException {
+    private UUID fetchAType(String type) throws JSONException, IOException {
         ClassRepository classRepo = context.getBean(ClassRepository.class);
-        Integer cid = classRepo.findByName(type).getId();
+        UUID cid = classRepo.findByName(type).getId();
         EntityRepository entityRepo = context.getBean(EntityRepository.class);
         return entityRepo.findAllEntitiesByCid(cid).iterator().next().getId();
     }
@@ -267,7 +268,7 @@ public class PersistDocumentationTest {
         array.forEach(o -> svc.create(type, (JSONObject) o));
 	}
 	
-	private Long createType(String type, String data) throws JSONException, IOException {
+	private UUID createType(String type, String data) throws JSONException, IOException {
 	    EntityService svc = context.getBean(EntityService.class);
 	    return svc.create(type, new JSONObject(payload(data)));
 	}

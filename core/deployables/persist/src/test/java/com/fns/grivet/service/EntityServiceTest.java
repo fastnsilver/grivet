@@ -130,7 +130,11 @@ public class EntityServiceTest {
 	@After
 	public void tearDown() {
 		String[] types = { "TestType", "TestType2" };
-		Arrays.stream(types).forEach(type -> classRegistryService.deregister(type));
+		Arrays.stream(types).forEach(
+		        type -> { 
+		            entityService.deleteAllByType(type); 
+		            classRegistryService.deregister(type); 
+		});
 	}
 
 }
