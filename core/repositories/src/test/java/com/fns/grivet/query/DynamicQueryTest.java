@@ -4,9 +4,9 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.fns.grivet.model.AttributeType;
@@ -21,7 +21,7 @@ public class DynamicQueryTest {
     private final Map<Integer, Integer> attributeToAttributeTypeMap = new HashMap<>();
     private final Map<String, Integer> attributeNameToAttributeIdMap = new HashMap<>();
     
-    @Before
+    @BeforeEach
     public void setUp() {
         attributeToAttributeTypeMap.put(1, AttributeType.VARCHAR.getId());
         attributeToAttributeTypeMap.put(2, AttributeType.INTEGER.getId());
@@ -34,13 +34,13 @@ public class DynamicQueryTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("c", "flavor|equals|Vanilla");
         DynamicQuery dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap, attributeNameToAttributeIdMap);
-        Assert.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
-        Assert.assertEquals("(ev.aid = ? AND ev.v = ?)", qb.obtainEntityAttributeValueCriteria(dq));
-        Assert.assertTrue(dq.asSqlParameterValues().length == 2);
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[0].getSqlType());
-        Assert.assertEquals(1, dq.asSqlParameterValues()[0].getValue());
-        Assert.assertEquals(Types.VARCHAR, dq.asSqlParameterValues()[1].getSqlType());
-        Assert.assertEquals("Vanilla", dq.asSqlParameterValues()[1].getValue());
+        Assertions.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
+        Assertions.assertEquals("(ev.aid = ? AND ev.v = ?)", qb.obtainEntityAttributeValueCriteria(dq));
+        Assertions.assertTrue(dq.asSqlParameterValues().length == 2);
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[0].getSqlType());
+        Assertions.assertEquals(1, dq.asSqlParameterValues()[0].getValue());
+        Assertions.assertEquals(Types.VARCHAR, dq.asSqlParameterValues()[1].getSqlType());
+        Assertions.assertEquals("Vanilla", dq.asSqlParameterValues()[1].getValue());
     }
         
     @Test
@@ -48,15 +48,15 @@ public class DynamicQueryTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("constraint", "age|between|35,46");
         DynamicQuery dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap, attributeNameToAttributeIdMap);
-        Assert.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
-        Assert.assertEquals("(ev.aid = ? AND ev.v BETWEEN ? AND ?)", qb.obtainEntityAttributeValueCriteria(dq));
-        Assert.assertTrue(dq.asSqlParameterValues().length == 3);
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[0].getSqlType());
-        Assert.assertEquals(2, dq.asSqlParameterValues()[0].getValue());
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[1].getSqlType());
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[2].getSqlType());
-        Assert.assertEquals(35, dq.asSqlParameterValues()[1].getValue());
-        Assert.assertEquals(46, dq.asSqlParameterValues()[2].getValue());
+        Assertions.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
+        Assertions.assertEquals("(ev.aid = ? AND ev.v BETWEEN ? AND ?)", qb.obtainEntityAttributeValueCriteria(dq));
+        Assertions.assertTrue(dq.asSqlParameterValues().length == 3);
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[0].getSqlType());
+        Assertions.assertEquals(2, dq.asSqlParameterValues()[0].getValue());
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[1].getSqlType());
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[2].getSqlType());
+        Assertions.assertEquals(35, dq.asSqlParameterValues()[1].getValue());
+        Assertions.assertEquals(46, dq.asSqlParameterValues()[2].getValue());
     }
     
     @Test
@@ -64,19 +64,19 @@ public class DynamicQueryTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("c", "age|in|35,46,59,76");
         DynamicQuery dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap, attributeNameToAttributeIdMap);
-        Assert.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
-        Assert.assertEquals("(ev.aid = ? AND ev.v IN (?,?,?,?))", qb.obtainEntityAttributeValueCriteria(dq));
-        Assert.assertTrue(dq.asSqlParameterValues().length == 5);
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[0].getSqlType());
-        Assert.assertEquals(2, dq.asSqlParameterValues()[0].getValue());
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[1].getSqlType());
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[2].getSqlType());
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[3].getSqlType());
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[4].getSqlType());
-        Assert.assertEquals(35, dq.asSqlParameterValues()[1].getValue());
-        Assert.assertEquals(46, dq.asSqlParameterValues()[2].getValue());
-        Assert.assertEquals(59, dq.asSqlParameterValues()[3].getValue());
-        Assert.assertEquals(76, dq.asSqlParameterValues()[4].getValue());
+        Assertions.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
+        Assertions.assertEquals("(ev.aid = ? AND ev.v IN (?,?,?,?))", qb.obtainEntityAttributeValueCriteria(dq));
+        Assertions.assertTrue(dq.asSqlParameterValues().length == 5);
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[0].getSqlType());
+        Assertions.assertEquals(2, dq.asSqlParameterValues()[0].getValue());
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[1].getSqlType());
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[2].getSqlType());
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[3].getSqlType());
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[4].getSqlType());
+        Assertions.assertEquals(35, dq.asSqlParameterValues()[1].getValue());
+        Assertions.assertEquals(46, dq.asSqlParameterValues()[2].getValue());
+        Assertions.assertEquals(59, dq.asSqlParameterValues()[3].getValue());
+        Assertions.assertEquals(76, dq.asSqlParameterValues()[4].getValue());
     }
     
     @Test
@@ -85,17 +85,17 @@ public class DynamicQueryTest {
         request.setParameter("constraint", "age|equals|35|and");
         request.setParameter("c", "flavor|startsWith|V");
         DynamicQuery dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap, attributeNameToAttributeIdMap);
-        Assert.assertEquals(BASE_JOIN + "INNER JOIN all_entity_values AS ev1 ON ev.eid = ev1.eid ", qb.obtainEntityAttributeValueJoins(dq));
-        Assert.assertEquals("(ev.aid = ? AND ev.v = ?) AND (ev1.aid = ? AND ev1.v LIKE ?)", qb.obtainEntityAttributeValueCriteria(dq));
-        Assert.assertTrue(dq.asSqlParameterValues().length == 4);
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[0].getSqlType());
-        Assert.assertEquals(2, dq.asSqlParameterValues()[0].getValue());
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[1].getSqlType());
-        Assert.assertEquals(35, dq.asSqlParameterValues()[1].getValue());
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[2].getSqlType());
-        Assert.assertEquals(1, dq.asSqlParameterValues()[2].getValue());
-        Assert.assertEquals(Types.VARCHAR, dq.asSqlParameterValues()[3].getSqlType());
-        Assert.assertEquals("V%", dq.asSqlParameterValues()[3].getValue());
+        Assertions.assertEquals(BASE_JOIN + "INNER JOIN all_entity_values AS ev1 ON ev.eid = ev1.eid ", qb.obtainEntityAttributeValueJoins(dq));
+        Assertions.assertEquals("(ev.aid = ? AND ev.v = ?) AND (ev1.aid = ? AND ev1.v LIKE ?)", qb.obtainEntityAttributeValueCriteria(dq));
+        Assertions.assertTrue(dq.asSqlParameterValues().length == 4);
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[0].getSqlType());
+        Assertions.assertEquals(2, dq.asSqlParameterValues()[0].getValue());
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[1].getSqlType());
+        Assertions.assertEquals(35, dq.asSqlParameterValues()[1].getValue());
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[2].getSqlType());
+        Assertions.assertEquals(1, dq.asSqlParameterValues()[2].getValue());
+        Assertions.assertEquals(Types.VARCHAR, dq.asSqlParameterValues()[3].getSqlType());
+        Assertions.assertEquals("V%", dq.asSqlParameterValues()[3].getValue());
     }
     
     @Test
@@ -104,17 +104,17 @@ public class DynamicQueryTest {
         request.setParameter("constraint", "age|equals|35|or");
         request.setParameter("c", "flavor|endsWith|a");
         DynamicQuery dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap, attributeNameToAttributeIdMap);
-        Assert.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
-        Assert.assertEquals("(ev.aid = ? AND ev.v = ?) OR (ev.aid = ? AND ev.v LIKE ?)", qb.obtainEntityAttributeValueCriteria(dq));
-        Assert.assertTrue(dq.asSqlParameterValues().length == 4);
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[0].getSqlType());
-        Assert.assertEquals(2, dq.asSqlParameterValues()[0].getValue());
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[1].getSqlType());
-        Assert.assertEquals(35, dq.asSqlParameterValues()[1].getValue());
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[2].getSqlType());
-        Assert.assertEquals(1, dq.asSqlParameterValues()[2].getValue());
-        Assert.assertEquals(Types.VARCHAR, dq.asSqlParameterValues()[3].getSqlType());
-        Assert.assertEquals("%a", dq.asSqlParameterValues()[3].getValue());
+        Assertions.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
+        Assertions.assertEquals("(ev.aid = ? AND ev.v = ?) OR (ev.aid = ? AND ev.v LIKE ?)", qb.obtainEntityAttributeValueCriteria(dq));
+        Assertions.assertTrue(dq.asSqlParameterValues().length == 4);
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[0].getSqlType());
+        Assertions.assertEquals(2, dq.asSqlParameterValues()[0].getValue());
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[1].getSqlType());
+        Assertions.assertEquals(35, dq.asSqlParameterValues()[1].getValue());
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[2].getSqlType());
+        Assertions.assertEquals(1, dq.asSqlParameterValues()[2].getValue());
+        Assertions.assertEquals(Types.VARCHAR, dq.asSqlParameterValues()[3].getSqlType());
+        Assertions.assertEquals("%a", dq.asSqlParameterValues()[3].getValue());
     }
     
     @Test
@@ -122,13 +122,13 @@ public class DynamicQueryTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("c", "flavor|contains|n");
         DynamicQuery dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap, attributeNameToAttributeIdMap);
-        Assert.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
-        Assert.assertEquals("(ev.aid = ? AND ev.v LIKE ?)", qb.obtainEntityAttributeValueCriteria(dq));
-        Assert.assertTrue(dq.asSqlParameterValues().length == 2);
-        Assert.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[0].getSqlType());
-        Assert.assertEquals(1, dq.asSqlParameterValues()[0].getValue());
-        Assert.assertEquals(Types.VARCHAR, dq.asSqlParameterValues()[1].getSqlType());
-        Assert.assertEquals("%n%", dq.asSqlParameterValues()[1].getValue());
+        Assertions.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
+        Assertions.assertEquals("(ev.aid = ? AND ev.v LIKE ?)", qb.obtainEntityAttributeValueCriteria(dq));
+        Assertions.assertTrue(dq.asSqlParameterValues().length == 2);
+        Assertions.assertEquals(Types.INTEGER, dq.asSqlParameterValues()[0].getSqlType());
+        Assertions.assertEquals(1, dq.asSqlParameterValues()[0].getValue());
+        Assertions.assertEquals(Types.VARCHAR, dq.asSqlParameterValues()[1].getSqlType());
+        Assertions.assertEquals("%n%", dq.asSqlParameterValues()[1].getValue());
     }
     
 }

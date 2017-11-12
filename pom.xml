@@ -88,24 +88,26 @@
         <jadira.version>6.0.1.GA</jadira.version>
         <javax.persistence.version>1.0.0.Final</javax.persistence.version>
         <javax.validation-api.version>2.0.0.Final</javax.validation-api.version>
-        <json-unit.version>1.25.0</json-unit.version>
-        <json.version>20170516</json.version>
+        <json-unit.version>1.25.1</json-unit.version>
+        <json.version>20171018</json.version>
         <json-schema-validator.version>2.2.6</json-schema-validator.version>
         <jsr305.version>3.0.1</jsr305.version>
+        <junit.jupiter.version>5.0.2</junit.jupiter.version>
+        <junit.platform.version>1.0.1</junit.platform.version>
         <logstash-logback-encoder.version>4.9</logstash-logback-encoder.version>
         <lombok.version>1.16.18</lombok.version>
-        <micrometer.version>1.0.0-rc.2</micrometer.version>
+        <micrometer.version>1.0.0-rc.3</micrometer.version>
         <mysql.version>8.0.7-dmr</mysql.version>
         <rest-assured.version>3.0.2</rest-assured.version>
         <scala.version>2.10.6</scala.version>
         <slf4j.version>1.7.25</slf4j.version>
         <spring-boot-admin.version>1.5.4</spring-boot-admin.version>
-        <spring-restdocs-mockmvc.version>1.2.2.RELEASE</spring-restdocs-mockmvc.version>
+        <spring-restdocs.version>2.0.0.BUILD-SNAPSHOT</spring-restdocs.version>
         <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
 
         <!-- Maven -->
         <apiviz.version>1.3.2.GA</apiviz.version>
-        <asciidoctor-maven-plugin.version>1.5.5</asciidoctor-maven-plugin.version>
+        <asciidoctor-maven-plugin.version>1.5.6</asciidoctor-maven-plugin.version>
         <docker-maven-plugin.version>0.22.1</docker-maven-plugin.version>
         <downloads-maven-plugin.version>0.6</downloads-maven-plugin.version>
         <doxia-module-markdown.version>1.6</doxia-module-markdown.version>
@@ -116,6 +118,7 @@
         <maven-changelog-plugin.version>2.3</maven-changelog-plugin.version>
         <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
         <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
+        <maven-failsafe-plugin.version>2.19.1</maven-failsafe-plugin.version>
         <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
         <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
         <maven-plugin-plugin.version>3.4</maven-plugin-plugin.version>
@@ -124,6 +127,7 @@
         <maven-scm-provider-jgit.version>1.9.4</maven-scm-provider-jgit.version>
         <maven-site-plugin.version>3.4</maven-site-plugin.version>
         <maven-scm-publish-plugin.version>1.1</maven-scm-publish-plugin.version>
+        <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
         <maven-surefire-report-plugin.version>2.19.1</maven-surefire-report-plugin.version>
         <plan-maven-plugin.version>1.2</plan-maven-plugin.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
@@ -141,7 +145,7 @@
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-releasetrain</artifactId>
-				<version>Kay-RELEASE</version>
+				<version>Kay-SR1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -288,8 +292,8 @@
           			<groupId>org.codehaus.mojo</groupId>
           			<artifactId>sonar-maven-plugin</artifactId>
           			<version>${sonar-maven-plugin.version}</version>
-        		</plugin>
-        		<plugin>
+	        		</plugin>
+	        		<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>versions-maven-plugin</artifactId>
 					<version>${versions-maven-plugin.version}</version>
@@ -298,7 +302,7 @@
         </pluginManagement>
 
         <plugins>
-        	<plugin>
+        		<plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
                 <configuration>
@@ -366,6 +370,18 @@
                         <exclude>**/IT*.java</exclude>
                     </excludes>
                 </configuration>
+                <dependencies>
+	                	<dependency>
+					    <groupId>org.junit.platform</groupId>
+					    <artifactId>junit-platform-surefire-provider</artifactId>
+					    <version>${junit.platform.version}</version>
+					</dependency>
+					<dependency>
+			            <groupId>org.junit.jupiter</groupId>
+			            <artifactId>junit-jupiter-engine</artifactId>
+			            <version>${junit.jupiter.version}</version>
+			        </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -387,6 +403,18 @@
                         </goals>
                     </execution>
                 </executions>
+                <dependencies>
+					<dependency>
+					    <groupId>org.junit.platform</groupId>
+					    <artifactId>junit-platform-surefire-provider</artifactId>
+					    <version>${junit.platform.version}</version>
+					</dependency>
+					<dependency>
+			            <groupId>org.junit.jupiter</groupId>
+			            <artifactId>junit-jupiter-engine</artifactId>
+			            <version>${junit.jupiter.version}</version>
+			        </dependency>
+       			</dependencies>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>

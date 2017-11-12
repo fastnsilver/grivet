@@ -3,19 +3,19 @@ package com.fns.grivet.repo;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.ClassAttribute;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class ClassAttributeRepositoryTest {
     
@@ -49,20 +49,20 @@ public class ClassAttributeRepositoryTest {
     public void testFindByCid() {
         ClassAttribute[] expected = seedClassAttributes();
         List<ClassAttribute> actual = classAttributeRepository.findByCid(expected[0].getCid());
-        Assert.assertNotNull("Expected a list of class attributes returned!", actual);
-        Assert.assertTrue(actual.size() == 2);
-        Assert.assertEquals(Arrays.asList(expected), actual);
+        Assertions.assertNotNull(actual, "Expected a list of class attributes returned!");
+        Assertions.assertTrue(actual.size() == 2);
+        Assertions.assertEquals(Arrays.asList(expected), actual);
     }
 
     @Test
     public void testFindByCidAndAid() {
         ClassAttribute[] expected = seedClassAttributes();
         ClassAttribute actual = classAttributeRepository.findByCidAndAid(expected[1].getCid(), expected[1].getAid());
-        Assert.assertNotNull("Expected a matching class attribute!", actual);
-        Assert.assertEquals(expected[1], actual);
+        Assertions.assertNotNull(actual, "Expected a matching class attribute!");
+        Assertions.assertEquals(expected[1], actual);
     }
     
-    @After
+    @AfterEach
     public void tearDown() {
         classAttributeRepository.deleteAll();
         classRepository.deleteAll();

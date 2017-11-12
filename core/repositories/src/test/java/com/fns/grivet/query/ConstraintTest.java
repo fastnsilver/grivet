@@ -1,63 +1,63 @@
 package com.fns.grivet.query;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ConstraintTest {
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testThatConstraintThrowsExceptionWhenNull() {
-		new Constraint(null);
+	    Assertions.assertThrows(IllegalArgumentException.class, () ->  { new Constraint(null); } );
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testThatConstraintThrowsExceptionWhenEmpty() {
-		new Constraint(new String[] {});
+	    Assertions.assertThrows(IllegalArgumentException.class, () ->  { new Constraint(new String[] {}); } );
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testThatLessThan3PartConstraintThrowsException() {
-		new Constraint(new String[] { "foo", "equals" });
+	    Assertions.assertThrows(IllegalArgumentException.class, () ->  { new Constraint(new String[] { "foo", "equals" }); } );
 	}
 
 	@Test
 	public void testThatThreePartConstraintDefinitionSucceeds() {
 		Constraint c = new Constraint(new String[] { "foo", "equals", "bar" });
-		Assert.assertEquals("foo", c.getAttributeName());
-		Assert.assertEquals(Operator.EQUALS, c.getOperator());
-		Assert.assertArrayEquals(new String[] { "bar" }, c.getValues());
-		Assert.assertNull(c.getConjunction());
+		Assertions.assertEquals("foo", c.getAttributeName());
+		Assertions.assertEquals(Operator.EQUALS, c.getOperator());
+		Assertions.assertArrayEquals(new String[] { "bar" }, c.getValues());
+		Assertions.assertNull(c.getConjunction());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testThatImproperBetweenConstraintDefinitionFails() {
-		new Constraint(new String[] { "foo", "between", "bar" });
+	    Assertions.assertThrows(IllegalArgumentException.class, () ->  { new Constraint(new String[] { "foo", "between", "bar" }); } );
 	}
 
 	@Test
 	public void testThatProperBetweenConstraintDefinitionSucceeds() {
 		Constraint c = new Constraint(new String[] { "foo", "between", "bar,noogie" });
-		Assert.assertEquals("foo", c.getAttributeName());
-		Assert.assertEquals(Operator.BETWEEN, c.getOperator());
-		Assert.assertArrayEquals(new String[] { "bar", "noogie" }, c.getValues());
-		Assert.assertNull(c.getConjunction());
+		Assertions.assertEquals("foo", c.getAttributeName());
+		Assertions.assertEquals(Operator.BETWEEN, c.getOperator());
+		Assertions.assertArrayEquals(new String[] { "bar", "noogie" }, c.getValues());
+		Assertions.assertNull(c.getConjunction());
 	}
 
 	@Test
 	public void testThatProperBetweenConstraintDefinitionWithConjunctionSucceeds() {
 		Constraint c = new Constraint(new String[] { "foo", "between", "bar,noogie", "and" });
-		Assert.assertEquals("foo", c.getAttributeName());
-		Assert.assertEquals(Operator.BETWEEN, c.getOperator());
-		Assert.assertArrayEquals(new String[] { "bar", "noogie" }, c.getValues());
-		Assert.assertEquals(Conjunction.AND, c.getConjunction());
+		Assertions.assertEquals("foo", c.getAttributeName());
+		Assertions.assertEquals(Operator.BETWEEN, c.getOperator());
+		Assertions.assertArrayEquals(new String[] { "bar", "noogie" }, c.getValues());
+		Assertions.assertEquals(Conjunction.AND, c.getConjunction());
 	}
 
 	@Test
 	public void testThatConstraintWithProperOrConjunctionSucceeds() {
 		Constraint c = new Constraint(new String[] { "foo", "startsWith", "f", "or" });
-		Assert.assertEquals("foo", c.getAttributeName());
-		Assert.assertEquals(Operator.STARTS_WITH, c.getOperator());
-		Assert.assertArrayEquals(new String[] { "f" }, c.getValues());
-		Assert.assertEquals(Conjunction.OR, c.getConjunction());
+		Assertions.assertEquals("foo", c.getAttributeName());
+		Assertions.assertEquals(Operator.STARTS_WITH, c.getOperator());
+		Assertions.assertArrayEquals(new String[] { "f" }, c.getValues());
+		Assertions.assertEquals(Conjunction.OR, c.getConjunction());
 	}
 }

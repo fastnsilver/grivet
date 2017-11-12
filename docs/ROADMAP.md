@@ -53,6 +53,7 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Switch documentation generation from Springfox Swagger to Spring RestDocs
 - [x] Apache Kafka [integration](https://github.com/fastnsilver/grivet/issues/7)
 
+
 ## 0.4.0
 
 - [ ] Implement [Vaadin](https://vaadin.com/home)-based administrative UI
@@ -62,6 +63,7 @@ This project will remain humble in its design and has no aspirations to match th
 - [ ] Password-protect service administration and discovery
 - [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
 - [ ] Add [Zipkin](http://zipkin.io) integration for [real-time track and trace](http://cloud.spring.io/spring-cloud-sleuth/single/spring-cloud-sleuth.html#_sending_spans_to_zipkin)
+- [x] All tests reimplemented using [JUnit 5](http://junit.org/junit5/docs/current/user-guide/) API
 
 ## 0.5.0
 

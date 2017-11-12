@@ -1,4 +1,4 @@
-FROM java:openjdk-8-jre-alpine
+FROM openjdk:8u151-jre-slim
 MAINTAINER Chris Phillipson <fastnsilver@gmail.com>
 RUN mkdir -p /opt/@project.artifactId@/bin
 COPY @project.artifactId@-@project.version@-exec.jar /opt/@project.artifactId@/bin

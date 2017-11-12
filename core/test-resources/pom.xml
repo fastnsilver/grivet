@@ -1,20 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.fns</groupId>
-        <artifactId>grivet-core-parent</artifactId>
-        <version>0.4.0-SNAPSHOT</version>
-    </parent>
-    
-    <artifactId>grivet-test-resources</artifactId>
-    <packaging>jar</packaging>
+	<parent>
+		<groupId>com.fns</groupId>
+		<artifactId>grivet-core-parent</artifactId>
+		<version>0.4.0-SNAPSHOT</version>
+	</parent>
 
-    <name>Grivet Test Resources</name>
-    <description>Shared test resources</description>
-    <inceptionYear>2016</inceptionYear>
-    <url>https://github.com/fastnsilver/grivet</url>
+	<artifactId>grivet-test-resources</artifactId>
+	<packaging>jar</packaging>
+
+	<name>Grivet Test Resources</name>
+	<description>Shared test resources</description>
+	<inceptionYear>2016</inceptionYear>
+	<url>https://github.com/fastnsilver/grivet</url>
+
+	<dependencies>
+	
+		 <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <exclusions>
+	            	<exclusion>
+	            		<groupId>com.jayway.jsonpath</groupId>
+	            		<artifactId>json-path</artifactId>
+	            	</exclusion>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
+            </exclusions>
+        </dependency>
+        
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit.jupiter.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>${junit.jupiter.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<version>${junit.platform.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.jupiter.version}</version>
+		</dependency>
+
+		<!-- Spring Rest Docs -->
+		<dependency>
+			<groupId>org.springframework.restdocs</groupId>
+			<artifactId>spring-restdocs-mockmvc</artifactId>
+		</dependency>
+
+		<!-- JSON Unit -->
+		<dependency>
+			<groupId>net.javacrumbs.json-unit</groupId>
+			<artifactId>json-unit</artifactId>
+			<version>${json-unit.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.skyscreamer</groupId>
+			<artifactId>jsonassert</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin.external.google</groupId>
+					<artifactId>android-json</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- Rest Assured -->
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>${rest-assured.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>spring-mock-mvc</artifactId>
+			<version>${rest-assured.version}</version>
+		</dependency>
+	</dependencies>
 
 </project>

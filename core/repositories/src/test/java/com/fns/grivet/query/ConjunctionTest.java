@@ -2,8 +2,8 @@ package com.fns.grivet.query;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ConjunctionTest {
 
@@ -13,27 +13,27 @@ public class ConjunctionTest {
 
 		actual = Conjunction.AND.getName();
 		expected = "AND";
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 
 		actual = Conjunction.OR.getName();
 		expected = "OR";
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
 	public void testThatFromValueIsGood() {
 		String[] values = { "AND", "OR" };
-		Arrays.stream(values).forEach(v -> Assert.assertNotNull(Conjunction.fromValue(v)));
+		Arrays.stream(values).forEach(v -> Assertions.assertNotNull(Conjunction.fromValue(v)));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testThatFromValueThrowsExceptionWhenNull() {
-		Conjunction.fromValue(null);
+		Assertions.assertThrows(IllegalArgumentException.class, () ->  { Conjunction.fromValue(null); } );
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testThatFromValueThrowsExceptionWhenUnknown() {
-		Conjunction.fromValue("foo");
+	    Assertions.assertThrows(IllegalArgumentException.class, () ->  { Conjunction.fromValue("foo"); } );
 	}
 
 }

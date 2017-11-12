@@ -32,18 +32,18 @@
             <artifactId>grivet-persist</artifactId>
             <version>${project.version}</version>
             <exclusions>
-            	<exclusion>
-            		<groupId>org.springframework.cloud</groupId>
-            		<artifactId>spring-cloud-stream</artifactId>
-            	</exclusion>
-            	<exclusion>
-            		<groupId>org.springframework.cloud</groupId>
-            		<artifactId>spring-cloud-starter-stream-kafka</artifactId>
-            	</exclusion>
-            	<exclusion>
-            		<groupId>com.101tec</groupId>
-            		<artifactId>zkclient</artifactId>
-            	</exclusion>
+	            	<exclusion>
+	            		<groupId>org.springframework.cloud</groupId>
+	            		<artifactId>spring-cloud-stream</artifactId>
+	            	</exclusion>
+	            	<exclusion>
+	            		<groupId>org.springframework.cloud</groupId>
+	            		<artifactId>spring-cloud-starter-stream-kafka</artifactId>
+	            	</exclusion>
+	            	<exclusion>
+	            		<groupId>com.101tec</groupId>
+	            		<artifactId>zkclient</artifactId>
+	            	</exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -57,58 +57,6 @@
             <artifactId>grivet-test-resources</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-	            	<exclusion>
-	            		<groupId>com.jayway.jsonpath</groupId>
-	            		<artifactId>json-path</artifactId>
-	            	</exclusion>
-            </exclusions>
-        </dependency>
-        
-        <!-- Spring Rest Docs -->
-        <dependency>
-            <groupId>org.springframework.restdocs</groupId>
-            <artifactId>spring-restdocs-mockmvc</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Rest Assured -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${rest-assured.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>spring-mock-mvc</artifactId>
-            <version>${rest-assured.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- JSON Unit -->
-        <dependency>
-            <groupId>net.javacrumbs.json-unit</groupId>
-            <artifactId>json-unit</artifactId>
-            <version>${json-unit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.skyscreamer</groupId>
-            <artifactId>jsonassert</artifactId>
-            <scope>test</scope>
-            <exclusions>
-            	<exclusion>
-            		<groupId>com.vaadin.external.google</groupId>
-            		<artifactId>android-json</artifactId>
-            	</exclusion>
-            </exclusions>
         </dependency>
         
     </dependencies>
@@ -157,6 +105,13 @@
                          </configuration>
                      </execution>
                 </executions>
+                <dependencies>
+					<dependency>
+						<groupId>org.springframework.restdocs</groupId>
+						<artifactId>spring-restdocs-asciidoctor</artifactId>
+						<version>${spring-restdocs.version}</version>
+					</dependency>
+				</dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>

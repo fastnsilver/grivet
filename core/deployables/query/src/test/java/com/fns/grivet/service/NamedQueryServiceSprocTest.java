@@ -24,17 +24,17 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -45,7 +45,7 @@ import com.fns.grivet.query.NamedQuery;
 import io.restassured.path.json.JsonPath;
 
 @ActiveProfiles(value = { "hsqldb", "insecure" })
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = QueryInit.class)
 public class NamedQueryServiceSprocTest {
 
@@ -61,7 +61,7 @@ public class NamedQueryServiceSprocTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws IOException {
 		Resource r = resolver.getResource("classpath:TestType.json");
 		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
@@ -82,42 +82,48 @@ public class NamedQueryServiceSprocTest {
 		String result = namedQueryService.get("sproc.getAttributesCreatedBefore", params);
 		String[] expected = { "bigint", "varchar", "decimal", "datetime", "int", "text", "json", "boolean" };
 		List<String> actual = JsonPath.given(result).getList("NAME");
-		Assert.assertTrue("Result should contain 8 attributes", actual.size() == 8);
-		Assert.assertTrue(actual.containsAll(Arrays.asList(expected)));
+		Assertions.assertTrue(actual.size() == 8, "Result should contain 8 attributes");
+		Assertions.assertTrue(actual.containsAll(Arrays.asList(expected)));
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNamedQueryNotFound() throws IOException {
-		MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-		Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
-		params.add("createdTime", tomorrow);
-		namedQueryService.get("sproc.getAttributesCreatedBefore", params);
+	    Assertions.assertThrows(IllegalArgumentException.class, () ->  {
+	        MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
+	        Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
+	        params.add("createdTime", tomorrow);
+	        namedQueryService.get("sproc.getAttributesCreatedBefore", params);
+	    });
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNamedQueryNotExecutedBecauseItDidNotContainRequiredParamForExecution() throws IOException {
-		Resource r = resolver.getResource("classpath:TestSprocQuery.json");
-		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
-		namedQueryService.create(namedQuery);
-
-		namedQueryService.get("sproc.getAttributesCreatedBefore", null);
+	    Assertions.assertThrows(IllegalArgumentException.class, () ->  {
+        	    Resource r = resolver.getResource("classpath:TestSprocQuery.json");
+        		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+        		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+        		namedQueryService.create(namedQuery);
+        
+        		namedQueryService.get("sproc.getAttributesCreatedBefore", null);
+	    });
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNamedQueryNotExecutedBecauseParamSuppliedForExecutionNotCorrectlyNamed() throws IOException {
-		Resource r = resolver.getResource("classpath:TestSprocQuery.json");
-		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
-		namedQueryService.create(namedQuery);
-
-		MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-		Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
-		params.add("timeCreated", tomorrow);
-		namedQueryService.get("sproc.getAttributesCreatedBefore", params);
+	    Assertions.assertThrows(IllegalArgumentException.class, () ->  {
+        	    Resource r = resolver.getResource("classpath:TestSprocQuery.json");
+        		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+        		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+        		namedQueryService.create(namedQuery);
+        
+        		MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
+        		Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
+        		params.add("timeCreated", tomorrow);
+        		namedQueryService.get("sproc.getAttributesCreatedBefore", params);
+	    });
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		classRegistryService.deregister("TestType");
 		namedQueryService.delete("sproc.getAttributesCreatedBefore");
