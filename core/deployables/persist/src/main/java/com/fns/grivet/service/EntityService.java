@@ -181,7 +181,7 @@ public class EntityService {
 
 	@Transactional(readOnly=true)
 	public String findById(Long eid) {
-		List<EntityAttributeValue> rows = entityRepository.findByIdEntity(eid);
+		List<EntityAttributeValue> rows = entityRepository.findByEntityId(eid);
 		if (rows == null) {
 			throw new ResourceNotFoundException(String.format("No entity exists with oid =[%d]", eid));
 		}

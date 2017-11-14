@@ -110,7 +110,7 @@ public class JdbcEntityRepository implements EntityRepository {
 	}
 
 	@Override
-	public List<EntityAttributeValue> findByIdEntity(Long eid) {
+	public List<EntityAttributeValue> findByEntityId(Long eid) {
 		String sql = QueryBuilder.newInstance().obtainValuesForOneEntity().build();
 		log.trace(String.format("JdbcEntityRepository.findById[sql=%s]", sql));
 		return mapRows(
@@ -176,7 +176,13 @@ public class JdbcEntityRepository implements EntityRepository {
 		EntityAttributeValue eav = null;
 		if (rowSet != null) {
 			while(rowSet.next()) {
-				eav = EntityAttributeValue.of((Long) rowSet.getObject("eid"), (Integer) rowSet.getObject("attribute_id"), (String) rowSet.getObject("attribute_name"), rowSet.getObject("attribute_value"), ((Timestamp) rowSet.getObject("created_time")).toLocalDateTime(), getCurrentUsername());
+				eav = EntityAttributeValue.of(
+				        (Long) rowSet.getObject("eid"), 
+				        (Integer) rowSet.getObject("attribute_id"), 
+				        (String) rowSet.getObject("attribute_name"), 
+				        (String) rowSet.getObject("attribute_value"), 
+				        ((Timestamp) rowSet.getObject("created_time")).toLocalDateTime(), 
+				        getCurrentUsername());
 				result.add(eav);
 			}
 		}
