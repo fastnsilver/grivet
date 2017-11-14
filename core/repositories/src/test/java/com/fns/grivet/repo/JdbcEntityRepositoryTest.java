@@ -56,7 +56,7 @@ public class JdbcEntityRepositoryTest {
     
     @Test
     public void testNewId() {
-        Class c = classRepository.save(com.fns.grivet.model.Class.builder().name("foo").description("Foo type").build());
+        Class c = classRepository.save(Class.builder().name("foo").description("Foo type").build());
         LocalDateTime now = LocalDateTime.now();
         Long eid = entityRepository.newId(c.getId(), now);
         Assertions.assertTrue(eid != null && eid > 0, "Entity should have an identifier!");
@@ -66,7 +66,7 @@ public class JdbcEntityRepositoryTest {
     public void testSaveAndFindEntityById() {
         Attribute detachedAttribute = Attribute.builder().name("canSpeak").description("Is able to speak?").build();
         Attribute canSpeak = attributeRepository.save(detachedAttribute);
-        Class c = classRepository.save(com.fns.grivet.model.Class.builder().name("human").description("A human").build());
+        Class c = classRepository.save(Class.builder().name("human").description("A human").build());
         classAttributeRepository.save(ClassAttribute.builder().aid(canSpeak.getId()).cid(c.getId()).tid(AttributeType.BOOLEAN.getId()).build());
         LocalDateTime now = LocalDateTime.now();
         Long eid = entityRepository.newId(c.getId(), now);
@@ -85,7 +85,7 @@ public class JdbcEntityRepositoryTest {
     public void testFindByCreatedTime() {
         Attribute detachedAttribute = Attribute.builder().name("maxRpm").description("Maximum rotations per minute.").build();
         Attribute maxRpm = attributeRepository.save(detachedAttribute);
-        Class c = classRepository.save(com.fns.grivet.model.Class.builder().name("engine").description("An engine").build());
+        Class c = classRepository.save(Class.builder().name("engine").description("An engine").build());
         classAttributeRepository.save(ClassAttribute.builder().aid(maxRpm.getId()).cid(c.getId()).tid(AttributeType.INTEGER.getId()).build());
         LocalDateTime now = LocalDateTime.now();
         Long eid = entityRepository.newId(c.getId(), now);
@@ -104,7 +104,7 @@ public class JdbcEntityRepositoryTest {
     public void testGetClassIdForEntityId() {
         Attribute detachedAttribute = Attribute.builder().name("lotSize").description("Size of lot in square feet.").build();
         Attribute lotSize = attributeRepository.save(detachedAttribute);
-        Class c = classRepository.save(com.fns.grivet.model.Class.builder().name("home-details").description("Home details").build());
+        Class c = classRepository.save(Class.builder().name("home-details").description("Home details").build());
         classAttributeRepository.save(ClassAttribute.builder().aid(lotSize.getId()).cid(c.getId()).tid(AttributeType.INTEGER.getId()).build());
         LocalDateTime now = LocalDateTime.now();
         Long eid = entityRepository.newId(c.getId(), now);
@@ -120,7 +120,7 @@ public class JdbcEntityRepositoryTest {
         Attribute lotSize = attributeRepository.save(detachedAttribute1);
         Attribute detachedAttribute2 = Attribute.builder().name("bedrooms").description("Number of bedrooms.").build();
         Attribute bedrooms = attributeRepository.save(detachedAttribute2);
-        Class c = classRepository.save(com.fns.grivet.model.Class.builder().name("home-details").description("Home details").build());
+        Class c = classRepository.save(Class.builder().name("home-details").description("Home details").build());
         classAttributeRepository.save(ClassAttribute.builder().aid(lotSize.getId()).cid(c.getId()).tid(AttributeType.INTEGER.getId()).build());
         classAttributeRepository.save(ClassAttribute.builder().aid(bedrooms.getId()).cid(c.getId()).tid(AttributeType.INTEGER.getId()).build());
         LocalDateTime now = LocalDateTime.now();
@@ -148,7 +148,7 @@ public class JdbcEntityRepositoryTest {
         Attribute lotSize = attributeRepository.save(detachedAttribute1);
         Attribute detachedAttribute2 = Attribute.builder().name("bedrooms").description("Number of bedrooms.").build();
         Attribute bedrooms = attributeRepository.save(detachedAttribute2);
-        Class c = classRepository.save(com.fns.grivet.model.Class.builder().name("home-details").description("Home details").build());
+        Class c = classRepository.save(Class.builder().name("home-details").description("Home details").build());
         classAttributeRepository.save(ClassAttribute.builder().aid(lotSize.getId()).cid(c.getId()).tid(AttributeType.INTEGER.getId()).build());
         classAttributeRepository.save(ClassAttribute.builder().aid(bedrooms.getId()).cid(c.getId()).tid(AttributeType.INTEGER.getId()).build());
         LocalDateTime now = LocalDateTime.now();
@@ -178,7 +178,7 @@ public class JdbcEntityRepositoryTest {
         Attribute orderQuantity = attributeRepository.save(detachedAttribute1);
         Attribute detachedAttribute2 = Attribute.builder().name("productId").description("Product SKU.").build();
         Attribute productId = attributeRepository.save(detachedAttribute2);
-        Class c = classRepository.save(com.fns.grivet.model.Class.builder().name("order-line-item").description("Order line item details.").build());
+        Class c = classRepository.save(Class.builder().name("order-line-item").description("Order line item details.").build());
         classAttributeRepository.save(ClassAttribute.builder().aid(orderQuantity.getId()).cid(c.getId()).tid(AttributeType.INTEGER.getId()).build());
         classAttributeRepository.save(ClassAttribute.builder().aid(productId.getId()).cid(c.getId()).tid(AttributeType.INTEGER.getId()).build());
         LocalDateTime now = LocalDateTime.now();
