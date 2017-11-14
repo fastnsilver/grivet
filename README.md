@@ -2,6 +2,7 @@
 [![Build Status](https://codeship.com/projects/4d692160-d37a-0134-e4ef-426c815baba4/status?branch=master)](https://app.codeship.com/projects/201927/)
 [![codecov.io](https://codecov.io/github/fastnsilver/grivet/coverage.svg?branch=master)](https://codecov.io/github/fastnsilver/grivet?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f0aa306c09724c5f9a3ad153cd9d74ac)](https://www.codacy.com/app/fastnsilver/grivet?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fastnsilver/grivet&amp;utm_campaign=Badge_Grade)
+[![Known Vulnerabilities](https://snyk.io/test/github/fastnsilver/grivet/badge.svg)](https://snyk.io/test/github/fastnsilver/grivet)
 [![Apache License 2](https://img.shields.io/badge/license-ASF2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 ![codecov.io](https://codecov.io/github/fastnsilver/grivet/branch.svg?branch=master)
