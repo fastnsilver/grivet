@@ -5,3 +5,8 @@ spring:
       - org.springframework.cloud.netflix.hystrix.HystrixAutoConfiguration
       - org.springframework.cloud.stream.config.BindersHealthIndicatorAutoConfiguration
       - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
+
+endpoints:
+  default:
+    web:
+      enabled: true

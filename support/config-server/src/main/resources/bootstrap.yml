@@ -6,6 +6,14 @@ server:
     accesslog:
       enabled: true
 
+# Set a Personal Access Token for the username and leave password blank
+# @see https://github.com/spring-cloud/spring-cloud-config/issues/55
+# For private repo on Github, visit https://github.com/settings/tokens,
+# then generate token with repo scope
+# Remember to set the spring.cloud.config.server.git.username property value
+# Other Git repo providers:
+#   - Gitlab, https://docs.gitlab.com/ce/user/profile/personal_access_tokens.html
+#   - Bitbucket, https://confluence.atlassian.com/bitbucketserver/personal-access-tokens-939515499.html
 spring:
   application:
     name: grivet-config-service
@@ -14,3 +22,4 @@ spring:
       server:
         git:
           uri: https://github.com/fastnsilver/grivet-config-repo.git
+          password: 
