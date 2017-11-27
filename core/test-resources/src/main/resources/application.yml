@@ -5,8 +5,11 @@ spring:
   profiles:
     active: h2,insecure
   
+  # (2017-10-02) As of Spring Cloud Finchley.M2+ certain auto-config and config don't work, so disable!
   autoconfigure:
     exclude: 
+      - org.springframework.cloud.netflix.hystrix.HystrixAutoConfiguration
+      - org.springframework.cloud.stream.config.BindersHealthIndicatorAutoConfiguration
       - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
       
   jpa:
@@ -106,6 +109,8 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+      - org.springframework.cloud.netflix.hystrix.HystrixAutoConfiguration
+      - org.springframework.cloud.stream.config.BindersHealthIndicatorAutoConfiguration
       - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
       
 management:
