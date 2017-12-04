@@ -96,7 +96,7 @@
         <junit.platform.version>1.0.1</junit.platform.version>
         <logstash-logback-encoder.version>4.9</logstash-logback-encoder.version>
         <lombok.version>1.16.18</lombok.version>
-        <micrometer.version>1.0.0-rc.3</micrometer.version>
+        <micrometer.version>1.0.0-rc.5</micrometer.version>
         <mysql.version>8.0.7-dmr</mysql.version>
         <rest-assured.version>3.0.2</rest-assured.version>
         <scala.version>2.10.6</scala.version>
