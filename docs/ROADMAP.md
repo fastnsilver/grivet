@@ -45,7 +45,7 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Leverage Spring Data's [AuditingEntityListener](http://docs.spring.io/spring-data/data-jpa/docs/1.7.0.DATAJPA-580-SNAPSHOT/reference/html/auditing.html) for entity auditing
 - [x] Endpoints now start with `/api/v1`; and another re-definition of resource names
 - [x] Switch UAA provider from [Stormpath](https://stormpath.com/blog/stormpaths-new-path) to [Auth0](https://manage.auth0.com/#/)
-- [x] Switch to [Codeship](https://app.codeship.com/projects/201927/) for builds and scan for vulnerabilities with [SourceClear](https://app.sourceclear.com/teams/OeetPR6/issues/vulnerabilities)
+- [x] Switch to [Codeship](https://app.codeship.com/projects/201927/) for builds and scan for vulnerabilities with [Snyk](https://snyk.io/org/fastnsilver/projects?origin=github)
 - [x] Introduce reverse [proxy](https://github.com/fastnsilver/grivet/issues/9), adjust endpoints behind this gateway
 - [x] Add registration, storage and retrieval support for `boolean` entity attribute values
 - [x] Allow for querying, updating, and deleting an entity by its object identifier

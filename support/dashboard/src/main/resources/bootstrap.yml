@@ -1,6 +1,0 @@
-spring:
-  application:
-    name: grivet-microservices-dashboard
-
-info:
-  title: Grivet Microservices Dashboard

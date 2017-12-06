@@ -17,9 +17,7 @@
 
 	<modules>
         <module>api-gateway</module>
-        <!-- <module>boot-admin</module> -->
         <module>config-server</module>
-        <module>dashboard</module>
         <module>discovery-service</module>
     </modules>
 
