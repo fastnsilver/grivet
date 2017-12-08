@@ -56,23 +56,30 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 0.4.0
 
-- [ ] Implement [Vaadin](https://vaadin.com/home)-based administrative UI
 - [x] Replace DropWizard with [Micrometer](http://micrometer.io)
-- [ ] Switch time-series back-end to [Prometheus](https://prometheus.io)
 - [x] Upgrade implementation to Spring Framework 5, Spring Boot 2.0 and Spring Cloud Finchley
-- [ ] Password-protect service administration and discovery
-- [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
-- [ ] Add [Zipkin](http://zipkin.io) integration for [real-time track and trace](http://cloud.spring.io/spring-cloud-sleuth/single/spring-cloud-sleuth.html#_sending_spans_to_zipkin)
 - [x] All tests reimplemented using [JUnit 5](http://junit.org/junit5/docs/current/user-guide/) API
 
 ## 0.5.0
 
-- [ ] Add cache provider (e.g., Redis)
-- [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
-- [ ] Plumb Hystrix/Turbine for latency and fault protection
-- [ ] Host demo site on PWS
+- [ ] Reactive retread
+- [ ] Endpoint security policy implemented with Spring Cloud Gateway and Spring Security 5
+- [ ] Password-protect service administration and discovery
+- [ ] Add [Zipkin](http://zipkin.io) integration for [real-time track and trace](http://cloud.spring.io/spring-cloud-sleuth/single/spring-cloud-sleuth.html#_sending_spans_to_zipkin)
 
 ## 0.6.0
 
+- [ ] Add cache provider (e.g., Redis)
+- [ ] Host demo site on PWS
+- [ ] Switch time-series back-end to [Prometheus](https://prometheus.io)
+
+## 0.7.0
+
+- [ ] Implement [Vaadin](https://vaadin.com/home)-based administrative UI
+- [ ] Plumb Hystrix for latency and fault protection 
+
+## 0.8.0
+
+- [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
 - [ ] Gradle build (as an alternative)
 - [ ] Implement Kubernetes deployment option
