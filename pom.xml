@@ -84,6 +84,7 @@
         <guava.version>23.0-android</guava.version>
         <hibernate.version>5.2.11.Final</hibernate.version>
         <hikaricp.version>2.7.1</hikaricp.version>
+        <httpclient.version>4.5.4</httpclient.version>
         <jackson.version>2.9.0</jackson.version>
         <jadira.version>6.0.1.GA</jadira.version>
         <javax.persistence.version>1.0.0.Final</javax.persistence.version>
