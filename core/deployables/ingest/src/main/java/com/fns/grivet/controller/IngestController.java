@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +35,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codahale.metrics.MetricRegistry;
 import com.fns.grivet.model.Op;
 import com.fns.grivet.service.Ingester;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -47,6 +48,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Chris Phillipson
  */
 @Slf4j
+@RefreshScope
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class IngestController {
@@ -55,21 +57,20 @@ public class IngestController {
 	private int batchSize;
 
 	private final Ingester ingestService;
-
-	private final MetricRegistry metricRegistry;
+	private final MeterRegistry meterRegistry;
 
 	@Autowired
-	public IngestController(Ingester entityService, MetricRegistry metricRegistry) {
+	public IngestController(Ingester entityService, MeterRegistry meterRegistry) {
 		this.ingestService = entityService;
-		this.metricRegistry = metricRegistry;
+		this.meterRegistry = meterRegistry;
 	}
 
 	@PreAuthorize("hasAuthority('write:type')")
 	@PostMapping("/api/v1/type")
 	public ResponseEntity<?> ingestCreateTypeRequest(@RequestHeader("Type") String type, @RequestBody JSONObject payload) {
 	    ingestService
-				.ingest(MessageBuilder.withPayload(payload).setHeader("type", type).setHeader("op", Op.CREATE).build());
-		metricRegistry.counter(MetricRegistry.name("ingest", "create", type, "count")).inc();
+				.ingest(MessageBuilder.withPayload(payload).setHeader("type", type).setHeader("op", Op.CREATE.name()).build());
+	    meterRegistry.counter(String.join("ingest", "create", type)).increment();
 		log.info("Successfully ingested create request for type [{}]", type);
 		return ResponseEntity.accepted().build();
 	}
@@ -89,8 +90,8 @@ public class IngestController {
 			try {
 				payload = array.getJSONObject(i);
 				ingestService.ingest(MessageBuilder.withPayload(payload).setHeader("type", type)
-						.setHeader("op", Op.CREATE).build());
-				metricRegistry.counter(MetricRegistry.name("ingest", "create", type, "count")).inc();
+						.setHeader("op", Op.CREATE.name()).build());
+				meterRegistry.counter(String.join("ingest", "create", type)).increment();
 				log.info("Successfully ingested create request for type [{}]", type);
 			} catch (Exception e) {
 				String message = LogUtil.toLog(payload,
@@ -110,8 +111,8 @@ public class IngestController {
 	public ResponseEntity<?> ingestUpdateTypeRequest(
 		@RequestParam(value = "oid", required = true) Long oid,
 		@RequestBody JSONObject payload) {
-		ingestService.ingest(MessageBuilder.withPayload(payload).setHeader("oid", oid).setHeader("op", Op.UPDATE).build());
-		metricRegistry.counter(MetricRegistry.name("ingest", "update", "count")).inc();
+		ingestService.ingest(MessageBuilder.withPayload(payload).setHeader("oid", oid).setHeader("op", Op.UPDATE.name()).build());
+		meterRegistry.counter(String.join("ingest", "update")).increment();
 		log.info("Successfully ingested update request for type w/ oid = [{}]", oid);
 		return ResponseEntity.accepted().build();
 	}
@@ -120,8 +121,8 @@ public class IngestController {
 	@DeleteMapping(value = "/api/v1/type")
 	public ResponseEntity<?> ingestDeleteTypeRequest(
 		@RequestParam(value = "oid", required = true) Long oid) {
-		ingestService.ingest(MessageBuilder.withPayload(new JSONObject()).setHeader("oid", oid).setHeader("op", Op.DELETE).build());
-		metricRegistry.counter(MetricRegistry.name("ingest", "delete", "count")).inc();
+		ingestService.ingest(MessageBuilder.withPayload(new JSONObject()).setHeader("oid", oid).setHeader("op", Op.DELETE.name()).build());
+		meterRegistry.counter(String.join("ingest", "delete")).increment();
 		log.info("Successfully ingested update request for type w/ oid = [{}]", oid);
 		return ResponseEntity.accepted().build();
 	}

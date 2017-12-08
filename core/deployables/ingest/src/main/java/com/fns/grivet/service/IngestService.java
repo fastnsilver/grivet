@@ -36,8 +36,8 @@ public class IngestService implements Ingester {
     @Override
     public void ingest(Message<JSONObject> message) {
         Assert.notNull(message.getHeaders(), "No message headers!");
-        Assert.notNull(message.getHeaders().get("op", Op.class), "Op code must be specified!");
-        if (message.getHeaders().get("op").equals(Op.CREATE)) {
+        Assert.notNull(message.getHeaders().get("op", String.class), "Op code must be specified!");
+        if (message.getHeaders().get("op").equals(Op.CREATE.name())) {
             Assert.hasText(message.getHeaders().get("type", String.class), "Type must not be null or empty!");
         }
         log.debug("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),

@@ -1,10 +1,3 @@
-server:
-  port: 8082
-
 spring:
   application:
-    name: @project.artifactId@
-
-info:
-  title: Grivet Persist
-  description: Persistence end-points.
+    name: grivet-persistence-service

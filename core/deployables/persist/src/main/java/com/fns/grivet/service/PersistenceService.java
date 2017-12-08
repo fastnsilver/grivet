@@ -1,39 +1,40 @@
 package com.fns.grivet.service;
 
 import org.json.JSONObject;
-import org.springframework.cloud.stream.messaging.Processor;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.integration.MessageRejectedException;
-import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHandlingException;
 import org.springframework.util.Assert;
 
-import com.codahale.metrics.MetricRegistry;
 import com.fns.grivet.model.Op;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PersistenceService {
 
 	private final EntityService entityService;
-	private final MetricRegistry metricRegistry;
+	private final MeterRegistry meterRegistry;
 
-	public PersistenceService(EntityService entityService, MetricRegistry metricRegistry) {
+	public PersistenceService(EntityService entityService, MeterRegistry meterRegistry) {
 		this.entityService = entityService;
-		this.metricRegistry = metricRegistry;
+		this.meterRegistry = meterRegistry;
 	}
 
-	@ServiceActivator(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
-	public Object store(Message<JSONObject> message) {
+	@StreamListener(Sink.INPUT)
+	public void store(Message<JSONObject> message) {
 		log.trace("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
 				message.getPayload().toString());
-		Object result = null;
+		Message<JSONObject> result = null;
 		try {
 			Assert.notNull(message.getHeaders(), "No message headers!");
 			Assert.notNull(message.getPayload(), "Message must have non-null payload!");
 	
-			Op op = message.getHeaders().get("op", Op.class);
+			Op op = Op.fromValue(message.getHeaders().get("op", String.class));
 			Assert.notNull(op, "Message header must contain an op code!");
 	
 			String type = null;
@@ -44,35 +45,34 @@ public class PersistenceService {
 					type = message.getHeaders().get("type", String.class);
 					Assert.hasText(type, "Message header must contain a type for create requests!");
 					entityService.create(type, message.getPayload());
-					metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
+					meterRegistry.counter(String.join("store", "create", type)).increment();
 					log.info("Successfully created type [{}]", type);
 					break;
 				case UPDATE:
 					oid = message.getHeaders().get("oid", Long.class);
 					Assert.notNull(oid, "Message header must contain an oid for update requests!");
 					type = entityService.update(oid, message.getPayload());
-					metricRegistry.counter(MetricRegistry.name("store", "update", type, "count")).inc();
+					meterRegistry.counter(String.join("store", "update", type)).increment();
 					log.info("Successfully updated type [{}]", type);
 					break;
 				case DELETE:
 					oid = message.getHeaders().get("oid", Long.class);
 					Assert.notNull(oid, "Message header must contain an oid for delete requests!");
 					type = entityService.delete(oid);
-					metricRegistry.counter(MetricRegistry.name("store", "delete", type, "count")).inc();
+					meterRegistry.counter(String.join("store", "delete", type)).increment();
 					log.info("Successfully deleted type [{}]", type);
 					break;
 				default:
-					throw new MessageRejectedException(message, "Bad payload!");
+					throw new MessageRejectedException(message, String.format("Bad payload! Invalid op [%s].", op.name()));
 			}
-			result = MessageBuilder.fromMessage(message).setHeader("processed", true);
 			
 		} catch (Exception e) {
-			log.error("Op not available.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
-					message.getPayload().toString());
+			log.error("Problem processing message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
+					message.getPayload().toString(), e);
 			result = MessageBuilder.fromMessage(message)
 						.setHeader("processed", false)
-						.setHeader("exception", e.getMessage());
+						.setHeader("exception", e.getMessage()).build();
+			throw new MessageHandlingException(result, "Could not process message!");
 		}
-		return result;
 	}
 }

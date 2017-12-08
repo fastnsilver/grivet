@@ -33,11 +33,11 @@ services:
       - 9200:9200
       - 9300:9300
     environment:
-      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+      - ES_JAVA_OPTS=-Xms2g -Xmx4g
   
   ### REDIS
   redis:
-    image: redis:3.2.0-alpine
+    image: redis:3.2.10-alpine
     ports:
       - 6379:6379
   
@@ -68,25 +68,21 @@ services:
     links:
       - redis
       
-  ### GRAPHITE, STATSD
-  graphite:
-    image: hopsoft/graphite-statsd
+  ### PROMETHEUS
+  prometheus:
+    image: prom/prometheus:v2.0.0-beta.4
     ports:
-      - 8000:80
-      - 2003:2003
-      - 8125:8125
-      - 8125:8125/udp
-      - 8126:8126
+      - 9090:9090
   
   ### GRAFANA
   grafana:
-    image: grafana/grafana:3.0.4
+    image: grafana/grafana:4.5.1
     ports:
       - 3000:3000
     env_file:
       - ./monitoring/grafana.env
     links:
-      - graphite
+      - prometheus
       
   ### CADVISOR
   cadvisor:
@@ -101,7 +97,7 @@ services:
       
   ### DATABASE
   db:
-    image: mysql:5.7.15
+    image: mysql:5.7.19
     privileged: true
     ports:
       - 3306:3306
@@ -129,9 +125,10 @@ services:
     ports:
       - 8888:8888
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
+      - JAVA_OPTS=-Xmx2g -XX:+UseG1GC -XX:+UseStringDeduplication
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
   
   ### EUREKA, DISCOVERY
   discovery-service:
@@ -139,21 +136,24 @@ services:
     ports:
       - 8761:8761
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
+      - JAVA_OPTS=-Xmx2g -XX:+UseG1GC -XX:+UseStringDeduplication
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
   
   ### SPRING BOOT SERVICE ADMINISTRATION
-  springboot-admin:
-    image: fastnsilver/grivet-boot-admin
-    ports:
-      - 5555:5555
-    links:
-      - discovery-service
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
+#  springboot-admin:
+#    image: fastnsilver/grivet-boot-admin
+#    ports:
+#      - 5555:5555
+#    links:
+#      - discovery-service
+#    environment:
+#      - DOCKER_IP=$DOCKER_IP
+#      - JAVA_OPTS=-Xmx1g -XX:+UseG1GC -XX:+UseStringDeduplication
+#      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+#      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+#      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
+#      - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/
   
   ### SPRING BOOT DASHBOARD
   springboot-dashboard:
@@ -164,6 +164,12 @@ services:
       - discovery-service
       - redis
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
       - DOCKER_IP=$DOCKER_IP
-      - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
+      - SPRING_REDIS_HOST=redis
+      - JAVA_OPTS=-Xmx1g -XX:+UseG1GC -XX:+UseStringDeduplication
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+      - EUREKA_CLIENT_ENABLED=true
+      - EUREKA_CLIENT_HEALTH_CHECK_ENABELD=false
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/

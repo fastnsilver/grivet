@@ -45,27 +45,41 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Leverage Spring Data's [AuditingEntityListener](http://docs.spring.io/spring-data/data-jpa/docs/1.7.0.DATAJPA-580-SNAPSHOT/reference/html/auditing.html) for entity auditing
 - [x] Endpoints now start with `/api/v1`; and another re-definition of resource names
 - [x] Switch UAA provider from [Stormpath](https://stormpath.com/blog/stormpaths-new-path) to [Auth0](https://manage.auth0.com/#/)
-- [x] Switch to [Codeship](https://app.codeship.com/projects/201927/) for builds and scan for vulnerabilities with [SourceClear](https://app.sourceclear.com/teams/OeetPR6/issues/vulnerabilities)
+- [x] Switch to [Codeship](https://app.codeship.com/projects/201927/) for builds and scan for vulnerabilities with [Snyk](https://snyk.io/org/fastnsilver/projects?origin=github)
 - [x] Introduce reverse [proxy](https://github.com/fastnsilver/grivet/issues/9), adjust endpoints behind this gateway
 - [x] Add registration, storage and retrieval support for `boolean` entity attribute values
 - [x] Allow for querying, updating, and deleting an entity by its object identifier
 - [x] [Upgrade](https://github.com/fastnsilver/grivet/issues/8) Docker Compose configuration
-- [ ] Password-protect service administration and discovery
-- [ ] Add MySQL [replication support](https://github.com/ioggstream/mysql-community/blob/master/ga/docker-compose.yml)
 - [x] Switch documentation generation from Springfox Swagger to Spring RestDocs
-- [ ] Host demo site on AWS (bring up Kubernetes or Mesos Cluster w/ Terraform)
-- [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
 - [x] Apache Kafka [integration](https://github.com/fastnsilver/grivet/issues/7)
+
 
 ## 0.4.0
 
-- [ ] Implement [Vaadin](https://vaadin.com/home)-based administrative UI
+- [x] Replace DropWizard with [Micrometer](http://micrometer.io)
+- [x] Upgrade implementation to Spring Framework 5, Spring Boot 2.0 and Spring Cloud Finchley
+- [x] All tests reimplemented using [JUnit 5](http://junit.org/junit5/docs/current/user-guide/) API
 
 ## 0.5.0
 
-- [ ] Add cache provider (e.g., Redis)
-- [ ] Plumb Hystrix/Turbine for latency and fault protection
+- [ ] Reactive retread
+- [ ] Endpoint security policy implemented with Spring Cloud Gateway and Spring Security 5
+- [ ] Password-protect service administration and discovery
+- [ ] Add [Zipkin](http://zipkin.io) integration for [real-time track and trace](http://cloud.spring.io/spring-cloud-sleuth/single/spring-cloud-sleuth.html#_sending_spans_to_zipkin)
 
 ## 0.6.0
 
+- [ ] Add cache provider (e.g., Redis)
+- [ ] Host demo site on PWS
+- [ ] Switch time-series back-end to [Prometheus](https://prometheus.io)
+
+## 0.7.0
+
+- [ ] Implement [Vaadin](https://vaadin.com/home)-based administrative UI
+- [ ] Plumb Hystrix for latency and fault protection 
+
+## 0.8.0
+
+- [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
 - [ ] Gradle build (as an alternative)
+- [ ] Implement Kubernetes deployment option

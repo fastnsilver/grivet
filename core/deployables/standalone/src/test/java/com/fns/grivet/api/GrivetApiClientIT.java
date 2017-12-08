@@ -17,7 +17,7 @@ package com.fns.grivet.api;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -27,17 +27,17 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.io.IOUtils;
 import org.joda.time.LocalDateTime;
 import org.json.JSONArray;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fns.grivet.StandaloneInit;
 
@@ -45,7 +45,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.javacrumbs.jsonunit.JsonAssert;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = StandaloneInit.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class GrivetApiClientIT {
 
@@ -271,7 +271,7 @@ public class GrivetApiClientIT {
 	        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
 	                .when().get("/api/v1/queries");
 	        JSONArray result = new JSONArray(response.body().asString());
-	        Assert.assertEquals(1, result.length()); 
+	        Assertions.assertEquals(1, result.length()); 
 	        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
 	                .delete("/api/v1/query/getAttributesCreatedBefore");
         } catch (IOException e) {
@@ -290,7 +290,7 @@ public class GrivetApiClientIT {
 	        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
 	                .when().get("/api/v1/query/getClassesCreatedToday");
 	        JSONArray result = new JSONArray(response.body().asString());
-	        Assert.assertEquals(1, result.length());
+	        Assertions.assertEquals(1, result.length());
 	        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
 	                .delete("/api/v1/query/getClassesCreatedToday");
         } catch (IOException e) {
@@ -301,7 +301,7 @@ public class GrivetApiClientIT {
     
     
     @Test
-    @Ignore("Cannot test w/ H2")
+    @Disabled("Cannot test w/ H2")
     public void testNamedQueryRegistrationAndRetrievalSprocHappyPath() {
         registerTestType();
         Resource r = resolver.getResource("classpath:TestSprocQuery.json");
@@ -313,7 +313,7 @@ public class GrivetApiClientIT {
 	        Response response = given().contentType("application/json").request().then().expect().statusCode(equalTo(200))
 	                .when().get("/api/v1/query/sproc.getAttributesCreatedBefore?createdTime=" + now.toString());
 	        JSONArray result = new JSONArray(response.body().asString());
-	        Assert.assertEquals(7, result.length());
+	        Assertions.assertEquals(7, result.length());
 	        given().contentType("application/json").request().then().expect().statusCode(equalTo(204)).when()
 	                .delete("/api/v1/query/sproc.getAttributesCreatedBefore");
         } catch (IOException e) {

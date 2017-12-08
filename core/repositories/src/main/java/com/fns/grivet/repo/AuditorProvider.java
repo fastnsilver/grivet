@@ -15,6 +15,8 @@
  */
 package com.fns.grivet.repo;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,9 +43,9 @@ public class AuditorProvider implements AuditorAware<String> {
     }
     
     @Override
-    public String getCurrentAuditor() {
+    public Optional<String> getCurrentAuditor() {
         User auditor = getCurrentUser();
-        return  auditor == null ? null : auditor.getUsername();
+        return auditor == null ? Optional.of("--unknown--") : Optional.of(auditor.getUsername());
     }
     
     /**

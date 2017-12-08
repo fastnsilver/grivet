@@ -23,21 +23,21 @@ import java.util.Arrays;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fns.grivet.PersistInit;
 
 import net.javacrumbs.jsonunit.JsonAssert;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = PersistInit.class)
 public class EntityServiceTest {
 
@@ -96,8 +96,8 @@ public class EntityServiceTest {
 		JSONObject schemaObj = new JSONObject(jsonSchema);
 		com.fns.grivet.model.Class c = schemaService.linkSchema(schemaObj);
 		String type = c.getName();
-		Assert.assertEquals("TestType", type);
-		Assert.assertTrue(c.isValidatable());
+		Assertions.assertEquals("TestType", type);
+		Assertions.assertTrue(c.isValidatable());
 		JsonAssert.assertJsonEquals(c.getJsonSchema(), jsonSchema);
 
 		r = resolver.getResource("classpath:TestTypeData.json");
@@ -111,23 +111,27 @@ public class EntityServiceTest {
 		JsonAssert.assertJsonEquals(payload.toString(), resultAsJsonArray.get(0).toString());
 
 		c = schemaService.unlinkSchema(type);
-		Assert.assertFalse(c.isValidatable());
-		Assert.assertNull(c.getJsonSchema());
+		Assertions.assertFalse(c.isValidatable());
+		Assertions.assertNull(c.getJsonSchema());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testTypeNotRegistered() throws IOException {
-		JSONObject payload = new JSONObject();
-		entityService.create("TestType", payload);
+	    Assertions.assertThrows(IllegalArgumentException.class, () ->  {
+        	    JSONObject payload = new JSONObject();
+        		entityService.create("TestType", payload);
+	    });
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void testTypePayloadIsNull() throws IOException {
-		registerType("TestType");
-		entityService.create("TestType", null);
+	    Assertions.assertThrows(NullPointerException.class, () ->  {
+	        registerType("TestType");
+	        entityService.create("TestType", null);
+	    });
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		String[] types = { "TestType", "TestType2" };
 		Arrays.stream(types).forEach(type -> classRegistryService.deregister(type));

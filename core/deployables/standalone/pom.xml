@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>com.fns</groupId>
 		<artifactId>grivet-deployables-parent</artifactId>
-		<version>0.3.0-SNAPSHOT</version>
+		<version>0.4.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>grivet-standalone</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Grivet Standalone</name>
+	<name>Grivet Standalone Service</name>
 	<description>Standalone variant of a micro-service capable of self-service modeling and persistence.</description>
 	<inceptionYear>2015</inceptionYear>
 	<url>https://github.com/fastnsilver/grivet</url>
@@ -32,18 +32,18 @@
             <artifactId>grivet-persist</artifactId>
             <version>${project.version}</version>
             <exclusions>
-            	<exclusion>
-            		<groupId>org.springframework.cloud</groupId>
-            		<artifactId>spring-cloud-stream</artifactId>
-            	</exclusion>
-            	<exclusion>
-            		<groupId>org.springframework.cloud</groupId>
-            		<artifactId>spring-cloud-starter-stream-kafka</artifactId>
-            	</exclusion>
-            	<exclusion>
-            		<groupId>com.101tec</groupId>
-            		<artifactId>zkclient</artifactId>
-            	</exclusion>
+	            	<exclusion>
+	            		<groupId>org.springframework.cloud</groupId>
+	            		<artifactId>spring-cloud-stream</artifactId>
+	            	</exclusion>
+	            	<exclusion>
+	            		<groupId>org.springframework.cloud</groupId>
+	            		<artifactId>spring-cloud-starter-stream-kafka</artifactId>
+	            	</exclusion>
+	            	<exclusion>
+	            		<groupId>com.101tec</groupId>
+	            		<artifactId>zkclient</artifactId>
+	            	</exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -56,46 +56,6 @@
             <groupId>com.fns</groupId>
             <artifactId>grivet-test-resources</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
-        <!-- Spring Rest Docs -->
-        <dependency>
-            <groupId>org.springframework.restdocs</groupId>
-            <artifactId>spring-restdocs-mockmvc</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Rest Assured -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${rest-assured.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>spring-mock-mvc</artifactId>
-            <version>${rest-assured.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- JSON Unit -->
-        <dependency>
-            <groupId>net.javacrumbs.json-unit</groupId>
-            <artifactId>json-unit</artifactId>
-            <version>${json-unit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.skyscreamer</groupId>
-            <artifactId>jsonassert</artifactId>
             <scope>test</scope>
         </dependency>
         
@@ -145,6 +105,13 @@
                          </configuration>
                      </execution>
                 </executions>
+                <dependencies>
+					<dependency>
+						<groupId>org.springframework.restdocs</groupId>
+						<artifactId>spring-restdocs-asciidoctor</artifactId>
+						<version>${spring-restdocs.version}</version>
+					</dependency>
+				</dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>

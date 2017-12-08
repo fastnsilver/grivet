@@ -21,19 +21,19 @@ import java.nio.charset.Charset;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fns.grivet.AdminInit;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AdminInit.class)
 public class ClassRegistryServiceTest {
 
@@ -50,16 +50,16 @@ public class ClassRegistryServiceTest {
 		JSONObject payload = new JSONObject(json);
 
 		String type = classRegistryService.register(payload);
-		Assert.assertEquals("TestType", type);
+		Assertions.assertEquals("TestType", type);
 
 		JSONObject jo = classRegistryService.get("TestType");
-		Assert.assertEquals(payload.toString(), jo.toString());
+		Assertions.assertEquals(payload.toString(), jo.toString());
 
 		JSONArray ja = classRegistryService.all();
-		Assert.assertEquals(payload.toString(), ja.get(0).toString());
+		Assertions.assertEquals(payload.toString(), ja.get(0).toString());
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		classRegistryService.deregister("TestType");
 	}

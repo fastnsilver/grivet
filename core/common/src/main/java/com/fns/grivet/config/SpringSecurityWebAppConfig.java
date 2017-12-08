@@ -1,6 +1,5 @@
 package com.fns.grivet.config;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -20,7 +19,7 @@ import com.auth0.spring.security.api.Auth0SecurityConfig;
 @Configuration
 @EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+@Order(Integer.MAX_VALUE - 7)
 public class SpringSecurityWebAppConfig extends Auth0SecurityConfig {
 
     public static class Auth0Client {

@@ -16,13 +16,17 @@
 package com.fns.grivet.controller;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetrics;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -34,15 +38,25 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 class GlobalControllerExceptionHandler {
 
+    @Autowired
+    private WebMvcMetrics metrics;
+    
 	@ExceptionHandler({
 		IOException.class, IllegalArgumentException.class, 
 		DateTimeParseException.class, NumberFormatException.class, JSONException.class
 	})
 	protected ResponseEntity<ErrorResponse> badRequest(Exception e, HttpServletRequest hsr) {
-		ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),
+	    tagWithException(metrics, e);
+	    ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),
 				Arrays.asList(e.getMessage()));
 		log.error(er.toString());
 		return ResponseEntity.badRequest().body(er);
+	}
+	
+	private void tagWithException(WebMvcMetrics metrics, Exception e) {
+	    Method m = ReflectionUtils.findMethod(WebMvcMetrics.class, "tagWithException", Exception.class);
+	    ReflectionUtils.makeAccessible(m);
+	    ReflectionUtils.invokeMethod(m, metrics, e);
 	}
 	
 }

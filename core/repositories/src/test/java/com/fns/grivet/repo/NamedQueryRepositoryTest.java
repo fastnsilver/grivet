@@ -1,17 +1,17 @@
 package com.fns.grivet.repo;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.query.QueryType;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class NamedQueryRepositoryTest {
 
@@ -29,11 +29,11 @@ public class NamedQueryRepositoryTest {
                             .build();
         NamedQuery expected = repo.save(detached);
         NamedQuery actual = repo.findByName("totalSpendInLastMonth");
-        Assert.assertNotNull("Expected a matching NamedQuery!", actual);
-        Assert.assertEquals(expected, actual);
+        Assertions.assertNotNull(actual, "Expected a matching NamedQuery!");
+        Assertions.assertEquals(expected, actual);
     }
     
-    @After
+    @AfterEach
     public void tearDown() {
         repo.deleteAll();
     }

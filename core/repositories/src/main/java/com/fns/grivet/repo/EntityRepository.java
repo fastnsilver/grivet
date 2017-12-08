@@ -19,7 +19,7 @@ public interface EntityRepository {
 
 	public Integer getClassIdForEntityId(Long eid);
 
-	public List<EntityAttributeValue> findOneEntity(Long eid);
+	public List<EntityAttributeValue> findByEntityId(Long eid);
 
 	public void delete(Long eid);
 	

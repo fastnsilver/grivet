@@ -22,7 +22,6 @@
 
   * links a JSON Schema with a pre-registered type; subsequent `/api/v1/type` requests will be validated against schema
   * Validation failures will result in an HTTP/1.1 422 Unprocessable Entity
-
   * Sample POST request [TestTypeSchema.json](https://github.com/fastnsilver/grivet/blob/master/core/test-resources/src/main/resources/TestTypeSchema.json)
 
 * DELETE `/api/v1/schema/{type}`
@@ -32,7 +31,6 @@
 * DELETE `/api/v1/definition/{type}`
 
   * deletes a registered type; default configuration has cascading deletes enabled which means that any persistent data from prior POST `/api/v1/type` requests will also be deleted; so use with caution!
-
   * However, if `spring.profiles.active` is set to `mysql` then when a DELETE request is made only the Class from the `class` table is deleted which orphans entries in other tables
 
 

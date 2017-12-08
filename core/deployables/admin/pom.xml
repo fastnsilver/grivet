@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>com.fns</groupId>
 		<artifactId>grivet-deployables-parent</artifactId>
-		<version>0.3.0-SNAPSHOT</version>
+		<version>0.4.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>grivet-admin</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Grivet Admin</name>
+	<name>Grivet Admin Service</name>
 	<description>Type and schema registration end-points.</description>
 	<inceptionYear>2016</inceptionYear>
 	<url>https://github.com/fastnsilver/grivet</url>
@@ -28,18 +28,6 @@
 			<artifactId>grivet-repositories</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.fns</groupId>
-			<artifactId>grivet-shared-config</artifactId>
-			<version>${project.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.fns</groupId>
-			<artifactId>grivet-test-resources</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
 
 		<!-- Spring Boot -->
 		<dependency>
@@ -50,10 +38,6 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-tomcat</artifactId>
 				</exclusion>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -62,30 +46,19 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.lmax</groupId>
-			<artifactId>disruptor</artifactId>
-			<version>${disruptor.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 			<exclusions>
-                <exclusion>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-entitymanager</artifactId>
-                </exclusion>
-            </exclusions>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-entitymanager</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -103,25 +76,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-integration</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- Spring Cloud -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-config-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-sleuth</artifactId>
 		</dependency>
 
 		<!-- Apache Commons -->
@@ -150,7 +104,7 @@
 
 		<!-- javax.validation provider implementation -->
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 
@@ -164,20 +118,6 @@
 			<artifactId>jackson-datatype-jdk8</artifactId>
 		</dependency>
 
-		<!-- Spring Rest Docs -->
-		<dependency>
-			<groupId>org.springframework.restdocs</groupId>
-			<artifactId>spring-restdocs-mockmvc</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- JSON Unit -->
-		<dependency>
-			<groupId>net.javacrumbs.json-unit</groupId>
-			<artifactId>json-unit</artifactId>
-			<version>${json-unit.version}</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -197,7 +137,8 @@
 					</execution>
 				</executions>
 				<configuration>
-					<jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005</jvmArguments>
+					<jvmArguments>-Xdebug
+						-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005</jvmArguments>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -206,24 +147,31 @@
 				<version>${asciidoctor-maven-plugin.version}</version>
 				<executions>
 					<execution>
-                         <id>generate-docs</id>
-                         <phase>prepare-package</phase>
-                         <goals>
-                             <goal>process-asciidoc</goal>
-                         </goals>
-                         <configuration>
-                             <backend>html</backend>
-                             <doctype>book</doctype>
-                             <attributes>
-                                 <toclevels>2</toclevels>
-                                 <toc>left</toc>
-                                 <generated>${project.build.directory}/docs/asciidoc/generated</generated>
-                                 <snippets>${snippetsDirectory}</snippets>
-                             </attributes>
-                             <outputDirectory>${project.build.directory}/site</outputDirectory>
-                         </configuration>
-                     </execution>
+						<id>generate-docs</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+						<configuration>
+							<backend>html</backend>
+							<doctype>book</doctype>
+							<attributes>
+								<toclevels>2</toclevels>
+								<toc>left</toc>
+								<generated>${project.build.directory}/docs/asciidoc/generated</generated>
+								<snippets>${snippetsDirectory}</snippets>
+							</attributes>
+							<outputDirectory>${project.build.directory}/site</outputDirectory>
+						</configuration>
+					</execution>
 				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework.restdocs</groupId>
+						<artifactId>spring-restdocs-asciidoctor</artifactId>
+						<version>${spring-restdocs.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -236,14 +184,10 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>
-								${project.build.outputDirectory}/static/docs
-							</outputDirectory>
+							<outputDirectory>${project.build.outputDirectory}/static/docs</outputDirectory>
 							<resources>
 								<resource>
-									<directory>
-										${project.build.directory}/generated-docs
-									</directory>
+									<directory>${project.build.directory}/generated-docs</directory>
 								</resource>
 							</resources>
 						</configuration>

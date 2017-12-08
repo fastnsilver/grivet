@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Profile;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -45,10 +46,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fns.grivet.service.EntityService;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -58,6 +59,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Chris Phillipson
  */
 @Slf4j
+@RefreshScope
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class EntityController {
@@ -67,12 +69,12 @@ public class EntityController {
 
 	private final EntityService entityService;
 
-	private final MetricRegistry metricRegistry;
+	private final MeterRegistry meterRegistry;
 
 	@Autowired
-	public EntityController(EntityService entityService, MetricRegistry metricRegistry) {
+	public EntityController(EntityService entityService, MeterRegistry meterRegistry) {
 		this.entityService = entityService;
-		this.metricRegistry = metricRegistry;
+		this.meterRegistry = meterRegistry;
 	}
 
 	@Profile("!pipeline")
@@ -81,7 +83,7 @@ public class EntityController {
 	public ResponseEntity<?> createOne(@RequestHeader("Type") String type, @RequestBody JSONObject json) {
 		Long oid = entityService.create(type, json);
 		URI location = UriComponentsBuilder.newInstance().path("/api/v1/type").queryParam("oid", oid).build().toUri();
-		metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
+		meterRegistry.counter(String.join("store", "create", type)).increment();
 		log.info("Successfully created type [{}]", type);
 		return ResponseEntity.created(location).build();
 	}
@@ -111,7 +113,7 @@ public class EntityController {
 				} else {
 					headers.set(String.format("Location[%s]", String.valueOf(i + 1)), location.toASCIIString());
 				}
-				metricRegistry.counter(MetricRegistry.name("store", "create", type, "count")).inc();
+				meterRegistry.counter(String.join("store", "create", type)).increment();
 				log.info("Successfully created type [{}]", type);
 			} catch (Exception e) {
 				String message = LogUtil.toLog(jsonObject, String.format("Problems storing type! Portion of payload @ index[%d]\n", i+1));
@@ -136,7 +138,7 @@ public class EntityController {
 		HttpHeaders headers = new HttpHeaders();
 		URI location = UriComponentsBuilder.newInstance().path("/api/v1/type").queryParam("oid", oid).build().toUri();
 		headers.setLocation(location);
-		metricRegistry.counter(MetricRegistry.name("store", "update", type, "count")).inc();
+		meterRegistry.counter(String.join("store", "update", type)).increment();
 		log.info("Successfully updated type [{}]", type);
 		return ResponseEntity.ok().headers(headers).build();
 	}
@@ -147,7 +149,7 @@ public class EntityController {
 	public ResponseEntity<?> deleteOne(
 			@RequestParam(value = "oid", required = true) Long oid) {
 		String type = entityService.delete(oid);
-		metricRegistry.counter(MetricRegistry.name("store", "delete", type, "count")).inc();
+		meterRegistry.counter(String.join("store", "delete", type)).increment();
 		log.info("Successfully delete type [{}]", type);
 		return ResponseEntity.ok().build();
 	}
@@ -173,7 +175,7 @@ public class EntityController {
 	@GetMapping("/api/v1/type")
 	public ResponseEntity<?> fetchOne(
 			@RequestParam(value = "oid", required = true) Long oid) {
-		return ResponseEntity.ok(entityService.findOne(oid));
+		return ResponseEntity.ok(entityService.findById(oid));
 	}
 
 }

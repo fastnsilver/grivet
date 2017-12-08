@@ -16,9 +16,9 @@
 package com.fns.grivet.service;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.StreamSupport;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -124,9 +124,9 @@ public class ClassRegistryService {
 		Attribute a = null;
 		AttributeType at = null;
 		for (ClassAttribute ca: cas) {
-			a = attributeRepository.findOne(ca.getAid());
+            a = attributeRepository.findById(ca.getAid()).get();
 			Assert.notNull(a, String.format("Attribute id [%s] is not registered!", ca.getAid()));
-			at = attributeTypeRepository.findOne(ca.getTid());
+			at = attributeTypeRepository.findById(ca.getTid());
 			Assert.notNull(a, String.format("Attribute Type id [%s] is not registered!", ca.getTid()));
 			attributes.put(a.getName(), at.getType());
 		}
@@ -138,12 +138,9 @@ public class ClassRegistryService {
 		JSONArray result = new JSONArray();
 		Iterable<com.fns.grivet.model.Class> iterable = classRepository.findAll();
 		Assert.notNull(iterable, "No types are registered!");
-		Iterator<com.fns.grivet.model.Class> it = iterable.iterator();
-		com.fns.grivet.model.Class c = null;
-		while(it.hasNext()) {
-			c = it.next();
-			result.put(get(c.getName()));
-		}
+		StreamSupport
+		    .stream(iterable.spliterator(), false)
+		        .forEach(c -> result.put(get(c.getName())));
 		return result;
 	}
 
