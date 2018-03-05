@@ -105,7 +105,7 @@ spring:
   # @see https://github.com/spring-projects/spring-boot/issues/10306
   autoconfigure:
     exclude:
-      - org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
       - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
       
 management:
