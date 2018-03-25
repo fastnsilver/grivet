@@ -36,10 +36,11 @@ logging:
     com.zaxxer.hikari: WARN
     com.fns.grivet: INFO
 
-endpoints:
-  default:
+management:
+  endpoints:
     web:
-      enabled: true
+      exposure:
+        include: *
            
 ---
 
