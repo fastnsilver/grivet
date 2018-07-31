@@ -4,5 +4,5 @@ applications:
   host: grivet-persist 
   memory: 1G
   instances: 1
-  path: ./target/grivet-persist-0.4.0-SNAPSHOT-exec.jar
+  path: ./target/grivet-persist-0.5.0-SNAPSHOT-exec.jar
   timeout: 120

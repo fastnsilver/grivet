@@ -40,6 +40,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -71,7 +72,7 @@ public class QueryDocumentationTest {
     private MockMvc mockMvc;
     
     @BeforeEach
-    public void setUp(RestDocumentationExtension restDocumentation) {
+    public void setUp(RestDocumentationContextProvider restDocumentation) {
         RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(documentationConfiguration(restDocumentation))
