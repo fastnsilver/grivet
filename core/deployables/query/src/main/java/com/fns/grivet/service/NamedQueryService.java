@@ -91,6 +91,11 @@ public class NamedQueryService {
                     CallableStatementCreator csc = factory.newCallableStatementCreator(parameterSource.getValues());
                     rowSet = callSproc(csc);
                     break;
+                //missing default case
+                default:
+                    // add default case
+                    break;
+
             }
         } else {
             Assert.isTrue(sqlParams.isEmpty(), "Query cannot be executed! Query expects parameters!");
@@ -104,6 +109,10 @@ public class NamedQueryService {
                     CallableStatementCreatorFactory factory = new CallableStatementCreatorFactory(sproc, namedQuery.asSqlParameters(parameters));
                     CallableStatementCreator csc = factory.newCallableStatementCreator((Map<String, ?>) null);
                     rowSet = callSproc(csc);
+                    break;
+                //missing default case
+                default:
+                    // add default case
                     break;
             }
         }
