@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -31,7 +31,7 @@
 
     <organization>
         <name>FNS</name>
-        <url>http://fastnsilver.github.io</url>
+        <url>https://fastnsilver.github.io</url>
     </organization>
 
     <issueManagement>
@@ -42,7 +42,7 @@
     <licenses>
         <license>
             <name>Apache</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
 
@@ -196,7 +196,7 @@
         <pluginRepository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
-            <url>http://repo.spring.io/libs-snapshot</url>
+            <url>https://repo.spring.io/libs-snapshot</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -566,7 +566,7 @@
                                 -windowtitle "${project.name} ${project.version} API Reference"
                                 -doctitle "${project.name} ${project.version} API Reference"
                                 -link https://docs.oracle.com/javase/8/docs/api/
-                                -link http://jsr311.java.net/nonav/releases/1.1
+                                -link https://jsr311.java.net/nonav/releases/1.1
                                 -Xdoclint:none
                             </additionalparam>
                             <sourcepath>target/generated-sources/delombok</sourcepath>
@@ -593,7 +593,7 @@
                                         -windowtitle "${project.name} ${project.version} API Reference"
                                         -doctitle "${project.name} ${project.version} API Reference"
                                         -link https://docs.oracle.com/javase/8/docs/api/
-                                        -link http://jsr311.java.net/nonav/releases/1.1
+                                        -link https://jsr311.java.net/nonav/releases/1.1
                                         -sourceclasspath ${project.build.outputDirectory}
                                     </additionalparam>
                                 </configuration>
@@ -622,7 +622,7 @@
                                         -windowtitle "${project.name} ${project.version} API Reference"
                                         -doctitle "${project.name} ${project.version} API Reference"
                                         -link https://docs.oracle.com/javase/8/docs/api/
-                                        -link http://jsr311.java.net/nonav/releases/1.1
+                                        -link https://jsr311.java.net/nonav/releases/1.1
                                     </additionalparam>
                                 </configuration>
                                 <reports>
