@@ -98,7 +98,7 @@
         <lombok.version>1.18.2</lombok.version>
         <micrometer.version>1.0.6</micrometer.version>
         <mysql.version>8.0.11</mysql.version>
-        <rest-assured.version>3.1.0</rest-assured.version>
+        <rest-assured.version>3.2.0</rest-assured.version>
         <scala.version>2.12.6</scala.version>
         <slf4j.version>1.7.25</slf4j.version>
         <spring-boot-admin.version>2.0.1</spring-boot-admin.version>
