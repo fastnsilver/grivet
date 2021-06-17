@@ -78,7 +78,7 @@
         <!-- Third-party library versions -->
         <auth0-api.version>0.4.0</auth0-api.version>
         <commons-lang3.version>3.7</commons-lang3.version>
-        <commons-io.version>2.6</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
         <flyway.version>5.1.4</flyway.version>
         <guava.version>25.1-jre</guava.version>
         <hibernate.version>5.3.3.Final</hibernate.version>
