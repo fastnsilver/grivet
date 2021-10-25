@@ -97,7 +97,7 @@
         <logstash-logback-encoder.version>4.9</logstash-logback-encoder.version>
         <lombok.version>1.18.2</lombok.version>
         <micrometer.version>1.0.6</micrometer.version>
-        <mysql.version>8.0.11</mysql.version>
+        <mysql.version>8.0.27</mysql.version>
         <rest-assured.version>3.1.0</rest-assured.version>
         <scala.version>2.12.6</scala.version>
         <slf4j.version>1.7.25</slf4j.version>
