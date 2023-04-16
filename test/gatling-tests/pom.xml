@@ -23,7 +23,7 @@
 
 		<!-- Third-party library versions -->
 		<gatling.version>2.1.7</gatling.version>
-        <httpclient.version>4.5.2</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
         		
         <!-- Maven -->
         <gatling-maven-plugin.verson>${gatling.version}</gatling-maven-plugin.verson>
