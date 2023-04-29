@@ -89,7 +89,7 @@
         <javax.persistence.version>1.0.0.Final</javax.persistence.version>
         <javax.validation-api.version>2.0.0.Final</javax.validation-api.version>
         <json-unit.version>1.31.1</json-unit.version>
-        <json.version>20180130</json.version>
+        <json.version>20230227</json.version>
         <json-schema-validator.version>2.2.6</json-schema-validator.version>
         <jsr305.version>3.0.1</jsr305.version>
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
