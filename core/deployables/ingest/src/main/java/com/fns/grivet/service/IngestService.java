@@ -16,7 +16,10 @@
 package com.fns.grivet.service;
 
 import org.json.JSONObject;
-import org.springframework.cloud.stream.messaging.Source;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 
@@ -25,12 +28,16 @@ import com.fns.grivet.model.Op;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Profile("pipeline")
 public class IngestService implements Ingester {
 
-    private final Source source;
-    
-    public IngestService(Source source) {
-        this.source = source;
+    public static final String DESTINATION = "message-out-0";
+
+    private final StreamBridge bridge;
+
+    @Autowired
+    public IngestService(StreamBridge bridge) {
+        this.bridge = bridge;
     }
 
     @Override
@@ -41,8 +48,8 @@ public class IngestService implements Ingester {
             Assert.hasText(message.getHeaders().get("type", String.class), "Type must not be null or empty!");
         }
         log.debug("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
-                message.getPayload().toString());
-        source.output().send(message);
+            message.getPayload().toString());
+        bridge.send(DESTINATION, message);
     }
-    
+
 }

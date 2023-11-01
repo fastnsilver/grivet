@@ -94,9 +94,9 @@ public class EntityController {
 	public ResponseEntity<?> createMultiple(@RequestHeader("Type") String type, @RequestBody JSONArray json) {
 		int numberOfTypesToCreate = json.length();
 		Assert.isTrue(numberOfTypesToCreate <= batchSize,
-                
-                        "The total number of entries in a request must not exceed %d! Your store request contained [%d] entries.".formatted(
-                        batchSize, numberOfTypesToCreate));
+            "The total number of entries in a request must not exceed %d! Your store request contained [%d] entries.".formatted(
+            batchSize, numberOfTypesToCreate)
+		);
 		int errorCount = 0;
 		JSONObject jsonObject = null;
 		HttpHeaders headers = new HttpHeaders();

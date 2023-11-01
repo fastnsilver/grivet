@@ -26,18 +26,15 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fns.grivet.PersistInit;
 
 import net.javacrumbs.jsonunit.JsonAssert;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = PersistInit.class)
 public class EntityServiceTest {
 

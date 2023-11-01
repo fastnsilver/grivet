@@ -65,12 +65,12 @@ public class QueryDocumentationTest {
 
     @Autowired
     private WebApplicationContext context;
-    
+
     @Autowired
     private ObjectMapper mapper;
-        
+
     private MockMvc mockMvc;
-    
+
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
         RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
@@ -79,12 +79,12 @@ public class QueryDocumentationTest {
                 .alwaysDo(document)
                 .build();
     }
-    
+
     @AfterEach
     public void tearDown() {
         context.getBean(NamedQueryRepository.class).deleteAll();
     }
-    
+
     @Test
     public void createNamedQueryAsSproc() {
         try {
@@ -98,7 +98,7 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void createNamedQueryAsSelect() {
         try {
@@ -112,7 +112,7 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void createNamedQueryAsSelectWithNoParams() {
         try {
@@ -127,7 +127,7 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void createNamedQueryAsSelectWithQueryType() {
         try {
@@ -142,7 +142,7 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void createNamedQueryAsSprocWithQueryType() {
         try {
@@ -156,7 +156,7 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void executeNamedQueryNoParams() {
         try {
@@ -170,7 +170,7 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void listNamedQueries() {
         try {
@@ -185,7 +185,7 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void deleteNamedQuery() {
         try {
@@ -199,12 +199,12 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     private void createNamedQuery(String payload) throws JsonParseException, JsonMappingException, IOException {
         NamedQueryService svc = context.getBean(NamedQueryService.class);
         svc.create(mapper.readValue(payload(payload), NamedQuery.class));
     }
-    
+
     private String payload(String payload) throws IOException{
         Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
         return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());

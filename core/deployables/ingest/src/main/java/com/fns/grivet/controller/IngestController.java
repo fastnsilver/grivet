@@ -74,13 +74,13 @@ public class IngestController {
 		log.info("Successfully ingested create request for type [{}]", type);
 		return ResponseEntity.accepted().build();
 	}
-	
+
 	@PreAuthorize("hasAuthority('write:type')")
 	@PostMapping("/types")
 	public ResponseEntity<?> ingestCreateTypesRequest(@RequestHeader("Type") String type, @RequestBody JSONArray array) {
 		int numberOfTypesToCreate = array.length();
 		Assert.isTrue(numberOfTypesToCreate <= batchSize,
-                
+
                         "The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries.".formatted(
                         batchSize, numberOfTypesToCreate));
 		JSONObject payload = null;
@@ -116,14 +116,14 @@ public class IngestController {
 		log.info("Successfully ingested update request for type w/ oid = [{}]", oid);
 		return ResponseEntity.accepted().build();
 	}
-	
+
 	@PreAuthorize("hasAuthority('delete:type')")
 	@DeleteMapping(value = "/type")
 	public ResponseEntity<?> ingestDeleteTypeRequest(
 		@RequestParam(value = "oid", required = true) Long oid) {
 		ingestService.ingest(MessageBuilder.withPayload(new JSONObject()).setHeader("oid", oid).setHeader("op", Op.DELETE.name()).build());
 		meterRegistry.counter(String.join("ingest", "delete")).increment();
-		log.info("Successfully ingested update request for type w/ oid = [{}]", oid);
+		log.info("Successfully ingested delete request for type w/ oid = [{}]", oid);
 		return ResponseEntity.accepted().build();
 	}
 

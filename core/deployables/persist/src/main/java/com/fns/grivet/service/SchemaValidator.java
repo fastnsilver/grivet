@@ -32,10 +32,10 @@ import java.io.IOException;
 
 @Component
 class SchemaValidator {
-    
+
     private final ClassRepository classRepository;
     private final ObjectMapper objectMapper;
-    
+
     @Autowired
     public SchemaValidator(ClassRepository classRepository, ObjectMapper objectMapper) {
         this.classRepository = classRepository;
@@ -59,5 +59,5 @@ class SchemaValidator {
             throw new SchemaValidationException("Problem validating [%s] against JSON Schema".formatted(type), e);
         }
     }
-    
+
 }

@@ -66,15 +66,15 @@ import com.fns.grivet.service.SchemaService;
 @ExtendWith(value = { SpringExtension.class, RestDocumentationExtension.class })
 @SpringBootTest(classes = PersistInit.class)
 public class PersistDocumentationTest {
-    
+
     @Autowired
     private ResourceLoader resolver;
 
     @Autowired
     private WebApplicationContext context;
-        
+
     private MockMvc mockMvc;
-    
+
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
         RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
@@ -83,7 +83,7 @@ public class PersistDocumentationTest {
                 .alwaysDo(document)
                 .build();
     }
-    
+
     @AfterEach
     public void tearDown() {
         context.getBean(EntityRepository.class).deleteAll();
@@ -108,7 +108,7 @@ public class PersistDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void createMultiple() {
         try {
@@ -124,7 +124,7 @@ public class PersistDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void updateOne() {
         try {
@@ -142,7 +142,7 @@ public class PersistDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void deleteOne() {
         try {
@@ -175,7 +175,7 @@ public class PersistDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     // GET (bounded by createdTimeStart and createdTimeEnd)
     public void fetchByTimeRange() {
@@ -196,7 +196,7 @@ public class PersistDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     // GET (with startsWith constraint)
     public void fetchWithConstraints() {
@@ -214,7 +214,7 @@ public class PersistDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     // GET (with noAudit flag set to true)
     public void fetchWithNoAudit() {
@@ -232,7 +232,7 @@ public class PersistDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void fetchOne() {
         try {
@@ -249,21 +249,21 @@ public class PersistDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     private Long fetchAType(String type) throws JSONException, IOException {
         ClassRepository classRepo = context.getBean(ClassRepository.class);
         Integer cid = classRepo.findByName(type).getId();
         EntityRepository entityRepo = context.getBean(EntityRepository.class);
         return entityRepo.findAllEntitiesByCid(cid).iterator().next().getId();
     }
-    
+
 	private void createTypes(String type, String data) throws JSONException, IOException {
 	    EntityService svc = context.getBean(EntityService.class);
 	    String json = payload(data);
 	    JSONArray array = new JSONArray(json);
         array.forEach(o -> svc.create(type, (JSONObject) o));
 	}
-	
+
 	private Long createType(String type, String data) throws JSONException, IOException {
 	    EntityService svc = context.getBean(EntityService.class);
 	    return svc.create(type, new JSONObject(payload(data)));
@@ -275,23 +275,23 @@ public class PersistDocumentationTest {
         JSONArray array = new JSONArray(json);
         array.forEach(o -> svc.register((JSONObject) o));
     }
-    
+
     private void defineType(String definition) throws JSONException, IOException {
         ClassRegistryService svc = context.getBean(ClassRegistryService.class);
         svc.register(new JSONObject(payload(definition)));
     }
-    
+
     private void linkSchema(String schemaName) throws IOException {
         SchemaService svc = context.getBean(SchemaService.class);
         String schema = payload(schemaName);
         svc.linkSchema(new JSONObject(schema));
     }
-    
+
     private String payload(String payload) throws IOException{
         Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
         return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
     }
-    
+
     private String asArray(String data) {
         JSONArray array = new JSONArray();
         JSONObject jo = new JSONObject(data);

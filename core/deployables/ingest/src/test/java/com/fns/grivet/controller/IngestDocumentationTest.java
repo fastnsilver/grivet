@@ -42,15 +42,15 @@ import com.google.common.collect.ImmutableSet;
 @ExtendWith(value = { SpringExtension.class, RestDocumentationExtension.class })
 @SpringBootTest(classes=IngestInit.class)
 public class IngestDocumentationTest {
-    
+
     @Autowired
     private ResourceLoader resolver;
 
     @Autowired
     private WebApplicationContext context;
-        
+
     private MockMvc mockMvc;
-    
+
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
         RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
@@ -59,7 +59,7 @@ public class IngestDocumentationTest {
                 .alwaysDo(document)
                 .build();
     }
-    
+
     @Test
     public void ingestCreateTypeRequest() {
         try {
@@ -74,7 +74,7 @@ public class IngestDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void ingestCreateTypesRequest() {
         try {
@@ -89,7 +89,7 @@ public class IngestDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void ingestUpdateTypeRequest() {
         try {
@@ -104,7 +104,7 @@ public class IngestDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void ingestDeleteTypeRequest() {
         try {
@@ -116,9 +116,9 @@ public class IngestDocumentationTest {
                     .andExpect(status().isAccepted());
         } catch (Exception e) {
             fail(e.getMessage());
-        } 
+        }
     }
-    
+
     private String mutz(String data, Map<String, Object> properties, Set<String> removed) throws JSONException, IOException {
         String original = payload(data);
         JSONObject jo = new JSONObject(original);
@@ -126,7 +126,7 @@ public class IngestDocumentationTest {
         removed.forEach(k -> jo.remove(k));
         return jo.toString();
     }
-    
+
     private String payload(String data) throws IOException{
         Resource r = resolver.getResource("classpath:%s.json".formatted(data));
         return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());

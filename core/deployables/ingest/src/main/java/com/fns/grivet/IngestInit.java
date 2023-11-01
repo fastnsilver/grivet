@@ -21,13 +21,13 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * Bootstraps the application
- * 
+ *
  * @author Chris Phillipson
  */
 @SpringBootApplication
 @EnableDiscoveryClient
 public class IngestInit {
-    
+
     public static void main(String[] args) {
         SpringApplication.run(IngestInit.class, args);
     }

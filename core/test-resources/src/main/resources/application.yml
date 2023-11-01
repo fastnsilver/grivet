@@ -3,7 +3,7 @@ ribbon:
 
 eureka:
   client:
-    enabeld: false
+    enabled: false
 
 spring:
   profiles:

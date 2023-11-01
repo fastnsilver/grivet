@@ -37,7 +37,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fns.grivet.StandaloneInit;
 
@@ -45,7 +44,6 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.javacrumbs.jsonunit.JsonAssert;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = StandaloneInit.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class GrivetApiClientIT {
 
