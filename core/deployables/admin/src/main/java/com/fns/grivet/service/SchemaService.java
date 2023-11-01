@@ -61,7 +61,7 @@ public class SchemaService {
 		String type = payload.getString(ID);
 		Assert.notNull(type, "JSON Schema must declare an id!");
 		com.fns.grivet.model.Class c = classRepository.findByName(type);
-		Assert.notNull(c, String.format("Type [%s] must be registered before linking a JSON Schema!", type));
+		Assert.notNull(c, "Type [%s] must be registered before linking a JSON Schema!".formatted(type));
 		c.setValidatable(true);
 		c.setJsonSchema(payload.toString());
 		c.setUpdatedTime(LocalDateTime.now());
@@ -72,7 +72,7 @@ public class SchemaService {
 	@Transactional
 	public com.fns.grivet.model.Class unlinkSchema(String type) {
 		com.fns.grivet.model.Class c = classRepository.findByName(type);
-		Assert.notNull(c, String.format("Type [%s] must be registered before unlinking a JSON Schema!", type));
+		Assert.notNull(c, "Type [%s] must be registered before unlinking a JSON Schema!".formatted(type));
 		c.setValidatable(false);
 		c.setJsonSchema(null);
 		classRepository.save(c);

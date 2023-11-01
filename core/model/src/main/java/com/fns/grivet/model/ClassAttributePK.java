@@ -33,10 +33,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access=AccessLevel.PROTECTED)
 public class ClassAttributePK implements Serializable {
 
-    /** 
-     * Version number used during deserialization to verify that the sender and receiver 
-     * of this serialized object have loaded classes for this object that 
-     * are compatible with respect to serialization. 
+    /**
+     * Version number used during deserialization to verify that the sender and receiver
+     * of this serialized object have loaded classes for this object that
+     * are compatible with respect to serialization.
      */
     private static final long serialVersionUID = 1L;
 

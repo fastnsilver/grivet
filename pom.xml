@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.3.RELEASE</version>
+        <version>3.1.5</version>
         <relativePath/>
     </parent>
 
     <groupId>com.fns</groupId>
     <artifactId>grivet-parent</artifactId>
-    <version>0.5.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-	<name>Grivet Parent POM</name>
-	<description>A collection of services and UI that support a Grivet installation. All Grivet modules inherit profiles, properties, dependencies, plugins from here.</description>
+    <name>Grivet Parent POM</name>
+    <description>A collection of services and UI that support a Grivet installation. All Grivet modules inherit profiles, properties, dependencies, plugins from here.</description>
 
     <prerequisites>
-        <maven>3.5.0</maven>
+        <maven>3.9.4</maven>
     </prerequisites>
-    
-	<modules>
+
+    <modules>
         <module>core</module>
         <module>support</module>
         <module>test</module>
@@ -73,98 +73,89 @@
     <properties>
         <!-- General -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
 
         <!-- Third-party library versions -->
-        <auth0-api.version>0.4.0</auth0-api.version>
-        <commons-lang3.version>3.7</commons-lang3.version>
-        <commons-io.version>2.6</commons-io.version>
-        <flyway.version>5.1.4</flyway.version>
-        <guava.version>25.1-jre</guava.version>
-        <hibernate.version>5.3.3.Final</hibernate.version>
-        <hikaricp.version>3.2.0</hikaricp.version>
-        <httpclient.version>4.5.6</httpclient.version>
-        <jackson.version>2.9.6</jackson.version>
-        <jadira.version>6.0.1.GA</jadira.version>
+        <commons-lang3.version>3.13.0</commons-lang3.version>
+        <commons-io.version>2.15.0</commons-io.version>
+        <flyway.version>9.22.3</flyway.version>
+        <guava.version>32.1.3-jre</guava.version>
+        <hibernate.version>6.4.0.CR1</hibernate.version>
+        <hikaricp.version>5.0.1</hikaricp.version>
+        <httpclient5.version>5.2.1</httpclient5.version>
+        <jackson.version>2.15.3</jackson.version>
         <javax.persistence.version>1.0.0.Final</javax.persistence.version>
         <javax.validation-api.version>2.0.0.Final</javax.validation-api.version>
-        <json-unit.version>1.31.1</json-unit.version>
-        <json.version>20180130</json.version>
-        <json-schema-validator.version>2.2.6</json-schema-validator.version>
-        <jsr305.version>3.0.1</jsr305.version>
-        <junit.jupiter.version>5.2.0</junit.jupiter.version>
-        <junit.platform.version>1.2.0</junit.platform.version>
-        <logstash-logback-encoder.version>4.9</logstash-logback-encoder.version>
-        <lombok.version>1.18.2</lombok.version>
-        <micrometer.version>1.0.6</micrometer.version>
-        <mysql.version>8.0.11</mysql.version>
-        <rest-assured.version>3.1.0</rest-assured.version>
-        <scala.version>2.12.6</scala.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <spring-boot-admin.version>2.0.1</spring-boot-admin.version>
-        <spring-restdocs.version>2.0.2.RELEASE</spring-restdocs.version>
-        <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+        <json-unit.version>3.2.2</json-unit.version>
+        <json.version>20231013</json.version>
+        <json-schema-validator.version>2.2.14</json-schema-validator.version>
+        <jsr305.version>3.0.2</jsr305.version>
+        <junit.jupiter.version>5.10.0</junit.jupiter.version>
+        <junit.platform.version>1.10.0</junit.platform.version>
+        <logstash-logback-encoder.version>7.4</logstash-logback-encoder.version>
+        <lombok.version>1.18.30</lombok.version>
+        <micrometer.version>1.12.0-RC1</micrometer.version>
+        <mysql.version>8.0.33</mysql.version>
+        <okta-spring-boot-starter.version>3.0.5</okta-spring-boot-starter.version>
+        <rest-assured.version>5.3.2</rest-assured.version>
+        <scala.version>2.13.2</scala.version>
+        <slf4j.version>2.0.9</slf4j.version>
+        <spring-boot-admin.version>3.1.7</spring-boot-admin.version>
+        <spring-restdocs.version>3.0.0</spring-restdocs.version>
+        <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
 
         <!-- Maven -->
         <apiviz.version>1.3.2.GA</apiviz.version>
-        <asciidoctor-maven-plugin.version>1.5.6</asciidoctor-maven-plugin.version>
-        <docker-maven-plugin.version>0.22.1</docker-maven-plugin.version>
-        <downloads-maven-plugin.version>0.6</downloads-maven-plugin.version>
-        <doxia-module-markdown.version>1.6</doxia-module-markdown.version>
+        <asciidoctor-maven-plugin.version>2.2.4</asciidoctor-maven-plugin.version>
+        <docker-maven-plugin.version>0.43.4</docker-maven-plugin.version>
+        <doxia-module-markdown.version>2.0.0-M8</doxia-module-markdown.version>
         <findbugs-maven-plugin.version>3.0.5</findbugs-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.1</jacoco-maven-plugin.version>
-        <lombok-maven-plugin.version>1.18.2</lombok-maven-plugin.version>
+        <git-commit-id-plugin.version>7.0.0</git-commit-id-plugin.version>
+        <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
         <maven-changes-plugin.version>2.12.1</maven-changes-plugin.version>
         <maven-changelog-plugin.version>2.3</maven-changelog-plugin.version>
-        <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
-        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
-        <maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
-        <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
-        <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
-        <maven-plugin-plugin.version>3.5.2</maven-plugin-plugin.version>
-        <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
-        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
-        <maven-scm-provider-jgit.version>1.10.0</maven-scm-provider-jgit.version>
-        <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
-        <maven-scm-publish-plugin.version>3.0.0</maven-scm-publish-plugin.version>
-        <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
-        <maven-surefire-report-plugin.version>2.22.0</maven-surefire-report-plugin.version>
+        <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-failsafe-plugin.version>3.2.1</maven-failsafe-plugin.version>
+        <maven-javadoc-plugin.version>3.6.0</maven-javadoc-plugin.version>
+        <maven-jxr-plugin.version>3.3.1</maven-jxr-plugin.version>
+        <maven-plugin-plugin.version>3.10.1</maven-plugin-plugin.version>
+        <maven-project-info-reports-plugin.version>3.4.5</maven-project-info-reports-plugin.version>
+        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+        <maven-scm-provider-jgit.version>2.0.1</maven-scm-provider-jgit.version>
+        <maven-site-plugin.version>4.0.0-M11</maven-site-plugin.version>
+        <maven-scm-publish-plugin.version>3.2.1</maven-scm-publish-plugin.version>
+        <maven-surefire-plugin.version>3.2.1</maven-surefire-plugin.version>
+        <maven-surefire-report-plugin.version>3.2.1</maven-surefire-report-plugin.version>
         <plan-maven-plugin.version>1.2</plan-maven-plugin.version>
-        <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
+        <properties-maven-plugin.version>1.2.1</properties-maven-plugin.version>
         <reflow-velocity-tools.version>1.1.1</reflow-velocity-tools.version>
-        <sonar-maven-plugin.version>3.4.0.905</sonar-maven-plugin.version>
-        <spring-banner-plugin.version>1.0</spring-banner-plugin.version>
-        <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
+        <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
+        <spring-banner-plugin.version>1.6.0</spring-banner-plugin.version>
+        <taglist-maven-plugin.version>3.0.0</taglist-maven-plugin.version>
         <velocity.version>1.7</velocity.version>
-        <versions-maven-plugin.version>2.5</versions-maven-plugin.version>
-        <wagon-webdav-jackrabbit.version>3.1.0</wagon-webdav-jackrabbit.version>
+        <versions-maven-plugin.version>2.16.1</versions-maven-plugin.version>
+        <wagon-webdav-jackrabbit.version>3.5.3</wagon-webdav-jackrabbit.version>
     </properties>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-releasetrain</artifactId>
-				<version>Lovelace-RC1</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Finchley.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-stream-dependencies</artifactId>
-				<version>Elmhurst.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>2022.0.4</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-stream-dependencies</artifactId>
+                <version>4.0.4</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <repositories>
         <repository>
@@ -185,7 +176,7 @@
         </repository>
     </repositories>
     <pluginRepositories>
-    		<pluginRepository>
+        <pluginRepository>
             <id>spring-snapshots</id>
             <name>Spring Snapshots</name>
             <url>https://repo.spring.io/snapshot</url>
@@ -242,9 +233,9 @@
                             </goals>
                             <configuration>
                                 <!-- Sets the path to the file which contains the execution data. -->
-                				<dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-                				<!-- Sets the output directory for the code coverage report. -->
-                				<outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                                <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                                <!-- Sets the output directory for the code coverage report. -->
+                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
                             </configuration>
                         </execution>
 
@@ -261,7 +252,7 @@
                             </goals>
                             <configuration>
                                 <!-- Sets the path to the file which contains the execution data. -->
-                				<destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
+                                <destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
                                 <!--
                                     Sets the name of the property containing the settings
                                     for JaCoCo runtime agent.
@@ -281,30 +272,31 @@
                             </goals>
                             <configuration>
                                 <!-- Sets the path to the file which contains the execution data. -->
-                				<dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
-                				<!-- Sets the output directory for the code coverage report. -->
-                				<outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+                                <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
+                                <!-- Sets the output directory for the code coverage report. -->
+                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
                             </configuration>
                         </execution>
                     </executions>
                 </plugin>
                 <plugin>
-          			<groupId>org.codehaus.mojo</groupId>
-          			<artifactId>sonar-maven-plugin</artifactId>
-          			<version>${sonar-maven-plugin.version}</version>
-	        		</plugin>
-	        		<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>versions-maven-plugin</artifactId>
-					<version>${versions-maven-plugin.version}</version>
-				</plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${versions-maven-plugin.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
         <plugins>
-        		<plugin>
-                <groupId>pl.project13.maven</groupId>
+            <plugin>
+                <groupId>io.github.git-commit-id</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
+                <version>${git-commit-id-plugin.version}</version>
                 <configuration>
                     <!-- this is false by default, forces the plugin to generate the git.properties file -->
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
@@ -318,24 +310,24 @@
                 </executions>
             </plugin>
             <plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>properties-maven-plugin</artifactId>
-				<version>${properties-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<phase>initialize</phase>
-						<goals>
-							<goal>read-project-properties</goal>
-						</goals>
-						<configuration>
-						    <quiet>true</quiet>
-							<files>
-								<file>${project.build.outputDirectory}/git.properties</file>
-							</files>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>${properties-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <quiet>true</quiet>
+                            <files>
+                                <file>${project.build.outputDirectory}/git.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>tk.skuro</groupId>
                 <artifactId>plan-maven-plugin</artifactId>
@@ -370,18 +362,6 @@
                         <exclude>**/IT*.java</exclude>
                     </excludes>
                 </configuration>
-                <dependencies>
-	                	<dependency>
-					    <groupId>org.junit.platform</groupId>
-					    <artifactId>junit-platform-surefire-provider</artifactId>
-					    <version>${junit.platform.version}</version>
-					</dependency>
-					<dependency>
-			            <groupId>org.junit.jupiter</groupId>
-			            <artifactId>junit-jupiter-engine</artifactId>
-			            <version>${junit.jupiter.version}</version>
-			        </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -403,27 +383,15 @@
                         </goals>
                     </execution>
                 </executions>
-                <dependencies>
-					<dependency>
-					    <groupId>org.junit.platform</groupId>
-					    <artifactId>junit-platform-surefire-provider</artifactId>
-					    <version>${junit.platform.version}</version>
-					</dependency>
-					<dependency>
-			            <groupId>org.junit.jupiter</groupId>
-			            <artifactId>junit-jupiter-engine</artifactId>
-			            <version>${junit.jupiter.version}</version>
-			        </dependency>
-       			</dependencies>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
             <plugin>
-        		<groupId>org.codehaus.mojo</groupId>
-       	 		<artifactId>sonar-maven-plugin</artifactId>
-      		</plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 
@@ -770,44 +738,44 @@
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <version>${jacoco-maven-plugin.version}</version>
                         <reportSets>
-				            <reportSet>
-				                <id>unit-tests</id>
-				                <reports>
-				                    <report>report</report>
-				                </reports>
-				                <configuration>
-				                    <reportName>JaCoCo Unit</reportName>
-				                    <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-				                    <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-				                </configuration>
-				            </reportSet>
-				            <reportSet>
-				                <id>integration-tests</id>
-				                <reports>
-				                    <report>report</report>
-				                </reports>
-				                <configuration>
-				                    <reportName>JaCoCo Integration</reportName>
-				                    <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
-				                    <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
-				                </configuration>
-				            </reportSet>
-				        </reportSets>
+                            <reportSet>
+                                <id>unit-tests</id>
+                                <reports>
+                                    <report>report</report>
+                                </reports>
+                                <configuration>
+                                    <reportName>JaCoCo Unit</reportName>
+                                    <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                                    <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                                </configuration>
+                            </reportSet>
+                            <reportSet>
+                                <id>integration-tests</id>
+                                <reports>
+                                    <report>report</report>
+                                </reports>
+                                <configuration>
+                                    <reportName>JaCoCo Integration</reportName>
+                                    <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
+                                    <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+                                </configuration>
+                            </reportSet>
+                        </reportSets>
                     </plugin>
                     <plugin>
-      					<groupId>org.codehaus.mojo</groupId>
-						<artifactId>versions-maven-plugin</artifactId>
-						<version>${versions-maven-plugin.version}</version>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>dependency-updates-report</report>
-									<report>plugin-updates-report</report>
-									<report>property-updates-report</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-    				</plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>versions-maven-plugin</artifactId>
+                        <version>${versions-maven-plugin.version}</version>
+                        <reportSets>
+                            <reportSet>
+                                <reports>
+                                    <report>dependency-updates-report</report>
+                                    <report>plugin-updates-report</report>
+                                    <report>property-updates-report</report>
+                                </reports>
+                            </reportSet>
+                        </reportSets>
+                    </plugin>
                 </plugins>
             </reporting>
         </profile>
@@ -831,96 +799,96 @@
         </profile>
 
         <profile>
-        	<id>with-devtools</id>
-        	<dependencies>
-        		<dependency>
-        			<groupId>org.springframework.boot</groupId>
-        			<artifactId>spring-boot-devtools</artifactId>
-    			</dependency>
-        	</dependencies>
+            <id>with-devtools</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-devtools</artifactId>
+                </dependency>
+            </dependencies>
         </profile>
 
         <profile>
-        		<id>dockerize</id>
-        		<activation>
-	            <file>
-	                <exists>.dockerize</exists>
-	            </file>
-	        </activation>
-	        	<build>
-	        		<plugins>
-	        			<plugin>
-	 					<groupId>io.fabric8</groupId>
-						<artifactId>docker-maven-plugin</artifactId>
-						<version>${docker-maven-plugin.version}</version>
-						<configuration>
-							<images>
-								<image>
-									<name>fastnsilver/%a:%l</name>
-									<build>
-										<dockerFileDir>${project.build.directory}/docker-ready</dockerFileDir>
-									</build>
-								</image>
-							</images>
-							<skipMachine>true</skipMachine>
-						</configuration>
-						<executions>
-    							<execution>
-    								<id>destroy-latest-docker-image</id>
-    								<phase>clean</phase>
-    								<goals>
-    									<goal>remove</goal>
-    								</goals>
-    								<configuration>
-    									<removeAll>true</removeAll>
-    								</configuration>
-    							</execution>
-    							<execution>
-    								<id>build-new-docker-image</id>
-    								<phase>install</phase>
-    								<goals>
-    									<goal>build</goal>
-    								</goals>
-    							</execution>
-    							<execution>
-    								<id>publish-docker-image</id>
-    								<phase>deploy</phase>
-    								<goals>
-    									<goal>push</goal>
-    								</goals>
-    							</execution>
-    						</executions>
-					</plugin>
-					<plugin>
-					    <artifactId>maven-resources-plugin</artifactId>
-					    <version>${maven-resources-plugin.version}</version>
-					    <executions>
-					        <execution>
-					            <id>prepare-for-docker-build</id>
-					            <phase>verify</phase>
-					            <goals>
-					                <goal>copy-resources</goal>
-					            </goals>
-					            <configuration>
-					                <outputDirectory>${project.build.directory}/docker-ready</outputDirectory>
-					                <resources>
-					                    <resource>
-					                        <directory>src/main/docker</directory>
-					                        <filtering>true</filtering>
-					                    </resource>
-					                    <resource>
-					                        <directory>${project.build.directory}</directory>
-					                        <includes>
-					                            <include>${project.artifactId}-${project.version}-exec.jar</include>
-					                        </includes>
-					                    </resource>
-					                </resources>
-					            </configuration>
-					        </execution>
-					    </executions>
-					</plugin>
-	        		</plugins>
-        		</build>
+            <id>dockerize</id>
+            <activation>
+                <file>
+                    <exists>.dockerize</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker-maven-plugin.version}</version>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>fastnsilver/%a:%l</name>
+                                    <build>
+                                        <dockerFileDir>${project.build.directory}/docker-ready</dockerFileDir>
+                                    </build>
+                                </image>
+                            </images>
+                            <skipMachine>true</skipMachine>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>destroy-latest-docker-image</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>remove</goal>
+                                </goals>
+                                <configuration>
+                                    <removeAll>true</removeAll>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build-new-docker-image</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>publish-docker-image</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>${maven-resources-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-for-docker-build</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/docker-ready</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>src/main/docker</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                        <resource>
+                                            <directory>${project.build.directory}</directory>
+                                            <includes>
+                                                <include>${project.artifactId}-${project.version}-exec.jar</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
 
     </profiles>

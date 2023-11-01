@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.JSONException;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ControllerAdvice
 class GlobalControllerExceptionHandler {
-    
+
 	@ExceptionHandler({
-		IOException.class, IllegalArgumentException.class, 
+		IOException.class, IllegalArgumentException.class,
 		DateTimeParseException.class, NumberFormatException.class, JSONException.class
 	})
 	protected ResponseEntity<ErrorResponse> badRequest(Exception e, HttpServletRequest hsr) {
@@ -43,5 +43,5 @@ class GlobalControllerExceptionHandler {
 				Arrays.asList(e.getMessage()));
 		log.error(er.toString());
 		return ResponseEntity.badRequest().body(er);
-	}	
+	}
 }

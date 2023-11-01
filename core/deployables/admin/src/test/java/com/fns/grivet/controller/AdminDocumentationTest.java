@@ -62,15 +62,15 @@ import com.fns.grivet.service.SchemaService;
 @ExtendWith(value = { SpringExtension.class, RestDocumentationExtension.class })
 @SpringBootTest(classes=AdminInit.class)
 public class AdminDocumentationTest {
-    
+
     @Autowired
     private ResourceLoader resolver;
 
     @Autowired
     private WebApplicationContext context;
-        
+
     private MockMvc mockMvc;
-    
+
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
         RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
@@ -79,51 +79,51 @@ public class AdminDocumentationTest {
                 .alwaysDo(document)
                 .build();
     }
-    
+
     @AfterEach
     public void tearDown() {
         context.getBean(ClassAttributeRepository.class).deleteAll();
         context.getBean(ClassRepository.class).deleteAll();
         context.getBean(AttributeRepository.class).deleteAll();
     }
-    
+
     @Test
     public void defineType() {
         try {
             mockMvc.perform(
-                    post("/api/v1/definition")
+                    post("/definition")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestType"))
                     )
                     .andExpect(status().isCreated())
-                    .andExpect(header().string("Location", "/api/v1/definition/TestType"));
+                    .andExpect(header().string("Location", "/definition/TestType"));
         } catch (Exception e) {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void defineTypes() {
         try {
             mockMvc.perform(
-                    post("/api/v1/definitions")
+                    post("/definitions")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestMultipleTypes"))
                         )
                         .andExpect(status().isCreated())
-                    .andExpect(header().string("Location[1]", "/api/v1/definition/Contact"))
-                    .andExpect(header().string("Location[2]", "/api/v1/definition/Course"));
+                    .andExpect(header().string("Location[1]", "/definition/Contact"))
+                    .andExpect(header().string("Location[2]", "/definition/Course"));
         } catch (Exception e) {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void undefineType() {
         try {
             defineType("TestType");
             mockMvc.perform(
-                    delete("/api/v1/definition/TestType")
+                    delete("/definition/TestType")
                         .contentType(MediaType.APPLICATION_JSON)
                     )
                     .andExpect(status().isNoContent());
@@ -131,13 +131,13 @@ public class AdminDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
-    @Test 
+
+    @Test
     public void getTypeDefinition() {
         try {
             defineType("TestType");
             mockMvc.perform(
-                    get("/api/v1/definition/TestType")
+                    get("/definition/TestType")
                     .contentType(MediaType.APPLICATION_JSON)
                     )
             .andExpect(status().isOk())
@@ -146,13 +146,13 @@ public class AdminDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void allTypeDefinitions() {
         try {
             defineTypes("TestMultipleTypes");
             mockMvc.perform(
-                    get("/api/v1/definitions")
+                    get("/definitions")
                     .contentType(MediaType.APPLICATION_JSON)
                     )
             .andExpect(status().isOk())
@@ -161,13 +161,13 @@ public class AdminDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void linkSchema() {
         try {
             defineType("TestType");
             mockMvc.perform(
-                        post("/api/v1/schema")
+                        post("/schema")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestTypeSchema"))
                     )
@@ -177,14 +177,14 @@ public class AdminDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void unlinkSchema() {
         try {
             defineType("TestType");
             linkSchema("TestTypeSchema");
             mockMvc.perform(
-                        delete("/api/v1/schema/TestType")
+                        delete("/schema/TestType")
                             .contentType(MediaType.APPLICATION_JSON)
                     )
                     .andExpect(status().isOk())
@@ -200,20 +200,20 @@ public class AdminDocumentationTest {
         JSONArray array = new JSONArray(json);
         array.forEach(o -> svc.register((JSONObject) o));
     }
-    
+
     private void defineType(String definition) throws JSONException, IOException {
         ClassRegistryService svc = context.getBean(ClassRegistryService.class);
         svc.register(new JSONObject(payload(definition)));
     }
-    
+
     private void linkSchema(String schemaName) throws IOException {
         SchemaService svc = context.getBean(SchemaService.class);
         String schema = payload(schemaName);
         svc.linkSchema(new JSONObject(schema));
     }
-    
+
     private String payload(String payload) throws IOException{
-        Resource r = resolver.getResource(String.format("classpath:%s.json", payload));
+        Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
         return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
     }
 }

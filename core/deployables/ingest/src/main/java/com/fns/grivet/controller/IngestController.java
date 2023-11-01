@@ -66,7 +66,7 @@ public class IngestController {
 	}
 
 	@PreAuthorize("hasAuthority('write:type')")
-	@PostMapping("/api/v1/type")
+	@PostMapping("/type")
 	public ResponseEntity<?> ingestCreateTypeRequest(@RequestHeader("Type") String type, @RequestBody JSONObject payload) {
 	    ingestService
 				.ingest(MessageBuilder.withPayload(payload).setHeader("type", type).setHeader("op", Op.CREATE.name()).build());
@@ -76,13 +76,13 @@ public class IngestController {
 	}
 	
 	@PreAuthorize("hasAuthority('write:type')")
-	@PostMapping("/api/v1/types")
+	@PostMapping("/types")
 	public ResponseEntity<?> ingestCreateTypesRequest(@RequestHeader("Type") String type, @RequestBody JSONArray array) {
 		int numberOfTypesToCreate = array.length();
 		Assert.isTrue(numberOfTypesToCreate <= batchSize,
-				String.format(
-						"The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries.",
-						batchSize, numberOfTypesToCreate));
+                
+                        "The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries.".formatted(
+                        batchSize, numberOfTypesToCreate));
 		JSONObject payload = null;
 		HttpHeaders headers = new HttpHeaders();
 		// allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
@@ -95,19 +95,19 @@ public class IngestController {
 				log.info("Successfully ingested create request for type [{}]", type);
 			} catch (Exception e) {
 				String message = LogUtil.toLog(payload,
-						String.format("Problems ingesting type! Portion of payload @ index[%d]\n", i + 1));
+                        "Problems ingesting type! Portion of payload @ index[%d]\n".formatted(i + 1));
 				log.error(message, e);
 				if (numberOfTypesToCreate == 1) {
 					throw e;
 				}
-				headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());
+				headers.set("Error[%s]".formatted(String.valueOf(i + 1)), e.getMessage());
 			}
 		}
 		return ResponseEntity.accepted().headers(headers).build();
 	}
 
 	@PreAuthorize("hasAuthority('write:type')")
-	@PatchMapping("/api/v1/type")
+	@PatchMapping("/type")
 	public ResponseEntity<?> ingestUpdateTypeRequest(
 		@RequestParam(value = "oid", required = true) Long oid,
 		@RequestBody JSONObject payload) {
@@ -118,7 +118,7 @@ public class IngestController {
 	}
 	
 	@PreAuthorize("hasAuthority('delete:type')")
-	@DeleteMapping(value = "/api/v1/type")
+	@DeleteMapping(value = "/type")
 	public ResponseEntity<?> ingestDeleteTypeRequest(
 		@RequestParam(value = "oid", required = true) Long oid) {
 		ingestService.ingest(MessageBuilder.withPayload(new JSONObject()).setHeader("oid", oid).setHeader("op", Op.DELETE.name()).build());

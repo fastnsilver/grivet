@@ -19,7 +19,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -79,10 +79,10 @@ public class EntityController {
 
 	@Profile("!pipeline")
 	@PreAuthorize("hasAuthority('write:type')")
-	@PostMapping("/api/v1/type")
+	@PostMapping("/type")
 	public ResponseEntity<?> createOne(@RequestHeader("Type") String type, @RequestBody JSONObject json) {
 		Long oid = entityService.create(type, json);
-		URI location = UriComponentsBuilder.newInstance().path("/api/v1/type").queryParam("oid", oid).build().toUri();
+		URI location = UriComponentsBuilder.newInstance().path("/type").queryParam("oid", oid).build().toUri();
 		meterRegistry.counter(String.join("store", "create", type)).increment();
 		log.info("Successfully created type [{}]", type);
 		return ResponseEntity.created(location).build();
@@ -90,13 +90,13 @@ public class EntityController {
 
 	@Profile("!pipeline")
 	@PreAuthorize("hasAuthority('write:type')")
-	@PostMapping("/api/v1/types")
+	@PostMapping("/types")
 	public ResponseEntity<?> createMultiple(@RequestHeader("Type") String type, @RequestBody JSONArray json) {
 		int numberOfTypesToCreate = json.length();
 		Assert.isTrue(numberOfTypesToCreate <= batchSize,
-				String.format(
-						"The total number of entries in a request must not exceed %d! Your store request contained [%d] entries.",
-						batchSize, numberOfTypesToCreate));
+                
+                        "The total number of entries in a request must not exceed %d! Your store request contained [%d] entries.".formatted(
+                        batchSize, numberOfTypesToCreate));
 		int errorCount = 0;
 		JSONObject jsonObject = null;
 		HttpHeaders headers = new HttpHeaders();
@@ -107,21 +107,21 @@ public class EntityController {
 			try {
 				jsonObject = json.getJSONObject(i);
 				oid = entityService.create(type, jsonObject);
-				location = UriComponentsBuilder.newInstance().path("/api/v1/type").queryParam("oid", oid).build().toUri();
+				location = UriComponentsBuilder.newInstance().path("/type").queryParam("oid", oid).build().toUri();
 				if (numberOfTypesToCreate == 1) {
 					headers.setLocation(location);
 				} else {
-					headers.set(String.format("Location[%s]", String.valueOf(i + 1)), location.toASCIIString());
+					headers.set("Location[%s]".formatted(String.valueOf(i + 1)), location.toASCIIString());
 				}
 				meterRegistry.counter(String.join("store", "create", type)).increment();
 				log.info("Successfully created type [{}]", type);
 			} catch (Exception e) {
-				String message = LogUtil.toLog(jsonObject, String.format("Problems storing type! Portion of payload @ index[%d]\n", i+1));
+				String message = LogUtil.toLog(jsonObject, "Problems storing type! Portion of payload @ index[%d]\n".formatted(i + 1));
 				log.error(message, e);
 				if (numberOfTypesToCreate == 1) {
 					throw e;
 				}
-				headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());
+				headers.set("Error[%s]".formatted(String.valueOf(i + 1)), e.getMessage());
 				errorCount++;
 			}
 		}
@@ -130,13 +130,13 @@ public class EntityController {
 
 	@Profile("!pipeline")
 	@PreAuthorize("hasAuthority('write:type')")
-	@PatchMapping("/api/v1/type")
+	@PatchMapping("/type")
 	public ResponseEntity<?> updateOne(
 			@RequestParam(value = "oid", required = true) Long oid,
 			@RequestBody JSONObject json) {
 		String type = entityService.update(oid, json);
 		HttpHeaders headers = new HttpHeaders();
-		URI location = UriComponentsBuilder.newInstance().path("/api/v1/type").queryParam("oid", oid).build().toUri();
+		URI location = UriComponentsBuilder.newInstance().path("/type").queryParam("oid", oid).build().toUri();
 		headers.setLocation(location);
 		meterRegistry.counter(String.join("store", "update", type)).increment();
 		log.info("Successfully updated type [{}]", type);
@@ -145,7 +145,7 @@ public class EntityController {
 
 	@Profile("!pipeline")
 	@PreAuthorize("hasAuthority('delete:type')")
-	@DeleteMapping("/api/v1/type")
+	@DeleteMapping("/type")
 	public ResponseEntity<?> deleteOne(
 			@RequestParam(value = "oid", required = true) Long oid) {
 		String type = entityService.delete(oid);
@@ -155,7 +155,7 @@ public class EntityController {
 	}
 
 	@PreAuthorize("hasAuthority('read:type')")
-	@GetMapping("/api/v1/type/{type}")
+	@GetMapping("/type/{type}")
 	public ResponseEntity<?> fetch(@PathVariable("type") String type,
 			@RequestParam(value = "createdTimeStart", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeStart,
 			@RequestParam(value = "createdTimeEnd", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeEnd,
@@ -172,7 +172,7 @@ public class EntityController {
 	}
 
 	@PreAuthorize("hasAuthority('read:type')")
-	@GetMapping("/api/v1/type")
+	@GetMapping("/type")
 	public ResponseEntity<?> fetchOne(
 			@RequestParam(value = "oid", required = true) Long oid) {
 		return ResponseEntity.ok(entityService.findById(oid));

@@ -6,28 +6,25 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.ClassAttribute;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class ClassAttributeRepositoryTest {
-    
+
     @Autowired
     private AttributeRepository attributeRepository;
-    
+
     @Autowired
     private ClassRepository classRepository;
 
     @Autowired
     private ClassAttributeRepository classAttributeRepository;
-    
+
     private ClassAttribute[] seedClassAttributes() {
         Attribute a1 = attributeRepository.save(Attribute.builder().name("birthday").build());
         Attribute a2 = attributeRepository.save(Attribute.builder().name("socialSecurityNumber").build());
@@ -44,7 +41,7 @@ public class ClassAttributeRepositoryTest {
         expected[1] = classAttributeRepository.save(expected[1]);
         return expected;
     }
-    
+
     @Test
     public void testFindByCid() {
         ClassAttribute[] expected = seedClassAttributes();
@@ -61,7 +58,7 @@ public class ClassAttributeRepositoryTest {
         Assertions.assertNotNull(actual, "Expected a matching class attribute!");
         Assertions.assertEquals(expected[1], actual);
     }
-    
+
     @AfterEach
     public void tearDown() {
         classAttributeRepository.deleteAll();

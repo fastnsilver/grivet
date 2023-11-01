@@ -41,13 +41,13 @@ public enum AttributeType {
     DECIMAL(7, "decimal", Types.DECIMAL),
     JSON_BLOB(8, "json", Types.LONGVARCHAR),
     BOOLEAN(9, "boolean", Types.TINYINT);
-    
+
     /** The id. Internally, uniquely and statically identifies this enum. */
     private final Integer id;
-    
+
     /** The intermediate type.  Maps between a Java type and SQL type. */
     private final String type;
-    
+
     /** A SQL type. @see Types */
     private final int sqlType;
 
@@ -66,7 +66,7 @@ public enum AttributeType {
         this.type = type;
         this.sqlType = sqlType;
     }
-    
+
     /**
      * Gets the id.
      *
@@ -84,7 +84,7 @@ public enum AttributeType {
     public String getType() {
         return type;
     }
-    
+
     /**
      * Gets the SQL type.
      *
@@ -104,10 +104,10 @@ public enum AttributeType {
      */
     public static AttributeType fromId(Integer id) {
         List<AttributeType> attributeTypes = Arrays.stream(AttributeType.values()).filter(o -> o.getId() == id).collect(Collectors.toList());
-        Assert.notEmpty(attributeTypes, String.format("Invalid AttributeType [%s]", id));
+        Assert.notEmpty(attributeTypes, "Invalid AttributeType [%s]".formatted(id));
         return attributeTypes.get(0);
     }
-    
+
     /**
      * To SQL type.
      *
@@ -118,7 +118,7 @@ public enum AttributeType {
      */
     public static int toSqlType(String type) {
         List<AttributeType> attributeTypes = Arrays.stream(AttributeType.values()).filter(o -> o.getType().equalsIgnoreCase(type)).collect(Collectors.toList());
-        Assert.notEmpty(attributeTypes, String.format("Invalid type [%s]", type));
+        Assert.notEmpty(attributeTypes, "Invalid type [%s]".formatted(type));
         return attributeTypes.get(0).getSqlType();
     }
 }

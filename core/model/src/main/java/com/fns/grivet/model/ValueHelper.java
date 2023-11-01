@@ -44,7 +44,7 @@ public class ValueHelper {
 			value = DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.parse(stringValue));
 			break;
 		case ISO_INSTANT:
-			value = String.format("%s%s", stringValue, "Z");
+			value = "%s%s".formatted(stringValue, "Z");
 			break;
 		case DECIMAL:
 			value = Double.valueOf(stringValue);

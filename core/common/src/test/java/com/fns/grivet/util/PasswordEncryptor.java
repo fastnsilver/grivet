@@ -24,12 +24,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  */
 public class PasswordEncryptor {
-    
+
     public static void main(String[] args) {
         if (args != null && args.length == 1) {
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String hashedPassword = passwordEncoder.encode(args[0]);
-            System.out.println(String.format("Running PasswordEncryptor...\n-- Raw password: %s\n-- Encoded: %s\n", args[0], hashedPassword));
+            System.out.println("Running PasswordEncryptor...\n-- Raw password: %s\n-- Encoded: %s\n".formatted(args[0], hashedPassword));
         } else {
             System.err.println("Please provide a password to be encoded!");
         }

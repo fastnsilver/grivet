@@ -29,11 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fns.grivet.AdminInit;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AdminInit.class)
 public class ClassRegistryServiceTest {
 

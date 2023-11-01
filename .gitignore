@@ -177,3 +177,6 @@ fabric.properties
 # Docker #
 ##########
 .dockerize
+
+# VSCode
+.history/

@@ -4,5 +4,5 @@ applications:
   host: grivet-standalone 
   memory: 2G
   instances: 1
-  path: ./target/grivet-standalone-0.5.0-SNAPSHOT-exec.jar
+  path: ./target/grivet-standalone-1.0.0-SNAPSHOT-exec.jar
   timeout: 120

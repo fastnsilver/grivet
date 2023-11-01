@@ -89,7 +89,7 @@ public class QueryDocumentationTest {
     public void createNamedQueryAsSproc() {
         try {
             mockMvc.perform(
-                    post("/api/v1/query")
+                    post("/query")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestSprocQuery"))
                     )
@@ -103,7 +103,7 @@ public class QueryDocumentationTest {
     public void createNamedQueryAsSelect() {
         try {
             mockMvc.perform(
-                    post("/api/v1/query")
+                    post("/query")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestSelectQuery"))
                     )
@@ -117,12 +117,12 @@ public class QueryDocumentationTest {
     public void createNamedQueryAsSelectWithNoParams() {
         try {
             mockMvc.perform(
-                    post("/api/v1/query")
+                    post("/query")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestSelectQuery2"))
                     )
                     .andExpect(status().isCreated())
-                    .andExpect(header().string("Location", "/api/v1/query/getAttributesCreatedToday"));
+                    .andExpect(header().string("Location", "/query/getAttributesCreatedToday"));
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -132,12 +132,12 @@ public class QueryDocumentationTest {
     public void createNamedQueryAsSelectWithQueryType() {
         try {
             mockMvc.perform(
-                    post("/api/v1/query")
+                    post("/query")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestSelectQuery3"))
                     )
                     .andExpect(status().isCreated())
-                    .andExpect(header().string("Location", "/api/v1/query/getClassesCreatedToday"));
+                    .andExpect(header().string("Location", "/query/getClassesCreatedToday"));
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -147,7 +147,7 @@ public class QueryDocumentationTest {
     public void createNamedQueryAsSprocWithQueryType() {
         try {
             mockMvc.perform(
-                    post("/api/v1/query")
+                    post("/query")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestSprocQuery2"))
                     )
@@ -162,7 +162,7 @@ public class QueryDocumentationTest {
         try {
             createNamedQuery("TestSelectQuery2");
             mockMvc.perform(
-                    get("/api/v1/query/getAttributesCreatedToday")
+                    get("/query/getAttributesCreatedToday")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
@@ -177,7 +177,7 @@ public class QueryDocumentationTest {
             createNamedQuery("TestSelectQuery");
             createNamedQuery("TestSelectQuery2");
             mockMvc.perform(
-                    get("/api/v1/queries")
+                    get("/queries")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
@@ -191,7 +191,7 @@ public class QueryDocumentationTest {
         try {
             createNamedQuery("TestSelectQuery");
             mockMvc.perform(
-                    delete("/api/v1/query/TestSelectQuery")
+                    delete("/query/TestSelectQuery")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNoContent());
@@ -206,7 +206,7 @@ public class QueryDocumentationTest {
     }
     
     private String payload(String payload) throws IOException{
-        Resource r = resolver.getResource(String.format("classpath:%s.json", payload));
+        Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
         return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
     }
 }

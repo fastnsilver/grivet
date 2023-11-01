@@ -64,7 +64,7 @@ public class IngestDocumentationTest {
     public void ingestCreateTypeRequest() {
         try {
             mockMvc.perform(
-                    post("/api/v1/type")
+                    post("/type")
                             .contentType(MediaType.APPLICATION_JSON)
                             .header("Type", "TestType2")
                             .content(payload("TestTypeData2"))
@@ -79,7 +79,7 @@ public class IngestDocumentationTest {
     public void ingestCreateTypesRequest() {
         try {
             mockMvc.perform(
-                    post("/api/v1/types")
+                    post("/types")
                             .contentType(MediaType.APPLICATION_JSON)
                             .header("Type", "Contact")
                             .content(payload("TestMultipleContactsData"))
@@ -94,7 +94,7 @@ public class IngestDocumentationTest {
     public void ingestUpdateTypeRequest() {
         try {
             mockMvc.perform(
-                    patch("/api/v1/type")
+                    patch("/type")
                             .contentType(MediaType.APPLICATION_JSON)
                             .param("oid", "123")
                             .content(mutz("TestTypeData2", ImmutableMap.of("age", 35, "high-school-graduation-year", 1997), ImmutableSet.of("iq", "is-minor")))
@@ -109,7 +109,7 @@ public class IngestDocumentationTest {
     public void ingestDeleteTypeRequest() {
         try {
             mockMvc.perform(
-                    delete("/api/v1/type")
+                    delete("/type")
                             .contentType(MediaType.APPLICATION_JSON)
                             .param("oid", "123")
                     )
@@ -128,7 +128,7 @@ public class IngestDocumentationTest {
     }
     
     private String payload(String data) throws IOException{
-        Resource r = resolver.getResource(String.format("classpath:%s.json", data));
+        Resource r = resolver.getResource("classpath:%s.json".formatted(data));
         return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
     }
 }

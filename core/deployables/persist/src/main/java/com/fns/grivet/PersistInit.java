@@ -22,14 +22,14 @@ import org.springframework.context.annotation.Profile;
 
 /**
  * Bootstraps the application
- * 
+ *
  * @author Chris Phillipson
  */
 @Profile("!standalone")
 @SpringBootApplication
 @EnableDiscoveryClient
 public class PersistInit {
-    
+
     public static void main(String[] args) {
         SpringApplication.run(PersistInit.class, args);
     }

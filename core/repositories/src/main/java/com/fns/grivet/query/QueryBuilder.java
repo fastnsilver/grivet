@@ -85,7 +85,7 @@ public class QueryBuilder {
 			int numberOfJoins = query.getConstraints().size();
 			String joinStatement = "INNER JOIN all_entity_values AS ev%d ON ev.eid = ev%d.eid ";
 			for (int i = 1; i < numberOfJoins; i++) {
-				joins.append(i == 1 ? String.format(joinStatement, i, i) : String.format(joinStatement, i, i - 1, i));
+				joins.append(i == 1 ? joinStatement.formatted(i, i) : joinStatement.formatted(i, i - 1, i));
 			}
 		}
 		return joins.toString();
@@ -125,8 +125,8 @@ public class QueryBuilder {
 
 	private String obtainCriterionFromConstraint(Constraint c, String suffix) {
 		StringBuffer clause = new StringBuffer();
-		clause.append(String.format("(ev%s.aid = ?", suffix));
-		clause.append(String.format(" AND ev%s.v ", suffix));
+		clause.append("(ev%s.aid = ?".formatted(suffix));
+		clause.append(" AND ev%s.v ".formatted(suffix));
 		clause.append(c.getOperator().getSymbol());
 		clause.append(" ");
 		if (c.getOperator().equals(Operator.BETWEEN)) {
@@ -157,6 +157,6 @@ public class QueryBuilder {
 	}
 
 	public String build() {
-		return String.format("%s %s %s %s", select.toString(), from.toString(), where.toString(), orderBy.toString());
+		return "%s %s %s %s".formatted(select.toString(), from.toString(), where.toString(), orderBy.toString());
 	}
 }

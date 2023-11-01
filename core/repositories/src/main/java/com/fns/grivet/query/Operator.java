@@ -59,7 +59,7 @@ public enum Operator {
     
     public static Operator fromValue(String value) {
         List<Operator> ops = Arrays.stream(Operator.values()).filter(o -> o.getName().equalsIgnoreCase(value)).collect(Collectors.toList());
-        Assert.notEmpty(ops, String.format("Invalid Operator [%s]", value));
+        Assert.notEmpty(ops, "Invalid Operator [%s]".formatted(value));
         return ops.get(0);
     }
     

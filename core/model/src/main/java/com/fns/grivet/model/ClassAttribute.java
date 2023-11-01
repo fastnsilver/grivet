@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -17,15 +17,13 @@ package com.fns.grivet.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Version;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.Version;
 
-import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -42,7 +40,7 @@ import lombok.NoArgsConstructor;
  * A {@code ClassAttribute} expresses a three-way relationship between a
  * {@link Class#id}, an {@link Attribute#id} and an {@link AttributeType#id}. A
  * {@code Class} typically has one or more {@code ClassAttribute}.
- * 
+ *
  * @author Chris Phillipson
  */
 @Data
@@ -54,35 +52,31 @@ import lombok.NoArgsConstructor;
 @IdClass(ClassAttributePK.class)
 public class ClassAttribute implements Auditable<String> {
 
-    /** 
-     * Version number used during deserialization to verify that the sender and receiver 
-     * of this serialized object have loaded classes for this object that 
-     * are compatible with respect to serialization. 
+    /**
+     * Version number used during deserialization to verify that the sender and receiver
+     * of this serialized object have loaded classes for this object that
+     * are compatible with respect to serialization.
      */
     private static final long serialVersionUID = 1L;
-    
+
     @Column
     @CreatedBy
     private String createdBy;
-    
+
     @Column
     @LastModifiedBy
     private String updatedBy;
-    
+
     /** The time this entity was created. */
-    @Column(nullable=false, updatable = false)
-    @Convert(disableConversion = true)
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
+    @Column(nullable=false, updatable = false, columnDefinition = "TIMESTAMP")
     @CreatedDate
     private LocalDateTime createdTime;
-    
+
     /** The time this entity was last modified. */
-    @Column
-    @Convert(disableConversion = true)
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
+    @Column(columnDefinition = "TIMESTAMP")
     @LastModifiedDate
     private LocalDateTime updatedTime;
-    
+
     @Version
     @Column
     private long version;
@@ -98,5 +92,5 @@ public class ClassAttribute implements Auditable<String> {
     /** A {@code AttributeType} identifier */
     @Id
     private Integer tid;
-    
+
 }

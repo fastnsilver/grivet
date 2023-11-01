@@ -54,7 +54,7 @@ public class EntityServiceTest {
 	private EntityService entityService;
 
 	protected void registerType(String type) throws IOException {
-		Resource r = resolver.getResource(String.format("classpath:%s.json", type));
+		Resource r = resolver.getResource("classpath:%s.json".formatted(type));
 		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		JSONObject payload = new JSONObject(json);
 		classRegistryService.register(payload);

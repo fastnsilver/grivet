@@ -27,7 +27,7 @@ import com.fns.grivet.repo.AuditorProvider;
 @EnableTransactionManagement
 @EnableJpaAuditing(auditorAwareRef="auditorProvider")
 public class DataSourceConfig {
-        
+
     @Bean
     public AuditorAware<String> auditorProvider() {
         return new AuditorProvider();

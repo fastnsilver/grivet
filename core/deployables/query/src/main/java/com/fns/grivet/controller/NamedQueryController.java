@@ -58,7 +58,7 @@ public class NamedQueryController {
     }
     
     @PreAuthorize("hasAuthority('write:query')")
-    @PostMapping("/api/v1/query")
+    @PostMapping("/query")
     public ResponseEntity<?> createNamedQuery(
             @RequestBody NamedQuery query) {
         ResponseEntity<?> result = ResponseEntity.unprocessableEntity().build();
@@ -74,7 +74,7 @@ public class NamedQueryController {
         log.info("Named Query \n\n{}\n\n successfully registered!", query);
         UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
         if (query.getParams().isEmpty()) {
-            result = ResponseEntity.created(ucb.path("/api/v1/query/{name}").buildAndExpand(query.getName()).toUri())
+            result = ResponseEntity.created(ucb.path("/query/{name}").buildAndExpand(query.getName()).toUri())
                     .build();
         } else {
             result = ResponseEntity.noContent().build();
@@ -83,7 +83,7 @@ public class NamedQueryController {
     }
     
     @PreAuthorize("hasAuthority('execute:query')")
-    @GetMapping("/api/v1/query/{name}")
+    @GetMapping("/query/{name}")
     public ResponseEntity<?> executeNamedQuery(
             @PathVariable("name") String name, 
             @RequestParam MultiValueMap<String, ?> parameters) {
@@ -91,14 +91,14 @@ public class NamedQueryController {
     }
     
     @PreAuthorize("hasAuthority('list:query')")
-    @GetMapping("/api/v1/queries")
+    @GetMapping("/queries")
     public ResponseEntity<?> listNamedQueries() {
         JSONArray payload = namedQueryService.all();
         return ResponseEntity.ok(payload.toString());
     }
     
     @PreAuthorize("hasAuthority('delete:query')")
-    @DeleteMapping(value = "/api/v1/query/{name}")
+    @DeleteMapping(value = "/query/{name}")
     public ResponseEntity<?> deleteNamedQuery(
             @PathVariable("name") String name) {
         namedQueryService.delete(name);

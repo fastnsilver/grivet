@@ -71,7 +71,7 @@ public class NamedQueryService {
     @Transactional(readOnly=true)
     public String get(String name, MultiValueMap<String, ?> parameters) {
         NamedQuery namedQuery = namedQueryRepository.findByName(name);
-        Assert.notNull(namedQuery, String.format("No query found that matches name [%s]!", name));
+        Assert.notNull(namedQuery, "No query found that matches name [%s]!".formatted(name));
         MapSqlParameterSource parameterSource = namedQuery.asParameterSource(parameters);
         String sql = namedQuery.getQuery();
         Map<String, String> sqlParams = namedQuery.getParams();
@@ -155,10 +155,10 @@ public class NamedQueryService {
             }
         }
         if (!sql.startsWith("{")) {
-            sql = String.format("%s%s", "{", sql);
+            sql = "%s%s".formatted("{", sql);
         }
         if (!sql.endsWith("}")) {
-            sql = String.format("%s%s", sql, "}");
+            sql = "%s%s".formatted(sql, "}");
         }
         return sql;
     }

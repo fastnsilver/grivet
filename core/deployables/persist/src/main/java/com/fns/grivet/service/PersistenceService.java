@@ -63,7 +63,7 @@ public class PersistenceService {
 					log.info("Successfully deleted type [{}]", type);
 					break;
 				default:
-					throw new MessageRejectedException(message, String.format("Bad payload! Invalid op [%s].", op.name()));
+					throw new MessageRejectedException(message, "Bad payload! Invalid op [%s].".formatted(op.name()));
 			}
 			
 		} catch (Exception e) {

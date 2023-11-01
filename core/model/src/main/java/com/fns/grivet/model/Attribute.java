@@ -17,17 +17,15 @@ package com.fns.grivet.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Version;
-import javax.validation.constraints.Size;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Version;
+import jakarta.validation.constraints.Size;
 
-import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -60,29 +58,25 @@ public class Attribute implements Auditable<String> {
      * are compatible with respect to serialization. 
      */
     private static final long serialVersionUID = 1L;
-    
+
     @Column
     @CreatedBy
     private String createdBy;
-    
+
     @Column
     @LastModifiedBy
     private String updatedBy;
-    
+
     /** The time this entity was created. */
-    @Column(nullable=false, updatable = false)
-    @Convert(disableConversion = true)
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
+    @Column(nullable=false, updatable = false, columnDefinition = "TIMESTAMP")
     @CreatedDate
     private LocalDateTime createdTime;
-    
+
     /** The time this entity was last modified. */
-    @Column
-    @Convert(disableConversion = true)
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
+    @Column(columnDefinition = "TIMESTAMP")
     @LastModifiedDate
     private LocalDateTime updatedTime;
-    
+
     @Version
     @Column
     private long version;

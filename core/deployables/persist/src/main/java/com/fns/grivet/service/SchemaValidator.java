@@ -45,18 +45,18 @@ class SchemaValidator {
     public ProcessingReport validate(String type, JSONObject payload) throws SchemaValidationException {
         try {
             JsonSchemaFactory factory = JsonSchemaFactory.byDefault();
-            Assert.notNull(type, String.format("Type [%s] does not exist! Schema cannot be retrieved!", type));
+            Assert.notNull(type, "Type [%s] does not exist! Schema cannot be retrieved!".formatted(type));
             com.fns.grivet.model.Class c = classRepository.findByName(type);
-            Assert.notNull(c, String.format("Persistent model for type [%s], does not exist!", type));
+            Assert.notNull(c, "Persistent model for type [%s], does not exist!".formatted(type));
             JsonNode schemaAsJsonNode = objectMapper.readTree(c.getJsonSchema());
             Assert.notNull(schemaAsJsonNode, "Corrupt persistent Schema representation!");
             final JsonSchema schema = factory.getJsonSchema(schemaAsJsonNode);
             JsonNode instance = objectMapper.readTree(payload.toString());
-            Assert.notNull(schema, String.format("Schema not found for type [%s]!", type));
+            Assert.notNull(schema, "Schema not found for type [%s]!".formatted(type));
             Assert.notNull(instance, String.format("Problem generating JsonNode for payload\n\n%s!", payload.toString()));
             return schema.validate(instance);
         } catch (ProcessingException | IOException e) {
-            throw new SchemaValidationException(String.format("Problem validating [%s] against JSON Schema", type), e);
+            throw new SchemaValidationException("Problem validating [%s] against JSON Schema".formatted(type), e);
         }
     }
     

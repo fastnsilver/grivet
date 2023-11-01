@@ -22,7 +22,7 @@ public interface EntityRepository {
 	public List<EntityAttributeValue> findByEntityId(Long eid);
 
 	public void delete(Long eid);
-	
+
 	public void deleteAll();
 
 	public List<EntityAttributeValue> findAllEntitiesByCid(Integer cid);

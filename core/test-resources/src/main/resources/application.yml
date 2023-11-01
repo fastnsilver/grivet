@@ -1,33 +1,41 @@
 ribbon:
   ServerListRefreshInterval: 1000
 
+eureka:
+  client:
+    enabeld: false
+
 spring:
   profiles:
     active: h2,insecure
-  
-  autoconfigure:
-    exclude: 
-      - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
-      
+
+  cloud:
+    config:
+      enabled: false
+
   jpa:
     hibernate:
       ddl-auto: none
-      
+
   jackson:
     serialization-inclusion: non-empty
-    
+
   flyway:
     placeholders:
       preamble:
-      varcharQualifier: 
+      varcharQualifier:
       createTableSuffix:
       longVarBinary:
-  
+
+  test:
+    observability:
+      auto-configure: false
+
   # @see https://stackoverflow.com/questions/36417045/spring-boot-metrics-vs-spring-cloud-metrics 
   metrics:
     servo:
       enabled: false
-  
+
 logging:
   level:
     org.flyway: WARN
@@ -41,11 +49,11 @@ management:
     web:
       exposure:
         include: "*"
-           
+
 ---
 
 spring:
-  profiles: hsqldb
+  config.activate.on-profile: hsqldb
   datasource:
     name: test-hsqldb
     url: jdbc:hsqldb:mem:grivetdb
@@ -70,11 +78,11 @@ spring:
       longVarBinary: LONGVARBINARY
       renameTableKeyword: RENAME TO
       alterColumnKeyword: ALTER COLUMN
-    
+
 ---
 
 spring:
-  profiles: h2
+  config.activate.on-profile: h2
   datasource:
     name: test-h2
     url: jdbc:h2:mem:grivetdb;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
@@ -83,8 +91,7 @@ spring:
     username: sa
     password: sa
   h2:
-    console:
-      enabled: true
+    console.enabled: true
 
   flyway:
     locations: classpath:db/migration, classpath:db/users
@@ -98,17 +105,28 @@ spring:
       longVarBinary: LONGBLOB
       renameTableKeyword: RENAME TO
       alterColumnKeyword: ALTER COLUMN
-    
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    com.fns.grivet: TRACE
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+    org.springframework.jdbc.core.JdbcTemplate: DEBUG
+    org.springframework.jdbc.core.StatementCreatorUtils: TRACE
+
 ---
 
 spring:
-  profiles: insecure
+  config.activate.on-profile: insecure
   # @see https://github.com/spring-projects/spring-boot/issues/10306
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
-      - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
-      
-management:
-  jolokia:
-    enabled: true
+      - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration

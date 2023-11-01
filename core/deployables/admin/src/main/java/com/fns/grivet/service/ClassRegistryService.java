@@ -79,7 +79,7 @@ public class ClassRegistryService {
 			persistentClass = classRepository.save(detachedClass);
 			JSONObject attributes = payload.getJSONObject(ATTRIBUTES);
 			Set<String> attributeNames = attributes.keySet();
-			Assert.notEmpty(attributeNames, String.format("[%s] must declare at least one attribute in registration request!", type));
+			Assert.notEmpty(attributeNames, "[%s] must declare at least one attribute in registration request!".formatted(type));
 			Attribute persistentAttribute = null;
 			String at = null;
 			AttributeType attributeType = null;
@@ -92,9 +92,9 @@ public class ClassRegistryService {
 					persistentAttribute = attributeRepository.save(detachedAttribute);
 				}
 				at = attributes.getString(attributeName);
-				Assert.notNull(at, String.format("[%s].[%s] must declare an attribute type in registration request!", type, attributeName));
+				Assert.notNull(at, "[%s].[%s] must declare an attribute type in registration request!".formatted(type, attributeName));
 				attributeType = attributeTypeRepository.findByType(at);
-				Assert.notNull(attributeType, String.format("Attribute type [%s] is not supported!", at));
+				Assert.notNull(attributeType, "Attribute type [%s] is not supported!".formatted(at));
 				ClassAttribute detachedClassAttribute = 
 				        ClassAttribute.builder()
 				            .cid(persistentClass.getId())
@@ -104,7 +104,7 @@ public class ClassRegistryService {
 				classAttributeRepository.save(detachedClassAttribute);
 			}
 		} else {
-			throw new DuplicateKeyException(String.format("Type [%s] already registered!", type));
+			throw new DuplicateKeyException("Type [%s] already registered!".formatted(type));
 		}
 		return type;
 	}
@@ -112,13 +112,13 @@ public class ClassRegistryService {
 	@Transactional(readOnly=true)
 	public JSONObject get(String type) {
 		com.fns.grivet.model.Class c = classRepository.findByName(type);
-		Assert.notNull(c, String.format("Type [%s] is not registered!", type));
+		Assert.notNull(c, "Type [%s] is not registered!".formatted(type));
 		JSONObject result = new JSONObject();
 		result.put("type", type);
 		String description = c.getDescription();
 		result.put("description", description != null ? description: "");
 		List<ClassAttribute> cas = classAttributeRepository.findByCid(c.getId());
-		Assert.notEmpty(cas, String.format("Type [%s] does not have any attributes registered!", type));
+		Assert.notEmpty(cas, "Type [%s] does not have any attributes registered!".formatted(type));
 		JSONObject attributes = new JSONObject();
 		result.put("attributes", attributes);
 		Attribute a = null;

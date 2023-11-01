@@ -98,7 +98,7 @@ public class PersistDocumentationTest {
             defineTypes("TestMultipleTypes");
             linkSchema("CourseSchema");
             mockMvc.perform(
-                    post("/api/v1/type")
+                    post("/type")
                             .header("Type", "Course")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("CourseCreateData"))
@@ -114,7 +114,7 @@ public class PersistDocumentationTest {
         try {
             defineTypes("TestMultipleTypes");
             mockMvc.perform(
-                    post("/api/v1/types")
+                    post("/types")
                             .contentType(MediaType.APPLICATION_JSON)
                             .header("Type", "Contact")
                             .content(payload("TestMultipleContactsData"))
@@ -132,7 +132,7 @@ public class PersistDocumentationTest {
             createTypes("Course", "CourseData");
             Long oid = fetchAType("Course");
             mockMvc.perform(
-                    patch("/api/v1/type")
+                    patch("/type")
                             .param("oid", String.valueOf(oid))
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("CourseUpdateData"))
@@ -149,7 +149,7 @@ public class PersistDocumentationTest {
             defineType("TestType2");
             Long oid = createType("TestType2", "TestTypeData2");
             mockMvc.perform(
-                    delete("/api/v1/type")
+                    delete("/type")
                             .param("oid", String.valueOf(oid))
                             .contentType(MediaType.APPLICATION_JSON)
                     )
@@ -166,7 +166,7 @@ public class PersistDocumentationTest {
             defineType("TestType2");
             createType("TestType2", "TestTypeData2");
             mockMvc.perform(
-                    get("/api/v1/type/TestType2")
+                    get("/type/TestType2")
                             .contentType(MediaType.APPLICATION_JSON)
                     )
             .andExpect(status().isOk())
@@ -185,7 +185,7 @@ public class PersistDocumentationTest {
             String createdTimeStart = LocalDateTime.now().minusMinutes(15).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             String createdTimeEnd = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             mockMvc.perform(
-                    get("/api/v1/type/TestType2")
+                    get("/type/TestType2")
                             .param("createdTimeStart", createdTimeStart)
                             .param("createdTimeEnd", createdTimeEnd)
                             .contentType(MediaType.APPLICATION_JSON)
@@ -204,7 +204,7 @@ public class PersistDocumentationTest {
             defineType("TestType2");
             createType("TestType2", "TestTypeData2");
             mockMvc.perform(
-                    get("/api/v1/type/TestType2")
+                    get("/type/TestType2")
                             .param("c", "first-name|startsWith|J")
                             .contentType(MediaType.APPLICATION_JSON)
                     )
@@ -222,7 +222,7 @@ public class PersistDocumentationTest {
             defineTypes("TestMultipleTypes");
             createTypes("Course", "CourseData");
             mockMvc.perform(
-                    get("/api/v1/type/Course")
+                    get("/type/Course")
                             .param("noAudit", "true")
                             .contentType(MediaType.APPLICATION_JSON)
                     )
@@ -239,7 +239,7 @@ public class PersistDocumentationTest {
             defineType("TestType2");
             Long oid = createType("TestType2", "TestTypeData2");
             mockMvc.perform(
-                    get("/api/v1/type")
+                    get("/type")
                             .param("oid", String.valueOf(oid))
                             .contentType(MediaType.APPLICATION_JSON)
                     )
@@ -288,7 +288,7 @@ public class PersistDocumentationTest {
     }
     
     private String payload(String payload) throws IOException{
-        Resource r = resolver.getResource(String.format("classpath:%s.json", payload));
+        Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
         return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
     }
     

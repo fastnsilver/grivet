@@ -36,13 +36,13 @@ import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.jdbc.core.SqlRowSetResultSetExtractor;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.EntityAttributeValue;
-import com.fns.grivet.model.User;
 import com.fns.grivet.model.ValueHelper;
 import com.fns.grivet.query.DynamicQuery;
 import com.fns.grivet.query.QueryBuilder;
@@ -96,7 +96,7 @@ public class JdbcEntityRepository implements EntityRepository {
 	public List<EntityAttributeValue> findByCreatedTime(Integer cid, LocalDateTime createdTimeStart,
 			LocalDateTime createdTimeEnd) {
 		String sql = QueryBuilder.newInstance().appendCreatedTimeRange().build();
-		log.trace(String.format("JdbcEntityRepository.findByCreatedTime[sql=%s]", sql));
+		log.trace("JdbcEntityRepository.findByCreatedTime[sql=%s]".formatted(sql));
 		return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid),
 				new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeStart)),
 				new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeEnd))));
@@ -105,14 +105,14 @@ public class JdbcEntityRepository implements EntityRepository {
 	@Override
 	public Integer getClassIdForEntityId(Long eid) {
 		String sql = "SELECT cid FROM entity WHERE eid = ?";
-		log.trace(String.format("JdbcEntityRepository.getClassIdForEntityId[sql=%s]", sql));
+		log.trace("JdbcEntityRepository.getClassIdForEntityId[sql=%s]".formatted(sql));
 		return jdbcTemplate.queryForObject(sql, new Object[] { eid }, Integer.class);
 	}
 
 	@Override
 	public List<EntityAttributeValue> findByEntityId(Long eid) {
 		String sql = QueryBuilder.newInstance().obtainValuesForOneEntity().build();
-		log.trace(String.format("JdbcEntityRepository.findById[sql=%s]", sql));
+		log.trace("JdbcEntityRepository.findById[sql=%s]".formatted(sql));
 		return mapRows(
 				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(),
 						new SqlParameterValue(Types.BIGINT, eid)));
@@ -121,33 +121,33 @@ public class JdbcEntityRepository implements EntityRepository {
 	@Override
 	public void delete(Long eid) {
 		String entitySql = "DELETE FROM entity WHERE eid = ?";
-		log.trace(String.format("JdbcEntityRepository.delete[sql=%s]", entitySql));
+		log.trace("JdbcEntityRepository.delete[sql=%s]".formatted(entitySql));
 		jdbcTemplate.update(entitySql, new Object[] { eid });
 
 		Collection<String> eavSql =
 				Stream.of(AttributeType.values())
 						.collect(Collectors.toMap(k -> k.getType(),
-								v -> String.format("DELETE FROM entityav_%s WHERE eid = ?", v.getType())))
+								v -> "DELETE FROM entityav_%s WHERE eid = ?".formatted(v.getType())))
 							.values();
 		for (String sql : eavSql) {
-			log.trace(String.format("JdbcEntityRepository.delete[sql=%s]", sql));
+			log.trace("JdbcEntityRepository.delete[sql=%s]".formatted(sql));
 			jdbcTemplate.update(sql, new Object[] { eid });
 		}
 	}
-	
+
 	@Override
 	public void deleteAll() {
 	    String entitySql = "DELETE FROM entity";
-        log.trace(String.format("JdbcEntityRepository.delete[sql=%s]", entitySql));
+        log.trace("JdbcEntityRepository.delete[sql=%s]".formatted(entitySql));
         jdbcTemplate.execute(entitySql);
 
         Collection<String> eavSql =
                 Stream.of(AttributeType.values())
                         .collect(Collectors.toMap(k -> k.getType(),
-                                v -> String.format("DELETE FROM entityav_%s", v.getType())))
+                                v -> "DELETE FROM entityav_%s".formatted(v.getType())))
                             .values();
         for (String sql : eavSql) {
-            log.trace(String.format("JdbcEntityRepository.delete[sql=%s]", sql));
+            log.trace("JdbcEntityRepository.delete[sql=%s]".formatted(sql));
             jdbcTemplate.execute(sql);
         }
 	}
@@ -155,7 +155,7 @@ public class JdbcEntityRepository implements EntityRepository {
 	@Override
 	public List<EntityAttributeValue> findAllEntitiesByCid(Integer cid) {
 		String sql = QueryBuilder.newInstance().obtainValuesForEntitiesByCid().build();
-		log.trace(String.format("JdbcEntityRepository.findAllByCid[sql=%s]", sql));
+		log.trace("JdbcEntityRepository.findAllByCid[sql=%s]".formatted(sql));
 		return mapRows(
 				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid)));
 	}
@@ -164,7 +164,7 @@ public class JdbcEntityRepository implements EntityRepository {
 	public List<EntityAttributeValue> executeDynamicQuery(Integer cid, DynamicQuery query) {
 		Assert.isTrue(query.areConjunctionsHomogenous(), "Query cannot be executed! All conjunctions must be homogenous!");
 		String sql = QueryBuilder.newInstance().append(query).build();
-		log.trace(String.format("JdbcEntityRepository.executeDynamicQuery[sql=%s]", sql));
+		log.trace("JdbcEntityRepository.executeDynamicQuery[sql=%s]".formatted(sql));
 		List<SqlParameterValue> values = new ArrayList<>();
 		values.add(new SqlParameterValue(Types.INTEGER, cid));
 		values.addAll(Arrays.asList(query.asSqlParameterValues()));
