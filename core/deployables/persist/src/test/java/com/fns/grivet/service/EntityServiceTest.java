@@ -17,14 +17,17 @@ package com.fns.grivet.service;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
+import org.h2.tools.Server;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,6 +58,12 @@ public class EntityServiceTest {
 		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 		JSONObject payload = new JSONObject(json);
 		classRegistryService.register(payload);
+	}
+
+	@BeforeAll
+	public static void initTest() throws SQLException {
+		Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082")
+		.start();
 	}
 
 	@Test
