@@ -18,8 +18,6 @@ package com.fns.grivet.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.annotation.concurrent.Immutable;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +28,6 @@ import lombok.RequiredArgsConstructor;
  *
  * @author Chris Phillipson
  */
-@Immutable
 @RequiredArgsConstructor(staticName = "of")
 @Getter
 @EqualsAndHashCode

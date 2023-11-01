@@ -78,24 +78,23 @@
         <!-- Third-party library versions -->
         <commons-lang3.version>3.13.0</commons-lang3.version>
         <commons-io.version>2.15.0</commons-io.version>
-        <flyway.version>9.22.3</flyway.version>
         <guava.version>32.1.3-jre</guava.version>
         <hibernate.version>6.4.0.CR1</hibernate.version>
         <hikaricp.version>5.0.1</hikaricp.version>
         <httpclient5.version>5.2.1</httpclient5.version>
         <jackson.version>2.15.3</jackson.version>
-        <javax.persistence.version>1.0.0.Final</javax.persistence.version>
-        <javax.validation-api.version>2.0.0.Final</javax.validation-api.version>
+        <jakarta-annotation-api.version>2.1.1</jakarta-annotation-api.version>
+        <jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
+        <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
         <json-unit.version>3.2.2</json-unit.version>
         <json.version>20231013</json.version>
         <json-schema-validator.version>2.2.14</json-schema-validator.version>
-        <jsr305.version>3.0.2</jsr305.version>
         <junit.jupiter.version>5.10.0</junit.jupiter.version>
         <junit.platform.version>1.10.0</junit.platform.version>
         <logstash-logback-encoder.version>7.4</logstash-logback-encoder.version>
         <lombok.version>1.18.30</lombok.version>
         <micrometer.version>1.12.0-RC1</micrometer.version>
-        <mysql.version>8.0.33</mysql.version>
+        <mysql.version>8.2.0</mysql.version>
         <okta-spring-boot-starter.version>3.0.5</okta-spring-boot-starter.version>
         <rest-assured.version>5.3.2</rest-assured.version>
         <scala.version>2.13.2</scala.version>
@@ -171,7 +170,7 @@
             <name>Spring Milestones</name>
             <url>https://repo.spring.io/milestone</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </repository>
     </repositories>

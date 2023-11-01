@@ -100,7 +100,7 @@ public class NamedQueryServiceSprocTest {
         		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
         		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
         		namedQueryService.create(namedQuery);
-        
+
         		namedQueryService.get("sproc.getAttributesCreatedBefore", null);
 	    });
 	}
@@ -112,7 +112,7 @@ public class NamedQueryServiceSprocTest {
         		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
         		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
         		namedQueryService.create(namedQuery);
-        
+
         		MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
         		Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
         		params.add("timeCreated", tomorrow);

@@ -20,7 +20,7 @@ class StoreStudentSimulation extends SimulationBase {
   val storeUrl = "http://%s:%d/type/store/Contact".format(host, port)
   val headers = Map("Content-Type" -> "application/json", "Client-Id" -> "TestClient")
   val payloadTemplate = """{"firstName": "%s", "lastName": "%s", "from": "%s", "dateOfBirth": "%s" }"""
-  
+
   object DataGenerator {
     def randomString(length: Int) = {
       val r = new scala.util.Random
@@ -30,11 +30,11 @@ class StoreStudentSimulation extends SimulationBase {
       }
       sb.toString
     }
-    
+
     // TODO Add method to generate random date b/w 1900 and 2015
-    
+
   }
-  
+
   object StoreStudent {
       val post =
               exec(http("storeStudent")
@@ -42,17 +42,17 @@ class StoreStudentSimulation extends SimulationBase {
                       .body(StringBody("${payload}"))
                       .asJSON)
   }
-    
+
   val storeFeeder = Iterator.continually(Map("payload" -> payloadTemplate.format(DataGenerator.randomString(10), DataGenerator.randomString(10), DataGenerator.randomString(15), DateTimeFormatter.ISO_DATE.format(LocalDate.now()))))
 
   val storeStudentScenario = scenario("Store_Student")
     .feed(storeFeeder)
     .exec(StoreStudent.post)
-  
+
   val storeHttpConf = http
     .baseURL(storeUrl)
     .headers(headers)
-    
+
   setUp(
       storeStudentScenario.inject(
         rampUsers(getUsersCount()) over(getRampUpInSeconds() seconds),
