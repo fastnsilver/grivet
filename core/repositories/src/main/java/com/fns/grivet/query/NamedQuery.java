@@ -92,12 +92,12 @@ public class NamedQuery implements Auditable<String> {
     private String updatedBy;
 
     /** The time this entity was created. */
-    @Column(nullable=false, updatable = false)
+    @Column(nullable=false, updatable = false, columnDefinition = "TIMESTAMP")
     @CreatedDate
     private LocalDateTime createdTime;
 
     /** The time this entity was last modified. */
-    @Column
+    @Column(columnDefinition = "TIMESTAMP")
     @LastModifiedDate
     private LocalDateTime updatedTime;
 

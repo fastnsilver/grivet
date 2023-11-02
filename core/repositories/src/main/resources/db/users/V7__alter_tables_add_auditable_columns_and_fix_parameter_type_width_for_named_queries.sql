@@ -8,14 +8,14 @@ ALTER TABLE class ADD updated_by VARCHAR(100) DEFAULT NULL;
 
 ALTER TABLE attribute ADD created_by VARCHAR(100) DEFAULT NULL;
 
-ALTER TABLE attribute ADD updated_time DATETIME DEFAULT NULL;
+ALTER TABLE attribute ADD updated_time ${dateTimeColumnType} DEFAULT NULL;
 
 ALTER TABLE attribute ADD updated_by VARCHAR(100) DEFAULT NULL;
 
 
 ALTER TABLE class_attribute ADD created_by VARCHAR(100) DEFAULT NULL;
 
-ALTER TABLE class_attribute ADD updated_time DATETIME DEFAULT NULL;
+ALTER TABLE class_attribute ADD updated_time ${dateTimeColumnType} DEFAULT NULL;
 
 ALTER TABLE class_attribute ADD updated_by VARCHAR(100) DEFAULT NULL;
 
@@ -54,7 +54,7 @@ ALTER TABLE entityav_json ADD created_by VARCHAR(100) DEFAULT NULL;
 
 ALTER TABLE named_query ADD created_by VARCHAR(100) DEFAULT NULL;
 
-ALTER TABLE named_query ADD updated_time DATETIME DEFAULT NULL;
+ALTER TABLE named_query ADD updated_time ${dateTimeColumnType} DEFAULT NULL;
 
 ALTER TABLE named_query ADD updated_by VARCHAR(100) DEFAULT NULL;
 

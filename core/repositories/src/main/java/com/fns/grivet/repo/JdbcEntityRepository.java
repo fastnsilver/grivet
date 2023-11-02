@@ -177,11 +177,11 @@ public class JdbcEntityRepository implements EntityRepository {
 		if (rowSet != null) {
 			while(rowSet.next()) {
 				eav = EntityAttributeValue.of(
-				        (Long) rowSet.getObject("eid"), 
-				        (Integer) rowSet.getObject("attribute_id"), 
-				        (String) rowSet.getObject("attribute_name"), 
-				        (String) rowSet.getObject("attribute_value"), 
-				        ((Timestamp) rowSet.getObject("created_time")).toLocalDateTime(), 
+				        rowSet.getLong("eid"),
+				        rowSet.getInt("attribute_id"),
+				        rowSet.getString("attribute_name"),
+                        rowSet.getObject("attribute_value"),
+				        rowSet.getTimestamp("created_time").toLocalDateTime(),
 				        getCurrentUsername());
 				result.add(eav);
 			}

@@ -79,6 +79,7 @@
         <commons-lang3.version>3.13.0</commons-lang3.version>
         <commons-io.version>2.15.0</commons-io.version>
         <guava.version>32.1.3-jre</guava.version>
+        <h2.version>2.2.224</h2.version>
         <hibernate.version>6.4.0.CR1</hibernate.version>
         <hikaricp.version>5.0.1</hikaricp.version>
         <httpclient5.version>5.2.1</httpclient5.version>

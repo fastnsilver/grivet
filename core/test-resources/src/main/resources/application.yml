@@ -42,7 +42,7 @@ logging:
     org.hibernate: WARN
     org.springframework: WARN
     com.zaxxer.hikari: WARN
-    com.fns.grivet: INFO
+    com.fns.grivet: TRACE
 
 management:
   endpoints:
@@ -64,7 +64,11 @@ spring:
   jpa:
     show-sql: true
     properties:
-      hibernate.connection.autocommit: true
+      hibernate:
+        show_sql: true
+        format_sql: true
+        connection.autocommit: true
+
 
   flyway:
     locations: classpath:db/migration, classpath:db/hsqldb, classpath:db/users
@@ -73,6 +77,8 @@ spring:
       dateFormatFn: TO_CHAR(val, 'YYYY-MM-DD')
       dateTimeFormatFn: TO_CHAR(val, 'YYYY-MM-DD"T"HH24:MI:SS')
       instantFormatFn: TO_CHAR(val, 'YYYY-MM-DD"T"HH24:MI:SS')
+      castedColumnType: TEXT
+      dateTimeColumnType: DATETIME
       textColumnType: VARCHAR(4000)
       longTextColumnType: VARCHAR(8000)
       longVarBinary: LONGVARBINARY
@@ -86,12 +92,13 @@ spring:
   datasource:
     name: test-h2
     url: jdbc:h2:mem:grivetdb;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    # when debugging, comment out the line above and uncomment the line below
+    # also be sure to temporarily disable clean up in tests that may purge data after execution or before exiting
+    #url: jdbc:h2:file:/tmp/grivetdb;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
     driver-class-name: org.h2.Driver
     data-source-class-name: org.h2.jdbcx.JdbcDataSource
-    username: sa
-    password: sa
-  h2:
-    console.enabled: true
+    username: admin
+    password: t3st
 
   flyway:
     locations: classpath:db/migration, classpath:db/users
@@ -100,6 +107,8 @@ spring:
       dateFormatFn: FORMATDATETIME(val, 'yyyy-MM-dd')
       dateTimeFormatFn: CONCAT(FORMATDATETIME(val, 'yyyy-MM-dd'), 'T', FORMATDATETIME(val, 'HH:mm:ss'))
       instantFormatFn: CONCAT(FORMATDATETIME(val, 'yyyy-MM-dd'), 'T', FORMATDATETIME(val, 'HH:mm:ss'))
+      castedColumnType: VARCHAR(1000000)
+      dateTimeColumnType: TIMESTAMP(9)
       textColumnType: TEXT
       longTextColumnType: LONGTEXT
       longVarBinary: LONGBLOB
@@ -115,7 +124,6 @@ spring:
 
 logging:
   level:
-    com.fns.grivet: TRACE
     org.hibernate.SQL: DEBUG
     org.hibernate.type: TRACE
     org.springframework.jdbc.core.JdbcTemplate: DEBUG

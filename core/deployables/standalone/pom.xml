@@ -25,6 +25,7 @@
             <artifactId>grivet-admin</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <!-- TODO There's an architectural smell here having to do this... -->
         <!-- In a standalone-mode we don't want to stream data -->
         <dependency>
@@ -34,11 +35,11 @@
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-stream</artifactId>
+                    <artifactId>spring-cloud-stream-binder-kafka</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+                    <groupId>org.springframework.kafka</groupId>
+                    <artifactId>spring-kafka</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>com.101tec</groupId>
@@ -46,6 +47,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.fns</groupId>
             <artifactId>grivet-query</artifactId>

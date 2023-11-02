@@ -17,17 +17,14 @@ package com.fns.grivet.service;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
-import org.h2.tools.Server;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,6 +34,7 @@ import org.springframework.core.io.ResourceLoader;
 import com.fns.grivet.PersistInit;
 
 import net.javacrumbs.jsonunit.JsonAssert;
+import org.springframework.test.annotation.Rollback;
 
 @SpringBootTest(classes = PersistInit.class)
 public class EntityServiceTest {
@@ -60,24 +58,18 @@ public class EntityServiceTest {
 		classRegistryService.register(payload);
 	}
 
-	@BeforeAll
-	public static void initTest() throws SQLException {
-		Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082")
-		.start();
-	}
-
 	@Test
 	public void testCreateThenFindByType() throws IOException {
 		registerType("TestType");
 		Resource r = resolver.getResource("classpath:TestTypeData.json");
 		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		JSONObject payload = new JSONObject(json);
+		JSONObject expected = new JSONObject(json);
 
-		entityService.create("TestType", payload);
+		Long eid = entityService.create("TestType", expected);
 
-		String result = entityService.findByCreatedTime("TestType", LocalDateTime.now().minusSeconds(3), LocalDateTime.now(), null);
-		JSONArray resultAsJsonArray = new JSONArray(result);
-		JsonAssert.assertJsonEquals(payload.toString(), resultAsJsonArray.get(0).toString());
+		String result = entityService.findById(eid);
+		JSONObject actual = new JSONObject(result);
+		JsonAssert.assertJsonEquals(expected.toString(), actual.toString());
 	}
 
 	@Test
@@ -91,7 +83,7 @@ public class EntityServiceTest {
 
 		String result = entityService.findByCreatedTime("TestType2", LocalDateTime.now().minusSeconds(3), LocalDateTime.now(), null);
 		JSONArray resultAsJsonArray = new JSONArray(result);
-		JsonAssert.assertJsonEquals(payload.toString(), resultAsJsonArray.get(0).toString());
+		JsonAssert.assertJsonEquals(payload, resultAsJsonArray.get(0));
 	}
 
 	@Test

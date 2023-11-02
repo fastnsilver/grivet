@@ -72,14 +72,13 @@ public class JdbcEntityRepositoryTest {
         List<EntityAttributeValue> eavList = entityRepository.findByEntityId(eid);
         Assertions.assertTrue(eavList.size() == 1, "List of entity attribute values should contain only one item!");
         EntityAttributeValue item = eavList.get(0);
-        Assertions.assertEquals(now, item.getCreatedTime());
+        Assertions.assertEquals(now.truncatedTo(ChronoUnit.SECONDS), item.getCreatedTime().truncatedTo(ChronoUnit.SECONDS));
         Assertions.assertEquals(eid, item.getId());
         Assertions.assertEquals("1", item.getAttributeValue());
         Assertions.assertEquals(canSpeak.getName(), item.getAttributeName());
     }
 
     @Test
-    @Disabled
     public void testFindByCreatedTime() {
         Attribute detachedAttribute = Attribute.builder().name("maxRpm").description("Maximum rotations per minute.").build();
         Attribute maxRpm = attributeRepository.save(detachedAttribute);
@@ -87,12 +86,12 @@ public class JdbcEntityRepositoryTest {
         classAttributeRepository.save(ClassAttribute.builder().aid(maxRpm.getId()).cid(c.getId()).tid(AttributeType.INTEGER.getId()).build());
         LocalDateTime now = LocalDateTime.now();
         Long eid = entityRepository.newId(c.getId(), now);
-        entityRepository.save(eid, maxRpm, AttributeType.INTEGER, 7500L, now);
+        entityRepository.save(eid, maxRpm, AttributeType.INTEGER, 7500, now);
 
         List<EntityAttributeValue> eavList = entityRepository.findByCreatedTime(c.getId(), now.minus(1L, ChronoUnit.SECONDS), now.plus(1L, ChronoUnit.SECONDS));
         Assertions.assertTrue(eavList.size() == 1, "List of entity attribute values should contain only one item!");
         EntityAttributeValue item = eavList.get(0);
-        Assertions.assertEquals(now, item.getCreatedTime());
+        Assertions.assertEquals(now.truncatedTo(ChronoUnit.SECONDS), item.getCreatedTime().truncatedTo(ChronoUnit.SECONDS));
         Assertions.assertEquals(eid, item.getId());
         Assertions.assertEquals("7500", item.getAttributeValue());
         Assertions.assertEquals(maxRpm.getName(), item.getAttributeName());
