@@ -1,4 +1,4 @@
-FROM openjdk:8u151-jre-slim
+FROM bellsoft/liberica-openjre-alpine:21
 MAINTAINER Chris Phillipson <fastnsilver@gmail.com>
 RUN mkdir -p /opt/@project.artifactId@/bin
 COPY @project.artifactId@-@project.version@-exec.jar /opt/@project.artifactId@/bin
