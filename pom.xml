@@ -867,7 +867,7 @@
                                         <resource>
                                             <directory>${project.build.directory}</directory>
                                             <includes>
-                                                <include>${project.artifactId}-${project.version}-exec.jar</include>
+                                                <include>${project.artifactId}-${project.version}.jar</include>
                                             </includes>
                                         </resource>
                                     </resources>
