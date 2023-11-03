@@ -37,7 +37,7 @@ services:
   
   ### REDIS
   redis:
-    image: redis:3.2.10-alpine
+    image: redis:7-alpine
     ports:
       - 6379:6379
   
@@ -70,13 +70,13 @@ services:
       
   ### PROMETHEUS
   prometheus:
-    image: prom/prometheus:v2.0.0-beta.4
+    image: prom/prometheus:v2.47.2
     ports:
       - 9090:9090
   
   ### GRAFANA
   grafana:
-    image: grafana/grafana:4.5.1
+    image: grafana/grafana:10.2.0
     ports:
       - 3000:3000
     env_file:
@@ -97,7 +97,7 @@ services:
       
   ### DATABASE
   db:
-    image: mysql:5.7.19
+    image: mysql:8.2
     privileged: true
     ports:
       - 3306:3306
@@ -108,7 +108,7 @@ services:
       
   ### DATABASE ADMINISTRATION
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin:latest
     ports: 
       - 4000:80
     env_file:

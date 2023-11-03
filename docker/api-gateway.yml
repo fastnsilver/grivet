@@ -7,8 +7,8 @@ version: '2'
 
 services:
 
-  ### NETFLIX ZUUL
-  zuul:
+  ### SPRING CLOUD GATEWAY
+  spring-cloud-gateway:
     image: fastnsilver/grivet-api-gateway
     ports:
       - 9999:9999
