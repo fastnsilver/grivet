@@ -12,7 +12,7 @@ services:
   edge-service:
     extends:
       file: api-gateway.yml
-      service: zuul
+      service: spring-cloud-gateway
     links:
       - discovery-service
       - config-service

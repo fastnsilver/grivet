@@ -19,7 +19,7 @@
         <module>api-gateway</module>
         <module>config-server</module>
         <module>discovery-service</module>
-        <module>observability</module>
+        <module>microservices-console</module>
     </modules>
 
     <build>

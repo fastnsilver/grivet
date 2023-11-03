@@ -129,6 +129,11 @@ services:
       - JAVA_OPTS=-Xmx2g -XX:+UseG1GC -XX:+UseStringDeduplication
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
       - EUREKA_CLIENT_FETCH_REGISTRY=false
+      # Replace these with your own Git repository, username, personal access token, and branch!
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/fastnsilver/grivet-config-repo
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_USERNAME=fastnsilver
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_PASSWORD=
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT-LABEL=main
   
   ### EUREKA, DISCOVERY
   discovery-service:
@@ -142,7 +147,7 @@ services:
   
   ## SPRING BOOT SERVICE ADMINISTRATION
   springboot-admin:
-    image: fastnsilver/grivet-observability
+    image: fastnsilver/grivet-microservices-console
     ports:
       - 5555:5555
     links:
