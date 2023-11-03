@@ -9,7 +9,7 @@ for i in "${directories[@]}"
 do
     if [ ! -f "$SCRIPT_DIR/$i/.dockerize" ]; then
         echo "Placing .dockerize file in $SCRIPT_DIR/$i";
-        touch $SCRIPT_DIR/$i/.dockerize;
+        touch "$SCRIPT_DIR/$i/.dockerize";
     fi
 done
 
