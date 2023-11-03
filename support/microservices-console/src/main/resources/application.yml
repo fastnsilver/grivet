@@ -1,3 +1,7 @@
+spring:
+  application:
+    name: microservices-console
+
 server:
   port: 5555
   compression:
