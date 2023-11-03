@@ -1,6 +1,3 @@
 spring:
   application:
     name: grivet-api-gateway
-        
-encrypt:
-  fail-on-error: false
