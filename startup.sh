@@ -10,7 +10,9 @@ fi
 suffix=$1
 
 # Export the active docker machine IP
-export DOCKER_IP=$(docker-machine ip $(docker-machine active))
+if docker-machine; then
+  export DOCKER_IP=$(docker-machine ip $(docker-machine active))
+fi
 
 if [ -z "$DOCKER_IP" ]; then
 	SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -20,14 +22,14 @@ if [ -z "$DOCKER_IP" ]; then
 fi
 
 # docker-machine doesn't exist in Linux, assign default ip if it's not set
-DOCKER_IP=${DOCKER_IP:-0.0.0.0}
+export DOCKER_IP=${DOCKER_IP:-0.0.0.0}
 echo "Docker IP is $DOCKER_IP"
 
 # Change directories
 cd docker
 
 # Start the config service first and wait for it to become available
-docker-compose up -d config-service
+docker compose up -d config-service
 
 while [ -z ${CONFIG_SERVICE_READY} ]; do
   echo "Waiting for config service..."
@@ -38,7 +40,7 @@ while [ -z ${CONFIG_SERVICE_READY} ]; do
 done
 
 # Start the discovery service next and wait
-docker-compose up -d discovery-service
+docker compose up -d discovery-service
 
 while [ -z ${DISCOVERY_SERVICE_READY} ]; do
   echo "Waiting for discovery service..."
@@ -49,10 +51,10 @@ while [ -z ${DISCOVERY_SERVICE_READY} ]; do
 done
 
 # Start the other containers
-docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml up -d
+docker compose -f docker-compose.yml -f docker-compose-$suffix.yml up -d
 
 # Attach to the log output of the cluster
-docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml logs
+docker compose -f docker-compose.yml -f docker-compose-$suffix.yml logs
 
 # Display status of cluster
-docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml ps
+docker compose -f docker-compose.yml -f docker-compose-$suffix.yml ps
