@@ -94,7 +94,7 @@
         <junit.platform.version>1.10.0</junit.platform.version>
         <logstash-logback-encoder.version>7.4</logstash-logback-encoder.version>
         <lombok.version>1.18.30</lombok.version>
-        <micrometer.version>1.12.0-RC1</micrometer.version>
+        <micrometer.version>1.11.5</micrometer.version>
         <mysql.version>8.2.0</mysql.version>
         <okta-spring-boot-starter.version>3.0.5</okta-spring-boot-starter.version>
         <rest-assured.version>5.3.2</rest-assured.version>
@@ -156,31 +156,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <repositories>
-        <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>http://repo.spring.io/libs-snapshot</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <build>
         <pluginManagement>
@@ -283,19 +258,24 @@
         <plugins>
             <plugin>
                 <groupId>io.github.git-commit-id</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
                 <version>${git-commit-id-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                </executions>
                 <configuration>
                     <!-- this is false by default, forces the plugin to generate the git.properties file -->
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
                     <!-- The path for the properties file to be generated. See Super Pom for default variable reference https://maven.apache.org/guides/introduction/introduction-to-the-pom.html -->
                     <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                    <commitIdGenerationMode>full</commitIdGenerationMode>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
