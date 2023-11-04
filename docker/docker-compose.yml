@@ -20,7 +20,7 @@ services:
   
   ### KIBANA
   kibana:
-    image: kibana:latest
+    image: kibana:8.10.4
     links:
       - elasticsearch
     ports:
@@ -28,7 +28,7 @@ services:
       
   ### ELASTICSEARCH
   elasticsearch:
-    image: elasticsearch:latest
+    image: elasticsearch:8.10.4
     ports:
       - 9200:9200
       - 9300:9300
@@ -43,8 +43,8 @@ services:
   
   ### LOGSTASH
   logstash:
-    image: logstash:latest
-    command: 'logstash -f /logstash.conf -v'
+    image: logstash:8.10.4
+    command: 'logstash -f /logstash.conf'
     volumes:
       - ./monitoring/logstash.conf:/logstash.conf
     links:
@@ -57,7 +57,7 @@ services:
   # (@see https://github.com/rtoma/logspout-redis-logstash/blob/master/example/docker-compose.yml)
   
   logspout:
-    image: rtoma/logspout-redis-logstash
+    image: rtoma/logspout-redis-logstash:0.1.8
     command: 'redis://redis'
     environment:
       - DEBUG=true
@@ -86,7 +86,8 @@ services:
       
   ### CADVISOR
   cadvisor:
-    image: google/cadvisor:latest
+    # @see https://github.com/google/cadvisor/issues/1943
+    image: gcr.io/cadvisor/cadvisor:v0.46.0
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -108,7 +109,7 @@ services:
       
   ### DATABASE ADMINISTRATION
   phpmyadmin:
-    image: phpmyadmin:latest
+    image: phpmyadmin:5.2.1-fpm-alpine
     ports: 
       - 4000:80
     env_file:
@@ -143,7 +144,7 @@ services:
     environment:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx2g -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
   
   ## SPRING BOOT SERVICE ADMINISTRATION
   springboot-admin:
@@ -155,7 +156,7 @@ services:
     environment:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx1g -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
       - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
       - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/

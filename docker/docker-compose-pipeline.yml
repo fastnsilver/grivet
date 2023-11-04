@@ -70,7 +70,7 @@ services:
       - SPRING_PROFILES_ACTIVE=insecure,pipeline
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
       - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
       - EUREKA_CLIENT_FETCH_REGISTRY=true
@@ -91,10 +91,13 @@ services:
       - db
     environment:
       - SPRING_PROFILES_ACTIVE=mysql,insecure
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      # If you want to change these values, then you'll also need to update key-value pairs in mysql/db.env
+      - SPRING_DATASOURCE_USERNAME=dbadmin
+      - SPRING_DATASOURCE_PASSWORD=thunderb0lt!
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
       - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
       - EUREKA_CLIENT_FETCH_REGISTRY=true
@@ -117,10 +120,13 @@ services:
       - zookeeper:zk
     environment:
       - SPRING_PROFILES_ACTIVE=mysql,insecure,pipeline
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      # If you want to change these values, then you'll also need to update key-value pairs in mysql/db.env
+      - SPRING_DATASOURCE_USERNAME=dbadmin
+      - SPRING_DATASOURCE_PASSWORD=thunderb0lt!
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
       - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
       - EUREKA_CLIENT_FETCH_REGISTRY=true
@@ -141,10 +147,13 @@ services:
       - db
     environment:
       - SPRING_PROFILES_ACTIVE=mysql,insecure
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      # If you want to change these values, then you'll also need to update key-value pairs in mysql/db.env
+      - SPRING_DATASOURCE_USERNAME=dbadmin
+      - SPRING_DATASOURCE_PASSWORD=thunderb0lt!
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
       - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
       - EUREKA_CLIENT_FETCH_REGISTRY=true

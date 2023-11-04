@@ -30,4 +30,4 @@ echo "Docker IP is $DOCKER_IP"
 cd docker
 
 # Display status of cluster
-docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml logs $docker_image
+docker compose -f docker-compose.yml -f docker-compose-$suffix.yml logs $docker_image
