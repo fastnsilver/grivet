@@ -22,7 +22,7 @@ if [ -z "$DOCKER_IP" ]; then
 fi
 
 # docker-machine doesn't exist in Linux, assign default ip if it's not set
-export DOCKER_IP=${DOCKER_IP:-0.0.0.0}
+export DOCKER_IP=${DOCKER_IP:-172.17.0.1}
 echo "Docker IP is $DOCKER_IP"
 
 # Change directories

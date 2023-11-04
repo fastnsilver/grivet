@@ -22,7 +22,7 @@ if [ -z "$DOCKER_IP" ]; then
 fi
 
 # docker-machine doesn't exist in Linux, assign default ip if it's not set
-export DOCKER_IP=${DOCKER_IP:-0.0.0.0}
+export DOCKER_IP=${DOCKER_IP:-172.17.0.1}
 echo "Docker IP is $DOCKER_IP"
 
 # Change directories
@@ -33,7 +33,7 @@ docker compose up -d config-service
 
 while [ -z ${CONFIG_SERVICE_READY} ]; do
   echo "Waiting for config service..."
-  if [ "$(curl --silent $DOCKER_IP:8888/application/status 2>&1 | grep -q '\"status\":\"UP\"'; echo $?)" = 0 ]; then
+  if [ "$(curl --silent $DOCKER_IP:8888/actuator/health 2>&1 | grep -q '\"status\":\"UP\"'; echo $?)" = 0 ]; then
       CONFIG_SERVICE_READY=true;
   fi
   sleep 2
@@ -44,7 +44,7 @@ docker compose up -d discovery-service
 
 while [ -z ${DISCOVERY_SERVICE_READY} ]; do
   echo "Waiting for discovery service..."
-  if [ "$(curl --silent $DOCKER_IP:8761/application/status 2>&1 | grep -q '\"status\":\"UP\"'; echo $?)" = 0 ]; then
+  if [ "$(curl --silent $DOCKER_IP:8761/actuator/health 2>&1 | grep -q '\"status\":\"UP\"'; echo $?)" = 0 ]; then
       DISCOVERY_SERVICE_READY=true;
   fi
   sleep 2
