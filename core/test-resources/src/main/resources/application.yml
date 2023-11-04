@@ -8,10 +8,9 @@ eureka:
 spring:
   profiles:
     active: h2,insecure
+
   cloud:
     config:
-      enabled: false
-    discovery:
       enabled: false
 
   jpa:
