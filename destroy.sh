@@ -11,4 +11,9 @@ name=$1
 
 
 # Destroy a Docker Machine instance
-docker-machine rm $name
+if ! command -v docker-machine &> /dev/null
+then
+  docker-machine rm $name
+else
+  echo "Cannot execute destruction request, docker-machine is not installed!"
+fi

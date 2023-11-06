@@ -11,7 +11,8 @@ suffix=$1
 docker_image=$2
 
 # Export the active docker machine IP
-if docker-machine; then
+if ! command -v docker-machine &> /dev/null
+then
   export DOCKER_IP=$(docker-machine ip $(docker-machine active))
 fi
 

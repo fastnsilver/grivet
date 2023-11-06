@@ -75,9 +75,10 @@
 		</dependency>
 
 		<!-- Flyway -->
+		<!-- @see https://documentation.red-gate.com/fd/mysql-184127601.html -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
+			<artifactId>flyway-mysql</artifactId>
 		</dependency>
 
 		<!-- JDBC Drivers -->

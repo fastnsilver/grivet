@@ -103,7 +103,7 @@ You could also execute the following script which will perform the first step ab
 
 where `{1}` above would be replaced with whatever you want to name your docker-machine
 
-Caveat: You should have at least 16GB of memory and 40GB of disk space on your laptop or workstation.
+Caveat: You should have at least 20GB of memory and 40GB of disk space on your laptop or workstation.
 
 
 To begin using it

@@ -11,4 +11,9 @@ name=$1
 
 
 # Setup a Docker Machine instance
-docker-machine create --driver virtualbox --virtualbox-cpu-count "2" --virtualbox-disk-size "40000" --virtualbox-memory "12288" $name
+if ! command -v docker-machine &> /dev/null
+then
+  docker-machine create --driver virtualbox --virtualbox-cpu-count "2" --virtualbox-disk-size "40000" --virtualbox-memory "20480" $name
+else
+  echo "Cannot execute provision request, docker-machine is not installed!"
+fi
