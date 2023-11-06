@@ -14,7 +14,7 @@ name=$1
 if ! command -v multipass &> /dev/null
 then
   multipass launch docker -c 2 -m 20G -d 40G -n "$name"
-  multipass alias "$name":docker
+  multipass shell "$name"
 else
   echo "Cannot execute provision request, multipass is not installed!"
 fi

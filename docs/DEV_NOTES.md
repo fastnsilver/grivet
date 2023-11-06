@@ -74,13 +74,17 @@ where `<profile-name>` should be replaced with either `h2,insecure` or `mysql,in
 
 ### with Docker
 
-#### (Optional) Prerequisites
+#### via Docker Desktop
 
-Assuming you have installed [Multipass](https://multipass.run/) or [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+Install [Docker Desktop](https://www.docker.com/products/docker-desktop/), then skip to [Onward with Docker](#onward-with-docker).
+
+#### via Multipass
+
+ [Multipass](https://multipass.run/)
 
 On a Mac
 
-* Install [Homebrew](http://brew.sh/), then
+* Install [Homebrew](http://brew.sh/)
 
 ```
 brew install multipass
@@ -112,7 +116,7 @@ sdk install java 17.0.9-librca
 sdk install maven 3.9.5
 ```
 
-You may also want to fetch the source for this repo too
+You will also want to fetch the source for this repo too
 
 ```
 git clone https://github.com/pacphi/grivet
@@ -131,7 +135,25 @@ where `{1}` above would be replaced with the name of an existing Multipass insta
 
 Caution! This will remove the VM hosting all your Docker images.
 
+
 #### Onward with Docker
+
+##### Prereqs
+
+* Obtain Github personal access token
+  * from the command line (not inside Multipass instance), execute
+
+  ```
+  gh auth login
+  gh auth token
+  ```
+
+  * copy-and-paste the token as the value for [SPRING_CLOUD_CONFIG_SERVER_GIT_PASSWORD](../docker/docker-compose.yml#L136)
+* Prepare a private Git repository
+
+  ```
+  # TODO add steps to create repo, unpack .zip, git add, git commit, and git push
+  ```
 
 ##### Build images
 
