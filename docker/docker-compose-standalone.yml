@@ -5,9 +5,9 @@
 version: '2'
 
 services:
-  
+
   ## INFRASTRUCTURE SERVICES
-  
+
   ### API GATEWAY
   edge-service:
     extends:
@@ -16,12 +16,12 @@ services:
     links:
       - discovery-service
       - config-service
-#      - springboot-admin
+      - springboot-admin
       - grivet-standalone
 
 
   ## CORE SERVICE
-  
+
   ### GRIVET STANDALONE
   grivet-standalone:
     image: fastnsilver/grivet-standalone

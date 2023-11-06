@@ -7,17 +7,17 @@ version: '2'
 services:
 
   ## INFRASTRUCTURE SERVICES
-  
+
   ### PERSISTENT DATA VOLUME
-  
-  # On a Mac, execute 
+
+  # On a Mac, execute
   #    dscacheutil -q user | grep -A 3 -B 2 -e uid:\ 5'[0-9][0-9]'
   # in a Terminal instance to obtain the uid:gid for the account that runs your docker-machine instance
   # You will want to edit the command below if your uid:gid differ
   data:
     image: busybox
     command: "mkdir /data && chown 502:20 /data && chmod 700 /data"
-  
+
   ### KIBANA
   kibana:
     image: kibana:8.10.4
@@ -25,7 +25,7 @@ services:
       - elasticsearch
     ports:
       - 5601:5601
-      
+
   ### ELASTICSEARCH
   elasticsearch:
     image: elasticsearch:8.10.4
@@ -34,13 +34,13 @@ services:
       - 9300:9300
     environment:
       - ES_JAVA_OPTS=-Xms8g -Xmx8g
-  
+
   ### REDIS
   redis:
     image: redis:7-alpine
     ports:
       - 6379:6379
-  
+
   ### LOGSTASH
   logstash:
     image: logstash:8.10.4
@@ -50,12 +50,12 @@ services:
     links:
       - redis
       - elasticsearch
-  
+
   ### LOGSPOUT
-  
-  # Thank you R. Toma 
+
+  # Thank you R. Toma
   # (@see https://github.com/rtoma/logspout-redis-logstash/blob/master/example/docker-compose.yml)
-  
+
   logspout:
     image: rtoma/logspout-redis-logstash:0.1.8
     command: 'redis://redis'
@@ -67,13 +67,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     links:
       - redis
-      
+
   ### PROMETHEUS
   prometheus:
     image: prom/prometheus:v2.47.2
     ports:
       - 9090:9090
-  
+
   ### GRAFANA
   grafana:
     image: grafana/grafana:10.2.0
@@ -83,7 +83,7 @@ services:
       - ./monitoring/grafana.env
     links:
       - prometheus
-      
+
   ### CADVISOR
   cadvisor:
     # @see https://github.com/google/cadvisor/issues/1943
@@ -95,7 +95,7 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     ports:
       - 9080:8080
-      
+
   ### DATABASE
   db:
     image: mysql:8.1
@@ -106,7 +106,7 @@ services:
       - ./mysql/db.env
     volumes_from:
       - data
-      
+
   ### DATABASE ADMINISTRATION
   phpmyadmin:
     image: phpmyadmin:5.2.1-fpm-alpine
@@ -116,10 +116,10 @@ services:
       - ./phpmyadmin/admin.env
     links:
       - db
-      
+
 
   ## NEFLIX OSS, SUPPORT SERVICES
-  
+
   ### CONFIGURATION MANAGEMENT
   config-service:
     image: fastnsilver/grivet-config-server
@@ -135,7 +135,7 @@ services:
       - SPRING_CLOUD_CONFIG_SERVER_GIT_USERNAME=fastnsilver
       - SPRING_CLOUD_CONFIG_SERVER_GIT_PASSWORD=
       - SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT-LABEL=main
-  
+
   ### EUREKA, DISCOVERY
   discovery-service:
     image: fastnsilver/grivet-discovery-service
@@ -145,7 +145,7 @@ services:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx2g -XX:+UseG1GC -XX:+UseStringDeduplication
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
-  
+
   ## SPRING BOOT SERVICE ADMINISTRATION
   springboot-admin:
     image: fastnsilver/grivet-microservices-console

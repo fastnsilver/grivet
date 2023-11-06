@@ -61,7 +61,7 @@ where `<profile-name>` should be replaced with either `h2,insecure` or `mysql,in
 > E.g., on a Mac, you could install [Homebrew](http://brew.sh/), then install MySQL with
 
 >```
->brew install mysql
+> brew install mysql
 >```
 
 > Then start the instance with `mysql.server start`
@@ -74,52 +74,60 @@ where `<profile-name>` should be replaced with either `h2,insecure` or `mysql,in
 
 ### with Docker
 
-#### (Optional) Docker Toolbox pre-requisites
-Assuming you have installed VirtualBox, Docker Machine, Docker Compose and Docker.
+#### (Optional) Prerequisites
 
-If not, it's highly recommended (on a Mac) to install each via [Homebrew](http://brew.sh/) with
+Assuming you have installed [Multipass](https://multipass.run/) or [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
-```
-brew tap caskroom/cask
-brew install brew-cask
-brew cask install virtualbox
+On a Mac
 
-brew install docker-machine
-brew install docker-compose
-brew install docker
-```
-
-The instruction below provisions a Docker host named `dev` with 2 CPU, 10Gb RAM and 40Gb disk space
+* Install [Homebrew](http://brew.sh/), then
 
 ```
-docker-machine create --driver virtualbox --virtualbox-cpu-count "2" --virtualbox-disk-size "40000" --virtualbox-memory "10240" dev
+brew install multipass
 ```
 
-You could also execute the following script which will perform the first step above on your behalf
+The commands below a) provisions a Docker host named `dev` with 2 CPU, 20Gb RAM, and 40Gb disk space and b) drops you into a shell on that host
+
+```
+multipass launch docker -c 2 -m 20G -d 40G -n dev
+multipass shell dev
+```
+
+You could also execute the following script which will perform the step above on your behalf
 
 ```
 ./provision.sh {1}
 ```
 
-where `{1}` above would be replaced with whatever you want to name your docker-machine
+where `{1}` above would be replaced with whatever you want to name your Multipass instance
 
 Caveat: You should have at least 20GB of memory and 40GB of disk space on your laptop or workstation.
 
-
-To begin using it
+You'll need to install some additional tools to make the VM useful.
 
 ```
-eval $(docker-machine env dev)
+sudo apt install unzip zip
+curl -s "https://get.sdkman.io" | bash
+sdk install java 17.0.9-librca
+sdk install maven 3.9.5
 ```
 
+You may also want to fetch the source for this repo too
 
-Lastly, to destroy your docker machine, you could execute
+```
+git clone https://github.com/pacphi/grivet
+```
+
+To exit the shell at any time, type `exit` and press the `Return` key.
+
+
+To destroy your docker machine, you could execute
 
 ```
 ./destroy.sh {1}
 ```
 
-where `{1}` above would be replaced with an existing docker-machine name
+where `{1}` above would be replaced with the name of an existing Multipass instance
 
 Caution! This will remove the VM hosting all your Docker images.
 
@@ -145,9 +153,7 @@ mvn docker:push
 
 ##### Pull images
 
-Visit [Dockerhub](https://hub.docker.com/u/fastnsilver/)
-
-Pull all the `fastnsilver/grivet-*` images
+If you haven't yet built images locally, you can visit [Dockerhub](https://hub.docker.com/u/fastnsilver/) to pull pre-built `fastnsilver/grivet-*` images
 
 
 ##### Run images
@@ -159,25 +165,9 @@ Pull all the `fastnsilver/grivet-*` images
 where `{1}` above would be replaced with either `standalone` or `pipeline`
 
 
-##### Running a local development environment (with Docker Toolbox)
-
-> The following holds true only if you opted to install Docker Toolbox
-
-@see https://forums.docker.com/t/using-localhost-for-to-access-running-container/3148
-
-On a Mac we cannot access running Docker containers from localhost.
-
-After running `docker-machine ip {env}` where `{env}` is your instance of a docker-machine, add an entry in `/etc/hosts` that maps `DOCKER_HOST` IP address to a memorable hostname.
-
-
-Caveats: 
-
-* Docker image currently bootstraps against a MySQL back-end
-
-
 #### Work with images
 
-Services are accessible via the Docker host (or IP address) and port 
+Services are accessible via the Docker host (or IP address) and port
 
 Service            |  Port
 -------------------|-------
@@ -194,8 +184,7 @@ Logstash           | 5000
 Kibana             | 5601
 CAdvisor           | 9080
 
-If making requests via Edge Service, consult `zuul.routes` in [application.yml](https://github.com/fastnsilver/grivet/blob/master/support/api-gateway/src/main/resources/application.yml).  Prepend
-route to each service's public API.
+If making requests via Edge Service, consult `zuul.routes` in [application.yml](https://github.com/fastnsilver/grivet/blob/master/support/api-gateway/src/main/resources/application.yml).  Prepend route to each service's public API.
 
 
 #### Stop images (and remove them)
@@ -207,7 +196,7 @@ route to each service's public API.
 where `{1}` above would be replaced with either `standalone` or `pipeline`
 
 
-## Working with Maven Site 
+## Working with Maven Site
 
 ### Stage
 

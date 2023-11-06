@@ -8,8 +8,8 @@ services:
 
 
   ## INFRASTRUCTURE SERVICES
-     
-  ### API GATEWAY   
+
+  ### API GATEWAY
   edge-service:
     extends:
       file: api-gateway.yml
@@ -17,44 +17,23 @@ services:
     links:
       - discovery-service
       - config-service
-#      - springboot-admin
+      - springboot-admin
       - grivet-ingest
       - grivet-admin
       - grivet-persist
       - grivet-query
-      
+
   ### KAFKA
-  #### @see http://wurstmeister.github.io/kafka-docker/
-  zookeeper:
-    image: wurstmeister/zookeeper
-    ports:
-      - 2181:2181
-      
   kafka:
-    image: wurstmeister/kafka
-    ports:
-      - 9092:9092
-    links:
-      - zookeeper:zk
-    environment:
-      KAFKA_ADVERTISED_HOST_NAME: $DOCKER_IP
-      KAFKA_ZOOKEEPER_CONNECT: zk:2181
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    
-  kafka-manager:
-    image: sheepkiller/kafka-manager
-    ports:
-      - 29000:9000
-    environment:
-      ZK_HOSTS: zk:2181
-    links:
-      - zookeeper:zk
-  
-  
+    extends:
+      file: confluent-platform.yml
+      service: kafka
+
+
+
   ## CORE SERVICES
   ### @see http://docs.spring.io/spring-cloud-stream/docs/current-SNAPSHOT/reference/htmlsingle/#_kafka_specific_settings
-  
+
   ### GRIVET INGEST
   grivet-ingest:
     image: fastnsilver/grivet-ingest
@@ -104,7 +83,7 @@ services:
       - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zk
-  
+
   ### GRIVET PERSIST
   grivet-persist:
     image: fastnsilver/grivet-persist
@@ -134,7 +113,7 @@ services:
       - SPRING_CLOUD_STREAM_BINDINGS_INPUT_BINDER=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zk
-  
+
   ### GRIVET QUERY
   grivet-query:
     image: fastnsilver/grivet-query
