@@ -11,6 +11,11 @@ suffix=$1
 
 export DOCKER_IP="host.docker.internal"
 
+os=$(uname)
+if [[ "$os" == *"Linux"* ]]; then
+  export DOCKER_IP="172.17.0.1"
+fi
+
 # Change directories
 cd docker
 
