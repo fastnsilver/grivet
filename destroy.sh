@@ -2,7 +2,7 @@
 
 set -e
 
-if [ $# -ne 1 ]; then
+if [ -z "$1" ]; then
     echo "Usage: ./destroy.sh {existing name of a multipass instance}"
     exit 1
 fi

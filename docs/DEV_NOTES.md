@@ -152,7 +152,15 @@ Caution! This will remove the VM hosting all your Docker images.
 * Prepare a private Git repository
 
   ```
-  # TODO add steps to create repo, unpack .zip, git add, git commit, and git push
+  cd /tmp
+  gh repo create grivet-repo-config --private --clone
+  cd grivet-repo-config
+  curl -LO https://raw.githubusercontent.com/fastnsilver/grivet/main/config-repo/template.zip
+  unzip template.zip
+  rm template.zip
+  git add --all
+  git commit -m "Initial set of application configuration"
+  git push origin main
   ```
 
 ##### Build images
@@ -199,14 +207,16 @@ Discovery (Eureka) | 8761
 Prometheus         | 9090
 Grafana            | 3000
 Grivet Standalone  | 8080
-PHP MySQL Admin    | 4000
+^ Grivet Ingest      | 9081
+^ Grivet Admin       | 9085
+^ Grivet Persistence | 9082
+^ Grivet Query       | 9083
+PHP MySQL Admin    | 8090
 MySQL              | 3306
-Elasticsearch      | 9200
-Logstash           | 5000
-Kibana             | 5601
+Signoz             | 3301
 CAdvisor           | 9080
 
-If making requests via Edge Service, consult `zuul.routes` in [application.yml](https://github.com/fastnsilver/grivet/blob/master/support/api-gateway/src/main/resources/application.yml).  Prepend route to each service's public API.
+If making requests via Edge Service, consult `spring.cloud.gateway.routes` in the `grivet-api-gateway.yml` file within your own [grivet-config-repo](#prereqs).
 
 
 #### Stop images (and remove them)

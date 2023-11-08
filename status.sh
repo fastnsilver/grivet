@@ -2,7 +2,7 @@
 
 set -e
 
-if [ $# -ne 1 ]; then
+if [ -z "$1" ]; then
     echo "Usage: ./status.sh standalone|pipeline"
     exit 1
 fi
@@ -20,4 +20,7 @@ fi
 cd docker
 
 # Display status of cluster
+if [ -d "/tmp/signoz/deploy/docker/clickhouse-setup" ]; then
+  docker compose -f /tmp/signoz/deploy/docker/clickhouse-setup/docker-compose.yaml ps -a
+fi
 docker compose -f docker-compose.yml -f docker-compose-"$suffix.yml" ps -a

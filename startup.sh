@@ -2,7 +2,7 @@
 
 set -e
 
-if [ $# -ne 1 ]; then
+if [ -z "$1" ]; then
     echo "Usage: ./startup.sh standalone|pipeline"
     exit 1
 fi
@@ -18,6 +18,18 @@ fi
 
 # Change directories
 cd docker
+CURRENT_DIR="$PWD"
+
+# Fetch and start ancillary services
+cd /tmp
+if [ ! -d "signoz" ]; then
+  git clone https://github.com/SigNoz/signoz.git
+fi
+cd signoz/deploy
+docker compose -f docker/clickhouse-setup/docker-compose.yaml up -d
+cd ../..
+
+cd "$CURRENT_DIR"
 
 # Start the config service first and wait for it to become available
 docker compose up -d config-service
@@ -27,7 +39,7 @@ while [ -z "$CONFIG_SERVICE_READY" ]; do
   if [ "$(curl --silent "$DOCKER_IP":8888/actuator/health 2>&1 | grep -q '\"status\":\"UP\"'; echo $?)" = 0 ]; then
       CONFIG_SERVICE_READY=true;
   fi
-  sleep 2
+  sleep 5
 done
 
 # Start the discovery service next and wait
@@ -38,14 +50,16 @@ while [ -z "$DISCOVERY_SERVICE_READY" ]; do
   if [ "$(curl --silent "$DOCKER_IP":8761/actuator/health 2>&1 | grep -q '\"status\":\"UP\"'; echo $?)" = 0 ]; then
       DISCOVERY_SERVICE_READY=true;
   fi
-  sleep 2
+  sleep 5
 done
 
 # Start the other containers
 docker compose -f docker-compose.yml -f docker-compose-"$suffix.yml" up -d
 
+cd ..
+
 # Attach to the log output of the cluster
-docker compose -f docker-compose.yml -f docker-compose-"$suffix.yml" logs
+./show-log.sh "$suffix"
 
 # Display status of cluster
-docker compose -f docker-compose.yml -f docker-compose-"$suffix.yml" ps
+./status.sh "$suffix"

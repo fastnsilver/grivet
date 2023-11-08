@@ -2,13 +2,13 @@
 
 set -e
 
-if [ $# -ne 2 ]; then
-    echo "Usage: ./show-log.sh standalone|pipeline {docker_image}"
+if [ -z "$1" ]; then
+    echo "Usage: ./show-log.sh standalone|pipeline {service_name}"
     exit 1
 fi
 
 suffix=$1
-docker_image=$2
+service_name=${2:-}
 
 export DOCKER_IP="host.docker.internal"
 
@@ -20,5 +20,9 @@ fi
 # Change directories
 cd docker
 
-# Display status of cluster
-docker compose -f docker-compose.yml -f docker-compose-"$suffix.yml" logs $docker_image
+# Display logs for service in cluster
+if [ -d "/tmp/signoz/deploy/docker/clickhouse-setup" ] && [ "$suffix" == "infra" ]; then
+  docker compose -f /tmp/signoz/deploy/docker/clickhouse-setup/docker-compose.yaml logs $service_name
+else
+  docker compose -f docker-compose.yml -f docker-compose-"$suffix.yml" logs $service_name
+fi

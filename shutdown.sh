@@ -2,7 +2,7 @@
 
 set -e
 
-if [ $# -ne 1 ]; then
+if [ -z "$1" ]; then
     echo "Usage: ./shutdown.sh standalone|pipeline"
     exit 1
 fi
@@ -18,6 +18,17 @@ fi
 
 # Change directories
 cd docker
+CURRENT_DIR="$PWD"
+
+# Shutdown ancillary services
+cd /tmp
+if [ -d "signoz" ]; then
+  cd signoz/deploy
+  docker compose -f docker/clickhouse-setup/docker-compose.yaml down
+  cd ../..
+fi
+
+cd "$CURRENT_DIR"
 
 # Remove existing containers
 docker compose -f docker-compose.yml -f docker-compose-"$suffix.yml" down
