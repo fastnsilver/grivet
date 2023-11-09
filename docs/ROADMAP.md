@@ -69,7 +69,7 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Flyway adjustments (preparing for 10.0.0)
 - [x] Docker Compose infrastructure updated
 - [x] Resurrection of Spring Boot Admin
-- [ ] Continuous integration builds now Github Action based
+- [x] Continuous integration builds now Github Action based
 - [ ] Updated Maven Site published
 
 ## 1.1.0

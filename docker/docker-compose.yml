@@ -11,14 +11,46 @@ services:
   ### PROMETHEUS
   prometheus:
     image: prom/prometheus:v2.47.2
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
     ports:
       - 9090:9090
+
+#  alertmanager:
+#    image: prom/alertmanager:v0.26.0
+#    ports:
+#      - 9093:9093
+#    volumes:
+#      - ./alertmanager/:/etc/alertmanager/
+#    restart: always
+#    command:
+#      - '--config.file=/etc/alertmanager/config.yml'
+#      - '--storage.path=/alertmanager'
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:master
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - /:/host:ro,rslave
+    command:
+      - '--path.rootfs=/host'
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - 9100:9100
+    restart: always
 
   ### GRAFANA
   grafana:
     image: grafana/grafana:10.2.0
     ports:
       - 3000:3000
+    restart: always
     env_file:
       - ./monitoring/grafana.env
     links:
@@ -35,6 +67,7 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     ports:
       - 9080:8080
+    restart: always
 
   ### DATABASE
   db:
@@ -42,6 +75,7 @@ services:
     privileged: true
     ports:
       - 3306:3306
+    restart: always
     env_file:
       - ./mysql/db.env
     volumes:
@@ -52,6 +86,7 @@ services:
     image: phpmyadmin:5.2.1-apache
     ports:
       - 8090:80
+    restart: always
     env_file:
       - ./phpmyadmin/admin.env
     links:
@@ -112,4 +147,5 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
 
 volumes:
-  db-data:
+  db-data: { }
+  prometheus_data: { }

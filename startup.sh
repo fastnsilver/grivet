@@ -24,6 +24,11 @@ CURRENT_DIR="$PWD"
 cd /tmp
 if [ ! -d "signoz" ]; then
   git clone https://github.com/SigNoz/signoz.git
+  # Add metrics scraping configuration
+  # @see https://signoz.io/docs/userguide/send-metrics/#enable-a-prometheus-receiver
+  # Replace the originals with the copies we maintain in docker/signoz
+  cp -f "$CURRENT_DIR"/signoz/otel-collector-metrics-config.yaml signoz/deploy/docker/clickhouse-setup/otel-collector-metrics-config.yaml
+  cp -f "$CURRENT_DIR"/signoz/docker-compose.yaml signoz/deploy/docker/clickhouse-setup/docker-compose.yaml
 fi
 cd signoz/deploy
 docker compose -f docker/clickhouse-setup/docker-compose.yaml up -d

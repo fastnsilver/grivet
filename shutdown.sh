@@ -32,3 +32,8 @@ cd "$CURRENT_DIR"
 
 # Remove existing containers
 docker compose -f docker-compose.yml -f docker-compose-"$suffix.yml" down
+
+# Additional cleanup
+docker image prune -f
+docker volume prune -f
+docker network prune -f

@@ -27,6 +27,8 @@ services:
     image: fastnsilver/grivet-standalone
     ports:
       - 8080:8080
+    extra_hosts:
+      - "signoz:host-gateway"
     links:
       - config-service
       - discovery-service

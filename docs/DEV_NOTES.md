@@ -200,7 +200,7 @@ Services are accessible via the Docker host (or IP address) and port
 
 Service            |  Port
 -------------------|-------
-Edge Service (Spring Cloud Gateway)| 9999
+Edge Service (Spring Cloud Gateway)| 80
 Config Server      | 8888
 Discovery (Eureka) | 8761
 Prometheus         | 9090
