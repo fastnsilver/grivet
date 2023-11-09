@@ -4,12 +4,11 @@ This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.
 
 ## Prerequisites
 
-* `docker` and `docker-compose` are required, you have options
-  * See [Docker Toolbox](https://www.docker.com/products/docker-toolbox) -- note that this is considered a legacy option
+* `docker` and `compose` plugin are required, you have options
   * See [Docker for Mac](https://docs.docker.com/docker-for-mac/)
   * See [Docker for Windows 10](https://docs.docker.com/docker-for-windows/)
-* Java [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8u144 or better
-* [Maven](https://maven.apache.org/download.cgi) 3.5.0 or better
+* Java [JDK](https://www.oracle.com/java/technologies/downloads/#java17) 17.0.9 or better
+* [Maven](https://maven.apache.org/download.cgi) 3.9.5 or better
 * an RDBMS
   * See [application.yml](https://github.com/fastnsilver/config-repo/blob/master/application.yml) for details
   * Enable the `h2` profile for in-memory database

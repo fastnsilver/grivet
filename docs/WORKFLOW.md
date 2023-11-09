@@ -27,7 +27,7 @@ Date: Wed, 29 Jul 2015 13:37:38 GMT
 ### Request
 
 ```
-curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/definition/TestType" | python -mjson.tool
+curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/definition/TestType" | jq
 ```
 
 ### Response
@@ -59,7 +59,7 @@ curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/definitio
 Assumes one or more types were registered prior to registering type above.
 
 ```
-curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/definitions" | python -mjson.tool
+curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/definitions" | jq
 ```
 
 ### Response
@@ -123,7 +123,7 @@ In this example request results constrained by `createdTime`
 ### Request
 
 ```
-curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/type/Album" | python -mjson.tool
+curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/type/Album" | jq
 ```
 
 ### Response
@@ -144,6 +144,8 @@ curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/type/Albu
 ```
 
 ## Token Management
+
+_Outdated, to be fixed in 1.1.0 release_
 
 In this example we will visit the `/oauth/token` endpoint to get authenticate and receive an authorization token that has a finite time-to-live.  Then we'll verify who the currently 
 authenticated user is.  Assume the following Spring Profiles are activated `h2,secure,https`.

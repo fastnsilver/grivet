@@ -68,20 +68,21 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Dead Auth0 swapped for Okta Spring Boot 3.x API
 - [x] Flyway adjustments (preparing for 10.0.0)
 - [x] Docker Compose infrastructure updated
-- [ ] Resurrection of Spring Boot Admin
+- [x] Resurrection of Spring Boot Admin
 - [ ] Continuous integration builds now Github Action based
 - [ ] Updated Maven Site published
 
 ## 1.1.0
 
-- [ ] Endpoint security policy implemented with Spring Cloud Gateway and Spring Security 5
+- [ ] Endpoint security policy implemented with Spring Cloud Gateway and Spring Security 6
 - [ ] Password-protect service administration and discovery
 - [ ] Add tracing (Open-Telemetry APIs)
+- Implement deployment option
+  - [ ] Tanzu Application Service
 
 ## 1.2.0
 
 - [ ] Add cache provider (e.g., Redis)
-- [ ] Switch time-series back-end to [Prometheus](https://prometheus.io)
 
 ## 1.3.0
 
@@ -90,6 +91,7 @@ This project will remain humble in its design and has no aspirations to match th
 ## 1.4.0
 
 - [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
-- [ ] Gradle build (as an alternative)
-- [ ] Implement Kubernetes deployment option
-- [ ] Host demo sites on Azure Spring Apps Enterprise and/or Tanzu Application Platform
+- Implement deployment options
+  - [ ] Kubernetes (e.g., AKS, EKS, GKE)
+  - [ ] Azure Spring Apps Enterprise
+  - [ ] Tanzu Application Platform

@@ -1,8 +1,12 @@
 ---
 applications:
 - name: grivet-standalone
-  host: grivet-standalone 
   memory: 2G
+  stack: cflinuxfs4
   instances: 1
   path: ./target/grivet-standalone-1.0.0-SNAPSHOT.jar
   timeout: 120
+  env:
+    JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
+    SPRING_PROFILES_ACTIVE: cloud
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
