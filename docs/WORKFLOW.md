@@ -1,6 +1,6 @@
 # Sample Workflow
 
-Assuming you've already deployed this service locally...
+Assuming you've already deployed the service locally...
 
 
 ## Register a type
@@ -8,7 +8,7 @@ Assuming you've already deployed this service locally...
 ### Request
 
 ```
-curl -i -H "Content-Type: application/json" -X POST -d '{ "type": "TestType", "attributes": { "bigint": "bigint", "varchar": "varchar", "decimal": "decimal", "datetime": "datetime", "int": "int", "text": "text", "json": "json", "boolean": "boolean" } }' http://localhost:8080/api/v1/definition
+curl -i -H "Content-Type: application/json" -X POST -d '{ "type": "TestType", "attributes": { "bigint": "bigint", "varchar": "varchar", "decimal": "decimal", "datetime": "datetime", "int": "int", "text": "text", "json": "json", "boolean": "boolean" } }' http://localhost/api/v1/definition
 ```
 
 ### Response
@@ -27,7 +27,7 @@ Date: Wed, 29 Jul 2015 13:37:38 GMT
 ### Request
 
 ```
-curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/definition/TestType" | jq
+curl -H "Content-Type: application/json" "http://localhost/api/v1/definition/TestType" | jq
 ```
 
 ### Response
@@ -59,7 +59,7 @@ curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/definitio
 Assumes one or more types were registered prior to registering type above.
 
 ```
-curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/definitions" | jq
+curl -H "Content-Type: application/json" "http://localhost/api/v1/definitions" | jq
 ```
 
 ### Response
@@ -103,7 +103,7 @@ curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/definitio
 ### Request
 
 ```
-curl -i -H "Content-Type: application/json" -H "Type: Album" -X POST -d '{ "artist": "Rush", "year": 1981, "price": 9.99, "label": "Anthem", "title": "Moving Pictures"}' http://localhost:8080/api/v1/type
+curl -i -H "Content-Type: application/json" -H "Type: Album" -X POST -d '{ "artist": "Rush", "year": 1981, "price": 9.99, "label": "Anthem", "title": "Moving Pictures"}' http://localhost/api/v1/type
 ```
 
 ### Response
@@ -123,7 +123,7 @@ In this example request results constrained by `createdTime`
 ### Request
 
 ```
-curl -H "Content-Type: application/json" "http://localhost:8080/api/v1/type/Album" | jq
+curl -H "Content-Type: application/json" "http://localhost/api/v1/type/Album" | jq
 ```
 
 ### Response
