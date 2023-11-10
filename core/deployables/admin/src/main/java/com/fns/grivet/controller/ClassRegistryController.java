@@ -66,21 +66,21 @@ public class ClassRegistryController {
     }
     
     @PreAuthorize("hasAuthority('write:typedef')")
-    @PostMapping("/api/v1/definition")
+    @PostMapping("/definition")
     public ResponseEntity<?> defineType(@RequestBody JSONObject payload) throws IOException {
         String type = classRegistryService.register(payload);
         UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
         log.info("Type [{}] successfully registered!", type);
-        return ResponseEntity.created(ucb.path("/api/v1/definition/{type}").buildAndExpand(type).toUri()).build();
+        return ResponseEntity.created(ucb.path("/definition/{type}").buildAndExpand(type).toUri()).build();
     }
 
     @PreAuthorize("hasAuthority('write:typedef')")
-    @PostMapping("/api/v1/definitions")
+    @PostMapping("/definitions")
     public ResponseEntity<?> defineTypes(@RequestBody JSONArray array) throws IOException, JSONException {
         int numberOfTypesToRegister = array.length();
         Assert.isTrue(numberOfTypesToRegister <= batchSize,
-                String.format(
-                        "The total number of entries in a type registration request must not exceed %d! Your registration request contained [%d] entries.",
+                
+                        "The total number of entries in a type registration request must not exceed %d! Your registration request contained [%d] entries.".formatted(
                         batchSize, numberOfTypesToRegister));
         JSONObject payload = null;
         String type = null;
@@ -92,20 +92,20 @@ public class ClassRegistryController {
             try {
                 payload = array.getJSONObject(i);
                 type = classRegistryService.register(payload);
-                location = UriComponentsBuilder.newInstance().path("/api/v1/definition/{type}").buildAndExpand(type).toUri();
+                location = UriComponentsBuilder.newInstance().path("/definition/{type}").buildAndExpand(type).toUri();
                 if (numberOfTypesToRegister == 1) {
                     headers.setLocation(location); 
                 } else {
-                    headers.set(String.format("Location[%s]",String.valueOf(i+1)), location.toASCIIString());
+                    headers.set("Location[%s]".formatted(String.valueOf(i + 1)), location.toASCIIString());
                 }
                 log.info("Type [{}] successfully registered!", type);
             } catch (Exception e) {
-                String message = LogUtil.toLog(payload, String.format("Problems registering type! Portion of payload @ index[%d]\n", i+1));
+                String message = LogUtil.toLog(payload, "Problems registering type! Portion of payload @ index[%d]\n".formatted(i + 1));
                 log.error(message, e);
                 if (numberOfTypesToRegister == 1) {
                     throw e;
                 }
-                headers.set(String.format("Error[%s]", String.valueOf(i+1)), e.getMessage());
+                headers.set("Error[%s]".formatted(String.valueOf(i + 1)), e.getMessage());
                 errorCount++;
             }
         }
@@ -113,7 +113,7 @@ public class ClassRegistryController {
     }
 
     @PreAuthorize("hasAuthority('delete:typedef')")
-    @DeleteMapping("/api/v1/definition/{type}")
+    @DeleteMapping("/definition/{type}")
     public ResponseEntity<?> undefineType(
             @PathVariable("type") String type) {
         classRegistryService.deregister(type);
@@ -122,17 +122,17 @@ public class ClassRegistryController {
     }
     
     @PreAuthorize("hasAuthority('read:typedef')")
-    @GetMapping("/api/v1/definition/{type}")
+    @GetMapping("/definition/{type}")
     public ResponseEntity<?> getTypeDefinition(
             @PathVariable("type") String type) {
         JSONObject payload = classRegistryService.get(type);
-        String message = LogUtil.toLog(payload, String.format("Successfully retrieved type [%s]\n", type));
+        String message = LogUtil.toLog(payload, "Successfully retrieved type [%s]\n".formatted(type));
         log.info(message);
         return ResponseEntity.ok(payload.toString());
     }
     
     @PreAuthorize("hasAuthority('read:typedef')")
-    @GetMapping("/api/v1/definitions")
+    @GetMapping("/definitions")
     public ResponseEntity<?> getAllTypeDefinitions() {
         return ResponseEntity.ok(classRegistryService.all().toString());
     }

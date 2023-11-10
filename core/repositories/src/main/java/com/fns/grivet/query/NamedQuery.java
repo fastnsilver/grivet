@@ -24,23 +24,22 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.Version;
-import javax.validation.Valid;
-import javax.validation.constraints.Size;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.Version;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedBy;
@@ -83,64 +82,58 @@ public class NamedQuery implements Auditable<String> {
      * are compatible with respect to serialization. 
      */
     private static final long serialVersionUID = 1L;
-    
+
     @Column
     @CreatedBy
     private String createdBy;
-    
+
     @Column
     @LastModifiedBy
     private String updatedBy;
-    
+
     /** The time this entity was created. */
-    @Column(nullable=false, updatable = false)
-    @Convert(disableConversion = true)
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
+    @Column(nullable=false, updatable = false, columnDefinition = "TIMESTAMP")
     @CreatedDate
     private LocalDateTime createdTime;
-    
+
     /** The time this entity was last modified. */
-    @Column
-    @Convert(disableConversion = true)
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
+    @Column(columnDefinition = "TIMESTAMP")
     @LastModifiedDate
     private LocalDateTime updatedTime;
-    
+
     @Version
     @Column
     private long version;
-    
+
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @JsonProperty("name")
     @Size(max=255)
     @Column(nullable=false, unique=true)
     private String name;
-    
-    
+
     @Size(max=2000)
     @Column(length=2000, nullable=false)
     private String query;
-    
+
     @JsonProperty("type")
     @Enumerated(EnumType.STRING)
     private QueryType type;
-    
-    
+
     @Valid
     @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(name="named_query_parameter", joinColumns=@JoinColumn(name="id"))
     @MapKeyColumn(name="parameter_name")
     @Column(name="parameter_type", nullable=false)
     private Map<String, String> params;
-        
+
     NamedQuery() {
         setParams(null);
     }
-    
+
     NamedQuery(String createdBy, String updatedBy, LocalDateTime createdTime, LocalDateTime updatedTime,
             long version, Integer id, String name, String query, QueryType type, Map<String, String> params) {
         this.createdBy = createdBy;
@@ -154,7 +147,7 @@ public class NamedQuery implements Auditable<String> {
         this.type = type;
         setParams(params);
     }
-    
+
     @JsonProperty("query")
     public void setQuery(String query) {
        this.query = query;
@@ -167,7 +160,7 @@ public class NamedQuery implements Auditable<String> {
            }
        } 
     }
-    
+
     @JsonProperty("params")
     public void setParams(Map<String, String> params) {
         this.params = params;
@@ -175,8 +168,8 @@ public class NamedQuery implements Auditable<String> {
             this.params = new HashMap<>();
         }
     }
-    
-    // only when parameter values are not null, empty, or blank 
+
+    // only when parameter values are not null, empty, or blank
     // and parameter definition for named query is not empty
     // will a MapSqlParameterSource be constructed
     public MapSqlParameterSource asParameterSource(MultiValueMap<String, ?> parameterValues) {
@@ -198,8 +191,8 @@ public class NamedQuery implements Auditable<String> {
         }
         return paramSource;
     }
-    
-    // only when parameter values are not null, empty, or blank 
+
+    // only when parameter values are not null, empty, or blank
     // and parameter definition for named query is not empty
     // will a List<SqlParameter> be constructed
     public List<SqlParameter> asSqlParameters(MultiValueMap<String, ?> parameterValues) {
@@ -214,7 +207,7 @@ public class NamedQuery implements Auditable<String> {
                     if (values.size() == 1) {
                         sqlParams.add(new SqlParameter(entry.getKey(), AttributeType.toSqlType(entry.getValue())));
                     } else {
-                        throw new IllegalArgumentException(String.format("Stored Procedure cannot be executed! Parameter [%s] is not a scalar value!", entry.getKey()));
+                        throw new IllegalArgumentException("Stored Procedure cannot be executed! Parameter [%s] is not a scalar value!".formatted(entry.getKey()));
                     }
                 }
             }

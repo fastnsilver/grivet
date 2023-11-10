@@ -1,0 +1,107 @@
+# my global config
+global:
+  scrape_interval:     30s # By default, scrape targets every 30 seconds.
+  evaluation_interval: 30s # By default, scrape targets every 30 seconds.
+  # scrape_timeout is set to the global default (10s).
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    monitor: 'grivet'
+
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  - 'alert.rules'
+
+# Alert configuration
+#alerting:
+#  alertmanagers:
+#    - scheme: http
+#      static_configs:
+#        - targets:
+#            - "alertmanager:9093"
+
+# Scrape configuration
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+
+  - job_name: 'prometheus'
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'cadvisor'
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  - job_name: 'node-exporter'
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  - job_name: 'grivet-admin-service'
+    metrics_path: /actuator/prometheus
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 30s
+    static_configs:
+      - targets: [ 'grivet-admin:8085' ]
+
+  - job_name: 'grivet-ingest-service'
+    metrics_path: /actuator/prometheus
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 30s
+    static_configs:
+      - targets: [ 'grivet-ingest:8081' ]
+
+  - job_name: 'grivet-persistence-service'
+    metrics_path: /actuator/prometheus
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 30s
+    static_configs:
+      - targets: [ 'grivet-persist:8082' ]
+
+  - job_name: 'grivet-query-service'
+    metrics_path: /actuator/prometheus
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 30s
+    static_configs:
+      - targets: [ 'grivet-query:8083' ]
+
+  - job_name: 'grivet-standalone-service'
+    metrics_path: /actuator/prometheus
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 30s
+    static_configs:
+      - targets: [ 'grivet-standalone:8080' ]
+
+  - job_name: 'springboot-admin'
+    metrics_path: /actuator/prometheus
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 30s
+    static_configs:
+      - targets: [ 'springboot-admin:5555' ]
+
+  - job_name: 'spring-cloud-gateway'
+    metrics_path: /actuator/prometheus
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 30s
+    static_configs:
+      - targets: [ 'edge-service:9999' ]
+
+  - job_name: 'config-service'
+    metrics_path: /actuator/prometheus
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 30s
+    static_configs:
+      - targets: [ 'config-service:8888' ]
+
+  - job_name: 'discovery-service'
+    metrics_path: /actuator/prometheus
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 30s
+    static_configs:
+      - targets: [ 'discovery-service:8761' ]

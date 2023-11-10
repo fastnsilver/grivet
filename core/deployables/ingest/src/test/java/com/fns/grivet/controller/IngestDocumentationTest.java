@@ -42,15 +42,15 @@ import com.google.common.collect.ImmutableSet;
 @ExtendWith(value = { SpringExtension.class, RestDocumentationExtension.class })
 @SpringBootTest(classes=IngestInit.class)
 public class IngestDocumentationTest {
-    
+
     @Autowired
     private ResourceLoader resolver;
 
     @Autowired
     private WebApplicationContext context;
-        
+
     private MockMvc mockMvc;
-    
+
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
         RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
@@ -59,12 +59,12 @@ public class IngestDocumentationTest {
                 .alwaysDo(document)
                 .build();
     }
-    
+
     @Test
     public void ingestCreateTypeRequest() {
         try {
             mockMvc.perform(
-                    post("/api/v1/type")
+                    post("/type")
                             .contentType(MediaType.APPLICATION_JSON)
                             .header("Type", "TestType2")
                             .content(payload("TestTypeData2"))
@@ -74,12 +74,12 @@ public class IngestDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void ingestCreateTypesRequest() {
         try {
             mockMvc.perform(
-                    post("/api/v1/types")
+                    post("/types")
                             .contentType(MediaType.APPLICATION_JSON)
                             .header("Type", "Contact")
                             .content(payload("TestMultipleContactsData"))
@@ -89,12 +89,12 @@ public class IngestDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void ingestUpdateTypeRequest() {
         try {
             mockMvc.perform(
-                    patch("/api/v1/type")
+                    patch("/type")
                             .contentType(MediaType.APPLICATION_JSON)
                             .param("oid", "123")
                             .content(mutz("TestTypeData2", ImmutableMap.of("age", 35, "high-school-graduation-year", 1997), ImmutableSet.of("iq", "is-minor")))
@@ -104,21 +104,21 @@ public class IngestDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void ingestDeleteTypeRequest() {
         try {
             mockMvc.perform(
-                    delete("/api/v1/type")
+                    delete("/type")
                             .contentType(MediaType.APPLICATION_JSON)
                             .param("oid", "123")
                     )
                     .andExpect(status().isAccepted());
         } catch (Exception e) {
             fail(e.getMessage());
-        } 
+        }
     }
-    
+
     private String mutz(String data, Map<String, Object> properties, Set<String> removed) throws JSONException, IOException {
         String original = payload(data);
         JSONObject jo = new JSONObject(original);
@@ -126,9 +126,9 @@ public class IngestDocumentationTest {
         removed.forEach(k -> jo.remove(k));
         return jo.toString();
     }
-    
+
     private String payload(String data) throws IOException{
-        Resource r = resolver.getResource(String.format("classpath:%s.json", data));
+        Resource r = resolver.getResource("classpath:%s.json".formatted(data));
         return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
     }
 }

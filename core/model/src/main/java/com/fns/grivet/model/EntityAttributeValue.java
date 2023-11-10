@@ -18,8 +18,6 @@ package com.fns.grivet.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.annotation.concurrent.Immutable;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,22 +25,21 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * An {@code EntityAttributeValue} is the reification of a {@code ClassAttribute} plus a value.
- * 
+ *
  * @author Chris Phillipson
  */
-@Immutable
 @RequiredArgsConstructor(staticName = "of")
 @Getter
 @EqualsAndHashCode
 public class EntityAttributeValue implements Serializable {
 
-    /** 
-     * Version number used during deserialization to verify that the sender and receiver 
-     * of this serialized object have loaded classes for this object that 
-     * are compatible with respect to serialization. 
+    /**
+     * Version number used during deserialization to verify that the sender and receiver
+     * of this serialized object have loaded classes for this object that
+     * are compatible with respect to serialization.
      */
     private static final long serialVersionUID = 1L;
-    
+
     /** An entity identifier */
     private final Long id;
     /** An {@code Attribute} identifier */
@@ -53,7 +50,7 @@ public class EntityAttributeValue implements Serializable {
     private final Object attributeValue;
     /** The time this {@code EntityAttributeValue} was created */
     private final LocalDateTime createdTime;
-    
+
     private final String createdBy;
 
 }

@@ -53,24 +53,24 @@ public class SchemaController {
     
     
     @PreAuthorize("hasAuthority('write:schema')")
-    @PostMapping("/api/v1/schema")
+    @PostMapping("/schema")
     public ResponseEntity<?> linkSchema(@RequestBody JSONObject payload) throws IOException {
         if (!schemaService.isJsonSchema(payload)) {
             return ResponseEntity.unprocessableEntity().build();
         }
         String id = schemaService.linkSchema(payload).getName();
-        String message = String.format(
-                "JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!", id);
+        String message = 
+                "JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!".formatted(id);
         log.info(message);
         return ResponseEntity.ok(message);
     }
     
     @PreAuthorize("hasAuthority('delete:schema')")
-    @DeleteMapping("/api/v1/schema/{type}")
+    @DeleteMapping("/schema/{type}")
     public ResponseEntity<?> unlinkSchema(
             @PathVariable("type") String type) {
         schemaService.unlinkSchema(type);
-        String message = String.format("JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!", type);
+        String message = "JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!".formatted(type);
         log.info(message);
         return ResponseEntity.ok(message);
     }

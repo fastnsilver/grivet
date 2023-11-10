@@ -1,12 +1,39 @@
+# Set a Personal Access Token for the username and leave password blank
+# @see https://github.com/spring-cloud/spring-cloud-config/issues/55
+# For private repo on Github, visit https://github.com/settings/tokens,
+# then generate token with repo scope
+# Remember to set the spring.cloud.config.server.git.username property value
+# Other Git repo providers:
+#   - Gitlab, https://docs.gitlab.com/ce/user/profile/personal_access_tokens.html
+#   - Bitbucket, https://confluence.atlassian.com/bitbucketserver/personal-access-tokens-939515499.html
 spring:
-  # (2017-10-02) As of Spring Cloud Finchley.M2+ certain auto-config and config don't work, so disable! 
-  autoconfigure:
-    exclude: 
-      - org.springframework.cloud.netflix.hystrix.HystrixAutoConfiguration
-      - org.springframework.cloud.stream.config.BindersHealthIndicatorAutoConfiguration
-      - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
+  application:
+    name: grivet-config-service
 
-endpoints:
-  default:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/fastnsilver/grivet-config-repo.git
+          password:
+
+server:
+  port: 8888
+  compression:
+    enabled: true
+  undertow:
+    accesslog:
+      enabled: true
+
+management:
+  endpoints:
     web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+    prometheus:
       enabled: true

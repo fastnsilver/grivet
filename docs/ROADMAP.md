@@ -53,33 +53,45 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Switch documentation generation from Springfox Swagger to Spring RestDocs
 - [x] Apache Kafka [integration](https://github.com/fastnsilver/grivet/issues/7)
 
-
 ## 0.4.0
 
 - [x] Replace DropWizard with [Micrometer](http://micrometer.io)
 - [x] Upgrade implementation to Spring Framework 5, Spring Boot 2.0 and Spring Cloud Finchley
 - [x] All tests reimplemented using [JUnit 5](http://junit.org/junit5/docs/current/user-guide/) API
 
-## 0.5.0
+## 1.0.0
 
-- [ ] Reactive retread
-- [ ] Endpoint security policy implemented with Spring Cloud Gateway and Spring Security 5
+- [x] Major upgrade to Spring Boot 3.1.5
+  - back from a long hiatus in development 
+- [x] Java 17 baseline 
+- [x] API Gateway provider swap (now Spring Cloud Gateway)
+- [x] Dead Auth0 swapped for Okta Spring Boot 3.x API
+- [x] Flyway adjustments (preparing for 10.0.0)
+- [x] Docker Compose infrastructure updated
+- [x] Resurrection of Spring Boot Admin
+- [x] Continuous integration builds now Github Action based
+- [ ] Updated Maven Site published
+
+## 1.1.0
+
+- [ ] Endpoint security policy implemented with Spring Cloud Gateway and Spring Security 6
 - [ ] Password-protect service administration and discovery
-- [ ] Add [Zipkin](http://zipkin.io) integration for [real-time track and trace](http://cloud.spring.io/spring-cloud-sleuth/single/spring-cloud-sleuth.html#_sending_spans_to_zipkin)
+- [ ] Add tracing (Open-Telemetry APIs)
+- Implement deployment option
+  - [ ] Tanzu Application Service
 
-## 0.6.0
+## 1.2.0
 
 - [ ] Add cache provider (e.g., Redis)
-- [ ] Host demo site on PWS
-- [ ] Switch time-series back-end to [Prometheus](https://prometheus.io)
 
-## 0.7.0
+## 1.3.0
 
 - [ ] Implement [Vaadin](https://vaadin.com/home)-based administrative UI
-- [ ] Plumb Hystrix for latency and fault protection 
 
-## 0.8.0
+## 1.4.0
 
 - [ ] Run [Gatling](http://gatling.io/#/) tests and publish performance metrics for a) write-intensive and b) read-intensive application
-- [ ] Gradle build (as an alternative)
-- [ ] Implement Kubernetes deployment option
+- Implement deployment options
+  - [ ] Kubernetes (e.g., AKS, EKS, GKE)
+  - [ ] Azure Spring Apps Enterprise
+  - [ ] Tanzu Application Platform

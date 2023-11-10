@@ -8,7 +8,7 @@ object Engine extends App {
 	props.resultsDirectory(IDEPathHelper.resultsDirectory.toString)
 	props.bodiesDirectory(IDEPathHelper.bodiesDirectory.toString)
 	props.binariesDirectory(IDEPathHelper.mavenBinariesDirectory.toString)
-	props.runDescription("N/A") 
+	props.runDescription("N/A")
 
 	//	props.simulationClass("pkg.name.GetSomeSimulation")
 	//  props.simulationClass("pkg.name.PostSomeSimulation")

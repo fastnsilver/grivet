@@ -106,12 +106,12 @@ public class DynamicQuery {
 			attributeName = c.getAttributeName();
 			Assert.isTrue(attributeName !=null && !attributeName.isEmpty(), "Attribute name must not be null or empty!");
 			attributeId = attributeNameToAttributeIdMap.get(c.getAttributeName());
-			Assert.notNull(attributeId, String.format("Invalid query constraint! No attribute identifier found for [%s]", attributeName));
+			Assert.notNull(attributeId, "Invalid query constraint! No attribute identifier found for [%s]".formatted(attributeName));
 			paramValues.add(new SqlParameterValue(Types.INTEGER, attributeId));
 			attributeTypeId = attributeToAttributeTypeMap.get(attributeId);
-			Assert.notNull(attributeTypeId, String.format("Invalid query constraint! No attribute type identifier found for attribute name [%s]", attributeName));
+			Assert.notNull(attributeTypeId, "Invalid query constraint! No attribute type identifier found for attribute name [%s]".formatted(attributeName));
 			at = AttributeType.fromId(attributeTypeId);
-			Assert.notNull(at, String.format("Invalid query constraint! No matching attribute type found for attribute type identifier [%d]", attributeTypeId));
+			Assert.notNull(at, "Invalid query constraint! No matching attribute type found for attribute type identifier [%d]".formatted(attributeTypeId));
 			if (c.getOperator().equals(Operator.BETWEEN)) {
 				paramValues.add(getSqlParameterValue(at, c.getOperator(), c.getValues()[0]));
 				paramValues.add(getSqlParameterValue(at, c.getOperator(), c.getValues()[1]));
@@ -184,13 +184,13 @@ public class DynamicQuery {
 		String result = null;
 		switch (op) {
 		case STARTS_WITH:
-			result = String.format("%s%s", value, "%");
+			result = "%s%s".formatted(value, "%");
 			break;
 		case ENDS_WITH:
-			result = String.format("%s%s", "%", value);
+			result = "%s%s".formatted("%", value);
 			break;
 		case CONTAINS:
-			result = String.format("%s%s%s", "%", value, "%");
+			result = "%s%s%s".formatted("%", value, "%");
 			break;
 		default:
 			result = value;

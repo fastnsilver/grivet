@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.fns</groupId>
-		<artifactId>grivet-core-parent</artifactId>
-		<version>0.5.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.fns</groupId>
+        <artifactId>grivet-core-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>grivet-deployables-parent</artifactId>
-	<packaging>pom</packaging>
+    <artifactId>grivet-deployables-parent</artifactId>
+    <packaging>pom</packaging>
 
-	<name>Grivet Deployables</name>
-	<description>Units of deployment</description>
+    <name>Grivet Deployables</name>
+    <description>Units of deployment</description>
 
-	<modules>
-		<module>admin</module>
-		<module>ingest</module>
-		<module>query</module>
-		<module>persist</module>
-		<module>standalone</module>
-		<module>ui</module>
-	</modules>
+    <modules>
+        <module>admin</module>
+        <module>ingest</module>
+        <module>query</module>
+        <module>persist</module>
+        <module>standalone</module>
+        <module>ui</module>
+    </modules>
 
-	<properties>
-		<snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
-	</properties>
+    <properties>
+        <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
+    </properties>
 
     <build>
         <resources>
@@ -71,12 +71,12 @@
                 </executions>
                 <configuration>
                     <outputDirectory>${project.basedir}/src/main/resources-filtered</outputDirectory>
-                    <info>Commit: ${git.commit.id}, Version: ${project.version}, Active Profiles: ${spring.profiles.active:}</info>
+                    <info>Commit: ${git.commit.id.abbrev}, Version: ${project.version}, Active Profiles: ${spring.profiles.active:default}</info>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -99,23 +99,23 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-        
+
         <!-- Spring Cloud -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-config-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-sleuth</artifactId>
-		</dependency>
-		<dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+            <artifactId>spring-cloud-config-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-spring-boot3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
     </dependencies>
 </project>

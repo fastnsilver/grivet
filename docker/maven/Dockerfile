@@ -1,8 +1,9 @@
-FROM java:openjdk-8-jdk-alpine
+FROM bellsoft/liberica-openjdk-alpine:21
 
-MAINTAINER Chris Phillipson <fastnsilver@gmail.com>
+LABEL author="Chris Phillipson"
+LABEL email="fastnsilver@gmail.com"
 
-ENV MAVEN_VERSION="3.3.9" \
+ENV MAVEN_VERSION="3.9.5" \
     M2_HOME=/usr/lib/mvn \
     MAVEN_OPTS="-Xms64m -Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication"
 

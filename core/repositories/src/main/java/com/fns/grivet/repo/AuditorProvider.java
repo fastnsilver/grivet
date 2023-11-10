@@ -24,10 +24,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.util.Assert;
-
-import com.auth0.spring.security.api.Auth0UserDetails;
-import com.fns.grivet.model.User;
 
 
 public class AuditorProvider implements AuditorAware<String> {
@@ -36,22 +34,25 @@ public class AuditorProvider implements AuditorAware<String> {
         User result = null;
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
-            final Auth0UserDetails currentUser = (Auth0UserDetails) authentication.getPrincipal();
-            result = (User) currentUser;
+            result = (User) authentication.getPrincipal();
         }
         return result;
     }
-    
+
     @Override
     public Optional<String> getCurrentAuditor() {
-        User auditor = getCurrentUser();
-        return auditor == null ? Optional.of("--unknown--") : Optional.of(auditor.getUsername());
+        return Optional.ofNullable(SecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication)
+                .filter(Authentication::isAuthenticated)
+                .map(Authentication::getPrincipal)
+                .map(User.class::cast)
+                .map(u -> u.getUsername());
     }
-    
+
     /**
      * Configures the Spring Security {@link SecurityContext} to be authenticated as the user with the given username and
      * password as well as the given granted authorities.
-     * 
+     *
      * @param username must not be {@literal null} or empty.
      * @param password must not be {@literal null} or empty.
      * @param roles
@@ -62,7 +63,7 @@ public class AuditorProvider implements AuditorAware<String> {
         Assert.notNull(password, "Password must not be null!");
 
         SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(username, password, AuthorityUtils.createAuthorityList(roles)));
+            new UsernamePasswordAuthenticationToken(username, password, AuthorityUtils.createAuthorityList(roles)));
     }
-    
+
 }

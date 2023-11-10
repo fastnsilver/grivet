@@ -65,12 +65,12 @@ public class QueryDocumentationTest {
 
     @Autowired
     private WebApplicationContext context;
-    
+
     @Autowired
     private ObjectMapper mapper;
-        
+
     private MockMvc mockMvc;
-    
+
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
         RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
@@ -79,17 +79,17 @@ public class QueryDocumentationTest {
                 .alwaysDo(document)
                 .build();
     }
-    
+
     @AfterEach
     public void tearDown() {
         context.getBean(NamedQueryRepository.class).deleteAll();
     }
-    
+
     @Test
     public void createNamedQueryAsSproc() {
         try {
             mockMvc.perform(
-                    post("/api/v1/query")
+                    post("/query")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestSprocQuery"))
                     )
@@ -98,12 +98,12 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void createNamedQueryAsSelect() {
         try {
             mockMvc.perform(
-                    post("/api/v1/query")
+                    post("/query")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestSelectQuery"))
                     )
@@ -112,42 +112,42 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void createNamedQueryAsSelectWithNoParams() {
         try {
             mockMvc.perform(
-                    post("/api/v1/query")
+                    post("/query")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestSelectQuery2"))
                     )
                     .andExpect(status().isCreated())
-                    .andExpect(header().string("Location", "/api/v1/query/getAttributesCreatedToday"));
+                    .andExpect(header().string("Location", "/query/getAttributesCreatedToday"));
         } catch (Exception e) {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void createNamedQueryAsSelectWithQueryType() {
         try {
             mockMvc.perform(
-                    post("/api/v1/query")
+                    post("/query")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestSelectQuery3"))
                     )
                     .andExpect(status().isCreated())
-                    .andExpect(header().string("Location", "/api/v1/query/getClassesCreatedToday"));
+                    .andExpect(header().string("Location", "/query/getClassesCreatedToday"));
         } catch (Exception e) {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void createNamedQueryAsSprocWithQueryType() {
         try {
             mockMvc.perform(
-                    post("/api/v1/query")
+                    post("/query")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(payload("TestSprocQuery2"))
                     )
@@ -156,13 +156,13 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void executeNamedQueryNoParams() {
         try {
             createNamedQuery("TestSelectQuery2");
             mockMvc.perform(
-                    get("/api/v1/query/getAttributesCreatedToday")
+                    get("/query/getAttributesCreatedToday")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
@@ -170,14 +170,14 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void listNamedQueries() {
         try {
             createNamedQuery("TestSelectQuery");
             createNamedQuery("TestSelectQuery2");
             mockMvc.perform(
-                    get("/api/v1/queries")
+                    get("/queries")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
@@ -185,13 +185,13 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void deleteNamedQuery() {
         try {
             createNamedQuery("TestSelectQuery");
             mockMvc.perform(
-                    delete("/api/v1/query/TestSelectQuery")
+                    delete("/query/TestSelectQuery")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNoContent());
@@ -199,14 +199,14 @@ public class QueryDocumentationTest {
             fail(e.getMessage());
         }
     }
-    
+
     private void createNamedQuery(String payload) throws JsonParseException, JsonMappingException, IOException {
         NamedQueryService svc = context.getBean(NamedQueryService.class);
         svc.create(mapper.readValue(payload(payload), NamedQuery.class));
     }
-    
+
     private String payload(String payload) throws IOException{
-        Resource r = resolver.getResource(String.format("classpath:%s.json", payload));
+        Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
         return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
     }
 }

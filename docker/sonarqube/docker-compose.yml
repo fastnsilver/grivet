@@ -1,4 +1,4 @@
-# On a Mac, execute 
+# On a Mac, execute
 #    dscacheutil -q user | grep -A 3 -B 2 -e uid:\ 5'[0-9][0-9]'
 # in a Terminal instance to obtain the uid:gid for the account that runs your docker-machine instance
 # You will want to edit the command below if your uid:gid differ
@@ -17,7 +17,7 @@ sonarqube:
     - qubedb
 
 qubedb:
-  image: postgres:9.5
+  image: postgres:16
   privileged: true
   ports:
     - 5432:5432

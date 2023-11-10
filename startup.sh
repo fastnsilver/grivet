@@ -2,57 +2,69 @@
 
 set -e
 
-if [ $# -ne 1 ]; then
+if [ -z "$1" ]; then
     echo "Usage: ./startup.sh standalone|pipeline"
     exit 1
 fi
 
 suffix=$1
 
-# Export the active docker machine IP
-export DOCKER_IP=$(docker-machine ip $(docker-machine active))
+export DOCKER_IP="host.docker.internal"
 
-if [ -z "$DOCKER_IP" ]; then
-	SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-	if [ -f "$SCRIPT_DIR/.local" ]; then
-		export DOCKER_IP="127.0.0.1"
-	fi
+os=$(uname)
+if [[ "$os" == *"Linux"* ]]; then
+  export DOCKER_IP="172.17.0.1"
 fi
-
-# docker-machine doesn't exist in Linux, assign default ip if it's not set
-DOCKER_IP=${DOCKER_IP:-0.0.0.0}
-echo "Docker IP is $DOCKER_IP"
 
 # Change directories
 cd docker
+CURRENT_DIR="$PWD"
+
+# Fetch and start ancillary services
+cd /tmp
+if [ ! -d "signoz" ]; then
+  git clone https://github.com/SigNoz/signoz.git
+  # Add metrics scraping configuration
+  # @see https://signoz.io/docs/userguide/send-metrics/#enable-a-prometheus-receiver
+  # Replace the originals with the copies we maintain in docker/signoz
+  cp -f "$CURRENT_DIR"/signoz/otel-collector-metrics-config.yaml signoz/deploy/docker/clickhouse-setup/otel-collector-metrics-config.yaml
+  cp -f "$CURRENT_DIR"/signoz/docker-compose.yaml signoz/deploy/docker/clickhouse-setup/docker-compose.yaml
+fi
+cd signoz/deploy
+docker compose -f docker/clickhouse-setup/docker-compose.yaml up -d
+cd ../..
+
+cd "$CURRENT_DIR"
 
 # Start the config service first and wait for it to become available
-docker-compose up -d config-service
+docker compose up -d config-service
 
-while [ -z ${CONFIG_SERVICE_READY} ]; do
+while [ -z "$CONFIG_SERVICE_READY" ]; do
   echo "Waiting for config service..."
-  if [ "$(curl --silent $DOCKER_IP:8888/application/status 2>&1 | grep -q '\"status\":\"UP\"'; echo $?)" = 0 ]; then
+  if [ "$(curl --silent "$DOCKER_IP":8888/actuator/health 2>&1 | grep -q '\"status\":\"UP\"'; echo $?)" = 0 ]; then
       CONFIG_SERVICE_READY=true;
   fi
-  sleep 2
+  sleep 5
 done
 
 # Start the discovery service next and wait
-docker-compose up -d discovery-service
+docker compose up -d discovery-service
 
-while [ -z ${DISCOVERY_SERVICE_READY} ]; do
+while [ -z "$DISCOVERY_SERVICE_READY" ]; do
   echo "Waiting for discovery service..."
-  if [ "$(curl --silent $DOCKER_IP:8761/application/status 2>&1 | grep -q '\"status\":\"UP\"'; echo $?)" = 0 ]; then
+  if [ "$(curl --silent "$DOCKER_IP":8761/actuator/health 2>&1 | grep -q '\"status\":\"UP\"'; echo $?)" = 0 ]; then
       DISCOVERY_SERVICE_READY=true;
   fi
-  sleep 2
+  sleep 5
 done
 
 # Start the other containers
-docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml up -d
+docker compose -f docker-compose.yml -f docker-compose-"$suffix.yml" up -d
+
+cd ..
 
 # Attach to the log output of the cluster
-docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml logs
+./show-log.sh "$suffix"
 
 # Display status of cluster
-docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml ps
+./status.sh "$suffix"

@@ -24,20 +24,20 @@ public class SwaggerConfig {
     @Bean
     public Docket api(
             @Value("${info.title}") String projectName,
-            @Value("${info.description}") String projectDescription) { 
-        return new Docket(DocumentationType.SWAGGER_2)  
-          .select()                                  
-          .apis(RequestHandlerSelectors.basePackage("com.fns.grivet.controller"))             
+            @Value("${info.description}") String projectDescription) {
+        return new Docket(DocumentationType.SWAGGER_2)
+          .select()
+          .apis(RequestHandlerSelectors.basePackage("com.fns.grivet.controller"))
           .paths(PathSelectors.any())
-          .build()                                          
+          .build()
               .apiInfo(apiInfo(projectName, projectDescription));
     }
-    
+
     private ApiInfo apiInfo(
             String projectName,
             String projectDescription) {
         ApiInfo apiInfo = new ApiInfo(
-          String.format("%s REST API", projectName),
+                "%s REST API".formatted(projectName),
           projectDescription,
           "v1",
           "https://github.com/fastnsilver/grivet/blob/master/TERMS",

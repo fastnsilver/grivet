@@ -1,51 +1,59 @@
 ribbon:
   ServerListRefreshInterval: 1000
 
+eureka:
+  client:
+    enabled: false
+
 spring:
   profiles:
     active: h2,insecure
-  
-  autoconfigure:
-    exclude: 
-      - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
-      
+
+  cloud:
+    config:
+      enabled: false
+
   jpa:
     hibernate:
       ddl-auto: none
-      
+
   jackson:
     serialization-inclusion: non-empty
-    
+
   flyway:
     placeholders:
       preamble:
-      varcharQualifier: 
+      varcharQualifier:
       createTableSuffix:
       longVarBinary:
-  
+
+  test:
+    observability:
+      auto-configure: false
+
   # @see https://stackoverflow.com/questions/36417045/spring-boot-metrics-vs-spring-cloud-metrics 
   metrics:
     servo:
       enabled: false
-  
+
 logging:
   level:
     org.flyway: WARN
     org.hibernate: WARN
     org.springframework: WARN
     com.zaxxer.hikari: WARN
-    com.fns.grivet: INFO
+    com.fns.grivet: TRACE
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-           
+
 ---
 
 spring:
-  profiles: hsqldb
+  config.activate.on-profile: hsqldb
   datasource:
     name: test-hsqldb
     url: jdbc:hsqldb:mem:grivetdb
@@ -56,7 +64,11 @@ spring:
   jpa:
     show-sql: true
     properties:
-      hibernate.connection.autocommit: true
+      hibernate:
+        show_sql: true
+        format_sql: true
+        connection.autocommit: true
+
 
   flyway:
     locations: classpath:db/migration, classpath:db/hsqldb, classpath:db/users
@@ -65,26 +77,28 @@ spring:
       dateFormatFn: TO_CHAR(val, 'YYYY-MM-DD')
       dateTimeFormatFn: TO_CHAR(val, 'YYYY-MM-DD"T"HH24:MI:SS')
       instantFormatFn: TO_CHAR(val, 'YYYY-MM-DD"T"HH24:MI:SS')
+      castedColumnType: TEXT
+      dateTimeColumnType: DATETIME
       textColumnType: VARCHAR(4000)
       longTextColumnType: VARCHAR(8000)
       longVarBinary: LONGVARBINARY
       renameTableKeyword: RENAME TO
       alterColumnKeyword: ALTER COLUMN
-    
+
 ---
 
 spring:
-  profiles: h2
+  config.activate.on-profile: h2
   datasource:
     name: test-h2
     url: jdbc:h2:mem:grivetdb;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    # when debugging, comment out the line above and uncomment the line below
+    # also be sure to temporarily disable clean up in tests that may purge data after execution or before exiting
+    #url: jdbc:h2:file:/tmp/grivetdb;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
     driver-class-name: org.h2.Driver
     data-source-class-name: org.h2.jdbcx.JdbcDataSource
-    username: sa
-    password: sa
-  h2:
-    console:
-      enabled: true
+    username: admin
+    password: t3st
 
   flyway:
     locations: classpath:db/migration, classpath:db/users
@@ -93,22 +107,34 @@ spring:
       dateFormatFn: FORMATDATETIME(val, 'yyyy-MM-dd')
       dateTimeFormatFn: CONCAT(FORMATDATETIME(val, 'yyyy-MM-dd'), 'T', FORMATDATETIME(val, 'HH:mm:ss'))
       instantFormatFn: CONCAT(FORMATDATETIME(val, 'yyyy-MM-dd'), 'T', FORMATDATETIME(val, 'HH:mm:ss'))
+      castedColumnType: VARCHAR(1000000)
+      dateTimeColumnType: TIMESTAMP(9)
       textColumnType: TEXT
       longTextColumnType: LONGTEXT
       longVarBinary: LONGBLOB
       renameTableKeyword: RENAME TO
       alterColumnKeyword: ALTER COLUMN
-    
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+    org.springframework.jdbc.core.JdbcTemplate: DEBUG
+    org.springframework.jdbc.core.StatementCreatorUtils: TRACE
+
 ---
 
 spring:
-  profiles: insecure
+  config.activate.on-profile: insecure
   # @see https://github.com/spring-projects/spring-boot/issues/10306
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
-      - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
-      
-management:
-  jolokia:
-    enabled: true
+      - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration

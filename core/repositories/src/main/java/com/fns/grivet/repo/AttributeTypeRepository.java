@@ -13,13 +13,13 @@ public class AttributeTypeRepository {
 
     private static Map<String, AttributeType> nameMap = Arrays.stream(AttributeType.values()).collect(Collectors.toMap(k -> k.getType(), k -> k));
     private static Map<Integer, AttributeType> idMap = Arrays.stream(AttributeType.values()).collect(Collectors.toMap(k -> k.getId(), k -> k));
-    
+
     public AttributeType findByType(String type) {
         return nameMap.get(type);
     }
-    
+
     public AttributeType findById(Integer id) {
         return idMap.get(id);
     }
-    
+
 }

@@ -2,30 +2,27 @@
 
 set -e
 
-if [ $# -ne 2 ]; then
-    echo "Usage: ./show-log.sh standalone|pipeline {docker_image}"
+if [ -z "$1" ]; then
+    echo "Usage: ./show-log.sh standalone|pipeline {service_name}"
     exit 1
 fi
 
 suffix=$1
-docker_image=$2
+service_name=${2:-}
 
-# Export the active docker machine IP
-export DOCKER_IP=$(docker-machine ip $(docker-machine active))
+export DOCKER_IP="host.docker.internal"
 
-if [ -z "$DOCKER_IP" ]; then
-	SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-	if [ -f "$SCRIPT_DIR/.local" ]; then
-		export DOCKER_IP="127.0.0.1"
-	fi
+os=$(uname)
+if [[ "$os" == *"Linux"* ]]; then
+  export DOCKER_IP="172.17.0.1"
 fi
-
-# docker-machine doesn't exist in Linux, assign default ip if it's not set
-DOCKER_IP=${DOCKER_IP:-0.0.0.0}
-echo "Docker IP is $DOCKER_IP"
 
 # Change directories
 cd docker
 
-# Display status of cluster
-docker-compose -f docker-compose.yml -f docker-compose-$suffix.yml logs $docker_image
+# Display logs for service in cluster
+if [ -d "/tmp/signoz/deploy/docker/clickhouse-setup" ] && [ "$suffix" == "infra" ]; then
+  docker compose -f /tmp/signoz/deploy/docker/clickhouse-setup/docker-compose.yaml logs $service_name
+else
+  docker compose -f docker-compose.yml -f docker-compose-"$suffix.yml" logs $service_name
+fi

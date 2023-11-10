@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.fns</groupId>
-		<artifactId>grivet-deployables-parent</artifactId>
-		<version>0.5.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.fns</groupId>
+        <artifactId>grivet-deployables-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>grivet-standalone</artifactId>
-	<packaging>jar</packaging>
+    <artifactId>grivet-standalone</artifactId>
+    <packaging>jar</packaging>
 
-	<name>Grivet Standalone Service</name>
-	<description>Standalone variant of a micro-service capable of self-service modeling and persistence.</description>
-	<inceptionYear>2015</inceptionYear>
-	<url>https://github.com/fastnsilver/grivet</url>
+    <name>Grivet Standalone Service</name>
+    <description>Standalone variant of a micro-service capable of self-service modeling and persistence.</description>
+    <inceptionYear>2015</inceptionYear>
+    <url>https://github.com/fastnsilver/grivet</url>
 
 
     <dependencies>
-        
+
         <dependency>
             <groupId>com.fns</groupId>
             <artifactId>grivet-admin</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <!-- TODO There's an architectural smell here having to do this... -->
         <!-- In a standalone-mode we don't want to stream data -->
         <dependency>
@@ -32,35 +33,36 @@
             <artifactId>grivet-persist</artifactId>
             <version>${project.version}</version>
             <exclusions>
-	            	<exclusion>
-	            		<groupId>org.springframework.cloud</groupId>
-	            		<artifactId>spring-cloud-stream</artifactId>
-	            	</exclusion>
-	            	<exclusion>
-	            		<groupId>org.springframework.cloud</groupId>
-	            		<artifactId>spring-cloud-starter-stream-kafka</artifactId>
-	            	</exclusion>
-	            	<exclusion>
-	            		<groupId>com.101tec</groupId>
-	            		<artifactId>zkclient</artifactId>
-	            	</exclusion>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-stream-binder-kafka</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.kafka</groupId>
+                    <artifactId>spring-kafka</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.101tec</groupId>
+                    <artifactId>zkclient</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.fns</groupId>
             <artifactId>grivet-query</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>com.fns</groupId>
             <artifactId>grivet-test-resources</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-        
+
     </dependencies>
-    
+
     <build>
         <plugins>
             <plugin>
@@ -68,12 +70,12 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>repackage</id>
                         <goals>
                             <goal>repackage</goal>
-                            <goal>build-info</goal>
                         </goals>
                         <configuration>
-                            <classifier>exec</classifier>
+                            <attach>false</attach>
                         </configuration>
                     </execution>
                 </executions>
@@ -87,31 +89,31 @@
                 <version>${asciidoctor-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                         <id>generate-docs</id>
-                         <phase>prepare-package</phase>
-                         <goals>
-                             <goal>process-asciidoc</goal>
-                         </goals>
-                         <configuration>
-                             <backend>html</backend>
-                             <doctype>book</doctype>
-                             <attributes>
-                                 <toclevels>2</toclevels>
-                                 <toc>left</toc>
-                                 <generated>${project.build.directory}/docs/asciidoc/generated</generated>
-                                 <snippets>${snippetsDirectory}</snippets>
-                             </attributes>
-                             <outputDirectory>${project.build.directory}/site</outputDirectory>
-                         </configuration>
-                     </execution>
+                        <id>generate-docs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html</backend>
+                            <doctype>book</doctype>
+                            <attributes>
+                                <toclevels>2</toclevels>
+                                <toc>left</toc>
+                                <generated>${project.build.directory}/docs/asciidoc/generated</generated>
+                                <snippets>${snippetsDirectory}</snippets>
+                            </attributes>
+                            <outputDirectory>${project.build.directory}/site</outputDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
                 <dependencies>
-					<dependency>
-						<groupId>org.springframework.restdocs</groupId>
-						<artifactId>spring-restdocs-asciidoctor</artifactId>
-						<version>${spring-restdocs.version}</version>
-					</dependency>
-				</dependencies>
+                    <dependency>
+                        <groupId>org.springframework.restdocs</groupId>
+                        <artifactId>spring-restdocs-asciidoctor</artifactId>
+                        <version>${spring-restdocs.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>

@@ -22,7 +22,7 @@ import java.util.Arrays;
 /**
  * Creates a message from a {@code JSONObject}
  * and optionally supplied {@code String[]} arguments suitable for logging.
- *  
+ *
  * @author Chris Phillipson
  *
  */
@@ -40,5 +40,5 @@ class LogUtil {
         }
         return sb.toString();
     }
-    
-} 
+
+}

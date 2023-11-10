@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fns.grivet.model;
+package com.fns.grivet.services.console;
 
-import java.util.Map;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-import com.auth0.spring.security.api.Auth0UserDetails;
-import com.auth0.spring.security.api.authority.AuthorityStrategy;
+import de.codecentric.boot.admin.server.config.EnableAdminServer;
 
-public class User extends Auth0UserDetails {
-
-    private static final long serialVersionUID = 1L;
-
-    public User(Map<String, Object> map, AuthorityStrategy authorityStrategy) {
-        super(map, authorityStrategy);
+@SpringBootApplication
+@EnableAdminServer
+@EnableDiscoveryClient
+public class App {
+    public static void main(String[] args) {
+        SpringApplication.run(App.class, args);
     }
-
 }

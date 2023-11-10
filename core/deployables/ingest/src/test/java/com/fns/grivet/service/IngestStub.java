@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -16,21 +16,28 @@
 package com.fns.grivet.service;
 
 import org.json.JSONObject;
+
+import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
+
+import com.fns.grivet.model.Op;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Profile("!pipeline")
 public class IngestStub implements Ingester {
 
     @Override
     public void ingest(Message<JSONObject> message) {
         Assert.notNull(message.getHeaders(), "No message headers!");
-        Assert.hasText(message.getHeaders().get("type", String.class), "Type must not be null or empty!");
+        if (message.getHeaders().get("op").equals(Op.CREATE.name())) {
+            Assert.hasText(message.getHeaders().get("type", String.class), "Type must not be null or empty!");
+        }
         Assert.notNull(message.getPayload(), "Message must have non-null payload!");
         log.info("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
-                message.getPayload().toString());
+        message.getPayload().toString());
     }
-    
+
 }

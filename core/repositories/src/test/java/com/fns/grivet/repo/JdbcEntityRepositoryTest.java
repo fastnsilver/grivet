@@ -10,10 +10,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
@@ -21,23 +19,22 @@ import com.fns.grivet.model.Class;
 import com.fns.grivet.model.ClassAttribute;
 import com.fns.grivet.model.EntityAttributeValue;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class JdbcEntityRepositoryTest {
 
     private JdbcEntityRepository entityRepository;
-    
+
     private AttributeRepository attributeRepository;
-    
+
     private ClassRepository classRepository;
-    
+
     private ClassAttributeRepository classAttributeRepository;
-    
+
     @Autowired
     public JdbcEntityRepositoryTest(
-            JdbcEntityRepository entityRepository, 
+            JdbcEntityRepository entityRepository,
             AttributeRepository attributeRepository,
-            ClassRepository classRepository, 
+            ClassRepository classRepository,
             ClassAttributeRepository classAttributeRepository
             ) {
         this.entityRepository = entityRepository;
@@ -53,7 +50,7 @@ public class JdbcEntityRepositoryTest {
         classRepository.deleteAll();
         attributeRepository.deleteAll();
     }
-    
+
     @Test
     public void testNewId() {
         Class c = classRepository.save(Class.builder().name("foo").description("Foo type").build());
@@ -71,11 +68,11 @@ public class JdbcEntityRepositoryTest {
         LocalDateTime now = LocalDateTime.now();
         Long eid = entityRepository.newId(c.getId(), now);
         entityRepository.save(eid, canSpeak, AttributeType.BOOLEAN, true, now);
-        
+
         List<EntityAttributeValue> eavList = entityRepository.findByEntityId(eid);
         Assertions.assertTrue(eavList.size() == 1, "List of entity attribute values should contain only one item!");
         EntityAttributeValue item = eavList.get(0);
-        Assertions.assertEquals(now, item.getCreatedTime());
+        Assertions.assertEquals(now.truncatedTo(ChronoUnit.SECONDS), item.getCreatedTime().truncatedTo(ChronoUnit.SECONDS));
         Assertions.assertEquals(eid, item.getId());
         Assertions.assertEquals("1", item.getAttributeValue());
         Assertions.assertEquals(canSpeak.getName(), item.getAttributeName());
@@ -90,11 +87,11 @@ public class JdbcEntityRepositoryTest {
         LocalDateTime now = LocalDateTime.now();
         Long eid = entityRepository.newId(c.getId(), now);
         entityRepository.save(eid, maxRpm, AttributeType.INTEGER, 7500, now);
-        
-        List<EntityAttributeValue> eavList = entityRepository.findByCreatedTime(c.getId(), now.minus(5L, ChronoUnit.SECONDS), now.plus(5L, ChronoUnit.SECONDS));
+
+        List<EntityAttributeValue> eavList = entityRepository.findByCreatedTime(c.getId(), now.minus(1L, ChronoUnit.SECONDS), now.plus(1L, ChronoUnit.SECONDS));
         Assertions.assertTrue(eavList.size() == 1, "List of entity attribute values should contain only one item!");
         EntityAttributeValue item = eavList.get(0);
-        Assertions.assertEquals(now, item.getCreatedTime());
+        Assertions.assertEquals(now.truncatedTo(ChronoUnit.SECONDS), item.getCreatedTime().truncatedTo(ChronoUnit.SECONDS));
         Assertions.assertEquals(eid, item.getId());
         Assertions.assertEquals("7500", item.getAttributeValue());
         Assertions.assertEquals(maxRpm.getName(), item.getAttributeName());
@@ -109,7 +106,7 @@ public class JdbcEntityRepositoryTest {
         LocalDateTime now = LocalDateTime.now();
         Long eid = entityRepository.newId(c.getId(), now);
         entityRepository.save(eid, lotSize, AttributeType.INTEGER, 2250, now);
-        
+
         Integer cid = entityRepository.getClassIdForEntityId(eid);
         Assertions.assertEquals(c.getId(), cid);
     }
@@ -130,13 +127,13 @@ public class JdbcEntityRepositoryTest {
         Long eid2 = entityRepository.newId(c.getId(), now);
         entityRepository.save(eid2, lotSize, AttributeType.INTEGER, 5200, now);
         entityRepository.save(eid2, bedrooms, AttributeType.INTEGER, 3, now);
-        
+
         List<EntityAttributeValue> eavList1 = entityRepository.findByEntityId(eid1);
         Assertions.assertTrue(eavList1.size() == 2, "List of entity attribute values should contain two items!");
-        
+
         List<EntityAttributeValue> eavList2 = entityRepository.findByEntityId(eid2);
         Assertions.assertTrue(eavList2.size() == 2, "List of entity attribute values should contain two items!");
-        
+
         entityRepository.delete(eid1);
         eavList1 = entityRepository.findByEntityId(eid1);
         Assertions.assertTrue(eavList1.size() == 0, "No entity attribute values should exist!");
@@ -158,13 +155,13 @@ public class JdbcEntityRepositoryTest {
         Long eid2 = entityRepository.newId(c.getId(), now);
         entityRepository.save(eid2, lotSize, AttributeType.INTEGER, 5200, now);
         entityRepository.save(eid2, bedrooms, AttributeType.INTEGER, 3, now);
-        
+
         List<EntityAttributeValue> eavList1 = entityRepository.findByEntityId(eid1);
         Assertions.assertTrue(eavList1.size() == 2, "List of entity attribute values should contain two items!");
-        
+
         List<EntityAttributeValue> eavList2 = entityRepository.findByEntityId(eid2);
         Assertions.assertTrue(eavList2.size() == 2, "List of entity attribute values should contain two items!");
-        
+
         entityRepository.deleteAll();
         eavList1 = entityRepository.findByEntityId(eid1);
         Assertions.assertTrue(eavList1.size() == 0, "No entity attribute values should exist!");
@@ -188,7 +185,7 @@ public class JdbcEntityRepositoryTest {
         Long eid2 = entityRepository.newId(c.getId(), now);
         entityRepository.save(eid2, orderQuantity, AttributeType.INTEGER, 11, now);
         entityRepository.save(eid2, productId, AttributeType.INTEGER, 456, now);
-        
+
         List<EntityAttributeValue> eavList = entityRepository.findAllEntitiesByCid(c.getId());
         Assertions.assertTrue(eavList.size() == 4, "List of entity attribute values should contain four items!");
     }

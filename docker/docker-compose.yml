@@ -1,92 +1,65 @@
 # DOCKER COMPOSE CONFIGURATION
-# This file uses the version 2 docker-compose file format, described here:
-# https://docs.docker.com/compose/compose-file/#version-2
+# This file uses the version 3 docker-compose file format, described here:
+# https://docs.docker.com/compose/compose-file/compose-file-v3/#compose-file-structure-and-examples
 
-version: '2'
+version: '3.8'
 
 services:
 
   ## INFRASTRUCTURE SERVICES
-  
-  ### PERSISTENT DATA VOLUME
-  
-  # On a Mac, execute 
-  #    dscacheutil -q user | grep -A 3 -B 2 -e uid:\ 5'[0-9][0-9]'
-  # in a Terminal instance to obtain the uid:gid for the account that runs your docker-machine instance
-  # You will want to edit the command below if your uid:gid differ
-  data:
-    image: busybox
-    command: "mkdir /data && chown 502:20 /data && chmod 700 /data"
-  
-  ### KIBANA
-  kibana:
-    image: kibana:latest
-    links:
-      - elasticsearch
-    ports:
-      - 5601:5601
-      
-  ### ELASTICSEARCH
-  elasticsearch:
-    image: elasticsearch:latest
-    ports:
-      - 9200:9200
-      - 9300:9300
-    environment:
-      - ES_JAVA_OPTS=-Xms2g -Xmx4g
-  
-  ### REDIS
-  redis:
-    image: redis:3.2.10-alpine
-    ports:
-      - 6379:6379
-  
-  ### LOGSTASH
-  logstash:
-    image: logstash:latest
-    command: 'logstash -f /logstash.conf -v'
-    volumes:
-      - ./monitoring/logstash.conf:/logstash.conf
-    links:
-      - redis
-      - elasticsearch
-  
-  ### LOGSPOUT
-  
-  # Thank you R. Toma 
-  # (@see https://github.com/rtoma/logspout-redis-logstash/blob/master/example/docker-compose.yml)
-  
-  logspout:
-    image: rtoma/logspout-redis-logstash
-    command: 'redis://redis'
-    environment:
-      - DEBUG=true
-      - REDIS_KEY=logstash
-      - REDIS_DOCKER_HOST=redis
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    links:
-      - redis
-      
+
   ### PROMETHEUS
   prometheus:
-    image: prom/prometheus:v2.0.0-beta.4
+    image: prom/prometheus:v2.47.2
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
     ports:
       - 9090:9090
-  
+
+#  alertmanager:
+#    image: prom/alertmanager:v0.26.0
+#    ports:
+#      - 9093:9093
+#    volumes:
+#      - ./alertmanager/:/etc/alertmanager/
+#    restart: always
+#    command:
+#      - '--config.file=/etc/alertmanager/config.yml'
+#      - '--storage.path=/alertmanager'
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:master
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - /:/host:ro,rslave
+    command:
+      - '--path.rootfs=/host'
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - 9100:9100
+    restart: always
+
   ### GRAFANA
   grafana:
-    image: grafana/grafana:4.5.1
+    image: grafana/grafana:10.2.0
     ports:
       - 3000:3000
+    restart: always
     env_file:
       - ./monitoring/grafana.env
     links:
       - prometheus
-      
+
   ### CADVISOR
   cadvisor:
-    image: google/cadvisor:latest
+    # @see https://github.com/google/cadvisor/issues/1943
+    image: gcr.io/cadvisor/cadvisor:v0.46.0
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -94,82 +67,85 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     ports:
       - 9080:8080
-      
+    restart: always
+
   ### DATABASE
   db:
-    image: mysql:5.7.19
+    image: mysql:8.1
     privileged: true
     ports:
       - 3306:3306
+    restart: always
     env_file:
       - ./mysql/db.env
-    volumes_from:
-      - data
-      
+    volumes:
+      - db-data:/var/lib/mysql
+
   ### DATABASE ADMINISTRATION
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    ports: 
-      - 4000:80
+    image: phpmyadmin:5.2.1-apache
+    ports:
+      - 5050:80
+    restart: always
     env_file:
       - ./phpmyadmin/admin.env
     links:
       - db
-      
+
 
   ## NEFLIX OSS, SUPPORT SERVICES
-  
+
   ### CONFIGURATION MANAGEMENT
   config-service:
     image: fastnsilver/grivet-config-server
     ports:
       - 8888:8888
+    extra_hosts:
+      - "signoz:host-gateway"
     environment:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx2g -XX:+UseG1GC -XX:+UseStringDeduplication
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
       - EUREKA_CLIENT_FETCH_REGISTRY=false
-  
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-config-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
+      # Replace these with your own Git repository, username, personal access token, and branch!
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/fastnsilver/grivet-config-repo
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_USERNAME=fastnsilver
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_PASSWORD=
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT-LABEL=main
+
   ### EUREKA, DISCOVERY
   discovery-service:
     image: fastnsilver/grivet-discovery-service
     ports:
       - 8761:8761
+    extra_hosts:
+      - "signoz:host-gateway"
     environment:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx2g -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-  
-  ### SPRING BOOT SERVICE ADMINISTRATION
-#  springboot-admin:
-#    image: fastnsilver/grivet-boot-admin
-#    ports:
-#      - 5555:5555
-#    links:
-#      - discovery-service
-#    environment:
-#      - DOCKER_IP=$DOCKER_IP
-#      - JAVA_OPTS=-Xmx1g -XX:+UseG1GC -XX:+UseStringDeduplication
-#      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-#      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
-#      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
-#      - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/
-  
-  ### SPRING BOOT DASHBOARD
-  springboot-dashboard:
-    image: fastnsilver/grivet-dashboard
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-discovery-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
+
+  ## SPRING BOOT SERVICE ADMINISTRATION
+  springboot-admin:
+    image: fastnsilver/grivet-microservices-console
     ports:
-      - 8088:8088
+      - 5555:5555
+    extra_hosts:
+      - "signoz:host-gateway"
     links:
       - discovery-service
-      - redis
     environment:
+      - SPRING_APPLICATION_NAME=grivet-microservices-console
+      - SPRING_PROFILES_ACTIVE=docker,insecure
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
       - DOCKER_IP=$DOCKER_IP
-      - SPRING_REDIS_HOST=redis
       - JAVA_OPTS=-Xmx1g -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
-      - EUREKA_CLIENT_ENABLED=true
-      - EUREKA_CLIENT_HEALTH_CHECK_ENABELD=false
-      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-microservices-console
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
+
+volumes:
+  db-data: { }
+  prometheus_data: { }

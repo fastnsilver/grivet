@@ -27,14 +27,13 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -45,8 +44,8 @@ import com.fns.grivet.query.NamedQuery;
 import io.restassured.path.json.JsonPath;
 
 @ActiveProfiles(value = { "hsqldb", "insecure" })
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = QueryInit.class)
+@Disabled("See https://github.com/flyway/flyway/issues/3782")
 public class NamedQueryServiceSprocTest {
 
 	@Autowired
@@ -103,7 +102,7 @@ public class NamedQueryServiceSprocTest {
         		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
         		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
         		namedQueryService.create(namedQuery);
-        
+
         		namedQueryService.get("sproc.getAttributesCreatedBefore", null);
 	    });
 	}
@@ -115,7 +114,7 @@ public class NamedQueryServiceSprocTest {
         		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
         		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
         		namedQueryService.create(namedQuery);
-        
+
         		MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
         		Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
         		params.add("timeCreated", tomorrow);

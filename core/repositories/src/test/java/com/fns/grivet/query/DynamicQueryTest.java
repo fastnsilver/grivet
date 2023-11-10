@@ -10,17 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.fns.grivet.model.AttributeType;
-import com.fns.grivet.query.DynamicQuery;
-import com.fns.grivet.query.QueryBuilder;
 
 public class DynamicQueryTest {
 
     private static final String BASE_JOIN = "INNER JOIN all_entity_values AS ev ON e.eid = ev.eid ";
-    
+
     private final QueryBuilder qb = QueryBuilder.newInstance();
     private final Map<Integer, Integer> attributeToAttributeTypeMap = new HashMap<>();
     private final Map<String, Integer> attributeNameToAttributeIdMap = new HashMap<>();
-    
+
     @BeforeEach
     public void setUp() {
         attributeToAttributeTypeMap.put(1, AttributeType.VARCHAR.getId());
@@ -28,7 +26,7 @@ public class DynamicQueryTest {
         attributeNameToAttributeIdMap.put("flavor", 1);
         attributeNameToAttributeIdMap.put("age", 2);
     }
-    
+
     @Test
     public void testConstaintWithNullConjunction() {
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -42,7 +40,7 @@ public class DynamicQueryTest {
         Assertions.assertEquals(Types.VARCHAR, dq.asSqlParameterValues()[1].getSqlType());
         Assertions.assertEquals("Vanilla", dq.asSqlParameterValues()[1].getValue());
     }
-        
+
     @Test
     public void testConstaintWithBetween() {
         MockHttpServletRequest request = new MockHttpServletRequest();

@@ -72,12 +72,12 @@ public class EntityService {
 	@Transactional
 	public Long create(String type, JSONObject payload) {
 		com.fns.grivet.model.Class c = classRepository.findByName(type);
-		Assert.notNull(c, String.format("Type [%s] is not registered!", type));
+		Assert.notNull(c, "Type [%s] is not registered!".formatted(type));
 		if (c.isValidatable()) {
 			executeSchemaValidation(type, payload);
 		}
 		Set<String> keys = payload.keySet();
-		Assert.notEmpty(keys, String.format("Type [%s] must declare at least one attribute in create request!", type));
+		Assert.notEmpty(keys, "Type [%s] must declare at least one attribute in create request!".formatted(type));
 		Object val = null;
 		Attribute a = null;
 		ClassAttribute ca = null;
@@ -89,11 +89,11 @@ public class EntityService {
 		for (String key: keys) {
 			val = payload.get(key);
 			a = attributeRepository.findByName(key);
-			Assert.notNull(a, String.format("Attribute [%s] is not registered!", key));
+			Assert.notNull(a, "Attribute [%s] is not registered!".formatted(key));
 			ca = classAttributeRepository.findByCidAndAid(c.getId(), a.getId());
-			Assert.notNull(ca, String.format("[%s] is not a valid attribute of [%s]", key, type));
+			Assert.notNull(ca, "[%s] is not a valid attribute of [%s]".formatted(key, type));
 			at = attributeTypeRepository.findById(ca.getTid());
-			Assert.notNull(at, String.format("Attribute type [%s] is not supported!", at));
+			Assert.notNull(at, "Attribute type [%s] is not supported!".formatted(at));
 			entityRepository.save(eid, a, at, val, createdTime);
 		}
 		return eid;
@@ -102,7 +102,7 @@ public class EntityService {
 	@Transactional
 	public String update(Long eid, JSONObject payload) {
 		Integer cid = entityRepository.getClassIdForEntityId(eid);
-		Assert.notNull(cid, String.format("No type registered for entity with oid = [%d]", eid));
+		Assert.notNull(cid, "No type registered for entity with oid = [%d]".formatted(eid));
         com.fns.grivet.model.Class c = classRepository.findById(cid).get();
 		String type = c.getName();
 		if (c.isValidatable()) {
@@ -112,7 +112,7 @@ public class EntityService {
 		// be at least one to update!
 		Set<String> detachedKeys = payload.keySet();
 		Assert.notEmpty(detachedKeys,
-				String.format("Type [%s] must declare at least one attribute in update request!", type));
+                "Type [%s] must declare at least one attribute in update request!".formatted(type));
 
 		// get currently persisted entity's attribute values; make sure the oid
 		// passed actually exists!
@@ -140,11 +140,11 @@ public class EntityService {
 				val = persistentObject.get(key);
 			}
 			a = attributeRepository.findByName(key);
-			Assert.notNull(a, String.format("Attribute [%s] is not registered!", key));
+			Assert.notNull(a, "Attribute [%s] is not registered!".formatted(key));
 			ca = classAttributeRepository.findByCidAndAid(c.getId(), a.getId());
-			Assert.notNull(ca, String.format("[%s] is not a valid attribute of [%s]", key, type));
+			Assert.notNull(ca, "[%s] is not a valid attribute of [%s]".formatted(key, type));
 			at = attributeTypeRepository.findById(ca.getTid());
-			Assert.notNull(at, String.format("Attribute type [%s] is not supported!", at));
+			Assert.notNull(at, "Attribute type [%s] is not supported!".formatted(at));
 			entityRepository.save(eid, a, at, val, createdTime);
 		}
 		return type;
@@ -153,7 +153,7 @@ public class EntityService {
 	@Transactional
 	public String delete(Long eid) {
 		Integer cid = entityRepository.getClassIdForEntityId(eid);
-		Assert.notNull(cid, String.format("No type registered for entity with oid = [%d]", eid));
+		Assert.notNull(cid, "No type registered for entity with oid = [%d]".formatted(eid));
         com.fns.grivet.model.Class c = classRepository.findById(cid).get();
 		String type = c.getName();
 		entityRepository.delete(eid);
@@ -164,7 +164,7 @@ public class EntityService {
 	public String findByCreatedTime(String type, LocalDateTime createdTimeStart, LocalDateTime createdTimeEnd,
 			Map<String, String[]> parameters) throws JsonProcessingException {
 		com.fns.grivet.model.Class c = classRepository.findByName(type);
-		Assert.notNull(c, String.format("Type [%s] is not registered!", type));
+		Assert.notNull(c, "Type [%s] is not registered!".formatted(type));
 		Map<Integer, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
 		List<Attribute> attributes = Lists.newArrayList(attributeRepository.findAll());
 		Map<String, Integer> attributeNameToAttributeIdMap = attributes.stream().collect(Collectors.toMap(Attribute::getName, Attribute::getId));
@@ -183,7 +183,7 @@ public class EntityService {
 	public String findById(Long eid) {
 		List<EntityAttributeValue> rows = entityRepository.findByEntityId(eid);
 		if (rows == null) {
-			throw new ResourceNotFoundException(String.format("No entity exists with oid =[%d]", eid));
+			throw new ResourceNotFoundException("No entity exists with oid =[%d]".formatted(eid));
 		}
 		Integer cid = entityRepository.getClassIdForEntityId(eid);
         com.fns.grivet.model.Class c = classRepository.findById(cid).get();

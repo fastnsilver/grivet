@@ -65,7 +65,7 @@ public enum Conjunction {
      */
     public static Conjunction fromValue(String name) {
         List<Conjunction> conj = Arrays.stream(Conjunction.values()).filter(o -> o.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
-        Assert.notEmpty(conj, String.format("Invalid Conjunction [%s]", name));
+        Assert.notEmpty(conj, "Invalid Conjunction [%s]".formatted(name));
         return conj.get(0);
     }
 }

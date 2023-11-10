@@ -1,65 +1,45 @@
 # DOCKER COMPOSE CONFIGURATION
-# This file uses the version 2 docker-compose file format, described here:
-# https://docs.docker.com/compose/compose-file/#version-2
+# This file uses the version 3 docker-compose file format, described here:
+# https://docs.docker.com/compose/compose-file/compose-file-v3/#compose-file-structure-and-examples
 
-version: '2'
+version: '3.8'
+
+### KAFKA
+include:
+  - confluent-platform.yml
 
 services:
 
 
   ## INFRASTRUCTURE SERVICES
-     
-  ### API GATEWAY   
+
+  ### API GATEWAY
   edge-service:
     extends:
       file: api-gateway.yml
-      service: zuul
+      service: spring-cloud-gateway
     links:
       - discovery-service
       - config-service
-#      - springboot-admin
+      - springboot-admin
       - grivet-ingest
       - grivet-admin
       - grivet-persist
       - grivet-query
-      
-  ### KAFKA
-  #### @see http://wurstmeister.github.io/kafka-docker/
-  zookeeper:
-    image: wurstmeister/zookeeper
-    ports:
-      - 2181:2181
-      
-  kafka:
-    image: wurstmeister/kafka
-    ports:
-      - 9092:9092
-    links:
-      - zookeeper:zk
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: $DOCKER_IP
-      KAFKA_ZOOKEEPER_CONNECT: zk:2181
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    
-  kafka-manager:
-    image: sheepkiller/kafka-manager
-    ports:
-      - 29000:9000
-    environment:
-      ZK_HOSTS: zk:2181
-    links:
-      - zookeeper:zk
-  
-  
+      - SPRING_PROFILES_ACTIVE=docker,insecure,pipeline
+
+
   ## CORE SERVICES
   ### @see http://docs.spring.io/spring-cloud-stream/docs/current-SNAPSHOT/reference/htmlsingle/#_kafka_specific_settings
-  
+
   ### GRIVET INGEST
   grivet-ingest:
     image: fastnsilver/grivet-ingest
     ports:
-      - 8081:8081
+      - 9081:8081
+    extra_hosts:
+      - "signoz:host-gateway"
     links:
       - config-service
       - discovery-service
@@ -67,85 +47,95 @@ services:
       - kafka
       - zookeeper:zk
     environment:
-      - SPRING_PROFILES_ACTIVE=insecure,pipeline
+      - SPRING_APPLICATION_NAME=grivet-ingest-service
+      - SPRING_PROFILES_ACTIVE=docker,insecure,pipeline
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
-      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
-      - EUREKA_CLIENT_FETCH_REGISTRY=true
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
       - SPRING_CLOUD_STREAM_BINDINGS_INPUT_BINDER=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zk
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-ingest-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
 
   ### GRIVET ADMIN
   grivet-admin:
     image: fastnsilver/grivet-admin
     ports:
-      - 8085:8085
+      - 9085:8085
+    extra_hosts:
+      - "signoz:host-gateway"
     links:
       - config-service
       - discovery-service
       - prometheus
       - db
     environment:
-      - SPRING_PROFILES_ACTIVE=mysql,insecure
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC
+      - SPRING_APPLICATION_NAME=grivet-admin-service
+      - SPRING_PROFILES_ACTIVE=docker,mysql,insecure
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      # If you want to change these values, then you'll also need to update key-value pairs in mysql/db.env
+      - SPRING_DATASOURCE_USERNAME=dbadmin
+      - SPRING_DATASOURCE_PASSWORD=thunderb0lt!
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
-      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
-      - EUREKA_CLIENT_FETCH_REGISTRY=true
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zk
-  
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-admin-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
+
   ### GRIVET PERSIST
   grivet-persist:
     image: fastnsilver/grivet-persist
     ports:
-      - 8082:8082
+      - 9082:8082
+    extra_hosts:
+      - "signoz:host-gateway"
     links:
       - config-service
       - discovery-service
       - prometheus
       - db
       - kafka
-      - redis
       - zookeeper:zk
     environment:
-      - SPRING_PROFILES_ACTIVE=mysql,insecure,pipeline
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC
+      - SPRING_APPLICATION_NAME=grivet-persistence-service
+      - SPRING_PROFILES_ACTIVE=docker,mysql,insecure,pipeline
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      # If you want to change these values, then you'll also need to update key-value pairs in mysql/db.env
+      - SPRING_DATASOURCE_USERNAME=dbadmin
+      - SPRING_DATASOURCE_PASSWORD=thunderb0lt!
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
-      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
-      - EUREKA_CLIENT_FETCH_REGISTRY=true
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
       - SPRING_CLOUD_STREAM_BINDINGS_INPUT_BINDER=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zk
-  
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-persistence-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
+
   ### GRIVET QUERY
   grivet-query:
     image: fastnsilver/grivet-query
     ports:
-      - 8083:8083
+      - 9083:8083
+    extra_hosts:
+      - "signoz:host-gateway"
     links:
       - config-service
       - discovery-service
       - prometheus
       - db
     environment:
-      - SPRING_PROFILES_ACTIVE=mysql,insecure
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC
+      - SPRING_APPLICATION_NAME=grivet-query-service
+      - SPRING_PROFILES_ACTIVE=docker,mysql,insecure
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      # If you want to change these values, then you'll also need to update key-value pairs in mysql/db.env
+      - SPRING_DATASOURCE_USERNAME=dbadmin
+      - SPRING_DATASOURCE_PASSWORD=thunderb0lt!
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
-      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
-      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
-      - EUREKA_CLIENT_FETCH_REGISTRY=true
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE=http://discovery-service:8761/eureka/
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-query-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317

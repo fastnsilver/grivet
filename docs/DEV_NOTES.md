@@ -4,12 +4,11 @@ This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.
 
 ## Prerequisites
 
-* `docker` and `docker-compose` are required, you have options
-  * See [Docker Toolbox](https://www.docker.com/products/docker-toolbox) -- note that this is considered a legacy option
+* `docker` and `compose` plugin are required, you have options
   * See [Docker for Mac](https://docs.docker.com/docker-for-mac/)
   * See [Docker for Windows 10](https://docs.docker.com/docker-for-windows/)
-* Java [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8u144 or better
-* [Maven](https://maven.apache.org/download.cgi) 3.5.0 or better
+* Java [JDK](https://www.oracle.com/java/technologies/downloads/#java17) 17.0.9 or better
+* [Maven](https://maven.apache.org/download.cgi) 3.9.5 or better
 * an RDBMS
   * See [application.yml](https://github.com/fastnsilver/config-repo/blob/master/application.yml) for details
   * Enable the `h2` profile for in-memory database
@@ -61,7 +60,7 @@ where `<profile-name>` should be replaced with either `h2,insecure` or `mysql,in
 > E.g., on a Mac, you could install [Homebrew](http://brew.sh/), then install MySQL with
 
 >```
->brew install mysql
+> brew install mysql
 >```
 
 > Then start the instance with `mysql.server start`
@@ -74,56 +73,94 @@ where `<profile-name>` should be replaced with either `h2,insecure` or `mysql,in
 
 ### with Docker
 
-#### (Optional) Docker Toolbox pre-requisites
-Assuming you have installed VirtualBox, Docker Machine, Docker Compose and Docker.
+#### via Docker Desktop
 
-If not, it's highly recommended (on a Mac) to install each via [Homebrew](http://brew.sh/) with
+Install [Docker Desktop](https://www.docker.com/products/docker-desktop/), then skip to [Onward with Docker](#onward-with-docker).
 
-```
-brew tap caskroom/cask
-brew install brew-cask
-brew cask install virtualbox
+#### via Multipass
 
-brew install docker-machine
-brew install docker-compose
-brew install docker
-```
+ [Multipass](https://multipass.run/)
 
-The instruction below provisions a Docker host named `dev` with 2 CPU, 10Gb RAM and 40Gb disk space
+On a Mac
+
+* Install [Homebrew](http://brew.sh/)
 
 ```
-docker-machine create --driver virtualbox --virtualbox-cpu-count "2" --virtualbox-disk-size "40000" --virtualbox-memory "10240" dev
+brew install multipass
 ```
 
-You could also execute the following script which will perform the first step above on your behalf
+The commands below a) provisions a Docker host named `dev` with 2 CPU, 20Gb RAM, and 40Gb disk space and b) drops you into a shell on that host
+
+```
+multipass launch docker -c 2 -m 20G -d 40G -n dev
+multipass shell dev
+```
+
+You could also execute the following script which will perform the step above on your behalf
 
 ```
 ./provision.sh {1}
 ```
 
-where `{1}` above would be replaced with whatever you want to name your docker-machine
+where `{1}` above would be replaced with whatever you want to name your Multipass instance
 
-Caveat: You should have at least 16GB of memory and 40GB of disk space on your laptop or workstation.
+Caveat: You should have at least 20GB of memory and 40GB of disk space on your laptop or workstation.
 
-
-To begin using it
+You'll need to install some additional tools to make the VM useful.
 
 ```
-eval $(docker-machine env dev)
+sudo apt install unzip zip
+curl -s "https://get.sdkman.io" | bash
+sdk install java 17.0.9-librca
+sdk install maven 3.9.5
 ```
 
+You will also want to fetch the source for this repo too
 
-Lastly, to destroy your docker machine, you could execute
+```
+git clone https://github.com/pacphi/grivet
+```
+
+To exit the shell at any time, type `exit` and press the `Return` key.
+
+
+To destroy your docker machine, you could execute
 
 ```
 ./destroy.sh {1}
 ```
 
-where `{1}` above would be replaced with an existing docker-machine name
+where `{1}` above would be replaced with the name of an existing Multipass instance
 
 Caution! This will remove the VM hosting all your Docker images.
 
+
 #### Onward with Docker
+
+##### Prereqs
+
+* Obtain Github personal access token
+  * from the command line (not inside Multipass instance), execute
+
+  ```
+  gh auth login
+  gh auth token
+  ```
+
+  * copy-and-paste the token as the value for [SPRING_CLOUD_CONFIG_SERVER_GIT_PASSWORD](../docker/docker-compose.yml#L136)
+* Prepare a private Git repository
+
+  ```
+  cd /tmp
+  gh repo create grivet-repo-config --private --clone
+  cd grivet-repo-config
+  curl -LO https://raw.githubusercontent.com/fastnsilver/grivet/main/config-repo/template.zip
+  unzip template.zip
+  rm template.zip
+  git add --all
+  git commit -m "Initial set of application configuration"
+  git push origin main
+  ```
 
 ##### Build images
 
@@ -145,9 +182,7 @@ mvn docker:push
 
 ##### Pull images
 
-Visit [Dockerhub](https://hub.docker.com/u/fastnsilver/)
-
-Pull all the `fastnsilver/grivet-*` images
+If you haven't yet built images locally, you can visit [Dockerhub](https://hub.docker.com/u/fastnsilver/) to pull pre-built `fastnsilver/grivet-*` images
 
 
 ##### Run images
@@ -159,43 +194,32 @@ Pull all the `fastnsilver/grivet-*` images
 where `{1}` above would be replaced with either `standalone` or `pipeline`
 
 
-##### Running a local development environment (with Docker Toolbox)
-
-> The following holds true only if you opted to install Docker Toolbox
-
-@see https://forums.docker.com/t/using-localhost-for-to-access-running-container/3148
-
-On a Mac we cannot access running Docker containers from localhost.
-
-After running `docker-machine ip {env}` where `{env}` is your instance of a docker-machine, add an entry in `/etc/hosts` that maps `DOCKER_HOST` IP address to a memorable hostname.
-
-
-Caveats: 
-
-* Docker image currently bootstraps against a MySQL back-end
-
-
 #### Work with images
 
-Services are accessible via the Docker host (or IP address) and port 
+Services are accessible via the Docker host (or IP address) and port
 
 Service            |  Port
 -------------------|-------
-Edge Service (Zuul)| 9999
+Edge Service (Spring Cloud Gateway)| 80
 Config Server      | 8888
 Discovery (Eureka) | 8761
 Prometheus         | 9090
 Grafana            | 3000
 Grivet Standalone  | 8080
-PHP MySQL Admin    | 4000
+^ Grivet Ingest      | 9081
+^ Grivet Admin       | 9085
+^ Grivet Persistence | 9082
+^ Grivet Query       | 9083
+PHP MySQL Admin    | 5050
+Spring Boot Admin  | 5555
 MySQL              | 3306
-Elasticsearch      | 9200
-Logstash           | 5000
-Kibana             | 5601
+Kafka              | 29092
+Kafka UI           | 8090
+Zookeeper          | 22181
+Signoz             | 3301
 CAdvisor           | 9080
 
-If making requests via Edge Service, consult `zuul.routes` in [application.yml](https://github.com/fastnsilver/grivet/blob/master/support/api-gateway/src/main/resources/application.yml).  Prepend
-route to each service's public API.
+If making requests via Edge Service, consult `spring.cloud.gateway.routes` in the `grivet-api-gateway.yml` file within your own [grivet-config-repo](#prereqs).
 
 
 #### Stop images (and remove them)
@@ -207,7 +231,7 @@ route to each service's public API.
 where `{1}` above would be replaced with either `standalone` or `pipeline`
 
 
-## Working with Maven Site 
+## Working with Maven Site
 
 ### Stage
 

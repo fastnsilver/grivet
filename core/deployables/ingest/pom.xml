@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.fns</groupId>
-		<artifactId>grivet-deployables-parent</artifactId>
-		<version>0.5.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.fns</groupId>
+        <artifactId>grivet-deployables-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>grivet-ingest</artifactId>
-	<packaging>jar</packaging>
+    <artifactId>grivet-ingest</artifactId>
+    <packaging>jar</packaging>
 
-	<name>Grivet Ingest Service</name>
-	<description>Ingestion end-points and service integration.</description>
-	<inceptionYear>2016</inceptionYear>
-	<url>https://github.com/fastnsilver/grivet</url>
+    <name>Grivet Ingest Service</name>
+    <description>Ingestion end-points and service integration.</description>
+    <inceptionYear>2016</inceptionYear>
+    <url>https://github.com/fastnsilver/grivet</url>
 
-	<dependencies>
+    <dependencies>
         <dependency>
             <groupId>com.fns</groupId>
             <artifactId>grivet-common</artifactId>
@@ -44,7 +44,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-                
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-integration</artifactId>
@@ -73,35 +73,35 @@
             <artifactId>jackson-datatype-jdk8</artifactId>
         </dependency>
 
-		<!-- Spring Cloud Stream -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-stream-binder-kafka</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka</artifactId>
-		</dependency>
-		<dependency>
+        <!-- Spring Cloud Stream -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-binder-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream-test-support</artifactId>
             <scope>test</scope>
         </dependency>
-	</dependencies>
-	
-	<build>
+    </dependencies>
+
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>repackage</id>
                         <goals>
                             <goal>repackage</goal>
-                            <goal>build-info</goal>
                         </goals>
                         <configuration>
-                            <classifier>exec</classifier>
+                            <attach>false</attach>
                         </configuration>
                     </execution>
                 </executions>
@@ -115,31 +115,31 @@
                 <version>${asciidoctor-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                         <id>generate-docs</id>
-                         <phase>prepare-package</phase>
-                         <goals>
-                             <goal>process-asciidoc</goal>
-                         </goals>
-                         <configuration>
-                             <backend>html</backend>
-                             <doctype>book</doctype>
-                             <attributes>
-                                 <toclevels>2</toclevels>
-                                 <toc>left</toc>
-                                 <generated>${project.build.directory}/docs/asciidoc/generated</generated>
-                                 <snippets>${snippetsDirectory}</snippets>
-                             </attributes>
-                             <outputDirectory>${project.build.directory}/site</outputDirectory>
-                         </configuration>
-                     </execution>
+                        <id>generate-docs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html</backend>
+                            <doctype>book</doctype>
+                            <attributes>
+                                <toclevels>2</toclevels>
+                                <toc>left</toc>
+                                <generated>${project.build.directory}/docs/asciidoc/generated</generated>
+                                <snippets>${snippetsDirectory}</snippets>
+                            </attributes>
+                            <outputDirectory>${project.build.directory}/site</outputDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
                 <dependencies>
-					<dependency>
-						<groupId>org.springframework.restdocs</groupId>
-						<artifactId>spring-restdocs-asciidoctor</artifactId>
-						<version>${spring-restdocs.version}</version>
-					</dependency>
-				</dependencies>
+                    <dependency>
+                        <groupId>org.springframework.restdocs</groupId>
+                        <artifactId>spring-restdocs-asciidoctor</artifactId>
+                        <version>${spring-restdocs.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
