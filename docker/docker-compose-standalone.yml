@@ -18,6 +18,8 @@ services:
       - config-service
       - springboot-admin
       - grivet-standalone
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,insecure,standalone
 
 
   ## CORE SERVICE

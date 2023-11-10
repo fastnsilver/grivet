@@ -16,7 +16,6 @@ services:
       - "signoz:host-gateway"
     environment:
       - SPRING_APPLICATION_NAME=grivet-api-gateway
-      - SPRING_PROFILES_ACTIVE=docker,insecure
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication

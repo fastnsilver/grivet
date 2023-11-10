@@ -21,6 +21,8 @@ services:
       - grivet-admin
       - grivet-persist
       - grivet-query
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,insecure,pipeline
 
   ### KAFKA
   kafka:
