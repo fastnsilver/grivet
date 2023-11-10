@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.Message;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.fns.grivet.model.Op;
@@ -29,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Profile("pipeline")
+@Service
 public class IngestService implements Ingester {
 
     public static final String DESTINATION = "message-out-0";

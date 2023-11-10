@@ -210,8 +210,12 @@ Grivet Standalone  | 8080
 ^ Grivet Admin       | 9085
 ^ Grivet Persistence | 9082
 ^ Grivet Query       | 9083
-PHP MySQL Admin    | 8090
+PHP MySQL Admin    | 5050
+Spring Boot Admin  | 5555
 MySQL              | 3306
+Kafka              | 29092
+Kafka UI           | 8090
+Zookeeper          | 22181
 Signoz             | 3301
 CAdvisor           | 9080
 

@@ -85,7 +85,7 @@ services:
   phpmyadmin:
     image: phpmyadmin:5.2.1-apache
     ports:
-      - 8090:80
+      - 5050:80
     restart: always
     env_file:
       - ./phpmyadmin/admin.env

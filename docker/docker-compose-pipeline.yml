@@ -4,7 +4,12 @@
 
 version: '3.8'
 
+### KAFKA
+include:
+  - confluent-platform.yml
+
 services:
+
 
   ## INFRASTRUCTURE SERVICES
 
@@ -23,12 +28,6 @@ services:
       - grivet-query
     environment:
       - SPRING_PROFILES_ACTIVE=docker,insecure,pipeline
-
-  ### KAFKA
-  kafka:
-    extends:
-      file: confluent-platform.yml
-      service: kafka
 
 
   ## CORE SERVICES
@@ -99,7 +98,6 @@ services:
       - prometheus
       - db
       - kafka
-      - redis
       - zookeeper:zk
     environment:
       - SPRING_APPLICATION_NAME=grivet-persistence-service
