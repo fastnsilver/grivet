@@ -8,19 +8,19 @@
 <div id="overview"><a href="../../../../../apidocs/com/fns/grivet/repo/NamedQueryRepository.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.fns.grivet.repo;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
-<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> org.springframework.data.repository.PagingAndSortingRepository;
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> org.springframework.data.jpa.repository.JpaRepository;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> org.springframework.data.repository.query.Param;
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.springframework.stereotype.Repository;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.springframework.data.<strong class="jxr_keyword">rest</strong>.core.annotation.RepositoryRestResource;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> com.fns.grivet.query.NamedQuery;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   @Repository
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../com/fns/grivet/repo/NamedQueryRepository.html">NamedQueryRepository</a> <strong class="jxr_keyword">extends</strong> PagingAndSortingRepository&lt;NamedQuery, Integer&gt; {
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   @RepositoryRestResource(collectionResourceRel = <span class="jxr_string">"namedQueries"</span>, path = <span class="jxr_string">"namedQueries"</span>)
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a name="NamedQueryRepository" href="../../../../com/fns/grivet/repo/NamedQueryRepository.html#NamedQueryRepository">NamedQueryRepository</a> <strong class="jxr_keyword">extends</strong> JpaRepository&lt;NamedQuery, Integer&gt; {
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/fns/grivet/query/NamedQuery.html">NamedQuery</a> findByName(@Param(<span class="jxr_string">"name"</span>) String name);
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>      <strong class="jxr_keyword">public</strong> NamedQuery findByName(@Param(<span class="jxr_string">"name"</span>) String name);
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2016&#x2013;2017 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2016&#x2013;2023 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
 </body>
 </html>

@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * You may obtain a copy of the License at</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -56,19 +56,19 @@
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  @Slf4j
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  @RestController
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/fns/grivet/controller/NamedQueryController.html">NamedQueryController</a> {
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="NamedQueryController" href="../../../../com/fns/grivet/controller/NamedQueryController.html#NamedQueryController">NamedQueryController</a> {
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a href="../../../../com/fns/grivet/service/NamedQueryService.html">NamedQueryService</a> namedQueryService;
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="NamedQueryService" href="../../../../com/fns/grivet/service/NamedQueryService.html#NamedQueryService">NamedQueryService</a> namedQueryService;
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      @Autowired
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/fns/grivet/controller/NamedQueryController.html">NamedQueryController</a>(<a href="../../../../com/fns/grivet/service/NamedQueryService.html">NamedQueryService</a> namedQueryService) {
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">public</strong> <a name="NamedQueryController" href="../../../../com/fns/grivet/controller/NamedQueryController.html#NamedQueryController">NamedQueryController</a>(<a name="NamedQueryService" href="../../../../com/fns/grivet/service/NamedQueryService.html#NamedQueryService">NamedQueryService</a> namedQueryService) {
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">this</strong>.namedQueryService = namedQueryService;
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      }
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>      
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      @PreAuthorize(<span class="jxr_string">"hasAuthority('write:query')"</span>)
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>      @PostMapping(<span class="jxr_string">"/api/v1/query"</span>)
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>      @PostMapping(<span class="jxr_string">"/query"</span>)
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      <strong class="jxr_keyword">public</strong> ResponseEntity&lt;?&gt; createNamedQuery(
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>              @RequestBody <a href="../../../../com/fns/grivet/query/NamedQuery.html">NamedQuery</a> query) {
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>              @RequestBody NamedQuery query) {
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          Assert.isTrue(StringUtils.isNotBlank(query.getName()), <span class="jxr_string">"Query name must not be null, empty or blank."</span>);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          Assert.notNull(query.getQuery(), <span class="jxr_string">"Query string must not be null!"</span>);
@@ -82,7 +82,7 @@
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          log.info(<span class="jxr_string">"Named Query \n\n{}\n\n successfully registered!"</span>, query);
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">if</strong> (query.getParams().isEmpty()) {
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>              result = ResponseEntity.created(ucb.path(<span class="jxr_string">"/api/v1/query/{name}"</span>).buildAndExpand(query.getName()).toUri())
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>              result = ResponseEntity.created(ucb.path(<span class="jxr_string">"/query/{name}"</span>).buildAndExpand(query.getName()).toUri())
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>                      .build();
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>          } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>              result = ResponseEntity.noContent().build();
@@ -91,7 +91,7 @@
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      }
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>      @PreAuthorize(<span class="jxr_string">"hasAuthority('execute:query')"</span>)
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>      @GetMapping(<span class="jxr_string">"/api/v1/query/{name}"</span>)
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>      @GetMapping(<span class="jxr_string">"/query/{name}"</span>)
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>      <strong class="jxr_keyword">public</strong> ResponseEntity&lt;?&gt; executeNamedQuery(
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>              @PathVariable(<span class="jxr_string">"name"</span>) String name, 
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>              @RequestParam MultiValueMap&lt;String, ?&gt; parameters) {
@@ -99,14 +99,14 @@
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>      }
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>      
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      @PreAuthorize(<span class="jxr_string">"hasAuthority('list:query')"</span>)
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>      @GetMapping(<span class="jxr_string">"/api/v1/queries"</span>)
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>      @GetMapping(<span class="jxr_string">"/queries"</span>)
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">public</strong> ResponseEntity&lt;?&gt; listNamedQueries() {
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          JSONArray payload = namedQueryService.all();
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">return</strong> ResponseEntity.ok(payload.toString());
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>      }
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>      
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>     @PreAuthorize(<span class="jxr_string">"hasAuthority('delete:query')"</span>)
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>     @DeleteMapping(value = <span class="jxr_string">"/api/v1/query/{name}"</span>)
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>     @DeleteMapping(value = <span class="jxr_string">"/query/{name}"</span>)
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>     <strong class="jxr_keyword">public</strong> ResponseEntity&lt;?&gt; deleteNamedQuery(
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>             @PathVariable(<span class="jxr_string">"name"</span>) String name) {
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>         namedQueryService.delete(name);
@@ -114,7 +114,7 @@
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">return</strong> ResponseEntity.noContent().build();
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>     }
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>     
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isSupportedQuery(<a href="../../../../com/fns/grivet/query/NamedQuery.html">NamedQuery</a> query) {
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isSupportedQuery(NamedQuery query) {
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         <strong class="jxr_keyword">boolean</strong> result = false;
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>         <strong class="jxr_keyword">if</strong> ((query.getQuery().toUpperCase().startsWith(<span class="jxr_string">"SELECT"</span>) &amp;&amp; query.getType().equals(QueryType.SELECT)) 
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>                 || (query.getQuery().toUpperCase().startsWith(<span class="jxr_string">"CALL"</span>) &amp;&amp; query.getType().equals(QueryType.SPROC))) {
@@ -125,6 +125,6 @@
 <a class="jxr_linenumber" name="L117" href="#L117">117</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2017 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2023 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
 </body>
 </html>

@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * You may obtain a copy of the License at</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -56,15 +56,15 @@
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  @Slf4j
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  @Service
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/fns/grivet/service/NamedQueryService.html">NamedQueryService</a> {
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="NamedQueryService" href="../../../../com/fns/grivet/service/NamedQueryService.html#NamedQueryService">NamedQueryService</a> {
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a href="../../../../com/fns/grivet/repo/NamedQueryRepository.html">NamedQueryRepository</a> namedQueryRepository;
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="NamedQueryRepository" href="../../../../com/fns/grivet/repo/NamedQueryRepository.html#NamedQueryRepository">NamedQueryRepository</a> namedQueryRepository;
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JdbcTemplate jdbcTemplate;
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> ObjectMapper mapper;
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>      
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      @Autowired
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/fns/grivet/service/NamedQueryService.html">NamedQueryService</a>(<a href="../../../../com/fns/grivet/repo/NamedQueryRepository.html">NamedQueryRepository</a> namedQueryRepository, JdbcTemplate jdbcTemplate, ObjectMapper mapper) {
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">public</strong> <a name="NamedQueryService" href="../../../../com/fns/grivet/service/NamedQueryService.html#NamedQueryService">NamedQueryService</a>(<a name="NamedQueryRepository" href="../../../../com/fns/grivet/repo/NamedQueryRepository.html#NamedQueryRepository">NamedQueryRepository</a> namedQueryRepository, JdbcTemplate jdbcTemplate, ObjectMapper mapper) {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">this</strong>.namedQueryRepository = namedQueryRepository;
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">this</strong>.jdbcTemplate = jdbcTemplate;
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">this</strong>.namedParameterJdbcTemplate = <strong class="jxr_keyword">new</strong> NamedParameterJdbcTemplate(jdbcTemplate);
@@ -72,14 +72,14 @@
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      }
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>      
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>      @Transactional
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> create(<a href="../../../../com/fns/grivet/query/NamedQuery.html">NamedQuery</a> namedQuery) {
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> create(NamedQuery namedQuery) {
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          namedQueryRepository.save(namedQuery);
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      }
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      @Transactional(readOnly=<strong class="jxr_keyword">true</strong>)
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      <strong class="jxr_keyword">public</strong> String get(String name, MultiValueMap&lt;String, ?&gt; parameters) {
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <a href="../../../../com/fns/grivet/query/NamedQuery.html">NamedQuery</a> namedQuery = namedQueryRepository.findByName(name);
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>          Assert.notNull(namedQuery, String.format(<span class="jxr_string">"No query found that matches name [%s]!"</span>, name));
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>          NamedQuery namedQuery = namedQueryRepository.findByName(name);
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          Assert.notNull(namedQuery, <span class="jxr_string">"No query found that matches name [%s]!"</span>.formatted(name));
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          MapSqlParameterSource parameterSource = namedQuery.asParameterSource(parameters);
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          String sql = namedQuery.getQuery();
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          Map&lt;String, String&gt; sqlParams = namedQuery.getParams();
@@ -121,7 +121,7 @@
 <a class="jxr_linenumber" name="L113" href="#L113">113</a> 
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     @Transactional
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> delete(String name) {
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>         <a href="../../../../com/fns/grivet/query/NamedQuery.html">NamedQuery</a> nq = namedQueryRepository.findByName(name);
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>         NamedQuery nq = namedQueryRepository.findByName(name);
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>         <strong class="jxr_keyword">if</strong> (nq != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>             namedQueryRepository.delete(nq);
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>         }
@@ -163,10 +163,10 @@
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>             }
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>         }
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         <strong class="jxr_keyword">if</strong> (!sql.startsWith(<span class="jxr_string">"{"</span>)) {
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>             sql = String.format(<span class="jxr_string">"%s%s"</span>, <span class="jxr_string">"{"</span>, sql);
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>             sql = <span class="jxr_string">"%s%s"</span>.formatted(<span class="jxr_string">"{"</span>, sql);
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>         }
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>         <strong class="jxr_keyword">if</strong> (!sql.endsWith(<span class="jxr_string">"}"</span>)) {
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>             sql = String.format(<span class="jxr_string">"%s%s"</span>, sql, <span class="jxr_string">"}"</span>);
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>             sql = <span class="jxr_string">"%s%s"</span>.formatted(sql, <span class="jxr_string">"}"</span>);
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>         }
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">return</strong> sql;
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>     }
@@ -177,7 +177,7 @@
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>         Iterable&lt;NamedQuery&gt; iterable = namedQueryRepository.findAll();
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>         Assert.notNull(iterable, <span class="jxr_string">"No named queries are registered!"</span>);
 <a class="jxr_linenumber" name="L171" href="#L171">171</a>         Iterator&lt;NamedQuery&gt; it = iterable.iterator();
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>         <a href="../../../../com/fns/grivet/query/NamedQuery.html">NamedQuery</a> nq = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>         NamedQuery nq = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>         JSONObject jo = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>         JsonNode jn = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>         <strong class="jxr_keyword">while</strong>(it.hasNext()) {
@@ -193,6 +193,6 @@
 <a class="jxr_linenumber" name="L185" href="#L185">185</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2017 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2023 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
 </body>
 </html>

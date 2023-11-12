@@ -8,7 +8,7 @@
 <div id="overview"><a href="../../../../../apidocs/com/fns/grivet/controller/SchemaValidationExceptionHandler.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> com.fns.grivet.controller;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
-<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServletRequest;
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServletRequest;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.springframework.http.ResponseEntity;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,10 +21,10 @@
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  @Slf4j
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  @ControllerAdvice
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/fns/grivet/controller/SchemaValidationExceptionHandler.html">SchemaValidationExceptionHandler</a> {
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="SchemaValidationExceptionHandler" href="../../../../com/fns/grivet/controller/SchemaValidationExceptionHandler.html#SchemaValidationExceptionHandler">SchemaValidationExceptionHandler</a> {
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>      @ExceptionHandler({ SchemaValidationException.<strong class="jxr_keyword">class</strong> })
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">protected</strong> ResponseEntity&lt;ErrorResponse&gt; invalid(<a href="../../../../com/fns/grivet/service/SchemaValidationException.html">SchemaValidationException</a> e, HttpServletRequest hsr) {
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">protected</strong> ResponseEntity&lt;ErrorResponse&gt; invalid(<a name="SchemaValidationException" href="../../../../com/fns/grivet/service/SchemaValidationException.html#SchemaValidationException">SchemaValidationException</a> e, HttpServletRequest hsr) {
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>          ErrorResponse er = <strong class="jxr_keyword">new</strong> ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>                  e.getProcessingFailures());
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          log.error(er.toString());
@@ -33,6 +33,6 @@
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2016&#x2013;2017 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2016&#x2013;2023 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
 </body>
 </html>

@@ -1,5 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Grivet Admin,com.fns.grivet.controller,ClassRegistryController,51,177,5,5,8,34,4,8,0,7
-Grivet Admin,com.fns.grivet.controller,SchemaController,3,56,1,1,1,13,1,4,0,4
-Grivet Admin,com.fns.grivet.service,SchemaService,0,109,4,4,0,29,4,4,0,4
-Grivet Admin,com.fns.grivet.service,ClassRegistryService,13,323,4,10,1,72,4,8,0,5

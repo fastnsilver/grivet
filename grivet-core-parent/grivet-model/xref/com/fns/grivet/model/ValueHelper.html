@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * You may obtain a copy of the License at</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -35,9 +35,9 @@
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> org.json.JSONObject;
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/fns/grivet/model/ValueHelper.html">ValueHelper</a> {
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="ValueHelper" href="../../../../com/fns/grivet/model/ValueHelper.html#ValueHelper">ValueHelper</a> {
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> Object getValue(<a href="../../../../com/fns/grivet/model/AttributeType.html">AttributeType</a> attributeType, Object source) {
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> Object getValue(<a name="AttributeType" href="../../../../com/fns/grivet/model/AttributeType.html#AttributeType">AttributeType</a> attributeType, Object source) {
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  		Object value = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  		String stringValue = String.valueOf(source);
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  		<em class="jxr_comment">// conversion takes place here...</em>
@@ -52,7 +52,7 @@
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  			value = DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.parse(stringValue));
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  			<strong class="jxr_keyword">break</strong>;
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  		<strong class="jxr_keyword">case</strong> ISO_INSTANT:
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>  			value = String.format(<span class="jxr_string">"%s%s"</span>, stringValue, <span class="jxr_string">"Z"</span>);
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  			value = <span class="jxr_string">"%s%s"</span>.formatted(stringValue, <span class="jxr_string">"Z"</span>);
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  			<strong class="jxr_keyword">break</strong>;
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  		<strong class="jxr_keyword">case</strong> DECIMAL:
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  			value = Double.valueOf(stringValue);
@@ -89,7 +89,7 @@
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  		<strong class="jxr_keyword">return</strong> value;
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  	}
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>  
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> Object toValue(<a href="../../../../com/fns/grivet/model/AttributeType.html">AttributeType</a> attributeType, Object source) {
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> Object toValue(<a name="AttributeType" href="../../../../com/fns/grivet/model/AttributeType.html#AttributeType">AttributeType</a> attributeType, Object source) {
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  		Object value = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>  		String stringValue = String.valueOf(source);
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  		<em class="jxr_comment">// conversion takes place here...</em>
@@ -146,6 +146,6 @@
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2016&#x2013;2017 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2016&#x2013;2023 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
 </body>
 </html>

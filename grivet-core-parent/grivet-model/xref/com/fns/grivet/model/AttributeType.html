@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * You may obtain a copy of the License at</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> * <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> * <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -37,7 +37,7 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <em class="jxr_javadoccomment"> * </em>
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment"> * @author Chris Phillipson</em>
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">public</strong> enum <a href="../../../../com/fns/grivet/model/AttributeType.html">AttributeType</a> {
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">public</strong> enum <a name="AttributeType" href="../../../../com/fns/grivet/model/AttributeType.html#AttributeType">AttributeType</a> {
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>      VARCHAR(0, <span class="jxr_string">"varchar"</span>, Types.VARCHAR),
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      TEXT(1, <span class="jxr_string">"text"</span>, Types.LONGVARCHAR),
@@ -49,13 +49,13 @@
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>      DECIMAL(7, <span class="jxr_string">"decimal"</span>, Types.DECIMAL),
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>      JSON_BLOB(8, <span class="jxr_string">"json"</span>, Types.LONGVARCHAR),
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>      BOOLEAN(9, <span class="jxr_string">"boolean"</span>, Types.TINYINT);
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>      
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      <em class="jxr_javadoccomment">/** The id. Internally, uniquely and statically identifies this enum. */</em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Integer id;
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      <em class="jxr_javadoccomment">/** The intermediate type.  Maps between a Java type and SQL type. */</em>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String type;
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      <em class="jxr_javadoccomment">/** A SQL type. @see Types */</em>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> sqlType;
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  
@@ -69,12 +69,12 @@
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  <em class="jxr_javadoccomment">     * @param sqlType</em>
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  <em class="jxr_javadoccomment">     *            the SQL type</em>
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <a href="../../../../com/fns/grivet/model/AttributeType.html">AttributeType</a>(Integer id, String type, <strong class="jxr_keyword">int</strong> sqlType) {
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <a name="AttributeType" href="../../../../com/fns/grivet/model/AttributeType.html#AttributeType">AttributeType</a>(Integer id, String type, <strong class="jxr_keyword">int</strong> sqlType) {
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">this</strong>.id = id;
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">this</strong>.type = type;
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          <strong class="jxr_keyword">this</strong>.sqlType = sqlType;
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      }
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>      
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>  
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  <em class="jxr_javadoccomment">     * Gets the id.</em>
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  <em class="jxr_javadoccomment">     *</em>
@@ -92,7 +92,7 @@
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      <strong class="jxr_keyword">public</strong> String getType() {
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">return</strong> type;
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>      }
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>      
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>  
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  <em class="jxr_javadoccomment">     * Gets the SQL type.</em>
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  <em class="jxr_javadoccomment">     *</em>
@@ -110,12 +110,12 @@
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> <em class="jxr_javadoccomment">     * @return the attribute type</em>
 <a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException when id does not match any internal {@link AttributeType#id}</em>
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <a href="../../../../com/fns/grivet/model/AttributeType.html">AttributeType</a> fromId(Integer id) {
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <a name="AttributeType" href="../../../../com/fns/grivet/model/AttributeType.html#AttributeType">AttributeType</a> fromId(Integer id) {
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         List&lt;AttributeType&gt; attributeTypes = Arrays.stream(AttributeType.values()).filter(o -&gt; o.getId() == id).collect(Collectors.toList());
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>         Assert.notEmpty(attributeTypes, String.format(<span class="jxr_string">"Invalid AttributeType [%s]"</span>, id));
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>         Assert.notEmpty(attributeTypes, <span class="jxr_string">"Invalid AttributeType [%s]"</span>.formatted(id));
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>         <strong class="jxr_keyword">return</strong> attributeTypes.get(0);
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>     }
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>     
+<a class="jxr_linenumber" name="L110" href="#L110">110</a> 
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L112" href="#L112">112</a> <em class="jxr_javadoccomment">     * To SQL type.</em>
 <a class="jxr_linenumber" name="L113" href="#L113">113</a> <em class="jxr_javadoccomment">     *</em>
@@ -126,13 +126,13 @@
 <a class="jxr_linenumber" name="L118" href="#L118">118</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">int</strong> toSqlType(String type) {
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>         List&lt;AttributeType&gt; attributeTypes = Arrays.stream(AttributeType.values()).filter(o -&gt; o.getType().equalsIgnoreCase(type)).collect(Collectors.toList());
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>         Assert.notEmpty(attributeTypes, String.format(<span class="jxr_string">"Invalid type [%s]"</span>, type));
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         Assert.notEmpty(attributeTypes, <span class="jxr_string">"Invalid type [%s]"</span>.formatted(type));
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>         <strong class="jxr_keyword">return</strong> attributeTypes.get(0).getSqlType();
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>     }
 <a class="jxr_linenumber" name="L124" href="#L124">124</a> }
 <a class="jxr_linenumber" name="L125" href="#L125">125</a> 
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2016&#x2013;2017 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2016&#x2013;2023 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
 </body>
 </html>

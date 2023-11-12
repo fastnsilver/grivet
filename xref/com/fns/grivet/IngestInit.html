@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * You may obtain a copy of the License at</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -26,54 +26,23 @@
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> org.springframework.boot.SpringApplication;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> org.springframework.boot.autoconfigure.SpringBootApplication;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> org.springframework.context.annotation.Bean;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> springfox.documentation.builders.PathSelectors;
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> springfox.documentation.builders.RequestHandlerSelectors;
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> springfox.documentation.service.ApiInfo;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> springfox.documentation.service.Contact;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> springfox.documentation.spi.DocumentationType;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> springfox.documentation.spring.web.plugins.Docket;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> springfox.documentation.swagger2.annotations.EnableSwagger2;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment"> * Bootstraps the application</em>
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <em class="jxr_javadoccomment"> * @author Chris Phillipson</em>
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  @SpringBootApplication
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  @EnableDiscoveryClient
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="IngestInit" href="../../../com/fns/grivet/IngestInit.html#IngestInit">IngestInit</a> {
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment"> * Bootstraps the application</em>
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment"> * </em>
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * @author Chris Phillipson</em>
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  @SpringBootApplication
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  @EnableDiscoveryClient
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  @EnableSwagger2
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/fns/grivet/IngestInit.html">IngestInit</a> {
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) {
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>          SpringApplication.run(IngestInit.<strong class="jxr_keyword">class</strong>, args);
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      }
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      @Bean
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">public</strong> Docket api() { 
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Docket(DocumentationType.SWAGGER_2)  
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>            .select()                                  
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>            .apis(RequestHandlerSelectors.basePackage(<span class="jxr_string">"com.fns.grivet.controller"</span>))             
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>            .paths(PathSelectors.any())
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>            .build()                                          
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>                .apiInfo(apiInfo());
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      }
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>      
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">private</strong> ApiInfo apiInfo() {
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          ApiInfo apiInfo = <strong class="jxr_keyword">new</strong> ApiInfo(
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>            <span class="jxr_string">"Grivet Admin REST API"</span>,
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>            <span class="jxr_string">"Type and schema registration end-points."</span>,
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>            <span class="jxr_string">"v1"</span>,
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>            <span class="jxr_string">"https://www.apache.org/licenses/LICENSE-2.0"</span>,
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>            <strong class="jxr_keyword">new</strong> Contact(<span class="jxr_string">"Chris Phillipson"</span>, <span class="jxr_string">"http://techblitz.io/grivet/"</span>, <span class="jxr_string">"fastnsilver@gmail.com"</span>),
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>            <span class="jxr_string">"Apache License 2.0"</span>,
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>            <span class="jxr_string">"https://www.apache.org/licenses/LICENSE-2.0"</span>);
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>          <strong class="jxr_keyword">return</strong> apiInfo;
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      }
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>  }
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) {
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>          SpringApplication.run(IngestInit.<strong class="jxr_keyword">class</strong>, args);
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      }
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2017 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2023 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
 </body>
 </html>

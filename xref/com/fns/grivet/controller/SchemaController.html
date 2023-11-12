@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * You may obtain a copy of the License at</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -50,35 +50,35 @@
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  @Slf4j
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  @RestController
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/fns/grivet/controller/SchemaController.html">SchemaController</a> {
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="SchemaController" href="../../../../com/fns/grivet/controller/SchemaController.html#SchemaController">SchemaController</a> {
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a href="../../../../com/fns/grivet/service/SchemaService.html">SchemaService</a> schemaService;
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="SchemaService" href="../../../../com/fns/grivet/service/SchemaService.html#SchemaService">SchemaService</a> schemaService;
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      @Autowired
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/fns/grivet/controller/SchemaController.html">SchemaController</a>(<a href="../../../../com/fns/grivet/service/SchemaService.html">SchemaService</a> schemaService) {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">public</strong> <a name="SchemaController" href="../../../../com/fns/grivet/controller/SchemaController.html#SchemaController">SchemaController</a>(<a name="SchemaService" href="../../../../com/fns/grivet/service/SchemaService.html#SchemaService">SchemaService</a> schemaService) {
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          <strong class="jxr_keyword">this</strong>.schemaService = schemaService;
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      }
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      @PreAuthorize(<span class="jxr_string">"hasAuthority('write:schema')"</span>)
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      @PostMapping(<span class="jxr_string">"/api/v1/schema"</span>)
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      @PostMapping(<span class="jxr_string">"/schema"</span>)
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">public</strong> ResponseEntity&lt;?&gt; linkSchema(@RequestBody JSONObject payload) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">if</strong> (!schemaService.isJsonSchema(payload)) {
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>              <strong class="jxr_keyword">return</strong> ResponseEntity.unprocessableEntity().build();
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          }
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          String id = schemaService.linkSchema(payload).getName();
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>          String message = String.format(
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>                  <span class="jxr_string">"JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!"</span>, id);
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          String message = 
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>                  <span class="jxr_string">"JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!"</span>.formatted(id);
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          log.info(message);
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">return</strong> ResponseEntity.ok(message);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>      }
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      @PreAuthorize(<span class="jxr_string">"hasAuthority('delete:schema')"</span>)
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>      @DeleteMapping(<span class="jxr_string">"/api/v1/schema/{type}"</span>)
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>      @DeleteMapping(<span class="jxr_string">"/schema/{type}"</span>)
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      <strong class="jxr_keyword">public</strong> ResponseEntity&lt;?&gt; unlinkSchema(
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>              @PathVariable(<span class="jxr_string">"type"</span>) String type) {
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          schemaService.unlinkSchema(type);
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>          String message = String.format(<span class="jxr_string">"JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!"</span>, type);
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>          String message = <span class="jxr_string">"JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!"</span>.formatted(type);
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          log.info(message);
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          <strong class="jxr_keyword">return</strong> ResponseEntity.ok(message);
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      }
@@ -86,6 +86,6 @@
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2017 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2023 <a href="http://fastnsilver.github.io">FNS</a>. All rights reserved.</div>
 </body>
 </html>
