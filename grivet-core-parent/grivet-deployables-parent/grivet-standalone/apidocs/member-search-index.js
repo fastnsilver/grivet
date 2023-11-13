@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"com.fns.grivet","c":"StandaloneInit","l":"main(String[])","u":"main(java.lang.String[])"},{"p":"com.fns.grivet","c":"StandaloneInit","l":"StandaloneInit()","u":"%3Cinit%3E()"}];updateSearchResults();
