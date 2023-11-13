@@ -49,12 +49,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class NamedQueryService {
-    
+
     private final NamedQueryRepository namedQueryRepository;
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final ObjectMapper mapper;
-    
+
     @Autowired
     public NamedQueryService(NamedQueryRepository namedQueryRepository, JdbcTemplate jdbcTemplate, ObjectMapper mapper) {
         this.namedQueryRepository = namedQueryRepository;
@@ -62,12 +62,12 @@ public class NamedQueryService {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
         this.mapper = mapper;
     }
-    
+
     @Transactional
     public void create(NamedQuery namedQuery) {
         namedQueryRepository.save(namedQuery);
     }
-    
+
     @Transactional(readOnly=true)
     public String get(String name, MultiValueMap<String, ?> parameters) {
         NamedQuery namedQuery = namedQueryRepository.findByName(name);
@@ -85,11 +85,13 @@ public class NamedQueryService {
                 case SELECT:
                     rowSet = namedParameterJdbcTemplate.queryForRowSet(sql, parameterSource);
                     break;
-                case SPROC:  
+                case SPROC:
                     String sproc = getProcedure(sql, queryParamKeys);
                     CallableStatementCreatorFactory factory = new CallableStatementCreatorFactory(sproc, namedQuery.asSqlParameters(parameters));
                     CallableStatementCreator csc = factory.newCallableStatementCreator(parameterSource.getValues());
                     rowSet = callSproc(csc);
+                    break;
+                default:
                     break;
             }
         } else {
@@ -104,6 +106,8 @@ public class NamedQueryService {
                     CallableStatementCreatorFactory factory = new CallableStatementCreatorFactory(sproc, namedQuery.asSqlParameters(parameters));
                     CallableStatementCreator csc = factory.newCallableStatementCreator((Map<String, ?>) null);
                     rowSet = callSproc(csc);
+                    break;
+                default:
                     break;
             }
         }
