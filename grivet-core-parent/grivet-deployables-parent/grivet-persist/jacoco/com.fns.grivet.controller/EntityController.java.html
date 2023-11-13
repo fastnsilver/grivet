@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EntityController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Persistence Service</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.controller</a> &gt; <span class="el_source">EntityController.java</span></div><h1>EntityController.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2015 - Chris Phillipson
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.fns.grivet.controller;
+
+import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.Profile;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fns.grivet.service.EntityService;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import lombok.extern.slf4j.Slf4j;
+
+
+/**
+ * Provides end-points for type storage and retrieval
+ *
+ * @author Chris Phillipson
+ */
+<span class="fc" id="L61">@Slf4j</span>
+@RefreshScope
+@RestController
+@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+public class EntityController {
+
+	@Value(&quot;${grivet.store.batch-size:100}&quot;)
+	private int batchSize;
+
+	private final EntityService entityService;
+
+	private final MeterRegistry meterRegistry;
+
+	@Autowired
+<span class="fc" id="L75">	public EntityController(EntityService entityService, MeterRegistry meterRegistry) {</span>
+<span class="fc" id="L76">		this.entityService = entityService;</span>
+<span class="fc" id="L77">		this.meterRegistry = meterRegistry;</span>
+<span class="fc" id="L78">	}</span>
+
+	@Profile(&quot;!pipeline&quot;)
+	@PreAuthorize(&quot;hasAuthority('write:type')&quot;)
+	@PostMapping(&quot;/type&quot;)
+	public ResponseEntity&lt;?&gt; createOne(@RequestHeader(&quot;Type&quot;) String type, @RequestBody JSONObject json) {
+<span class="fc" id="L84">		Long oid = entityService.create(type, json);</span>
+<span class="fc" id="L85">		URI location = UriComponentsBuilder.newInstance().path(&quot;/type&quot;).queryParam(&quot;oid&quot;, oid).build().toUri();</span>
+<span class="fc" id="L86">		meterRegistry.counter(String.join(&quot;store&quot;, &quot;create&quot;, type)).increment();</span>
+<span class="fc" id="L87">		log.info(&quot;Successfully created type [{}]&quot;, type);</span>
+<span class="fc" id="L88">		return ResponseEntity.created(location).build();</span>
+	}
+
+	@Profile(&quot;!pipeline&quot;)
+	@PreAuthorize(&quot;hasAuthority('write:type')&quot;)
+	@PostMapping(&quot;/types&quot;)
+	public ResponseEntity&lt;?&gt; createMultiple(@RequestHeader(&quot;Type&quot;) String type, @RequestBody JSONArray json) {
+<span class="fc" id="L95">		int numberOfTypesToCreate = json.length();</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		Assert.isTrue(numberOfTypesToCreate &lt;= batchSize,</span>
+<span class="fc" id="L97">            &quot;The total number of entries in a request must not exceed %d! Your store request contained [%d] entries.&quot;.formatted(</span>
+<span class="fc" id="L98">            batchSize, numberOfTypesToCreate)</span>
+		);
+<span class="fc" id="L100">		int errorCount = 0;</span>
+<span class="fc" id="L101">		JSONObject jsonObject = null;</span>
+<span class="fc" id="L102">		HttpHeaders headers = new HttpHeaders();</span>
+<span class="fc" id="L103">		URI location = null;</span>
+<span class="fc" id="L104">		Long oid = null;</span>
+		// allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
+<span class="fc bfc" id="L106" title="All 2 branches covered.">		for (int i = 0; i &lt; numberOfTypesToCreate; i++) {</span>
+			try {
+<span class="fc" id="L108">				jsonObject = json.getJSONObject(i);</span>
+<span class="fc" id="L109">				oid = entityService.create(type, jsonObject);</span>
+<span class="fc" id="L110">				location = UriComponentsBuilder.newInstance().path(&quot;/type&quot;).queryParam(&quot;oid&quot;, oid).build().toUri();</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">				if (numberOfTypesToCreate == 1) {</span>
+<span class="nc" id="L112">					headers.setLocation(location);</span>
+				} else {
+<span class="fc" id="L114">					headers.set(&quot;Location[%s]&quot;.formatted(String.valueOf(i + 1)), location.toASCIIString());</span>
+				}
+<span class="fc" id="L116">				meterRegistry.counter(String.join(&quot;store&quot;, &quot;create&quot;, type)).increment();</span>
+<span class="fc" id="L117">				log.info(&quot;Successfully created type [{}]&quot;, type);</span>
+<span class="nc" id="L118">			} catch (Exception e) {</span>
+<span class="nc" id="L119">				String message = LogUtil.toLog(jsonObject, &quot;Problems storing type! Portion of payload @ index[%d]\n&quot;.formatted(i + 1));</span>
+<span class="nc" id="L120">				log.error(message, e);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">				if (numberOfTypesToCreate == 1) {</span>
+<span class="nc" id="L122">					throw e;</span>
+				}
+<span class="nc" id="L124">				headers.set(&quot;Error[%s]&quot;.formatted(String.valueOf(i + 1)), e.getMessage());</span>
+<span class="nc" id="L125">				errorCount++;</span>
+<span class="fc" id="L126">			}</span>
+		}
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		return new ResponseEntity&lt;&gt;(headers, ((errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED));</span>
+	}
+
+	@Profile(&quot;!pipeline&quot;)
+	@PreAuthorize(&quot;hasAuthority('write:type')&quot;)
+	@PatchMapping(&quot;/type&quot;)
+	public ResponseEntity&lt;?&gt; updateOne(
+			@RequestParam(value = &quot;oid&quot;, required = true) Long oid,
+			@RequestBody JSONObject json) {
+<span class="fc" id="L137">		String type = entityService.update(oid, json);</span>
+<span class="fc" id="L138">		HttpHeaders headers = new HttpHeaders();</span>
+<span class="fc" id="L139">		URI location = UriComponentsBuilder.newInstance().path(&quot;/type&quot;).queryParam(&quot;oid&quot;, oid).build().toUri();</span>
+<span class="fc" id="L140">		headers.setLocation(location);</span>
+<span class="fc" id="L141">		meterRegistry.counter(String.join(&quot;store&quot;, &quot;update&quot;, type)).increment();</span>
+<span class="fc" id="L142">		log.info(&quot;Successfully updated type [{}]&quot;, type);</span>
+<span class="fc" id="L143">		return ResponseEntity.ok().headers(headers).build();</span>
+	}
+
+	@Profile(&quot;!pipeline&quot;)
+	@PreAuthorize(&quot;hasAuthority('delete:type')&quot;)
+	@DeleteMapping(&quot;/type&quot;)
+	public ResponseEntity&lt;?&gt; deleteOne(
+			@RequestParam(value = &quot;oid&quot;, required = true) Long oid) {
+<span class="fc" id="L151">		String type = entityService.delete(oid);</span>
+<span class="fc" id="L152">		meterRegistry.counter(String.join(&quot;store&quot;, &quot;delete&quot;, type)).increment();</span>
+<span class="fc" id="L153">		log.info(&quot;Successfully delete type [{}]&quot;, type);</span>
+<span class="fc" id="L154">		return ResponseEntity.ok().build();</span>
+	}
+
+	@PreAuthorize(&quot;hasAuthority('read:type')&quot;)
+	@GetMapping(&quot;/type/{type}&quot;)
+	public ResponseEntity&lt;?&gt; fetch(@PathVariable(&quot;type&quot;) String type,
+			@RequestParam(value = &quot;createdTimeStart&quot;, required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeStart,
+			@RequestParam(value = &quot;createdTimeEnd&quot;, required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeEnd,
+			@RequestParam(value = &quot;noAudit&quot;, defaultValue = &quot;false&quot;) boolean noAudit,
+			HttpServletRequest request) throws JsonProcessingException {
+<span class="fc bfc" id="L164" title="All 2 branches covered.">		LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7) : createdTimeStart;</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">		LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : createdTimeEnd;</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		Assert.isTrue(ChronoUnit.SECONDS.between(start, end) &gt;= 0, &quot;Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!&quot;);</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		if (noAudit) {</span>
+<span class="fc" id="L168">		    return ResponseEntity.ok(entityService.findAllByType(type));</span>
+		} else {
+<span class="fc" id="L170">		    return ResponseEntity.ok(entityService.findByCreatedTime(type, start, end, request.getParameterMap()));</span>
+		}
+	}
+
+	@PreAuthorize(&quot;hasAuthority('read:type')&quot;)
+	@GetMapping(&quot;/type&quot;)
+	public ResponseEntity&lt;?&gt; fetchOne(
+			@RequestParam(value = &quot;oid&quot;, required = true) Long oid) {
+<span class="fc" id="L178">		return ResponseEntity.ok(entityService.findById(oid));</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

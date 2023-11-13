@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DynamicQuery.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Repositories</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.query</a> &gt; <span class="el_source">DynamicQuery.java</span></div><h1>DynamicQuery.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2015 - Chris Phillipson
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.fns.grivet.query;
+
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.jdbc.core.SqlParameterValue;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import com.fns.grivet.model.AttributeType;
+
+
+public class DynamicQuery {
+
+<span class="fc" id="L41">	private final List&lt;Constraint&gt; constraints = new ArrayList&lt;&gt;();</span>
+	private final Map&lt;Integer, Integer&gt; attributeToAttributeTypeMap;
+	private final Map&lt;String, Integer&gt; attributeNameToAttributeIdMap;
+
+	public DynamicQuery(Set&lt;Entry&lt;String, String[]&gt;&gt; requestParams,
+			Map&lt;Integer, Integer&gt; attributeToAttributeTypeMap,
+<span class="fc" id="L47">			Map&lt;String, Integer&gt; attributeNameToAttributeIdMap) {</span>
+<span class="fc" id="L48">		String k = null;</span>
+<span class="fc" id="L49">		String[] v = null;</span>
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">		if (requestParams != null &amp;&amp; !requestParams.isEmpty()) {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">			for (Entry&lt;String, String[]&gt; requestParam : requestParams) {</span>
+<span class="fc" id="L52">				k = requestParam.getKey();</span>
+<span class="fc" id="L53">				v = requestParam.getValue();</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">				if (isConstraintKey(k)) {</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">					for (String cs: v) {</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">						if (isConstraintValue(cs)) {</span>
+<span class="fc" id="L57">							constraints.add(new Constraint(cs.split(&quot;\\|&quot;)));</span>
+						}
+					}
+				}
+<span class="fc" id="L61">			}</span>
+		}
+<span class="fc" id="L63">		this.attributeToAttributeTypeMap = attributeToAttributeTypeMap;</span>
+<span class="fc" id="L64">		this.attributeNameToAttributeIdMap = attributeNameToAttributeIdMap;</span>
+<span class="fc" id="L65">	}</span>
+
+	public boolean hasConstraints() {
+<span class="nc bnc" id="L68" title="All 2 branches missed.">		return constraints.size() &gt; 0;</span>
+	}
+
+	List&lt;Constraint&gt; getConstraints() {
+<span class="fc" id="L72">		return Collections.unmodifiableList(constraints);</span>
+	}
+
+	public boolean containsAndConjunction() {
+<span class="fc" id="L76">		return constraints</span>
+<span class="fc" id="L77">				.stream()</span>
+<span class="fc" id="L78">				.filter(c -&gt; Objects.equals(c.getConjunction(), Conjunction.AND))</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">				.collect(Collectors.toList()).size() &gt;= 1;</span>
+	}
+
+	public boolean areConjunctionsHomogenous() {
+<span class="nc" id="L83">		boolean result = true;</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">		if (constraints.size() &gt;=1) {</span>
+<span class="nc" id="L85">			Conjunction current = null;</span>
+<span class="nc" id="L86">			Conjunction prior = null;</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">			for (Constraint c: constraints) {</span>
+<span class="nc" id="L88">				current = c.getConjunction();</span>
+<span class="nc bnc" id="L89" title="All 6 branches missed.">				if (current != null &amp;&amp; prior != null &amp;&amp; !current.equals(prior)) {</span>
+<span class="nc" id="L90">					result = false;</span>
+<span class="nc" id="L91">					break;</span>
+				}
+<span class="nc" id="L93">				prior = current;</span>
+<span class="nc" id="L94">			}</span>
+		}
+<span class="nc" id="L96">		return result;</span>
+	}
+
+	public SqlParameterValue[] asSqlParameterValues() {
+<span class="fc" id="L100">		List&lt;SqlParameterValue&gt; paramValues = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L101">		Integer attributeId = null;</span>
+<span class="fc" id="L102">		Integer attributeTypeId = null;</span>
+<span class="fc" id="L103">		AttributeType at = null;</span>
+<span class="fc" id="L104">		String attributeName = null;</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">		for (Constraint c: constraints) {</span>
+<span class="fc" id="L106">			attributeName = c.getAttributeName();</span>
+<span class="pc bpc" id="L107" title="2 of 4 branches missed.">			Assert.isTrue(attributeName !=null &amp;&amp; !attributeName.isEmpty(), &quot;Attribute name must not be null or empty!&quot;);</span>
+<span class="fc" id="L108">			attributeId = attributeNameToAttributeIdMap.get(c.getAttributeName());</span>
+<span class="fc" id="L109">			Assert.notNull(attributeId, &quot;Invalid query constraint! No attribute identifier found for [%s]&quot;.formatted(attributeName));</span>
+<span class="fc" id="L110">			paramValues.add(new SqlParameterValue(Types.INTEGER, attributeId));</span>
+<span class="fc" id="L111">			attributeTypeId = attributeToAttributeTypeMap.get(attributeId);</span>
+<span class="fc" id="L112">			Assert.notNull(attributeTypeId, &quot;Invalid query constraint! No attribute type identifier found for attribute name [%s]&quot;.formatted(attributeName));</span>
+<span class="fc" id="L113">			at = AttributeType.fromId(attributeTypeId);</span>
+<span class="fc" id="L114">			Assert.notNull(at, &quot;Invalid query constraint! No matching attribute type found for attribute type identifier [%d]&quot;.formatted(attributeTypeId));</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">			if (c.getOperator().equals(Operator.BETWEEN)) {</span>
+<span class="fc" id="L116">				paramValues.add(getSqlParameterValue(at, c.getOperator(), c.getValues()[0]));</span>
+<span class="fc" id="L117">				paramValues.add(getSqlParameterValue(at, c.getOperator(), c.getValues()[1]));</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">			} else if (c.getOperator().equals(Operator.IN)) {</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">				for (String value: c.getValues()) {</span>
+<span class="fc" id="L120">					paramValues.add(getSqlParameterValue(at, c.getOperator(), value));</span>
+				}
+			} else {
+<span class="fc" id="L123">				paramValues.add(getSqlParameterValue(at, c.getOperator(), c.getValues()[0]));</span>
+			}
+<span class="fc" id="L125">		}</span>
+<span class="fc" id="L126">		return paramValues.toArray(new SqlParameterValue[paramValues.size()]);</span>
+	}
+
+	private boolean isConstraintKey(String key) {
+<span class="fc" id="L130">		boolean result = false;</span>
+<span class="pc bpc" id="L131" title="1 of 4 branches missed.">		if ((key.equalsIgnoreCase(&quot;c&quot;) || key.equalsIgnoreCase(&quot;constraint&quot;))) {</span>
+<span class="fc" id="L132">			result = true;</span>
+		}
+<span class="fc" id="L134">		return result;</span>
+	}
+
+	private boolean isConstraintValue(String value) {
+<span class="fc" id="L138">		boolean result = false;</span>
+<span class="pc bpc" id="L139" title="2 of 4 branches missed.">		if (value != null &amp;&amp; StringUtils.countOccurrencesOf(value,&quot;|&quot;) &gt;= 2) {</span>
+<span class="fc" id="L140">			result = true;</span>
+		}
+<span class="fc" id="L142">		return result;</span>
+	}
+
+	protected SqlParameterValue getSqlParameterValue(AttributeType at, Operator op, String value) {
+<span class="fc" id="L146">		SqlParameterValue result = null;</span>
+<span class="pc bpc" id="L147" title="9 of 11 branches missed.">		switch (at) {</span>
+		case BIG_INTEGER:
+<span class="nc" id="L149">			result = new SqlParameterValue(at.getSqlType(), Long.valueOf(value));</span>
+<span class="nc" id="L150">			break;</span>
+		case ISO_DATE:
+<span class="nc" id="L152">			result = new SqlParameterValue(at.getSqlType(), java.sql.Date.valueOf(LocalDate.parse(value)));</span>
+<span class="nc" id="L153">			break;</span>
+		case ISO_DATETIME:
+<span class="nc" id="L155">			result = new SqlParameterValue(at.getSqlType(), Timestamp.valueOf(LocalDateTime.parse(value)));</span>
+<span class="nc" id="L156">			break;</span>
+		case ISO_INSTANT:
+<span class="nc" id="L158">			result = new SqlParameterValue(at.getSqlType(), Timestamp.from(Instant.parse(value)));</span>
+<span class="nc" id="L159">			break;</span>
+		case DECIMAL:
+<span class="nc" id="L161">			result = new SqlParameterValue(at.getSqlType(), Double.valueOf(value));</span>
+<span class="nc" id="L162">			break;</span>
+		case INTEGER:
+<span class="fc" id="L164">			result = new SqlParameterValue(at.getSqlType(), Integer.valueOf(value));</span>
+<span class="fc" id="L165">			break;</span>
+		case VARCHAR:
+<span class="fc" id="L167">			result = new SqlParameterValue(at.getSqlType(), getWildcardedValue(op, value));</span>
+<span class="fc" id="L168">			break;</span>
+		case TEXT:
+<span class="nc" id="L170">			result = new SqlParameterValue(at.getSqlType(), getWildcardedValue(op, value));</span>
+<span class="nc" id="L171">			break;</span>
+		case JSON_BLOB:
+<span class="nc" id="L173">			result = new SqlParameterValue(at.getSqlType(), getWildcardedValue(op, value));</span>
+<span class="nc" id="L174">			break;</span>
+		case BOOLEAN:
+<span class="nc bnc" id="L176" title="All 2 branches missed.">			int val = Boolean.parseBoolean(value) ? 1 : 0;</span>
+<span class="nc" id="L177">			result = new SqlParameterValue(at.getSqlType(), val);</span>
+			break;
+		}
+<span class="fc" id="L180">		return result;</span>
+	}
+
+	protected String getWildcardedValue(Operator op, String value) {
+<span class="fc" id="L184">		String result = null;</span>
+<span class="fc bfc" id="L185" title="All 4 branches covered.">		switch (op) {</span>
+		case STARTS_WITH:
+<span class="fc" id="L187">			result = &quot;%s%s&quot;.formatted(value, &quot;%&quot;);</span>
+<span class="fc" id="L188">			break;</span>
+		case ENDS_WITH:
+<span class="fc" id="L190">			result = &quot;%s%s&quot;.formatted(&quot;%&quot;, value);</span>
+<span class="fc" id="L191">			break;</span>
+		case CONTAINS:
+<span class="fc" id="L193">			result = &quot;%s%s%s&quot;.formatted(&quot;%&quot;, value, &quot;%&quot;);</span>
+<span class="fc" id="L194">			break;</span>
+		default:
+<span class="fc" id="L196">			result = value;</span>
+			break;
+		}
+<span class="fc" id="L199">		return result;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

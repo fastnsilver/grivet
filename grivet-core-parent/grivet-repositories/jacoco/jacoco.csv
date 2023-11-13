@@ -1,0 +1,15 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Grivet Repositories,com.fns.grivet.repo,AuditorProvider,35,20,4,0,10,7,5,2,3,2
+Grivet Repositories,com.fns.grivet.repo,JdbcEntityRepository,87,471,5,11,13,75,6,19,1,16
+Grivet Repositories,com.fns.grivet.repo,AttributeTypeRepository,0,40,0,0,0,5,0,8,0,8
+Grivet Repositories,com.fns.grivet.repo,JdbcEntityRepository.EAVComparator,0,6,0,0,0,1,0,1,0,1
+Grivet Repositories,com.fns.grivet.query,Constraint,15,78,1,9,3,17,3,9,2,5
+Grivet Repositories,com.fns.grivet.query,DynamicQuery,135,384,32,31,29,70,27,21,2,9
+Grivet Repositories,com.fns.grivet.query,QueryBuilder,90,372,3,19,14,78,6,19,3,11
+Grivet Repositories,com.fns.grivet.query,QueryType,0,15,0,0,0,3,0,1,0,1
+Grivet Repositories,com.fns.grivet.query,NamedQuery.NamedQueryBuilder,57,42,0,0,0,1,8,5,8,5
+Grivet Repositories,com.fns.grivet.query,Operator,0,137,0,0,0,21,0,6,0,6
+Grivet Repositories,com.fns.grivet.query,NamedQuery,400,232,82,26,27,37,66,17,12,17
+Grivet Repositories,com.fns.grivet.query,Conjunction,0,57,0,0,0,10,0,5,0,5
+Grivet Repositories,com.fns.grivet.util,LocalDateTimeConverter,4,13,2,2,0,3,2,3,0,3
+Grivet Repositories,com.fns.grivet.config,DataSourceConfig,0,7,0,0,0,2,0,2,0,2

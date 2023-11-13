@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SchemaController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Admin Service</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.controller</a> &gt; <span class="el_source">SchemaController.java</span></div><h1>SchemaController.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2015 - Chris Phillipson
+ * 
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.fns.grivet.controller;
+
+import java.io.IOException;
+
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.fns.grivet.service.SchemaService;
+
+import lombok.extern.slf4j.Slf4j;
+
+
+/**
+ * Provides end-points for linking and unlinking JSON Schema to pre-registered types
+ * 
+ * @author Chris Phillipson
+ */
+<span class="fc" id="L42">@Slf4j</span>
+@RestController
+@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+public class SchemaController {
+
+    private final SchemaService schemaService;
+    
+    @Autowired
+<span class="fc" id="L50">    public SchemaController(SchemaService schemaService) {</span>
+<span class="fc" id="L51">        this.schemaService = schemaService;</span>
+<span class="fc" id="L52">    }</span>
+    
+    
+    @PreAuthorize(&quot;hasAuthority('write:schema')&quot;)
+    @PostMapping(&quot;/schema&quot;)
+    public ResponseEntity&lt;?&gt; linkSchema(@RequestBody JSONObject payload) throws IOException {
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if (!schemaService.isJsonSchema(payload)) {</span>
+<span class="nc" id="L59">            return ResponseEntity.unprocessableEntity().build();</span>
+        }
+<span class="fc" id="L61">        String id = schemaService.linkSchema(payload).getName();</span>
+<span class="fc" id="L62">        String message = </span>
+<span class="fc" id="L63">                &quot;JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!&quot;.formatted(id);</span>
+<span class="fc" id="L64">        log.info(message);</span>
+<span class="fc" id="L65">        return ResponseEntity.ok(message);</span>
+    }
+    
+    @PreAuthorize(&quot;hasAuthority('delete:schema')&quot;)
+    @DeleteMapping(&quot;/schema/{type}&quot;)
+    public ResponseEntity&lt;?&gt; unlinkSchema(
+            @PathVariable(&quot;type&quot;) String type) {
+<span class="fc" id="L72">        schemaService.unlinkSchema(type);</span>
+<span class="fc" id="L73">        String message = &quot;JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!&quot;.formatted(type);</span>
+<span class="fc" id="L74">        log.info(message);</span>
+<span class="fc" id="L75">        return ResponseEntity.ok(message);</span>
+    }
+            
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EntityService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Persistence Service</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.service</a> &gt; <span class="el_source">EntityService.java</span></div><h1>EntityService.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2015 - Chris Phillipson
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.fns.grivet.service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fns.grivet.model.Attribute;
+import com.fns.grivet.model.AttributeType;
+import com.fns.grivet.model.ClassAttribute;
+import com.fns.grivet.model.EntityAttributeValue;
+import com.fns.grivet.model.ValueHelper;
+import com.fns.grivet.query.DynamicQuery;
+import com.fns.grivet.repo.AttributeRepository;
+import com.fns.grivet.repo.AttributeTypeRepository;
+import com.fns.grivet.repo.ClassAttributeRepository;
+import com.fns.grivet.repo.ClassRepository;
+import com.fns.grivet.repo.EntityRepository;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
+import com.google.common.collect.Lists;
+
+
+@Service
+public class EntityService {
+
+	private final ClassRepository classRepository;
+	private final ClassAttributeRepository classAttributeRepository;
+	private final AttributeRepository attributeRepository;
+	private final AttributeTypeRepository attributeTypeRepository;
+	private final EntityRepository entityRepository;
+	private final SchemaValidator schemaValidator;
+
+	@Autowired
+	public EntityService(ClassRepository classRepository, ClassAttributeRepository classAttributeRepository,
+			AttributeRepository attributeRepository, AttributeTypeRepository attributeTypeRepository,
+<span class="fc" id="L63">			EntityRepository entityRepository, SchemaValidator schemaValidator) {</span>
+<span class="fc" id="L64">		this.classRepository = classRepository;</span>
+<span class="fc" id="L65">		this.classAttributeRepository = classAttributeRepository;</span>
+<span class="fc" id="L66">		this.attributeRepository = attributeRepository;</span>
+<span class="fc" id="L67">		this.attributeTypeRepository = attributeTypeRepository;</span>
+<span class="fc" id="L68">		this.entityRepository = entityRepository;</span>
+<span class="fc" id="L69">		this.schemaValidator = schemaValidator;</span>
+<span class="fc" id="L70">	}</span>
+
+	@Transactional
+	public Long create(String type, JSONObject payload) {
+<span class="fc" id="L74">		com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
+<span class="fc" id="L75">		Assert.notNull(c, &quot;Type [%s] is not registered!&quot;.formatted(type));</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">		if (c.isValidatable()) {</span>
+<span class="fc" id="L77">			executeSchemaValidation(type, payload);</span>
+		}
+<span class="fc" id="L79">		Set&lt;String&gt; keys = payload.keySet();</span>
+<span class="fc" id="L80">		Assert.notEmpty(keys, &quot;Type [%s] must declare at least one attribute in create request!&quot;.formatted(type));</span>
+<span class="fc" id="L81">		Object val = null;</span>
+<span class="fc" id="L82">		Attribute a = null;</span>
+<span class="fc" id="L83">		ClassAttribute ca = null;</span>
+<span class="fc" id="L84">		AttributeType at = null;</span>
+		// entity and entity-attribute-values should be stamped with same date/time
+<span class="fc" id="L86">		LocalDateTime createdTime = LocalDateTime.now();</span>
+<span class="fc" id="L87">		Long eid = entityRepository.newId(c.getId(), createdTime);</span>
+		// TODO create an expiring cache of attribute names for faster lookups (friendlier database use)
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		for (String key: keys) {</span>
+<span class="fc" id="L90">			val = payload.get(key);</span>
+<span class="fc" id="L91">			a = attributeRepository.findByName(key);</span>
+<span class="fc" id="L92">			Assert.notNull(a, &quot;Attribute [%s] is not registered!&quot;.formatted(key));</span>
+<span class="fc" id="L93">			ca = classAttributeRepository.findByCidAndAid(c.getId(), a.getId());</span>
+<span class="fc" id="L94">			Assert.notNull(ca, &quot;[%s] is not a valid attribute of [%s]&quot;.formatted(key, type));</span>
+<span class="fc" id="L95">			at = attributeTypeRepository.findById(ca.getTid());</span>
+<span class="fc" id="L96">			Assert.notNull(at, &quot;Attribute type [%s] is not supported!&quot;.formatted(at));</span>
+<span class="fc" id="L97">			entityRepository.save(eid, a, at, val, createdTime);</span>
+<span class="fc" id="L98">		}</span>
+<span class="fc" id="L99">		return eid;</span>
+	}
+
+	@Transactional
+	public String update(Long eid, JSONObject payload) {
+<span class="fc" id="L104">		Integer cid = entityRepository.getClassIdForEntityId(eid);</span>
+<span class="fc" id="L105">		Assert.notNull(cid, &quot;No type registered for entity with oid = [%d]&quot;.formatted(eid));</span>
+<span class="fc" id="L106">        com.fns.grivet.model.Class c = classRepository.findById(cid).get();</span>
+<span class="fc" id="L107">		String type = c.getName();</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (c.isValidatable()) {</span>
+<span class="nc" id="L109">			executeSchemaValidation(type, payload);</span>
+		}
+		// keys (attribute names) of the entity we wish to update; there should
+		// be at least one to update!
+<span class="fc" id="L113">		Set&lt;String&gt; detachedKeys = payload.keySet();</span>
+<span class="fc" id="L114">		Assert.notEmpty(detachedKeys,</span>
+<span class="fc" id="L115">                &quot;Type [%s] must declare at least one attribute in update request!&quot;.formatted(type));</span>
+
+		// get currently persisted entity's attribute values; make sure the oid
+		// passed actually exists!
+<span class="fc" id="L119">		String currentEntity = findById(eid);</span>
+
+		// keys (attribute names) of the currently persisted entity
+<span class="fc" id="L122">		JSONObject persistentObject = new JSONObject(currentEntity);</span>
+<span class="fc" id="L123">		Set&lt;String&gt; persistentKeys = persistentObject.keySet();</span>
+
+<span class="fc" id="L125">		Object val = null;</span>
+<span class="fc" id="L126">		Attribute a = null;</span>
+<span class="fc" id="L127">		ClassAttribute ca = null;</span>
+<span class="fc" id="L128">		AttributeType at = null;</span>
+		// entity and entity-attribute-values should be stamped with same date/time
+<span class="fc" id="L130">		LocalDateTime createdTime = LocalDateTime.now();</span>
+
+		// reconcile detached entity's (payload's) attribute-values
+		// for each persistentKey
+		// * check that payload has a value for that key
+		// * if value exists; persist it as an update
+		// * if value does not exist; use current entity's value and re-persist
+<span class="fc bfc" id="L137" title="All 2 branches covered.">		for (String key : persistentKeys) {</span>
+<span class="fc" id="L138">			val = payload.get(key);</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">			if (val == null) {</span>
+<span class="nc" id="L140">				val = persistentObject.get(key);</span>
+			}
+<span class="fc" id="L142">			a = attributeRepository.findByName(key);</span>
+<span class="fc" id="L143">			Assert.notNull(a, &quot;Attribute [%s] is not registered!&quot;.formatted(key));</span>
+<span class="fc" id="L144">			ca = classAttributeRepository.findByCidAndAid(c.getId(), a.getId());</span>
+<span class="fc" id="L145">			Assert.notNull(ca, &quot;[%s] is not a valid attribute of [%s]&quot;.formatted(key, type));</span>
+<span class="fc" id="L146">			at = attributeTypeRepository.findById(ca.getTid());</span>
+<span class="fc" id="L147">			Assert.notNull(at, &quot;Attribute type [%s] is not supported!&quot;.formatted(at));</span>
+<span class="fc" id="L148">			entityRepository.save(eid, a, at, val, createdTime);</span>
+<span class="fc" id="L149">		}</span>
+<span class="fc" id="L150">		return type;</span>
+	}
+
+	@Transactional
+	public String delete(Long eid) {
+<span class="fc" id="L155">		Integer cid = entityRepository.getClassIdForEntityId(eid);</span>
+<span class="fc" id="L156">		Assert.notNull(cid, &quot;No type registered for entity with oid = [%d]&quot;.formatted(eid));</span>
+<span class="fc" id="L157">        com.fns.grivet.model.Class c = classRepository.findById(cid).get();</span>
+<span class="fc" id="L158">		String type = c.getName();</span>
+<span class="fc" id="L159">		entityRepository.delete(eid);</span>
+<span class="fc" id="L160">		return type;</span>
+	}
+
+	@Transactional(readOnly=true)
+	public String findByCreatedTime(String type, LocalDateTime createdTimeStart, LocalDateTime createdTimeEnd,
+			Map&lt;String, String[]&gt; parameters) throws JsonProcessingException {
+<span class="fc" id="L166">		com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
+<span class="fc" id="L167">		Assert.notNull(c, &quot;Type [%s] is not registered!&quot;.formatted(type));</span>
+<span class="fc" id="L168">		Map&lt;Integer, Integer&gt; attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);</span>
+<span class="fc" id="L169">		List&lt;Attribute&gt; attributes = Lists.newArrayList(attributeRepository.findAll());</span>
+<span class="fc" id="L170">		Map&lt;String, Integer&gt; attributeNameToAttributeIdMap = attributes.stream().collect(Collectors.toMap(Attribute::getName, Attribute::getId));</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		Set&lt;Entry&lt;String, String[]&gt;&gt; params = parameters == null ? null : parameters.entrySet();</span>
+<span class="fc" id="L172">		DynamicQuery query = new DynamicQuery(params, attributeToAttributeTypeMap, attributeNameToAttributeIdMap);</span>
+<span class="fc" id="L173">		List&lt;EntityAttributeValue&gt; rows = null;</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">		if (query.hasConstraints()) {</span>
+<span class="fc" id="L175">			rows = entityRepository.executeDynamicQuery(c.getId(), query);</span>
+		} else {
+<span class="fc" id="L177">			rows = entityRepository.findByCreatedTime(c.getId(), createdTimeStart, createdTimeEnd);</span>
+		}
+<span class="fc" id="L179">		return mapRows(attributeToAttributeTypeMap, rows).toString();</span>
+	}
+
+	@Transactional(readOnly=true)
+	public String findById(Long eid) {
+<span class="fc" id="L184">		List&lt;EntityAttributeValue&gt; rows = entityRepository.findByEntityId(eid);</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		if (rows == null) {</span>
+<span class="nc" id="L186">			throw new ResourceNotFoundException(&quot;No entity exists with oid =[%d]&quot;.formatted(eid));</span>
+		}
+<span class="fc" id="L188">		Integer cid = entityRepository.getClassIdForEntityId(eid);</span>
+<span class="fc" id="L189">        com.fns.grivet.model.Class c = classRepository.findById(cid).get();</span>
+<span class="fc" id="L190">		Map&lt;Integer, Integer&gt; attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);</span>
+<span class="fc" id="L191">		return mapRows(attributeToAttributeTypeMap, rows).getJSONObject(0).toString();</span>
+	}
+
+	@Transactional(readOnly = true)
+	public String findAllByType(String type) {
+<span class="fc" id="L196">		com.fns.grivet.model.Class c = classRepository.findByName(type);</span>
+<span class="fc" id="L197">		Assert.notNull(c, &quot;Type [%s] is not registered!&quot;);</span>
+<span class="fc" id="L198">		List&lt;EntityAttributeValue&gt; rows = entityRepository.findAllEntitiesByCid(c.getId());</span>
+<span class="fc" id="L199">		Map&lt;Integer, Integer&gt; attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);</span>
+<span class="fc" id="L200">		return mapRows(attributeToAttributeTypeMap, rows).toString();</span>
+	}
+
+	protected JSONArray mapRows(Map&lt;Integer, Integer&gt; attributeToAttributeTypeMap, List&lt;EntityAttributeValue&gt; rows) {
+<span class="fc" id="L204">		JSONArray jsonArray = new JSONArray();</span>
+<span class="fc" id="L205">		String current = null;</span>
+<span class="fc" id="L206">		String previous = null;</span>
+<span class="fc" id="L207">		JSONObject jsonObject = null;</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">		for (EntityAttributeValue row: rows) {</span>
+<span class="fc" id="L209">			current = String.format(&quot;%s&gt;%d&quot;, row.getCreatedTime().toString(), row.getId());</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">			if (!current.equals(previous)) {</span>
+<span class="fc" id="L211">				jsonObject = new JSONObject();</span>
+<span class="fc" id="L212">				jsonArray.put(jsonObject);</span>
+			}
+<span class="fc" id="L214">			Integer tid = attributeToAttributeTypeMap.get(row.getAttributeId());</span>
+<span class="fc" id="L215">			jsonObject.put(row.getAttributeName(), ValueHelper.getValue(attributeTypeRepository.findById(tid), row.getAttributeValue()));</span>
+<span class="fc" id="L216">			previous = current;</span>
+<span class="fc" id="L217">		}</span>
+<span class="fc" id="L218">		return jsonArray;</span>
+	}
+
+	private void executeSchemaValidation(String type, JSONObject payload) {
+<span class="fc" id="L222">		ProcessingReport report = schemaValidator.validate(type, payload);</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">		if (!report.isSuccess()) {</span>
+<span class="nc" id="L224">			List&lt;Object&gt; errors = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L225">			report.forEach(pm -&gt; errors.add(pm.asJson()));</span>
+<span class="nc" id="L226">			throw new SchemaValidationException(errors);</span>
+		}
+<span class="fc" id="L228">	}</span>
+
+	private Map&lt;Integer, Integer&gt; generateAttributeToAttributeTypeMap(com.fns.grivet.model.Class c) {
+<span class="fc" id="L231">		List&lt;ClassAttribute&gt; cas = classAttributeRepository.findByCid(c.getId());</span>
+<span class="fc" id="L232">		return cas.stream().collect(Collectors.toMap(ClassAttribute::getAid, ClassAttribute::getTid));</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

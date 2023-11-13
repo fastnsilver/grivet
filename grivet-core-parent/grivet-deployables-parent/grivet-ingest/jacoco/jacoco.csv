@@ -1,0 +1,4 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Grivet Ingest Service,com.fns.grivet.controller,IngestController,45,205,3,3,7,32,2,7,0,6
+Grivet Ingest Service,com.fns.grivet.service,IngestService,54,0,2,0,12,0,4,0,3,0
+Grivet Ingest Service,com.fns.grivet,IngestInit,5,3,0,0,2,1,1,1,1,1
