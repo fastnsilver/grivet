@@ -70,7 +70,8 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Docker Compose infrastructure updated
 - [x] Resurrection of Spring Boot Admin
 - [x] Continuous integration builds now Github Action based
-- [ ] Updated Maven Site published
+- [x] Updated Maven Site published
+- [ ] Updated Docker container images published to Dockerhub
 
 ## 1.1.0
 
