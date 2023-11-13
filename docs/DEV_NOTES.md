@@ -235,16 +235,53 @@ where `{1}` above would be replaced with either `standalone` or `pipeline`
 
 ### Stage
 
+Make sure your `$HOME/.m2/settings.xml` file has an entry [like this](https://stackoverflow.com/questions/67001968/how-to-disable-maven-blocking-external-http-repositories):
+
+```
+<mirrors>
+  ...
+  <mirror>
+    <id>maven-default-http-blocker</id>
+    <mirrorOf>external:http:*</mirrorOf>
+    <name>Pseudo repository to mirror external repositories initially using HTTP.</name>
+    <url>http://0.0.0.0/</url>
+    <blocked>false</blocked>
+  </mirror>
+</mirrors>
+```
+
+then
+
 ```
 mvn site site:stage -Pdocumentation
 ```
 
 ### Publish
 
-Assumes a `gh-pages` (orphan) branch has been set up in advance.  In addition, appropriate authentication credentials have been declared in `$HOME/.m2/settings.xml`. See:
+You must setup a `gh-pages` (orphan) branch in advance.  In addition, appropriate authentication credentials need to be declared in `$HOME/.m2/settings.xml`
 
+E.g.,
+
+```
+<servers>
+  ...
+  <server>
+    <id>github</id>
+    <username>git</username>
+    <privateKey>/home/cphillipson/.ssh/fastnsilver_github_ed25519</privateKey>
+  </server>
+</servers>
+```
+
+See:
+
+* [Generating a new SSH key and adding it to the ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+* [Adding a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account?tool=cli)
 * [Creating Project Pages manually](https://help.github.com/articles/creating-project-pages-manually/)
 * [Security and Deployment Settings](http://maven.apache.org/guides/mini/guide-deployment-security-settings.html)
+
+
+Then
 
 ```
 mvn scm-publish:publish-scm -Pdocumentation

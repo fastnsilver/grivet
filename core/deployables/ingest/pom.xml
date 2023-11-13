@@ -17,6 +17,10 @@
     <inceptionYear>2016</inceptionYear>
     <url>https://github.com/fastnsilver/grivet</url>
 
+    <properties>
+		<javadoc.sourcepath>${project.build.directory}/delombok-sources</javadoc.sourcepath>
+	</properties>
+
     <dependencies>
         <dependency>
             <groupId>com.fns</groupId>
@@ -166,7 +170,19 @@
                     </execution>
                 </executions>
             </plugin>
-        </plugins>
-    </build>
+			<plugin>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
