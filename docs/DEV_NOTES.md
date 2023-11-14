@@ -171,9 +171,15 @@ Caution! This will remove the VM hosting all your Docker images.
 
 ##### Publish images
 
-Assumes proper authentication credentials have been added to `$HOME/.m2/settings.xml`. See:
+Assumes proper authentication credentials have been added to `$HOME/.m2/settings.xml`.
+
+To create an access token in [Dockerhub](https://hub.docker.com), authenticate your account, then visit https://hub.docker.com/settings/security.
+
+Then consult:
 
 * [Authenticating with Private Registries](https://dmp.fabric8.io/#authentication)
+
+Visit [core/deployables](../core/deployables/) and [support](../support/) subdirectories one-by-one and execute
 
 ```
 mvn docker:push

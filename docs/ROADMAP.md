@@ -62,22 +62,22 @@ This project will remain humble in its design and has no aspirations to match th
 ## 1.0.0
 
 - [x] Major upgrade to Spring Boot 3.1.5
-  - back from a long hiatus in development 
-- [x] Java 17 baseline 
+  - back from a long hiatus in development
+- [x] Java 17 baseline
 - [x] API Gateway provider swap (now Spring Cloud Gateway)
 - [x] Dead Auth0 swapped for Okta Spring Boot 3.x API
 - [x] Flyway adjustments (preparing for 10.0.0)
 - [x] Docker Compose infrastructure updated
 - [x] Resurrection of Spring Boot Admin
+- [x] Add tracing (via Open-Telemetry APIs) and integrate [Signoz](https://signoz.io/)
 - [x] Continuous integration builds now Github Action based
 - [x] Updated Maven Site published
-- [ ] Updated Docker container images published to Dockerhub
+- [x] Updated Docker container images published to Dockerhub
 
 ## 1.1.0
 
 - [ ] Endpoint security policy implemented with Spring Cloud Gateway and Spring Security 6
 - [ ] Password-protect service administration and discovery
-- [ ] Add tracing (Open-Telemetry APIs)
 - Implement deployment option
   - [ ] Tanzu Application Service
 
