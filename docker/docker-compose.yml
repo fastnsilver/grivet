@@ -112,7 +112,7 @@ services:
       # Replace these with your own Git repository, username, personal access token, and branch!
       - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/fastnsilver/grivet-config-repo
       - SPRING_CLOUD_CONFIG_SERVER_GIT_USERNAME=fastnsilver
-      - SPRING_CLOUD_CONFIG_SERVER_GIT_PASSWORD=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
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_PASSWORD=
       - SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT-LABEL=main
 
   ### EUREKA, DISCOVERY
