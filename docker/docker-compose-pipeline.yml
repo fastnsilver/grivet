@@ -52,9 +52,9 @@ services:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
-      - SPRING_CLOUD_STREAM_BINDINGS_INPUT_BINDER=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zk
+      - SPRING_CLOUD_STREAM_BINDINGS_MESSAGE-OUT-0_DESTINATION=types-topic
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-ingest-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
 
@@ -80,8 +80,6 @@ services:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
-      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
-      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zk
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-admin-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
 
@@ -109,9 +107,10 @@ services:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
-      - SPRING_CLOUD_STREAM_BINDINGS_INPUT_BINDER=kafka
+      - SPRING_CLOUD_FUNCTION_DEFINITION=store
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zk
+      - SPRING_CLOUD_STREAM_BINDINGS_STORE-IN-0_DESTINATION=types-topic
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-persistence-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
 

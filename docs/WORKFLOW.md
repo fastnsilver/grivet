@@ -8,7 +8,7 @@ Assuming you've already deployed the service locally...
 ### Request
 
 ```
-curl -i -H "Content-Type: application/json" -X POST -d '{ "type": "TestType", "attributes": { "bigint": "bigint", "varchar": "varchar", "decimal": "decimal", "datetime": "datetime", "int": "int", "text": "text", "json": "json", "boolean": "boolean" } }' http://localhost/api/v1/definition
+curl -i -H "Content-Type: application/json" -X POST -d '{ "type": "TestType", "attributes": { "bigint": "bigint", "varchar": "varchar", "decimal": "decimal", "iso_datetime": "iso_datetime", "int": "int", "text": "text", "json": "json", "boolean": "boolean" } }' http://localhost/api/v1/definition
 ```
 
 ### Response
@@ -102,6 +102,14 @@ curl -H "Content-Type: application/json" "http://localhost/api/v1/definitions" |
 
 ### Request
 
+First we need to register a type called `Album`
+
+```
+curl -i -H "Content-Type: application/json" -X POST -d '{ "type": "Album", "attributes": { "artist": "varchar", "year": "int", "price": "decimal", "label": "varchar", "title": "varchar" } }' http://localhost/api/v1/definition
+```
+
+Then we may attempt to store an instance with
+
 ```
 curl -i -H "Content-Type: application/json" -H "Type: Album" -X POST -d '{ "artist": "Rush", "year": 1981, "price": 9.99, "label": "Anthem", "title": "Moving Pictures"}' http://localhost/api/v1/type
 ```
@@ -116,9 +124,8 @@ Date: Wed, 29 Jul 2015 14:25:18 GMT
 ```
 
 
-## Verify that the type was stored 
+## Verify that the type was stored
 
-In this example request results constrained by `createdTime`
 
 ### Request
 
@@ -147,8 +154,7 @@ curl -H "Content-Type: application/json" "http://localhost/api/v1/type/Album" | 
 
 _Outdated, to be fixed in 1.1.0 release_
 
-In this example we will visit the `/oauth/token` endpoint to get authenticate and receive an authorization token that has a finite time-to-live.  Then we'll verify who the currently 
-authenticated user is.  Assume the following Spring Profiles are activated `h2,secure,https`.
+In this example we will visit the `/oauth/token` endpoint to get authenticate and receive an authorization token that has a finite time-to-live.  Then we'll verify who the currently authenticated user is.  Assume the following Spring Profiles are activated `h2,secure,https`.
 
 
 ### Request

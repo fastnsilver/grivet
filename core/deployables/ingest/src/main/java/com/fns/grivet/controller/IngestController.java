@@ -60,8 +60,8 @@ public class IngestController {
 	private final MeterRegistry meterRegistry;
 
 	@Autowired
-	public IngestController(Ingester entityService, MeterRegistry meterRegistry) {
-		this.ingestService = entityService;
+	public IngestController(Ingester ingestService, MeterRegistry meterRegistry) {
+		this.ingestService = ingestService;
 		this.meterRegistry = meterRegistry;
 	}
 
@@ -80,7 +80,6 @@ public class IngestController {
 	public ResponseEntity<?> ingestCreateTypesRequest(@RequestHeader("Type") String type, @RequestBody JSONArray array) {
 		int numberOfTypesToCreate = array.length();
 		Assert.isTrue(numberOfTypesToCreate <= batchSize,
-
                         "The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries.".formatted(
                         batchSize, numberOfTypesToCreate));
 		JSONObject payload = null;
