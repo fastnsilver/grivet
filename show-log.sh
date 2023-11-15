@@ -3,7 +3,7 @@
 set -e
 
 if [ -z "$1" ]; then
-    echo "Usage: ./show-log.sh standalone|pipeline {service_name}"
+    echo "Usage: ./show-log.sh standalone|pipeline-kafka|pipeline-rabbit {service_name}"
     exit 1
 fi
 

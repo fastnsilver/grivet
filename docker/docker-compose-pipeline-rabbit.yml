@@ -1,0 +1,156 @@
+# DOCKER COMPOSE CONFIGURATION
+# This file uses the version 3 docker-compose file format, described here:
+# https://docs.docker.com/compose/compose-file/compose-file-v3/#compose-file-structure-and-examples
+
+version: '3.8'
+
+services:
+
+  ## INFRASTRUCTURE SERVICES
+
+  ### API GATEWAY
+  edge-service:
+    extends:
+      file: api-gateway.yml
+      service: spring-cloud-gateway
+    links:
+      - discovery-service
+      - config-service
+      - springboot-admin
+      - grivet-ingest
+      - grivet-admin
+      - grivet-persist
+      - grivet-query
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,insecure,pipeline
+
+  ## RABBITMQ
+  rabbitmq-node-1:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq-node-1
+    hostname: rabbitmq-node-1
+    ports:
+       - 5672:5672
+       - 15672:15672
+    volumes:
+       - rabbit-data:/var/lib/rabbitmq
+    environment:
+       - RABBITMQ_ERLANG_COOKIE=cluster
+       - RABBITMQ_DEFAULT_USER=admin
+       - RABBITMQ_DEFAULT_PASS=Admin@123
+
+
+  ## CORE SERVICES
+
+  ### GRIVET INGEST
+  grivet-ingest:
+    image: fastnsilver/grivet-ingest
+    ports:
+      - 9081:8081
+    extra_hosts:
+      - "signoz:host-gateway"
+    links:
+      - config-service
+      - discovery-service
+      - prometheus
+      - rabbitmq-node-1
+    environment:
+      - SPRING_APPLICATION_NAME=grivet-ingest-service
+      - SPRING_PROFILES_ACTIVE=docker,insecure,pipeline
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
+      - SPRING_CLOUD_STREAM_BINDINGS_MESSAGE-OUT-0_DESTINATION=types-topic
+      - SPRING_CLOUD_STREAM_BINDINGS_MESSAGE-OUT-0_BINDER=rabbit
+      - SPRING_RABBITMQ_HOST=rabbitmq-node-1
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=admin
+      - SPRING_RABBITMQ_PASSWORD=Admin@123
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-ingest-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
+
+  ### GRIVET ADMIN
+  grivet-admin:
+    image: fastnsilver/grivet-admin
+    ports:
+      - 9085:8085
+    extra_hosts:
+      - "signoz:host-gateway"
+    links:
+      - config-service
+      - discovery-service
+      - prometheus
+      - db
+    environment:
+      - SPRING_APPLICATION_NAME=grivet-admin-service
+      - SPRING_PROFILES_ACTIVE=docker,mysql,insecure
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      # If you want to change these values, then you'll also need to update key-value pairs in mysql/db.env
+      - SPRING_DATASOURCE_USERNAME=dbadmin
+      - SPRING_DATASOURCE_PASSWORD=thunderb0lt!
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-admin-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
+
+  ### GRIVET PERSIST
+  grivet-persist:
+    image: fastnsilver/grivet-persist
+    ports:
+      - 9082:8082
+    extra_hosts:
+      - "signoz:host-gateway"
+    links:
+      - config-service
+      - discovery-service
+      - prometheus
+      - db
+      - rabbitmq-node-1
+    environment:
+      - SPRING_APPLICATION_NAME=grivet-persistence-service
+      - SPRING_PROFILES_ACTIVE=docker,mysql,insecure,pipeline
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      # If you want to change these values, then you'll also need to update key-value pairs in mysql/db.env
+      - SPRING_DATASOURCE_USERNAME=dbadmin
+      - SPRING_DATASOURCE_PASSWORD=thunderb0lt!
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
+      - SPRING_CLOUD_FUNCTION_DEFINITION=store
+      - SPRING_CLOUD_STREAM_BINDINGS_STORE-IN-0_DESTINATION=types-topic
+      - SPRING_CLOUD_STREAM_BINDINGS_STORE-IN-0_BINDER=rabbit
+      - SPRING_RABBITMQ_HOST=rabbitmq-node-1
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=admin
+      - SPRING_RABBITMQ_PASSWORD=Admin@123
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-persistence-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
+
+  ### GRIVET QUERY
+  grivet-query:
+    image: fastnsilver/grivet-query
+    ports:
+      - 9083:8083
+    extra_hosts:
+      - "signoz:host-gateway"
+    links:
+      - config-service
+      - discovery-service
+      - prometheus
+      - db
+    environment:
+      - SPRING_APPLICATION_NAME=grivet-query-service
+      - SPRING_PROFILES_ACTIVE=docker,mysql,insecure
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/grivetdb?rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      # If you want to change these values, then you'll also need to update key-value pairs in mysql/db.env
+      - SPRING_DATASOURCE_USERNAME=dbadmin
+      - SPRING_DATASOURCE_PASSWORD=thunderb0lt!
+      - DOCKER_IP=$DOCKER_IP
+      - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-query-service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
+
+volumes:
+  rabbit-data: { }

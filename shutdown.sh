@@ -3,7 +3,7 @@
 set -e
 
 if [ -z "$1" ]; then
-    echo "Usage: ./shutdown.sh standalone|pipeline"
+    echo "Usage: ./shutdown.sh standalone|pipeline-kafka|pipeline-rabbit"
     exit 1
 fi
 

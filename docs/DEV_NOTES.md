@@ -197,7 +197,7 @@ If you haven't yet built images locally, you can visit [Dockerhub](https://hub.d
 ./startup.sh {1}
 ```
 
-where `{1}` above would be replaced with either `standalone` or `pipeline`
+where `{1}` above would be replaced with `standalone`, `pipeline-kafka`, or `pipeline-rabbit`
 
 
 #### Work with images
@@ -221,6 +221,7 @@ Spring Boot Admin  | 5555
 MySQL              | 3306
 Kafka              | 29092
 Kafka UI           | 8090
+Rabbit Dashboard   | 15672
 Zookeeper          | 22181
 Signoz             | 3301
 CAdvisor           | 9080
@@ -234,7 +235,7 @@ If making requests via Edge Service, consult `spring.cloud.gateway.routes` in th
 ./shutdown.sh {1}
 ```
 
-where `{1}` above would be replaced with either `standalone` or `pipeline`
+where `{1}` above would be replaced with `standalone`, `pipeline-kafka`, or `pipeline-rabbit`
 
 
 ## Working with Maven Site
