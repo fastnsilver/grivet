@@ -12,7 +12,7 @@
 
     <groupId>com.fns</groupId>
     <artifactId>grivet-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Grivet Parent POM</name>
@@ -89,6 +89,7 @@
         <jakarta-annotation-api.version>2.1.1</jakarta-annotation-api.version>
         <jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
         <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
+        <java-cfenv-boot.version>3.1.2</java-cfenv-boot.version>
         <json-unit.version>3.2.2</json-unit.version>
         <json.version>20231013</json.version>
         <json-schema-validator.version>2.2.14</json-schema-validator.version>
@@ -140,11 +141,18 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>io.pivotal.spring.cloud</groupId>
+                <artifactId>spring-cloud-services-dependencies</artifactId>
+                <version>4.0.4</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>2022.0.4</version>
-                <type>pom</type>
                 <scope>import</scope>
+                <type>pom</type>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
