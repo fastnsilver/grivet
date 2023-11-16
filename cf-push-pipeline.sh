@@ -60,3 +60,8 @@ cf start grivet-persist
 cf start grivet-query
 
 cf push -f support/api-gateway/manifest.yml
+
+cf add-network-policy grivet-api grivet-admin
+cf add-network-policy grivet-api grivet-ingest
+cf add-network-policy grivet-api grivet-persist
+cf add-network-policy grivet-api grivet-query

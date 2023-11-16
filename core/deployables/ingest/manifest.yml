@@ -2,8 +2,6 @@
 applications:
 - name: grivet-ingest
   memory: 1G
-  routes:
-  - route: grivet-ingest.apps.internal
   stack: cflinuxfs4
   instances: 1
   path: ./target/grivet-ingest-1.1.0-SNAPSHOT.jar
