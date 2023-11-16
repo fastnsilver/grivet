@@ -7,6 +7,7 @@ applications:
   path: ./target/grivet-query-1.0.0-SNAPSHOT.jar
   timeout: 120
   env:
+    SPRING_APPLICATION_NAME: grivet-query-service
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
-    SPRING_PROFILES_ACTIVE: cloud
+    SPRING_PROFILES_ACTIVE: cloud,mysql,insecure,pipeline
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'

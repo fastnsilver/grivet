@@ -7,6 +7,10 @@ applications:
   path: ./target/grivet-persist-1.0.0-SNAPSHOT.jar
   timeout: 120
   env:
+    SPRING_APPLICATION_NAME: grivet-persistence-service
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
-    SPRING_PROFILES_ACTIVE: cloud
+    SPRING_PROFILES_ACTIVE: cloud,mysql,insecure,pipeline
+    SPRING_CLOUD_FUNCTION_DEFINITION: store
+    SPRING_CLOUD_STREAM_BINDINGS_STORE-IN-0_DESTINATION: types-topic
+    SPRING_CLOUD_STREAM_BINDINGS_STORE-IN-0_BINDER: rabbit
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
