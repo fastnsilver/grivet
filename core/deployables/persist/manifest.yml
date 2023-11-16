@@ -2,6 +2,8 @@
 applications:
 - name: grivet-persist
   memory: 1G
+  routes:
+  - route: grivet-persist.apps.internal
   stack: cflinuxfs4
   instances: 1
   path: ./target/grivet-persist-1.1.0-SNAPSHOT.jar
@@ -14,3 +16,8 @@ applications:
     SPRING_CLOUD_STREAM_BINDINGS_STORE-IN-0_DESTINATION: types-topic
     SPRING_CLOUD_STREAM_BINDINGS_STORE-IN-0_BINDER: rabbit
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
+  services:
+  - grivet-pipeline-config
+  - grivet-discovery-service
+  - grivet-pipeline-backend
+  - grivet-queue-service

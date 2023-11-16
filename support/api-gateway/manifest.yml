@@ -11,3 +11,6 @@ applications:
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
     SPRING_PROFILES_ACTIVE: cloud,insecure,pipeline
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
+  services:
+  - grivet-pipeline-config
+  - grivet-discovery-service

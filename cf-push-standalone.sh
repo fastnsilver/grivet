@@ -15,12 +15,10 @@ while [[ $(cf service $APP_NAME-config) != *"succeeded"* ]]; do
   echo "$APP_NAME-config is not ready yet..."
   sleep 5s
 done
-cf bind-service $APP_NAME $APP_NAME-config
 
 while [[ $(cf service $APP_NAME-backend) != *"succeeded"* ]]; do
     echo "$APP_NAME-backend is not ready yet..."
     sleep 5s
 done
-cf bind-service $APP_NAME $APP_NAME-backend
 
 cf start $APP_NAME

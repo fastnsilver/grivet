@@ -11,3 +11,6 @@ applications:
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
     SPRING_PROFILES_ACTIVE: cloud,mysql,insecure,standalone
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
+  services:
+  - grivet-standalone-config
+  - grivet-standalone-backend
