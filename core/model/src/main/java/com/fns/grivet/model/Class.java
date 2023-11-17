@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -39,12 +39,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * A {@code Class} is akin to an abstract base {@link java.lang.Class} 
- * but is constrained to the definition of member variables. A {@code Class} 
+ * A {@code Class} is akin to an abstract base {@link java.lang.Class}
+ * but is constrained to the definition of member variables. A {@code Class}
  * may be linked to a <a href="http://json-schema.org/">JSON Schema</a> for purposes of
  * validating an object's attributes (expressed in JSON format).
  * @see ClassAttribute
- * 
+ *
  * @author Chris Phillipson
  */
 @Data

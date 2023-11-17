@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -46,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Provides end-points for type definition and verification
- * 
+ *
  * @author Chris Phillipson
  */
 @Slf4j
@@ -57,14 +57,14 @@ public class ClassRegistryController {
 
     @Value("${grivet.register.batch-size:100}")
     private int batchSize;
-    
+
     private final ClassRegistryService classRegistryService;
-    
+
     @Autowired
     public ClassRegistryController(ClassRegistryService classRegistryService) {
         this.classRegistryService = classRegistryService;
     }
-    
+
     @PreAuthorize("hasAuthority('write:typedef')")
     @PostMapping("/definition")
     public ResponseEntity<?> defineType(@RequestBody JSONObject payload) throws IOException {
@@ -79,7 +79,6 @@ public class ClassRegistryController {
     public ResponseEntity<?> defineTypes(@RequestBody JSONArray array) throws IOException, JSONException {
         int numberOfTypesToRegister = array.length();
         Assert.isTrue(numberOfTypesToRegister <= batchSize,
-                
                         "The total number of entries in a type registration request must not exceed %d! Your registration request contained [%d] entries.".formatted(
                         batchSize, numberOfTypesToRegister));
         JSONObject payload = null;
@@ -94,7 +93,7 @@ public class ClassRegistryController {
                 type = classRegistryService.register(payload);
                 location = UriComponentsBuilder.newInstance().path("/definition/{type}").buildAndExpand(type).toUri();
                 if (numberOfTypesToRegister == 1) {
-                    headers.setLocation(location); 
+                    headers.setLocation(location);
                 } else {
                     headers.set("Location[%s]".formatted(String.valueOf(i + 1)), location.toASCIIString());
                 }
@@ -120,7 +119,7 @@ public class ClassRegistryController {
         log.info("Type [{}] successfully deregistered!", type);
         return ResponseEntity.noContent().build();
     }
-    
+
     @PreAuthorize("hasAuthority('read:typedef')")
     @GetMapping("/definition/{type}")
     public ResponseEntity<?> getTypeDefinition(
@@ -130,11 +129,11 @@ public class ClassRegistryController {
         log.info(message);
         return ResponseEntity.ok(payload.toString());
     }
-    
+
     @PreAuthorize("hasAuthority('read:typedef')")
     @GetMapping("/definitions")
     public ResponseEntity<?> getAllTypeDefinitions() {
         return ResponseEntity.ok(classRegistryService.all().toString());
     }
-        
+
 }
