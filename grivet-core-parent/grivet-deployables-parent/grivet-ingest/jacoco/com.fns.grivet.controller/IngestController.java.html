@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IngestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Ingest Service</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.controller</a> &gt; <span class="el_source">IngestController.java</span></div><h1>IngestController.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IngestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Grivet Ingest Base</a> &gt; <a href="index.source.html" class="el_package">com.fns.grivet.controller</a> &gt; <span class="el_source">IngestController.java</span></div><h1>IngestController.java</h1><pre class="source lang-java linenums">/*
  * Copyright 2015 - Chris Phillipson
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -60,8 +60,8 @@ public class IngestController {
 	private final MeterRegistry meterRegistry;
 
 	@Autowired
-<span class="fc" id="L63">	public IngestController(Ingester entityService, MeterRegistry meterRegistry) {</span>
-<span class="fc" id="L64">		this.ingestService = entityService;</span>
+<span class="fc" id="L63">	public IngestController(Ingester ingestService, MeterRegistry meterRegistry) {</span>
+<span class="fc" id="L64">		this.ingestService = ingestService;</span>
 <span class="fc" id="L65">		this.meterRegistry = meterRegistry;</span>
 <span class="fc" id="L66">	}</span>
 
@@ -80,30 +80,29 @@ public class IngestController {
 	public ResponseEntity&lt;?&gt; ingestCreateTypesRequest(@RequestHeader(&quot;Type&quot;) String type, @RequestBody JSONArray array) {
 <span class="fc" id="L81">		int numberOfTypesToCreate = array.length();</span>
 <span class="pc bpc" id="L82" title="1 of 2 branches missed.">		Assert.isTrue(numberOfTypesToCreate &lt;= batchSize,</span>
-
-<span class="fc" id="L84">                        &quot;The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries.&quot;.formatted(</span>
-<span class="fc" id="L85">                        batchSize, numberOfTypesToCreate));</span>
-<span class="fc" id="L86">		JSONObject payload = null;</span>
-<span class="fc" id="L87">		HttpHeaders headers = new HttpHeaders();</span>
+<span class="fc" id="L83">                        &quot;The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries.&quot;.formatted(</span>
+<span class="fc" id="L84">                        batchSize, numberOfTypesToCreate));</span>
+<span class="fc" id="L85">		JSONObject payload = null;</span>
+<span class="fc" id="L86">		HttpHeaders headers = new HttpHeaders();</span>
 		// allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
-<span class="fc bfc" id="L89" title="All 2 branches covered.">		for (int i = 0; i &lt; numberOfTypesToCreate; i++) {</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">		for (int i = 0; i &lt; numberOfTypesToCreate; i++) {</span>
 			try {
-<span class="fc" id="L91">				payload = array.getJSONObject(i);</span>
-<span class="fc" id="L92">				ingestService.ingest(MessageBuilder.withPayload(payload).setHeader(&quot;type&quot;, type)</span>
-<span class="fc" id="L93">						.setHeader(&quot;op&quot;, Op.CREATE.name()).build());</span>
-<span class="fc" id="L94">				meterRegistry.counter(String.join(&quot;ingest&quot;, &quot;create&quot;, type)).increment();</span>
-<span class="fc" id="L95">				log.info(&quot;Successfully ingested create request for type [{}]&quot;, type);</span>
-<span class="nc" id="L96">			} catch (Exception e) {</span>
-<span class="nc" id="L97">				String message = LogUtil.toLog(payload,</span>
-<span class="nc" id="L98">                        &quot;Problems ingesting type! Portion of payload @ index[%d]\n&quot;.formatted(i + 1));</span>
-<span class="nc" id="L99">				log.error(message, e);</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">				if (numberOfTypesToCreate == 1) {</span>
-<span class="nc" id="L101">					throw e;</span>
+<span class="fc" id="L90">				payload = array.getJSONObject(i);</span>
+<span class="fc" id="L91">				ingestService.ingest(MessageBuilder.withPayload(payload).setHeader(&quot;type&quot;, type)</span>
+<span class="fc" id="L92">						.setHeader(&quot;op&quot;, Op.CREATE.name()).build());</span>
+<span class="fc" id="L93">				meterRegistry.counter(String.join(&quot;ingest&quot;, &quot;create&quot;, type)).increment();</span>
+<span class="fc" id="L94">				log.info(&quot;Successfully ingested create request for type [{}]&quot;, type);</span>
+<span class="nc" id="L95">			} catch (Exception e) {</span>
+<span class="nc" id="L96">				String message = LogUtil.toLog(payload,</span>
+<span class="nc" id="L97">                        &quot;Problems ingesting type! Portion of payload @ index[%d]\n&quot;.formatted(i + 1));</span>
+<span class="nc" id="L98">				log.error(message, e);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">				if (numberOfTypesToCreate == 1) {</span>
+<span class="nc" id="L100">					throw e;</span>
 				}
-<span class="nc" id="L103">				headers.set(&quot;Error[%s]&quot;.formatted(String.valueOf(i + 1)), e.getMessage());</span>
-<span class="fc" id="L104">			}</span>
+<span class="nc" id="L102">				headers.set(&quot;Error[%s]&quot;.formatted(String.valueOf(i + 1)), e.getMessage());</span>
+<span class="fc" id="L103">			}</span>
 		}
-<span class="fc" id="L106">		return ResponseEntity.accepted().headers(headers).build();</span>
+<span class="fc" id="L105">		return ResponseEntity.accepted().headers(headers).build();</span>
 	}
 
 	@PreAuthorize(&quot;hasAuthority('write:type')&quot;)
@@ -111,20 +110,20 @@ public class IngestController {
 	public ResponseEntity&lt;?&gt; ingestUpdateTypeRequest(
 		@RequestParam(value = &quot;oid&quot;, required = true) Long oid,
 		@RequestBody JSONObject payload) {
-<span class="fc" id="L114">		ingestService.ingest(MessageBuilder.withPayload(payload).setHeader(&quot;oid&quot;, oid).setHeader(&quot;op&quot;, Op.UPDATE.name()).build());</span>
-<span class="fc" id="L115">		meterRegistry.counter(String.join(&quot;ingest&quot;, &quot;update&quot;)).increment();</span>
-<span class="fc" id="L116">		log.info(&quot;Successfully ingested update request for type w/ oid = [{}]&quot;, oid);</span>
-<span class="fc" id="L117">		return ResponseEntity.accepted().build();</span>
+<span class="fc" id="L113">		ingestService.ingest(MessageBuilder.withPayload(payload).setHeader(&quot;oid&quot;, oid).setHeader(&quot;op&quot;, Op.UPDATE.name()).build());</span>
+<span class="fc" id="L114">		meterRegistry.counter(String.join(&quot;ingest&quot;, &quot;update&quot;)).increment();</span>
+<span class="fc" id="L115">		log.info(&quot;Successfully ingested update request for type w/ oid = [{}]&quot;, oid);</span>
+<span class="fc" id="L116">		return ResponseEntity.accepted().build();</span>
 	}
 
 	@PreAuthorize(&quot;hasAuthority('delete:type')&quot;)
 	@DeleteMapping(value = &quot;/type&quot;)
 	public ResponseEntity&lt;?&gt; ingestDeleteTypeRequest(
 		@RequestParam(value = &quot;oid&quot;, required = true) Long oid) {
-<span class="fc" id="L124">		ingestService.ingest(MessageBuilder.withPayload(new JSONObject()).setHeader(&quot;oid&quot;, oid).setHeader(&quot;op&quot;, Op.DELETE.name()).build());</span>
-<span class="fc" id="L125">		meterRegistry.counter(String.join(&quot;ingest&quot;, &quot;delete&quot;)).increment();</span>
-<span class="fc" id="L126">		log.info(&quot;Successfully ingested delete request for type w/ oid = [{}]&quot;, oid);</span>
-<span class="fc" id="L127">		return ResponseEntity.accepted().build();</span>
+<span class="fc" id="L123">		ingestService.ingest(MessageBuilder.withPayload(new JSONObject()).setHeader(&quot;oid&quot;, oid).setHeader(&quot;op&quot;, Op.DELETE.name()).build());</span>
+<span class="fc" id="L124">		meterRegistry.counter(String.join(&quot;ingest&quot;, &quot;delete&quot;)).increment();</span>
+<span class="fc" id="L125">		log.info(&quot;Successfully ingested delete request for type w/ oid = [{}]&quot;, oid);</span>
+<span class="fc" id="L126">		return ResponseEntity.accepted().build();</span>
 	}
 
 }

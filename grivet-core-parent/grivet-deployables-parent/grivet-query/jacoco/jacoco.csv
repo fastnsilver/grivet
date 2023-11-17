@@ -1,5 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 Grivet Query Service,com.fns.grivet.controller,NamedQueryController,0,147,3,9,0,30,3,11,0,8
 Grivet Query Service,com.fns.grivet.service,NamedQueryService.new CallableStatementCallback() {...},18,0,0,0,3,0,2,0,2,0
-Grivet Query Service,com.fns.grivet.service,NamedQueryService,110,222,13,13,18,57,11,12,2,7
+Grivet Query Service,com.fns.grivet.service,NamedQueryService,112,222,13,13,20,57,11,12,2,7
 Grivet Query Service,com.fns.grivet,QueryInit,5,3,0,0,2,1,1,1,1,1

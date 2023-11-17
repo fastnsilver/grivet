@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.fns.grivet"},{"l":"com.fns.grivet.controller"},{"l":"com.fns.grivet.service"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.fns.grivet.controller"},{"l":"com.fns.grivet.service"}];updateSearchResults();
