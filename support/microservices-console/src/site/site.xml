@@ -11,8 +11,8 @@
 			<theme>bootswatch-cerulean</theme>
 			<highlightJs>true</highlightJs>
 			<brand>
-				<name>Grivet Observability (Spring Boot Application Administration)</name>
-				<href>https://github.com/fastnsilver/grivet/observability</href>
+				<name>Grivet (Spring Boot Application Administration)</name>
+				<href>https://github.com/fastnsilver/grivet/support/microservices-console</href>
 			</brand>
 			<bottomNav>
 				<column>Overview</column>
