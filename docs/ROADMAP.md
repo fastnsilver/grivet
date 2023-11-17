@@ -73,22 +73,20 @@ This project will remain humble in its design and has no aspirations to match th
 - [x] Continuous integration builds now Github Action based
 - [x] Updated Maven Site published
 - [x] Updated Docker container images published to Dockerhub
+- Implement deployment option
+  - [x] Tanzu Application Service
 
 ## 1.1.0
 
 - [ ] [Delombok](https://github.com/fastnsilver/grivet/issues/151) source code
   - Remove annotations
   - Remove back-flipping in Maven POMs
-  - Prepares for eventual support of GraalVM native images
 - [ ] Endpoint security policy implemented with Spring Cloud Gateway and Spring Security 6
 - [ ] Password-protect service administration and discovery
-- Implement deployment option
-  - [x] Tanzu Application Service
 
 ## 1.2.0
 
 - [ ] Add cache provider (e.g., Redis)
-- [ ] Add support for compiling, packaging and deploying GraalVM native images
 
 ## 1.3.0
 
