@@ -1,0 +1,19 @@
+---
+applications:
+- name: grivet-ingest
+  memory: 1G
+  stack: cflinuxfs4
+  instances: 1
+  path: ./target/grivet-ingest-kafka-1.0.0-SNAPSHOT.jar
+  timeout: 120
+  env:
+    SPRING_APPLICATION_NAME: grivet-ingest-service
+    JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
+    SPRING_PROFILES_ACTIVE: cloud,insecure,pipeline
+    SPRING_CLOUD_STREAM_BINDINGS_MESSAGE-OUT-0_DESTINATION: types-topic
+    SPRING_CLOUD_STREAM_BINDINGS_MESSAGE-OUT-0_BINDER: rabbit
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
+  services:
+  - grivet-pipeline-config
+  - grivet-discovery-service
+  - grivet-queue-service

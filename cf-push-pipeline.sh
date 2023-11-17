@@ -4,13 +4,20 @@
 
 set -e
 
+if [ -z "$1" ]; then
+    echo "Usage: ./cf-push-pipeline.sh kafka|rabbit"
+    exit 1
+fi
+
+QUEUE_PROVIDER=$1
+
 export MODE=grivet-pipeline
 export REGISTRY_NAME=grivet-discovery-service
 export QUEUE_NAME=grivet-queue-service
 
 cf push -f core/deployables/admin/manifest.yml --no-start
-cf push -f core/deployables/ingest/manifest.yml --no-start
-cf push -f core/deployables/persist/manifest.yml --no-start
+cf push -f core/deployables/ingest-$QUEUE_PROVIDER/manifest.yml --no-start
+cf push -f core/deployables/persist-$QUEUE_PROVIDER/manifest.yml --no-start
 cf push -f core/deployables/query/manifest.yml --no-start
 
 cf create-service p.config-server standard $MODE-config -c config-repo/config-server.json
@@ -60,8 +67,3 @@ cf start grivet-persist
 cf start grivet-query
 
 cf push -f support/api-gateway/manifest.yml
-
-cf add-network-policy grivet-api grivet-admin
-cf add-network-policy grivet-api grivet-ingest
-cf add-network-policy grivet-api grivet-persist
-cf add-network-policy grivet-api grivet-query

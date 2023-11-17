@@ -4,7 +4,7 @@ applications:
   memory: 1G
   stack: cflinuxfs4
   instances: 1
-  path: ./target/grivet-persist-1.1.0-SNAPSHOT.jar
+  path: ./target/grivet-persist-rabbit-1.0.0-SNAPSHOT.jar
   timeout: 120
   env:
     SPRING_APPLICATION_NAME: grivet-persistence-service

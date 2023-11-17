@@ -12,7 +12,7 @@
 	      	<highlightJs>true</highlightJs>
 	      	<brand>
 	        	<name>Grivet (Query)</name>
-	        	<href>https://github.com/fastnsilver/grivet/core/query</href>
+	        	<href>https://github.com/fastnsilver/grivet/core/deplyables/query</href>
 	      	</brand>
 	      	<bottomNav>
 		        <column>Overview|User</column>

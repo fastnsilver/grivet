@@ -44,7 +44,7 @@ services:
 
   ### GRIVET INGEST
   grivet-ingest:
-    image: fastnsilver/grivet-ingest
+    image: fastnsilver/grivet-ingest-rabbit
     ports:
       - 9081:8081
     extra_hosts:
@@ -96,7 +96,7 @@ services:
 
   ### GRIVET PERSIST
   grivet-persist:
-    image: fastnsilver/grivet-persist
+    image: fastnsilver/grivet-persist-rabbit
     ports:
       - 9082:8082
     extra_hosts:

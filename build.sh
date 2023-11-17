@@ -3,7 +3,7 @@
 set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-directories=( "core/deployables/admin" "core/deployables/ingest" "core/deployables/persist" "core/deployables/query" "core/deployables/standalone" "support/config-server" "support/api-gateway" "support/discovery-service" "support/microservices-console" )
+directories=( "core/deployables/admin" "core/deployables/ingest-kafka" "core/deployables/ingest-rabbit" "core/deployables/persist-kafka" "core/deployables/persist-rabbit" "core/deployables/query" "core/deployables/standalone" "support/config-server" "support/api-gateway" "support/discovery-service" "support/microservices-console" )
 
 for i in "${directories[@]}"
 do

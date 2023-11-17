@@ -12,7 +12,7 @@
 	      	<highlightJs>true</highlightJs>
 	      	<brand>
 	        	<name>Grivet (Persist)</name>
-	        	<href>https://github.com/fastnsilver/grivet/core/persist</href>
+	        	<href>https://github.com/fastnsilver/grivet/core/deployables/persist</href>
 	      	</brand>
 	      	<bottomNav>
 		        <column>Overview|User</column>
@@ -44,7 +44,7 @@
             <item name="About" href="index.html" />
             <item name="Project License" href="licenses.html" />
         </menu>
-        <menu name="User">
+		<menu name="User">
             <item name="API" href="rest-api.html" />
         </menu>
         <menu name="Developer">

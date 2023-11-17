@@ -1,0 +1,21 @@
+---
+applications:
+- name: grivet-persist
+  memory: 1G
+  stack: cflinuxfs4
+  instances: 1
+  path: ./target/grivet-persist-kafka-1.0.0-SNAPSHOT.jar
+  timeout: 120
+  env:
+    SPRING_APPLICATION_NAME: grivet-persistence-service
+    JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
+    SPRING_PROFILES_ACTIVE: cloud,mysql,insecure,pipeline
+    SPRING_CLOUD_FUNCTION_DEFINITION: store
+    SPRING_CLOUD_STREAM_BINDINGS_STORE-IN-0_DESTINATION: types-topic
+    SPRING_CLOUD_STREAM_BINDINGS_STORE-IN-0_BINDER: rabbit
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
+  services:
+  - grivet-pipeline-config
+  - grivet-discovery-service
+  - grivet-pipeline-backend
+  - grivet-queue-service

@@ -12,7 +12,7 @@
 	      	<highlightJs>true</highlightJs>
 	      	<brand>
 	        	<name>Grivet (Admin)</name>
-	        	<href>https://github.com/fastnsilver/grivet/core/admin</href>
+	        	<href>https://github.com/fastnsilver/grivet/core/deployables/admin</href>
 	      	</brand>
 	      	<bottomNav>
 		        <column>Overview|User</column>
