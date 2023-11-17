@@ -11,9 +11,9 @@ import com.fns.grivet.service.SchemaValidationException;
 
 import lombok.extern.slf4j.Slf4j;
 
-<span class="fc" id="L14">@Slf4j</span>
+<span class="nc" id="L14">@Slf4j</span>
 @ControllerAdvice
-<span class="fc" id="L16">public class SchemaValidationExceptionHandler {</span>
+<span class="nc" id="L16">public class SchemaValidationExceptionHandler {</span>
 
     @ExceptionHandler({ SchemaValidationException.class })
     protected ResponseEntity&lt;ErrorResponse&gt; invalid(SchemaValidationException e, HttpServletRequest hsr) {

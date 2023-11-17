@@ -9,17 +9,17 @@ import org.springframework.stereotype.Repository;
 import com.fns.grivet.model.AttributeType;
 
 @Repository
-<span class="fc" id="L12">public class AttributeTypeRepository {</span>
+<span class="nc" id="L12">public class AttributeTypeRepository {</span>
 
-<span class="fc" id="L14">    private static Map&lt;String, AttributeType&gt; nameMap = Arrays.stream(AttributeType.values()).collect(Collectors.toMap(k -&gt; k.getType(), k -&gt; k));</span>
-<span class="fc" id="L15">    private static Map&lt;Integer, AttributeType&gt; idMap = Arrays.stream(AttributeType.values()).collect(Collectors.toMap(k -&gt; k.getId(), k -&gt; k));</span>
+<span class="nc" id="L14">    private static Map&lt;String, AttributeType&gt; nameMap = Arrays.stream(AttributeType.values()).collect(Collectors.toMap(k -&gt; k.getType(), k -&gt; k));</span>
+<span class="nc" id="L15">    private static Map&lt;Integer, AttributeType&gt; idMap = Arrays.stream(AttributeType.values()).collect(Collectors.toMap(k -&gt; k.getId(), k -&gt; k));</span>
 
     public AttributeType findByType(String type) {
-<span class="fc" id="L18">        return nameMap.get(type);</span>
+<span class="nc" id="L18">        return nameMap.get(type);</span>
     }
 
     public AttributeType findById(Integer id) {
-<span class="fc" id="L22">        return idMap.get(id);</span>
+<span class="nc" id="L22">        return idMap.get(id);</span>
     }
 
 }

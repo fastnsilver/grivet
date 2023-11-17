@@ -46,7 +46,7 @@ import com.fns.grivet.repo.NamedQueryRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
-<span class="fc" id="L49">@Slf4j</span>
+<span class="nc" id="L49">@Slf4j</span>
 @Service
 public class NamedQueryService {
 
@@ -56,35 +56,35 @@ public class NamedQueryService {
     private final ObjectMapper mapper;
 
     @Autowired
-<span class="fc" id="L59">    public NamedQueryService(NamedQueryRepository namedQueryRepository, JdbcTemplate jdbcTemplate, ObjectMapper mapper) {</span>
-<span class="fc" id="L60">        this.namedQueryRepository = namedQueryRepository;</span>
-<span class="fc" id="L61">        this.jdbcTemplate = jdbcTemplate;</span>
-<span class="fc" id="L62">        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);</span>
-<span class="fc" id="L63">        this.mapper = mapper;</span>
-<span class="fc" id="L64">    }</span>
+<span class="nc" id="L59">    public NamedQueryService(NamedQueryRepository namedQueryRepository, JdbcTemplate jdbcTemplate, ObjectMapper mapper) {</span>
+<span class="nc" id="L60">        this.namedQueryRepository = namedQueryRepository;</span>
+<span class="nc" id="L61">        this.jdbcTemplate = jdbcTemplate;</span>
+<span class="nc" id="L62">        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);</span>
+<span class="nc" id="L63">        this.mapper = mapper;</span>
+<span class="nc" id="L64">    }</span>
 
     @Transactional
     public void create(NamedQuery namedQuery) {
-<span class="fc" id="L68">        namedQueryRepository.save(namedQuery);</span>
-<span class="fc" id="L69">    }</span>
+<span class="nc" id="L68">        namedQueryRepository.save(namedQuery);</span>
+<span class="nc" id="L69">    }</span>
 
     @Transactional(readOnly=true)
     public String get(String name, MultiValueMap&lt;String, ?&gt; parameters) {
-<span class="fc" id="L73">        NamedQuery namedQuery = namedQueryRepository.findByName(name);</span>
-<span class="fc" id="L74">        Assert.notNull(namedQuery, &quot;No query found that matches name [%s]!&quot;.formatted(name));</span>
-<span class="fc" id="L75">        MapSqlParameterSource parameterSource = namedQuery.asParameterSource(parameters);</span>
-<span class="fc" id="L76">        String sql = namedQuery.getQuery();</span>
-<span class="fc" id="L77">        Map&lt;String, String&gt; sqlParams = namedQuery.getParams();</span>
-<span class="fc" id="L78">        SqlRowSet rowSet = null;</span>
-<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (parameterSource != null) {</span>
+<span class="nc" id="L73">        NamedQuery namedQuery = namedQueryRepository.findByName(name);</span>
+<span class="nc" id="L74">        Assert.notNull(namedQuery, &quot;No query found that matches name [%s]!&quot;.formatted(name));</span>
+<span class="nc" id="L75">        MapSqlParameterSource parameterSource = namedQuery.asParameterSource(parameters);</span>
+<span class="nc" id="L76">        String sql = namedQuery.getQuery();</span>
+<span class="nc" id="L77">        Map&lt;String, String&gt; sqlParams = namedQuery.getParams();</span>
+<span class="nc" id="L78">        SqlRowSet rowSet = null;</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (parameterSource != null) {</span>
             // check that all params were supplied...
-<span class="fc" id="L81">            Set&lt;String&gt; queryParamKeys = sqlParams.keySet();</span>
-<span class="fc" id="L82">            Set&lt;String&gt; parametersKeys = parameters.keySet();</span>
-<span class="fc" id="L83">            Assert.isTrue(parametersKeys.containsAll(queryParamKeys), &quot;Query cannot be executed! Missing query parameters!&quot;);</span>
-<span class="pc bpc" id="L84" title="2 of 3 branches missed.">            switch (namedQuery.getType()) {</span>
+<span class="nc" id="L81">            Set&lt;String&gt; queryParamKeys = sqlParams.keySet();</span>
+<span class="nc" id="L82">            Set&lt;String&gt; parametersKeys = parameters.keySet();</span>
+<span class="nc" id="L83">            Assert.isTrue(parametersKeys.containsAll(queryParamKeys), &quot;Query cannot be executed! Missing query parameters!&quot;);</span>
+<span class="nc bnc" id="L84" title="All 3 branches missed.">            switch (namedQuery.getType()) {</span>
                 case SELECT:
-<span class="fc" id="L86">                    rowSet = namedParameterJdbcTemplate.queryForRowSet(sql, parameterSource);</span>
-<span class="fc" id="L87">                    break;</span>
+<span class="nc" id="L86">                    rowSet = namedParameterJdbcTemplate.queryForRowSet(sql, parameterSource);</span>
+<span class="nc" id="L87">                    break;</span>
                 case SPROC:
 <span class="nc" id="L89">                    String sproc = getProcedure(sql, queryParamKeys);</span>
 <span class="nc" id="L90">                    CallableStatementCreatorFactory factory = new CallableStatementCreatorFactory(sproc, namedQuery.asSqlParameters(parameters));</span>
@@ -94,13 +94,13 @@ public class NamedQueryService {
                 default:
                     break;
             }
-<span class="fc" id="L97">        } else {</span>
-<span class="fc" id="L98">            Assert.isTrue(sqlParams.isEmpty(), &quot;Query cannot be executed! Query expects parameters!&quot;);</span>
+<span class="nc" id="L97">        } else {</span>
+<span class="nc" id="L98">            Assert.isTrue(sqlParams.isEmpty(), &quot;Query cannot be executed! Query expects parameters!&quot;);</span>
             // ignore any supplied request params
-<span class="pc bpc" id="L100" title="2 of 3 branches missed.">            switch (namedQuery.getType()) {</span>
+<span class="nc bnc" id="L100" title="All 3 branches missed.">            switch (namedQuery.getType()) {</span>
                 case SELECT:
-<span class="fc" id="L102">                    rowSet = namedParameterJdbcTemplate.getJdbcOperations().query(sql, new SqlRowSetResultSetExtractor());</span>
-<span class="fc" id="L103">                    break;</span>
+<span class="nc" id="L102">                    rowSet = namedParameterJdbcTemplate.getJdbcOperations().query(sql, new SqlRowSetResultSetExtractor());</span>
+<span class="nc" id="L103">                    break;</span>
                 case SPROC:
 <span class="nc" id="L105">                    String sproc = getProcedure(sql, null);</span>
 <span class="nc" id="L106">                    CallableStatementCreatorFactory factory = new CallableStatementCreatorFactory(sproc, namedQuery.asSqlParameters(parameters));</span>
@@ -111,17 +111,17 @@ public class NamedQueryService {
                     break;
             }
         }
-<span class="fc" id="L114">        return mapRows(rowSet);</span>
+<span class="nc" id="L114">        return mapRows(rowSet);</span>
     }
 
 
     @Transactional
     public void delete(String name) {
-<span class="fc" id="L120">        NamedQuery nq = namedQueryRepository.findByName(name);</span>
-<span class="fc bfc" id="L121" title="All 2 branches covered.">        if (nq != null) {</span>
-<span class="fc" id="L122">            namedQueryRepository.delete(nq);</span>
+<span class="nc" id="L120">        NamedQuery nq = namedQueryRepository.findByName(name);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (nq != null) {</span>
+<span class="nc" id="L122">            namedQueryRepository.delete(nq);</span>
         }
-<span class="fc" id="L124">    }</span>
+<span class="nc" id="L124">    }</span>
     
     protected SqlRowSet callSproc(CallableStatementCreator csc) {
 <span class="nc" id="L127">       return jdbcTemplate.execute(csc, new CallableStatementCallback&lt;SqlRowSet&gt;() {</span>
@@ -137,26 +137,26 @@ public class NamedQueryService {
     }
     
     protected String mapRows(SqlRowSet rowSet) {
-<span class="fc" id="L140">        JSONArray jsonArray = new JSONArray();</span>
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        if (rowSet != null) {</span>
-<span class="fc" id="L142">            String[] columnNames = rowSet.getMetaData().getColumnNames();</span>
-<span class="fc" id="L143">            JSONObject jsonObject = null;</span>
-<span class="fc bfc" id="L144" title="All 2 branches covered.">            while(rowSet.next()) {</span>
-<span class="fc" id="L145">                jsonObject = new JSONObject();</span>
-<span class="fc bfc" id="L146" title="All 2 branches covered.">                for (String columnName: columnNames) {</span>
-<span class="fc" id="L147">                    jsonObject.put(columnName, rowSet.getObject(columnName));</span>
+<span class="nc" id="L140">        JSONArray jsonArray = new JSONArray();</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (rowSet != null) {</span>
+<span class="nc" id="L142">            String[] columnNames = rowSet.getMetaData().getColumnNames();</span>
+<span class="nc" id="L143">            JSONObject jsonObject = null;</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">            while(rowSet.next()) {</span>
+<span class="nc" id="L145">                jsonObject = new JSONObject();</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">                for (String columnName: columnNames) {</span>
+<span class="nc" id="L147">                    jsonObject.put(columnName, rowSet.getObject(columnName));</span>
                 }
-<span class="fc" id="L149">                jsonArray.put(jsonObject);</span>
+<span class="nc" id="L149">                jsonArray.put(jsonObject);</span>
             }
         }
-<span class="fc" id="L152">        return jsonArray.toString();</span>
+<span class="nc" id="L152">        return jsonArray.toString();</span>
     }
     
     private String getProcedure(String sql, Set&lt;String&gt; queryParamKeys) {
 <span class="nc bnc" id="L156" title="All 2 branches missed.">        if (!CollectionUtils.isEmpty(queryParamKeys)) {</span>
 <span class="nc bnc" id="L157" title="All 2 branches missed.">            for (String k: queryParamKeys) {</span>
 <span class="nc" id="L158">               sql =  sql.replace(&quot;:&quot; + k, &quot;?&quot;);</span>
-<span class="nc" id="L159">            }</span>
+            }
         }
 <span class="nc bnc" id="L161" title="All 2 branches missed.">        if (!sql.startsWith(&quot;{&quot;)) {</span>
 <span class="nc" id="L162">            sql = &quot;%s%s&quot;.formatted(&quot;{&quot;, sql);</span>
@@ -169,22 +169,22 @@ public class NamedQueryService {
     
     @Transactional(readOnly=true)
     public JSONArray all() {
-<span class="fc" id="L172">        JSONArray result = new JSONArray();</span>
-<span class="fc" id="L173">        Iterable&lt;NamedQuery&gt; iterable = namedQueryRepository.findAll();</span>
-<span class="fc" id="L174">        Assert.notNull(iterable, &quot;No named queries are registered!&quot;);</span>
-<span class="fc" id="L175">        Iterator&lt;NamedQuery&gt; it = iterable.iterator();</span>
-<span class="fc" id="L176">        NamedQuery nq = null;</span>
-<span class="fc" id="L177">        JSONObject jo = null;</span>
-<span class="fc" id="L178">        JsonNode jn = null;</span>
-<span class="fc bfc" id="L179" title="All 2 branches covered.">        while(it.hasNext()) {</span>
-<span class="fc" id="L180">           nq = it.next();</span>
-<span class="fc" id="L181">           jn = mapper.valueToTree(nq);</span>
-<span class="fc" id="L182">           jo = new JSONObject(jn.toString());</span>
-<span class="fc" id="L183">           jo.remove(&quot;id&quot;);</span>
-<span class="fc" id="L184">           jo.remove(&quot;createdTime&quot;);</span>
-<span class="fc" id="L185">           result.put(jo);</span>
+<span class="nc" id="L172">        JSONArray result = new JSONArray();</span>
+<span class="nc" id="L173">        Iterable&lt;NamedQuery&gt; iterable = namedQueryRepository.findAll();</span>
+<span class="nc" id="L174">        Assert.notNull(iterable, &quot;No named queries are registered!&quot;);</span>
+<span class="nc" id="L175">        Iterator&lt;NamedQuery&gt; it = iterable.iterator();</span>
+<span class="nc" id="L176">        NamedQuery nq = null;</span>
+<span class="nc" id="L177">        JSONObject jo = null;</span>
+<span class="nc" id="L178">        JsonNode jn = null;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        while(it.hasNext()) {</span>
+<span class="nc" id="L180">           nq = it.next();</span>
+<span class="nc" id="L181">           jn = mapper.valueToTree(nq);</span>
+<span class="nc" id="L182">           jo = new JSONObject(jn.toString());</span>
+<span class="nc" id="L183">           jo.remove(&quot;id&quot;);</span>
+<span class="nc" id="L184">           jo.remove(&quot;createdTime&quot;);</span>
+<span class="nc" id="L185">           result.put(jo);</span>
         }
-<span class="fc" id="L187">        return result;</span>
+<span class="nc" id="L187">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

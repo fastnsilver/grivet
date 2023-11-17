@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  * @author Chris Phillipson
  */
-<span class="fc" id="L48">@Slf4j</span>
+<span class="nc" id="L48">@Slf4j</span>
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class NamedQueryController {
@@ -53,33 +53,33 @@ public class NamedQueryController {
     private final NamedQueryService namedQueryService;
     
     @Autowired
-<span class="fc" id="L56">    public NamedQueryController(NamedQueryService namedQueryService) {</span>
-<span class="fc" id="L57">        this.namedQueryService = namedQueryService;</span>
-<span class="fc" id="L58">    }</span>
+<span class="nc" id="L56">    public NamedQueryController(NamedQueryService namedQueryService) {</span>
+<span class="nc" id="L57">        this.namedQueryService = namedQueryService;</span>
+<span class="nc" id="L58">    }</span>
     
     @PreAuthorize(&quot;hasAuthority('write:query')&quot;)
     @PostMapping(&quot;/query&quot;)
     public ResponseEntity&lt;?&gt; createNamedQuery(
             @RequestBody NamedQuery query) {
-<span class="fc" id="L64">        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();</span>
-<span class="fc" id="L65">        Assert.isTrue(StringUtils.isNotBlank(query.getName()), &quot;Query name must not be null, empty or blank.&quot;);</span>
-<span class="fc" id="L66">        Assert.notNull(query.getQuery(), &quot;Query string must not be null!&quot;);</span>
-<span class="fc" id="L67">        Assert.isTrue(isSupportedQuery(query), &quot;Query must start with either CALL or SELECT&quot;);</span>
+<span class="nc" id="L64">        ResponseEntity&lt;?&gt; result = ResponseEntity.unprocessableEntity().build();</span>
+<span class="nc" id="L65">        Assert.isTrue(StringUtils.isNotBlank(query.getName()), &quot;Query name must not be null, empty or blank.&quot;);</span>
+<span class="nc" id="L66">        Assert.notNull(query.getQuery(), &quot;Query string must not be null!&quot;);</span>
+<span class="nc" id="L67">        Assert.isTrue(isSupportedQuery(query), &quot;Query must start with either CALL or SELECT&quot;);</span>
         // check for named parameters; but only if they exist
-<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (!query.getParams().isEmpty()) {</span>
-<span class="fc" id="L70">            query.getParams().keySet()</span>
-<span class="fc" id="L71">                .forEach(k -&gt; Assert.isTrue(query.getQuery().contains(String.format(&quot;:%s&quot;, k)), String.format(&quot;Query must contain named parameter [%s]&quot;, k)));</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (!query.getParams().isEmpty()) {</span>
+<span class="nc" id="L70">            query.getParams().keySet()</span>
+<span class="nc" id="L71">                .forEach(k -&gt; Assert.isTrue(query.getQuery().contains(String.format(&quot;:%s&quot;, k)), String.format(&quot;Query must contain named parameter [%s]&quot;, k)));</span>
         }
-<span class="fc" id="L73">        namedQueryService.create(query);</span>
-<span class="fc" id="L74">        log.info(&quot;Named Query \n\n{}\n\n successfully registered!&quot;, query);</span>
-<span class="fc" id="L75">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
-<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (query.getParams().isEmpty()) {</span>
-<span class="fc" id="L77">            result = ResponseEntity.created(ucb.path(&quot;/query/{name}&quot;).buildAndExpand(query.getName()).toUri())</span>
-<span class="fc" id="L78">                    .build();</span>
-        } else {
-<span class="fc" id="L80">            result = ResponseEntity.noContent().build();</span>
+<span class="nc" id="L73">        namedQueryService.create(query);</span>
+<span class="nc" id="L74">        log.info(&quot;Named Query \n\n{}\n\n successfully registered!&quot;, query);</span>
+<span class="nc" id="L75">        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (query.getParams().isEmpty()) {</span>
+<span class="nc" id="L77">            result = ResponseEntity.created(ucb.path(&quot;/query/{name}&quot;).buildAndExpand(query.getName()).toUri())</span>
+<span class="nc" id="L78">                    .build();</span>
+<span class="nc" id="L79">        } else {</span>
+<span class="nc" id="L80">            result = ResponseEntity.noContent().build();</span>
         }
-<span class="fc" id="L82">        return result;</span>
+<span class="nc" id="L82">        return result;</span>
     }
     
     @PreAuthorize(&quot;hasAuthority('execute:query')&quot;)
@@ -87,32 +87,32 @@ public class NamedQueryController {
     public ResponseEntity&lt;?&gt; executeNamedQuery(
             @PathVariable(&quot;name&quot;) String name, 
             @RequestParam MultiValueMap&lt;String, ?&gt; parameters) {
-<span class="fc" id="L90">        return ResponseEntity.ok(namedQueryService.get(name, parameters));</span>
+<span class="nc" id="L90">        return ResponseEntity.ok(namedQueryService.get(name, parameters));</span>
     }
     
     @PreAuthorize(&quot;hasAuthority('list:query')&quot;)
     @GetMapping(&quot;/queries&quot;)
     public ResponseEntity&lt;?&gt; listNamedQueries() {
-<span class="fc" id="L96">        JSONArray payload = namedQueryService.all();</span>
-<span class="fc" id="L97">        return ResponseEntity.ok(payload.toString());</span>
+<span class="nc" id="L96">        JSONArray payload = namedQueryService.all();</span>
+<span class="nc" id="L97">        return ResponseEntity.ok(payload.toString());</span>
     }
     
     @PreAuthorize(&quot;hasAuthority('delete:query')&quot;)
     @DeleteMapping(value = &quot;/query/{name}&quot;)
     public ResponseEntity&lt;?&gt; deleteNamedQuery(
             @PathVariable(&quot;name&quot;) String name) {
-<span class="fc" id="L104">        namedQueryService.delete(name);</span>
-<span class="fc" id="L105">        log.info(&quot;Query with name [{}] successfully deleted!&quot;, name);</span>
-<span class="fc" id="L106">        return ResponseEntity.noContent().build();</span>
+<span class="nc" id="L104">        namedQueryService.delete(name);</span>
+<span class="nc" id="L105">        log.info(&quot;Query with name [{}] successfully deleted!&quot;, name);</span>
+<span class="nc" id="L106">        return ResponseEntity.noContent().build();</span>
     }
     
     private boolean isSupportedQuery(NamedQuery query) {
-<span class="fc" id="L110">        boolean result = false;</span>
-<span class="pc bpc" id="L111" title="1 of 4 branches missed.">        if ((query.getQuery().toUpperCase().startsWith(&quot;SELECT&quot;) &amp;&amp; query.getType().equals(QueryType.SELECT)) </span>
-<span class="pc bpc" id="L112" title="2 of 4 branches missed.">                || (query.getQuery().toUpperCase().startsWith(&quot;CALL&quot;) &amp;&amp; query.getType().equals(QueryType.SPROC))) {</span>
-<span class="fc" id="L113">            result = true;</span>
+<span class="nc" id="L110">        boolean result = false;</span>
+<span class="nc bnc" id="L111" title="All 4 branches missed.">        if ((query.getQuery().toUpperCase().startsWith(&quot;SELECT&quot;) &amp;&amp; query.getType().equals(QueryType.SELECT)) </span>
+<span class="nc bnc" id="L112" title="All 4 branches missed.">                || (query.getQuery().toUpperCase().startsWith(&quot;CALL&quot;) &amp;&amp; query.getType().equals(QueryType.SPROC))) {</span>
+<span class="nc" id="L113">            result = true;</span>
         }
-<span class="fc" id="L115">        return result;</span>
+<span class="nc" id="L115">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
