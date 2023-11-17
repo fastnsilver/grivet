@@ -4,9 +4,13 @@ applications:
   memory: 2G
   stack: cflinuxfs4
   instances: 1
-  path: ./target/grivet-standalone-1.0.0-SNAPSHOT.jar
+  path: ./target/grivet-standalone-1.1.0-SNAPSHOT.jar
   timeout: 120
   env:
+    SPRING_APPLICATION_NAME: grivet-standalone-service
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
-    SPRING_PROFILES_ACTIVE: cloud
+    SPRING_PROFILES_ACTIVE: cloud,mysql,insecure,standalone
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
+  services:
+  - grivet-standalone-config
+  - grivet-standalone-backend
