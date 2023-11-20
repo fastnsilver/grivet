@@ -18,29 +18,23 @@ package com.fns.grivet.controller;
 import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-
 import jakarta.servlet.http.HttpServletRequest;
-
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import com.fns.grivet.model.ErrorResponse;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @ControllerAdvice
 class GlobalControllerExceptionHandler {
 
-	@ExceptionHandler({
-		IOException.class, IllegalArgumentException.class,
-		DateTimeParseException.class, NumberFormatException.class, JSONException.class
-	})
+	private static final Logger log = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
+
+	@ExceptionHandler({IOException.class, IllegalArgumentException.class, DateTimeParseException.class, NumberFormatException.class, JSONException.class})
 	protected ResponseEntity<ErrorResponse> badRequest(Exception e, HttpServletRequest hsr) {
-	    ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),
-				Arrays.asList(e.getMessage()));
+		ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(), Arrays.asList(e.getMessage()));
 		log.error(er.toString());
 		return ResponseEntity.badRequest().body(er);
 	}

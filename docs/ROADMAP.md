@@ -78,7 +78,7 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 1.1.0
 
-- [ ] [Delombok](https://github.com/fastnsilver/grivet/issues/151) source code
+- [x] [Delombok](https://github.com/fastnsilver/grivet/issues/151) source code
   - Remove annotations
   - Remove back-flipping in Maven POMs
 - [ ] Endpoint security policy implemented with Spring Cloud Gateway and Spring Security 6

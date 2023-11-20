@@ -37,26 +37,25 @@ import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.query.QueryType;
 import com.fns.grivet.service.NamedQueryService;
 
-import lombok.extern.slf4j.Slf4j;
-
 
 /**
  * Provides end-points for registration, verification and execution of named queries
- * 
+ *
  * @author Chris Phillipson
  */
-@Slf4j
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class NamedQueryController {
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(NamedQueryController.class);
+
     private final NamedQueryService namedQueryService;
-    
+
     @Autowired
     public NamedQueryController(NamedQueryService namedQueryService) {
         this.namedQueryService = namedQueryService;
     }
-    
+
     @PreAuthorize("hasAuthority('write:query')")
     @PostMapping("/query")
     public ResponseEntity<?> createNamedQuery(
@@ -81,22 +80,22 @@ public class NamedQueryController {
         }
         return result;
     }
-    
+
     @PreAuthorize("hasAuthority('execute:query')")
     @GetMapping("/query/{name}")
     public ResponseEntity<?> executeNamedQuery(
-            @PathVariable("name") String name, 
+            @PathVariable("name") String name,
             @RequestParam MultiValueMap<String, ?> parameters) {
         return ResponseEntity.ok(namedQueryService.get(name, parameters));
     }
-    
+
     @PreAuthorize("hasAuthority('list:query')")
     @GetMapping("/queries")
     public ResponseEntity<?> listNamedQueries() {
         JSONArray payload = namedQueryService.all();
         return ResponseEntity.ok(payload.toString());
     }
-    
+
     @PreAuthorize("hasAuthority('delete:query')")
     @DeleteMapping(value = "/query/{name}")
     public ResponseEntity<?> deleteNamedQuery(
@@ -105,7 +104,7 @@ public class NamedQueryController {
         log.info("Query with name [{}] successfully deleted!", name);
         return ResponseEntity.noContent().build();
     }
-    
+
     private boolean isSupportedQuery(NamedQuery query) {
         boolean result = false;
         if ((query.getQuery().toUpperCase().startsWith("SELECT") && query.getType().equals(QueryType.SELECT)) 

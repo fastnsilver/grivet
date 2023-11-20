@@ -1,6 +1,6 @@
 # Developer Notes
 
-This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.  
+This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.
 
 ## Prerequisites
 
@@ -297,3 +297,11 @@ mvn scm-publish:publish-scm -Pdocumentation
 ### Review
 
 * [Maven Site](http://fastnsilver.github.io/grivet/)
+
+## Release new version
+
+Ensure all uncommitted source is stashed, then
+
+```
+mvn release:prepare -DautoVersionSubmodules=true
+```

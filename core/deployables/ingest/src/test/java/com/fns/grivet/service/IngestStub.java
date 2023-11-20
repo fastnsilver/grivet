@@ -23,11 +23,10 @@ import org.springframework.util.Assert;
 
 import com.fns.grivet.model.Op;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Profile("!pipeline")
 public class IngestStub implements Ingester {
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(IngestStub.class);
 
     @Override
     public void ingest(Message<JSONObject> message) {

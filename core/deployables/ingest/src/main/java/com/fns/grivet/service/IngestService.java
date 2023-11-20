@@ -26,12 +26,12 @@ import org.springframework.util.Assert;
 
 import com.fns.grivet.model.Op;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Profile("pipeline")
 @Service
 public class IngestService implements Ingester {
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(IngestService.class);
 
     public static final String DESTINATION = "message-out-0";
 

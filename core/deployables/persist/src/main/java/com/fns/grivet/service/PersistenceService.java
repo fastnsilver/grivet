@@ -16,12 +16,13 @@ import org.springframework.util.Assert;
 import com.fns.grivet.model.Op;
 
 import io.micrometer.core.instrument.MeterRegistry;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
 @Service
 @Profile("pipeline")
 public class PersistenceService {
+
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PersistenceService.class);
 
 	private final EntityService entityService;
 	private final MeterRegistry meterRegistry;

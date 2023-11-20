@@ -17,7 +17,6 @@ package com.fns.grivet.controller;
 
 import java.io.IOException;
 import java.net.URI;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,26 +37,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import com.fns.grivet.service.ClassRegistryService;
-
-import lombok.extern.slf4j.Slf4j;
-
 
 /**
  * Provides end-points for type definition and verification
  *
  * @author Chris Phillipson
  */
-@Slf4j
 @RefreshScope
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ClassRegistryController {
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ClassRegistryController.class);
+
     @Value("${grivet.register.batch-size:100}")
     private int batchSize;
-
     private final ClassRegistryService classRegistryService;
 
     @Autowired
@@ -65,7 +60,7 @@ public class ClassRegistryController {
         this.classRegistryService = classRegistryService;
     }
 
-    @PreAuthorize("hasAuthority('write:typedef')")
+    @PreAuthorize("hasAuthority(\'write:typedef\')")
     @PostMapping("/definition")
     public ResponseEntity<?> defineType(@RequestBody JSONObject payload) throws IOException {
         String type = classRegistryService.register(payload);
@@ -74,13 +69,11 @@ public class ClassRegistryController {
         return ResponseEntity.created(ucb.path("/definition/{type}").buildAndExpand(type).toUri()).build();
     }
 
-    @PreAuthorize("hasAuthority('write:typedef')")
+    @PreAuthorize("hasAuthority(\'write:typedef\')")
     @PostMapping("/definitions")
     public ResponseEntity<?> defineTypes(@RequestBody JSONArray array) throws IOException, JSONException {
         int numberOfTypesToRegister = array.length();
-        Assert.isTrue(numberOfTypesToRegister <= batchSize,
-                        "The total number of entries in a type registration request must not exceed %d! Your registration request contained [%d] entries.".formatted(
-                        batchSize, numberOfTypesToRegister));
+        Assert.isTrue(numberOfTypesToRegister <= batchSize, "The total number of entries in a type registration request must not exceed %d! Your registration request contained [%d] entries.".formatted(batchSize, numberOfTypesToRegister));
         JSONObject payload = null;
         String type = null;
         HttpHeaders headers = new HttpHeaders();
@@ -111,29 +104,26 @@ public class ClassRegistryController {
         return new ResponseEntity<>(headers, ((errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED));
     }
 
-    @PreAuthorize("hasAuthority('delete:typedef')")
+    @PreAuthorize("hasAuthority(\'delete:typedef\')")
     @DeleteMapping("/definition/{type}")
-    public ResponseEntity<?> undefineType(
-            @PathVariable("type") String type) {
+    public ResponseEntity<?> undefineType(@PathVariable("type") String type) {
         classRegistryService.deregister(type);
         log.info("Type [{}] successfully deregistered!", type);
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasAuthority('read:typedef')")
+    @PreAuthorize("hasAuthority(\'read:typedef\')")
     @GetMapping("/definition/{type}")
-    public ResponseEntity<?> getTypeDefinition(
-            @PathVariable("type") String type) {
+    public ResponseEntity<?> getTypeDefinition(@PathVariable("type") String type) {
         JSONObject payload = classRegistryService.get(type);
         String message = LogUtil.toLog(payload, "Successfully retrieved type [%s]\n".formatted(type));
         log.info(message);
         return ResponseEntity.ok(payload.toString());
     }
 
-    @PreAuthorize("hasAuthority('read:typedef')")
+    @PreAuthorize("hasAuthority(\'read:typedef\')")
     @GetMapping("/definitions")
     public ResponseEntity<?> getAllTypeDefinitions() {
         return ResponseEntity.ok(classRegistryService.all().toString());
     }
-
 }

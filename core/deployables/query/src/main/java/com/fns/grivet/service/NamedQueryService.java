@@ -44,11 +44,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.repo.NamedQueryRepository;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class NamedQueryService {
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(NamedQueryService.class);
 
     private final NamedQueryRepository namedQueryRepository;
     private final JdbcTemplate jdbcTemplate;
@@ -122,20 +122,20 @@ public class NamedQueryService {
             namedQueryRepository.delete(nq);
         }
     }
-    
+
     protected SqlRowSet callSproc(CallableStatementCreator csc) {
        return jdbcTemplate.execute(csc, new CallableStatementCallback<SqlRowSet>() {
-            
+
             @Override
             public SqlRowSet doInCallableStatement(CallableStatement cs)
                     throws SQLException, DataAccessException {
                 log.debug("Stored procedure to be executed: " + cs.toString());
                 return new SqlRowSetResultSetExtractor().extractData(cs.executeQuery());
             }
-            
+
         });
     }
-    
+
     protected String mapRows(SqlRowSet rowSet) {
         JSONArray jsonArray = new JSONArray();
         if (rowSet != null) {
@@ -151,7 +151,7 @@ public class NamedQueryService {
         }
         return jsonArray.toString();
     }
-    
+
     private String getProcedure(String sql, Set<String> queryParamKeys) {
         if (!CollectionUtils.isEmpty(queryParamKeys)) {
             for (String k: queryParamKeys) {
@@ -166,7 +166,7 @@ public class NamedQueryService {
         }
         return sql;
     }
-    
+
     @Transactional(readOnly=true)
     public JSONArray all() {
         JSONArray result = new JSONArray();

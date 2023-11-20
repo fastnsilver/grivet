@@ -96,7 +96,6 @@
         <junit.jupiter.version>5.10.0</junit.jupiter.version>
         <junit.platform.version>1.10.0</junit.platform.version>
         <logstash-logback-encoder.version>7.4</logstash-logback-encoder.version>
-        <lombok.version>1.18.30</lombok.version>
         <micrometer.version>1.11.5</micrometer.version>
         <mysql.version>8.0.22</mysql.version> <!-- @see https://bugs.mysql.com/bug.php?id=110285 -->
         <okta-spring-boot-starter.version>3.0.5</okta-spring-boot-starter.version>
@@ -258,79 +257,6 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
                     <version>${versions-maven-plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.projectlombok</groupId>
-                    <artifactId>lombok-maven-plugin</artifactId>
-                    <version>1.18.20.0</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </dependency>
-                    </dependencies>
-                    <executions>
-                        <execution>
-                            <id>delombok</id>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>delombok</goal>
-                            </goals>
-                            <configuration>
-                                <formatPreferences>
-                                    <javaLangAsFQN>skip</javaLangAsFQN>
-                                </formatPreferences>
-                                <verbose>true</verbose>
-                                <sourceDirectory>src/main/java</sourceDirectory>
-                                <outputDirectory>${project.build.directory}/delombok-sources</outputDirectory>
-                                <addOutputDirectory>false</addOutputDirectory>
-                                <encoding>UTF-8</encoding>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-antrun-plugin</artifactId>
-                    <version>3.1.0</version>
-                    <executions>
-                        <execution>
-                            <id>generate-delomboked-sources-jar</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>run</goal>
-                            </goals>
-                            <configuration>
-                                <target>
-                                    <jar destfile="${project.build.directory}/${project.build.finalName}-sources.jar" basedir="${project.build.directory}/delombok-sources" />
-                                </target>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>3.4.0</version>
-                    <executions>
-                        <execution>
-                            <id>attach-delomboked-sources-jar</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>attach-artifact</goal>
-                            </goals>
-                            <configuration>
-                                <artifacts>
-                                    <artifact>
-                                        <file>${project.build.directory}/${project.build.finalName}-sources.jar</file>
-                                        <type>jar</type>
-                                        <classifier>sources</classifier>
-                                    </artifact>
-                                </artifacts>
-                            </configuration>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

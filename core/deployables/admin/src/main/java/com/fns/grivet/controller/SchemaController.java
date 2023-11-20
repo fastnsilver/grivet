@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -31,27 +31,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fns.grivet.service.SchemaService;
 
-import lombok.extern.slf4j.Slf4j;
-
 
 /**
  * Provides end-points for linking and unlinking JSON Schema to pre-registered types
- * 
+ *
  * @author Chris Phillipson
  */
-@Slf4j
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class SchemaController {
 
+    org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(SchemaController.class);
+
     private final SchemaService schemaService;
-    
+
     @Autowired
     public SchemaController(SchemaService schemaService) {
         this.schemaService = schemaService;
     }
-    
-    
+
+
     @PreAuthorize("hasAuthority('write:schema')")
     @PostMapping("/schema")
     public ResponseEntity<?> linkSchema(@RequestBody JSONObject payload) throws IOException {
@@ -59,12 +58,12 @@ public class SchemaController {
             return ResponseEntity.unprocessableEntity().build();
         }
         String id = schemaService.linkSchema(payload).getName();
-        String message = 
+        String message =
                 "JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!".formatted(id);
         log.info(message);
         return ResponseEntity.ok(message);
     }
-    
+
     @PreAuthorize("hasAuthority('delete:schema')")
     @DeleteMapping("/schema/{type}")
     public ResponseEntity<?> unlinkSchema(
@@ -74,5 +73,5 @@ public class SchemaController {
         log.info(message);
         return ResponseEntity.ok(message);
     }
-            
+
 }

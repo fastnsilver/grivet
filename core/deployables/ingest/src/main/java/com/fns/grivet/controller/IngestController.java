@@ -39,7 +39,6 @@ import com.fns.grivet.model.Op;
 import com.fns.grivet.service.Ingester;
 
 import io.micrometer.core.instrument.MeterRegistry;
-import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -47,11 +46,12 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author Chris Phillipson
  */
-@Slf4j
 @RefreshScope
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class IngestController {
+
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(IngestController.class);
 
 	@Value("${grivet.ingest.batch-size:100}")
 	private int batchSize;

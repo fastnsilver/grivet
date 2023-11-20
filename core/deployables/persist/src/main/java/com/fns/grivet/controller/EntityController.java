@@ -50,7 +50,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fns.grivet.service.EntityService;
 
 import io.micrometer.core.instrument.MeterRegistry;
-import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -58,11 +57,12 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author Chris Phillipson
  */
-@Slf4j
 @RefreshScope
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class EntityController {
+
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(EntityController.class);
 
 	@Value("${grivet.store.batch-size:100}")
 	private int batchSize;

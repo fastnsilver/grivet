@@ -95,7 +95,7 @@ public class ClassRegistryService {
 				Assert.notNull(at, "[%s].[%s] must declare an attribute type in registration request!".formatted(type, attributeName));
 				attributeType = attributeTypeRepository.findByType(at);
 				Assert.notNull(attributeType, "Attribute type [%s] is not supported!".formatted(at));
-				ClassAttribute detachedClassAttribute = 
+				ClassAttribute detachedClassAttribute =
 				        ClassAttribute.builder()
 				            .cid(persistentClass.getId())
 				            .aid(persistentAttribute.getId())
