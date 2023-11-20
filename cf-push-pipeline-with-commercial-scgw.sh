@@ -79,5 +79,5 @@ cf start grivet-query
 # @see https://docs.vmware.com/en/Spring-Cloud-Gateway-for-VMware-Tanzu/2.1/spring-cloud-gateway/GUID-guides-configuring-routes.html
 cf bind-service grivet-admin $GW_NAME -c '{ "routes": [ { "path": "api/v1/definition/**,/api/v1/definitions/**,/api/v1/schema", "uri": "lb://grivet-admin.apps.internal", "filters": [ "StripPrefix=2" ] } ] }'
 cf bind-service grivet-ingest $GW_NAME -c '{ "routes": [ { "path": "/api/v1/type/**,/api/v1/types", "method": "POST,PATCH,DELETE", "uri": "lb://grivet-ingest.apps.internal", "filters": [ "StripPrefix=2" ] } ] }'
-cf bind-service grivet-ingest $GW_NAME -c '{ "routes": [ { "path": "/api/v1/type/**,/api/v1/types", "method": "GET", "uri": "lb://grivet-persist.apps.internal", "filters": [ "StripPrefix=2" ] } ] }'
+cf bind-service grivet-persist $GW_NAME -c '{ "routes": [ { "path": "/api/v1/type/**,/api/v1/types", "method": "GET", "uri": "lb://grivet-persist.apps.internal", "filters": [ "StripPrefix=2" ] } ] }'
 cf bind-service grivet-query $GW_NAME -c '{ "routes": [ { "path": "/api/v1/query/**,/api/v1/queries", "uri": "lb://grivet-query.apps.internal", "filters": [ "StripPrefix=2" ] } ] }'
