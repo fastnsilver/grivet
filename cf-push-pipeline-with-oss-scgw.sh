@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
 
-# Orchestrates deployment of Grivet in pipeline mode
+# Orchestrates deployment of Grivet in pipeline mode targeting Tanzu Application Service using OSS Spring Cloud Gateway deployed as an application instance
 
 set -e
 
-if [ -z "$1" ]; then
-    echo "Usage: ./cf-push-pipeline.sh kafka|rabbit"
-    exit 1
-fi
-
-QUEUE_PROVIDER=$1
+QUEUE_PROVIDER=rabbit
 
 export MODE=grivet-pipeline
 export REGISTRY_NAME=grivet-discovery-service
