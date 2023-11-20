@@ -298,10 +298,13 @@ mvn scm-publish:publish-scm -Pdocumentation
 
 * [Maven Site](http://fastnsilver.github.io/grivet/)
 
+
 ## Release new version
 
 Ensure all uncommitted source is stashed, then
 
 ```
 mvn release:prepare -DautoVersionSubmodules=true
+gh release create 1.0.0 --generate-notes --target {tagged-commit-sha}
 ```
+> Replace `tagged-commit-sha` above with a target branch or full commit SHA
