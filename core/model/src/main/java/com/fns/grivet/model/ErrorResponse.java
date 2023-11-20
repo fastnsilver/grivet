@@ -2,8 +2,6 @@ package com.fns.grivet.model;
 
 import java.util.List;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -43,7 +41,7 @@ public class ErrorResponse {
 
     @JsonIgnore
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        return String.format("ErrorResponse: { \"method\": \"%s\", \"uri\": \"%s\", \"query\": \"%s\", \"errors\": \"%s\" }", method, uri, query, errors);
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -25,7 +25,7 @@ public class Constraint {
     private final Operator operator;
     private final Conjunction conjunction;
     private final String[] values;
-    
+
     // c=<attributeName>|<operator>|<value>|<conjunction>
     public Constraint(String[] constraintParts) {
         Assert.notEmpty(constraintParts, "Constraint parts must not be null or empty!");
@@ -35,7 +35,7 @@ public class Constraint {
         values = constraintParts[2].split("\\s*,\\s*");
         if (operator.equals(Operator.BETWEEN)) {
             Assert.isTrue(values.length == 2, "Operator [between] requires two values!");
-        } 
+        }
         if (constraintParts.length == 4) {
             if (constraintParts[3] == null) {
                 conjunction = null;
@@ -58,19 +58,24 @@ public class Constraint {
     public Conjunction getConjunction() {
         return conjunction;
     }
-    
+
     public String[] getValues() {
         return values;
     }
-    
+
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return new HashCodeBuilder().append(attributeName).append(operator).append(conjunction).append(values).toHashCode();
     }
 
     @Override
     public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(this, object);
+        if (!(object instanceof Constraint)) {
+            return false;
+        }
+        Constraint that = (Constraint) object;
+        return new EqualsBuilder().append(this.attributeName, that.attributeName).append(this.operator, that.operator)
+                .append(this.conjunction, that.conjunction).append(this.values, that.values).isEquals();
     }
 
 }
