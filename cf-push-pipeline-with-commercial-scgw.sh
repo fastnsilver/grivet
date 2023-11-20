@@ -24,7 +24,7 @@ cf create-service p.config-server standard $MODE-config -c config-repo/config-se
 cf create-service p.service-registry standard $REGISTRY_NAME
 cf create-service p.mysql db-small-80 $MODE-backend
 cf create-service p.rabbitmq single-node $QUEUE_NAME
-cf create-service p.gateway standard $GW_NAME
+cf create-service p.gateway standard $GW_NAME -c "{ \"host\": \"$GW_NAME\" }"
 
 for (( i = 0; i < 90; i++ )); do
   if [[ $(cf service $MODE-config) != *"succeeded"* ]]; then
