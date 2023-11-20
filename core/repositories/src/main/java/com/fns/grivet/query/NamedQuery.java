@@ -38,7 +38,6 @@ import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.Version;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;

@@ -34,7 +34,6 @@ import org.springframework.core.io.ResourceLoader;
 import com.fns.grivet.PersistInit;
 
 import net.javacrumbs.jsonunit.JsonAssert;
-import org.springframework.test.annotation.Rollback;
 
 @SpringBootTest(classes = PersistInit.class)
 public class EntityServiceTest {
