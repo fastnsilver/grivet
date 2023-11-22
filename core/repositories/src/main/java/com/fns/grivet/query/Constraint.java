@@ -82,7 +82,7 @@ public class Constraint {
 		if (!(object instanceof Constraint)) {
 			return false;
 		}
-		Constraint that = (Constraint) object;
+		var that = (Constraint) object;
 		return new EqualsBuilder().append(this.attributeName, that.attributeName)
 			.append(this.operator, that.operator)
 			.append(this.conjunction, that.conjunction)

@@ -46,10 +46,10 @@ public class SchemaService {
 
 	public boolean isJsonSchema(JSONObject payload) {
 		boolean result = false;
-		String schema = payload.optString(SCHEMA);
-		String type = payload.optString(TYPE);
-		String id = payload.optString(ID);
-		String props = payload.optString(PROPERTIES);
+		var schema = payload.optString(SCHEMA);
+		var type = payload.optString(TYPE);
+		var id = payload.optString(ID);
+		var props = payload.optString(PROPERTIES);
 		if ("http://json-schema.org/draft-04/schema#".equals(schema) && "object".equals(type)
 				&& StringUtils.isNotBlank(id) && StringUtils.isNotBlank(props)) {
 			result = true;
@@ -59,9 +59,9 @@ public class SchemaService {
 
 	@Transactional
 	public com.fns.grivet.model.Class linkSchema(JSONObject payload) {
-		String type = payload.getString(ID);
+		var type = payload.getString(ID);
 		Assert.notNull(type, "JSON Schema must declare an id!");
-		com.fns.grivet.model.Class c = classRepository.findByName(type);
+		var c = classRepository.findByName(type);
 		Assert.notNull(c, "Type [%s] must be registered before linking a JSON Schema!".formatted(type));
 		c.setValidatable(true);
 		c.setJsonSchema(payload.toString());
@@ -72,7 +72,7 @@ public class SchemaService {
 
 	@Transactional
 	public com.fns.grivet.model.Class unlinkSchema(String type) {
-		com.fns.grivet.model.Class c = classRepository.findByName(type);
+		var c = classRepository.findByName(type);
 		Assert.notNull(c, "Type [%s] must be registered before unlinking a JSON Schema!".formatted(type));
 		c.setValidatable(false);
 		c.setJsonSchema(null);

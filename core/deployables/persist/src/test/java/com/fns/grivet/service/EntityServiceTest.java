@@ -51,62 +51,62 @@ public class EntityServiceTest {
 	private EntityService entityService;
 
 	protected void registerType(String type) throws IOException {
-		Resource r = resolver.getResource("classpath:%s.json".formatted(type));
-		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		JSONObject payload = new JSONObject(json);
+		var r = resolver.getResource("classpath:%s.json".formatted(type));
+		var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+		var payload = new JSONObject(json);
 		classRegistryService.register(payload);
 	}
 
 	@Test
 	public void testCreateThenFindByType() throws IOException {
 		registerType("TestType");
-		Resource r = resolver.getResource("classpath:TestTypeData.json");
-		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		JSONObject expected = new JSONObject(json);
+		var r = resolver.getResource("classpath:TestTypeData.json");
+		var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+		var expected = new JSONObject(json);
 
-		Long eid = entityService.create("TestType", expected);
+		var eid = entityService.create("TestType", expected);
 
-		String result = entityService.findById(eid);
-		JSONObject actual = new JSONObject(result);
+		var result = entityService.findById(eid);
+		var actual = new JSONObject(result);
 		JsonAssert.assertJsonEquals(expected.toString(), actual.toString());
 	}
 
 	@Test
 	public void testCreateThenFindByTypeVariant() throws IOException {
 		registerType("TestType2");
-		Resource r = resolver.getResource("classpath:TestTypeData2.json");
-		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		JSONObject payload = new JSONObject(json);
+		var r = resolver.getResource("classpath:TestTypeData2.json");
+		var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+		var payload = new JSONObject(json);
 
 		entityService.create("TestType2", payload);
 
-		String result = entityService.findByCreatedTime("TestType2", LocalDateTime.now().minusSeconds(3),
+		var result = entityService.findByCreatedTime("TestType2", LocalDateTime.now().minusSeconds(3),
 				LocalDateTime.now(), null);
-		JSONArray resultAsJsonArray = new JSONArray(result);
+		var resultAsJsonArray = new JSONArray(result);
 		JsonAssert.assertJsonEquals(payload, resultAsJsonArray.get(0));
 	}
 
 	@Test
 	public void testSchemaLinkAndValidationSuccessThenUnlink() throws IOException {
 		registerType("TestType");
-		Resource r = resolver.getResource("classpath:TestTypeSchema.json");
-		String jsonSchema = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		JSONObject schemaObj = new JSONObject(jsonSchema);
-		com.fns.grivet.model.Class c = schemaService.linkSchema(schemaObj);
-		String type = c.getName();
+		var r = resolver.getResource("classpath:TestTypeSchema.json");
+		var jsonSchema = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+		var schemaObj = new JSONObject(jsonSchema);
+		var c = schemaService.linkSchema(schemaObj);
+		var type = c.getName();
 		Assertions.assertEquals("TestType", type);
 		Assertions.assertTrue(c.isValidatable());
 		JsonAssert.assertJsonEquals(c.getJsonSchema(), jsonSchema);
 
 		r = resolver.getResource("classpath:TestTypeData.json");
-		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		JSONObject payload = new JSONObject(json);
+		var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+		var payload = new JSONObject(json);
 
 		entityService.create("TestType", payload);
 
-		String result = entityService.findByCreatedTime("TestType", LocalDateTime.now().minusSeconds(3),
+		var result = entityService.findByCreatedTime("TestType", LocalDateTime.now().minusSeconds(3),
 				LocalDateTime.now(), null);
-		JSONArray resultAsJsonArray = new JSONArray(result);
+		var resultAsJsonArray = new JSONArray(result);
 		JsonAssert.assertJsonEquals(payload.toString(), resultAsJsonArray.get(0).toString());
 
 		c = schemaService.unlinkSchema(type);
@@ -117,7 +117,7 @@ public class EntityServiceTest {
 	@Test
 	public void testTypeNotRegistered() throws IOException {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			JSONObject payload = new JSONObject();
+			var payload = new JSONObject();
 			entityService.create("TestType", payload);
 		});
 	}

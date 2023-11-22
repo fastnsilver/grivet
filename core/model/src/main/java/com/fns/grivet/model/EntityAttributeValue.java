@@ -123,29 +123,29 @@ public class EntityAttributeValue implements Serializable {
 		final EntityAttributeValue other = (EntityAttributeValue) o;
 		if (!other.canEqual((Object) this))
 			return false;
-		final Object this$id = this.getId();
-		final Object other$id = other.getId();
+		final var this$id = this.getId();
+		final var other$id = other.getId();
 		if (this$id == null ? other$id != null : !this$id.equals(other$id))
 			return false;
-		final Object this$attributeId = this.getAttributeId();
-		final Object other$attributeId = other.getAttributeId();
+		final var this$attributeId = this.getAttributeId();
+		final var other$attributeId = other.getAttributeId();
 		if (this$attributeId == null ? other$attributeId != null : !this$attributeId.equals(other$attributeId))
 			return false;
-		final Object this$attributeName = this.getAttributeName();
-		final Object other$attributeName = other.getAttributeName();
+		final var this$attributeName = this.getAttributeName();
+		final var other$attributeName = other.getAttributeName();
 		if (this$attributeName == null ? other$attributeName != null : !this$attributeName.equals(other$attributeName))
 			return false;
-		final Object this$attributeValue = this.getAttributeValue();
-		final Object other$attributeValue = other.getAttributeValue();
+		final var this$attributeValue = this.getAttributeValue();
+		final var other$attributeValue = other.getAttributeValue();
 		if (this$attributeValue == null ? other$attributeValue != null
 				: !this$attributeValue.equals(other$attributeValue))
 			return false;
-		final Object this$createdTime = this.getCreatedTime();
-		final Object other$createdTime = other.getCreatedTime();
+		final var this$createdTime = this.getCreatedTime();
+		final var other$createdTime = other.getCreatedTime();
 		if (this$createdTime == null ? other$createdTime != null : !this$createdTime.equals(other$createdTime))
 			return false;
-		final Object this$createdBy = this.getCreatedBy();
-		final Object other$createdBy = other.getCreatedBy();
+		final var this$createdBy = this.getCreatedBy();
+		final var other$createdBy = other.getCreatedBy();
 		if (this$createdBy == null ? other$createdBy != null : !this$createdBy.equals(other$createdBy))
 			return false;
 		return true;
@@ -159,17 +159,17 @@ public class EntityAttributeValue implements Serializable {
 	public int hashCode() {
 		final int PRIME = 59;
 		int result = 1;
-		final Object $id = this.getId();
+		final var $id = this.getId();
 		result = result * PRIME + ($id == null ? 43 : $id.hashCode());
-		final Object $attributeId = this.getAttributeId();
+		final var $attributeId = this.getAttributeId();
 		result = result * PRIME + ($attributeId == null ? 43 : $attributeId.hashCode());
-		final Object $attributeName = this.getAttributeName();
+		final var $attributeName = this.getAttributeName();
 		result = result * PRIME + ($attributeName == null ? 43 : $attributeName.hashCode());
-		final Object $attributeValue = this.getAttributeValue();
+		final var $attributeValue = this.getAttributeValue();
 		result = result * PRIME + ($attributeValue == null ? 43 : $attributeValue.hashCode());
-		final Object $createdTime = this.getCreatedTime();
+		final var $createdTime = this.getCreatedTime();
 		result = result * PRIME + ($createdTime == null ? 43 : $createdTime.hashCode());
-		final Object $createdBy = this.getCreatedBy();
+		final var $createdBy = this.getCreatedBy();
 		result = result * PRIME + ($createdBy == null ? 43 : $createdBy.hashCode());
 		return result;
 	}

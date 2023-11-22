@@ -55,8 +55,8 @@ public class SchemaController {
 		if (!schemaService.isJsonSchema(payload)) {
 			return ResponseEntity.unprocessableEntity().build();
 		}
-		String id = schemaService.linkSchema(payload).getName();
-		String message = "JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!"
+		var id = schemaService.linkSchema(payload).getName();
+		var message = "JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!"
 			.formatted(id);
 		log.info(message);
 		return ResponseEntity.ok(message);
@@ -66,7 +66,7 @@ public class SchemaController {
 	@DeleteMapping("/schema/{type}")
 	public ResponseEntity<?> unlinkSchema(@PathVariable("type") String type) {
 		schemaService.unlinkSchema(type);
-		String message = "JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!"
+		var message = "JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!"
 			.formatted(type);
 		log.info(message);
 		return ResponseEntity.ok(message);

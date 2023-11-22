@@ -42,17 +42,17 @@ public class ClassRegistryServiceTest {
 
 	@Test
 	public void testRegisterThenGetThenAll() throws IOException {
-		Resource r = resolver.getResource("classpath:TestType.json");
-		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		JSONObject payload = new JSONObject(json);
+		var r = resolver.getResource("classpath:TestType.json");
+		var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+		var payload = new JSONObject(json);
 
-		String type = classRegistryService.register(payload);
+		var type = classRegistryService.register(payload);
 		Assertions.assertEquals("TestType", type);
 
-		JSONObject jo = classRegistryService.get("TestType");
+		var jo = classRegistryService.get("TestType");
 		Assertions.assertEquals(payload.toString(), jo.toString());
 
-		JSONArray ja = classRegistryService.all();
+		var ja = classRegistryService.all();
 		Assertions.assertEquals(payload.toString(), ja.get(0).toString());
 	}
 

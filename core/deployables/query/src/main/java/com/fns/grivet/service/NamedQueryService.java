@@ -73,10 +73,10 @@ public class NamedQueryService {
 
 	@Transactional(readOnly = true)
 	public String get(String name, MultiValueMap<String, ?> parameters) {
-		NamedQuery namedQuery = namedQueryRepository.findByName(name);
+		var namedQuery = namedQueryRepository.findByName(name);
 		Assert.notNull(namedQuery, "No query found that matches name [%s]!".formatted(name));
-		MapSqlParameterSource parameterSource = namedQuery.asParameterSource(parameters);
-		String sql = namedQuery.getQuery();
+		var parameterSource = namedQuery.asParameterSource(parameters);
+		var sql = namedQuery.getQuery();
 		Map<String, String> sqlParams = namedQuery.getParams();
 		SqlRowSet rowSet = null;
 		if (parameterSource != null) {
@@ -90,10 +90,9 @@ public class NamedQueryService {
 					rowSet = namedParameterJdbcTemplate.queryForRowSet(sql, parameterSource);
 					break;
 				case SPROC:
-					String sproc = getProcedure(sql, queryParamKeys);
-					CallableStatementCreatorFactory factory = new CallableStatementCreatorFactory(sproc,
-							namedQuery.asSqlParameters(parameters));
-					CallableStatementCreator csc = factory.newCallableStatementCreator(parameterSource.getValues());
+					var sproc = getProcedure(sql, queryParamKeys);
+					var factory = new CallableStatementCreatorFactory(sproc, namedQuery.asSqlParameters(parameters));
+					var csc = factory.newCallableStatementCreator(parameterSource.getValues());
 					rowSet = callSproc(csc);
 					break;
 				default:
@@ -109,10 +108,9 @@ public class NamedQueryService {
 						.query(sql, new SqlRowSetResultSetExtractor());
 					break;
 				case SPROC:
-					String sproc = getProcedure(sql, null);
-					CallableStatementCreatorFactory factory = new CallableStatementCreatorFactory(sproc,
-							namedQuery.asSqlParameters(parameters));
-					CallableStatementCreator csc = factory.newCallableStatementCreator((Map<String, ?>) null);
+					var sproc = getProcedure(sql, null);
+					var factory = new CallableStatementCreatorFactory(sproc, namedQuery.asSqlParameters(parameters));
+					var csc = factory.newCallableStatementCreator((Map<String, ?>) null);
 					rowSet = callSproc(csc);
 					break;
 				default:
@@ -124,7 +122,7 @@ public class NamedQueryService {
 
 	@Transactional
 	public void delete(String name) {
-		NamedQuery nq = namedQueryRepository.findByName(name);
+		var nq = namedQueryRepository.findByName(name);
 		if (nq != null) {
 			namedQueryRepository.delete(nq);
 		}
@@ -143,9 +141,9 @@ public class NamedQueryService {
 	}
 
 	protected String mapRows(SqlRowSet rowSet) {
-		JSONArray jsonArray = new JSONArray();
+		var jsonArray = new JSONArray();
 		if (rowSet != null) {
-			String[] columnNames = rowSet.getMetaData().getColumnNames();
+			var columnNames = rowSet.getMetaData().getColumnNames();
 			JSONObject jsonObject = null;
 			while (rowSet.next()) {
 				jsonObject = new JSONObject();
@@ -175,7 +173,7 @@ public class NamedQueryService {
 
 	@Transactional(readOnly = true)
 	public JSONArray all() {
-		JSONArray result = new JSONArray();
+		var result = new JSONArray();
 		Iterable<NamedQuery> iterable = namedQueryRepository.findAll();
 		Assert.notNull(iterable, "No named queries are registered!");
 		Iterator<NamedQuery> it = iterable.iterator();

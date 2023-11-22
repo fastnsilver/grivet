@@ -30,7 +30,7 @@ public class ValueHelper {
 
 	public static Object getValue(AttributeType attributeType, Object source) {
 		Object value = null;
-		String stringValue = String.valueOf(source);
+		var stringValue = String.valueOf(source);
 		// conversion takes place here...
 		switch (attributeType) {
 			case BIG_INTEGER:
@@ -83,7 +83,7 @@ public class ValueHelper {
 
 	public static Object toValue(AttributeType attributeType, Object source) {
 		Object value = null;
-		String stringValue = String.valueOf(source);
+		var stringValue = String.valueOf(source);
 		// conversion takes place here...
 		TemporalAccessor ta;
 		switch (attributeType) {
@@ -92,17 +92,17 @@ public class ValueHelper {
 				break;
 			case ISO_DATE:
 				ta = DateTimeFormatter.ISO_DATE.parse(stringValue);
-				LocalDate ld = LocalDate.from(ta);
+				var ld = LocalDate.from(ta);
 				value = java.sql.Date.valueOf(ld);
 				break;
 			case ISO_DATETIME:
 				ta = DateTimeFormatter.ISO_DATE_TIME.parse(stringValue);
-				LocalDateTime ldt = LocalDateTime.from(ta);
+				var ldt = LocalDateTime.from(ta);
 				value = Timestamp.valueOf(ldt);
 				break;
 			case ISO_INSTANT:
 				ta = DateTimeFormatter.ISO_INSTANT.parse(stringValue);
-				Instant in = Instant.from(ta);
+				var in = Instant.from(ta);
 				value = Timestamp.valueOf(LocalDateTime.ofInstant(in, ZoneId.of("UTC")));
 				break;
 			case DECIMAL:

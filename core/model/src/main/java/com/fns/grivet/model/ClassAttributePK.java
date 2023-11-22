@@ -59,16 +59,16 @@ public class ClassAttributePK implements Serializable {
 		final ClassAttributePK other = (ClassAttributePK) o;
 		if (!other.canEqual((Object) this))
 			return false;
-		final Object this$cid = this.getCid();
-		final Object other$cid = other.getCid();
+		final var this$cid = this.getCid();
+		final var other$cid = other.getCid();
 		if (this$cid == null ? other$cid != null : !this$cid.equals(other$cid))
 			return false;
-		final Object this$aid = this.getAid();
-		final Object other$aid = other.getAid();
+		final var this$aid = this.getAid();
+		final var other$aid = other.getAid();
 		if (this$aid == null ? other$aid != null : !this$aid.equals(other$aid))
 			return false;
-		final Object this$tid = this.getTid();
-		final Object other$tid = other.getTid();
+		final var this$tid = this.getTid();
+		final var other$tid = other.getTid();
 		if (this$tid == null ? other$tid != null : !this$tid.equals(other$tid))
 			return false;
 		return true;
@@ -82,11 +82,11 @@ public class ClassAttributePK implements Serializable {
 	public int hashCode() {
 		final int PRIME = 59;
 		int result = 1;
-		final Object $cid = this.getCid();
+		final var $cid = this.getCid();
 		result = result * PRIME + ($cid == null ? 43 : $cid.hashCode());
-		final Object $aid = this.getAid();
+		final var $aid = this.getAid();
 		result = result * PRIME + ($aid == null ? 43 : $aid.hashCode());
-		final Object $tid = this.getTid();
+		final var $tid = this.getTid();
 		result = result * PRIME + ($tid == null ? 43 : $tid.hashCode());
 		return result;
 	}

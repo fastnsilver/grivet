@@ -76,8 +76,8 @@ public class JdbcEntityRepository implements EntityRepository {
 			LocalDateTime createdTime) {
 		Assert.isTrue(rawValue != null,
 				String.format("Attempt to persist value failed! %s's value must not be null!", attribute.getName()));
-		Object value = ValueHelper.toValue(attributeType, rawValue);
-		String createdBy = getCurrentUsername();
+		var value = ValueHelper.toValue(attributeType, rawValue);
+		var createdBy = getCurrentUsername();
 		String[] columns = { "eid", "aid", "val", "created_time" };
 		Map<String, Object> keyValuePairs = ImmutableMap.of("eid", eid, "aid", attribute.getId(), "val", value,
 				"created_time", Timestamp.valueOf(createdTime));
@@ -96,7 +96,7 @@ public class JdbcEntityRepository implements EntityRepository {
 	@Override
 	public List<EntityAttributeValue> findByCreatedTime(Integer cid, LocalDateTime createdTimeStart,
 			LocalDateTime createdTimeEnd) {
-		String sql = QueryBuilder.newInstance().appendCreatedTimeRange().build();
+		var sql = QueryBuilder.newInstance().appendCreatedTimeRange().build();
 		log.trace("JdbcEntityRepository.findByCreatedTime[sql=%s]".formatted(sql));
 		return mapRows(
 				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid),
@@ -106,14 +106,14 @@ public class JdbcEntityRepository implements EntityRepository {
 
 	@Override
 	public Integer getClassIdForEntityId(Long eid) {
-		String sql = "SELECT cid FROM entity WHERE eid = ?";
+		var sql = "SELECT cid FROM entity WHERE eid = ?";
 		log.trace("JdbcEntityRepository.getClassIdForEntityId[sql=%s]".formatted(sql));
 		return jdbcTemplate.queryForObject(sql, new Object[] { eid }, Integer.class);
 	}
 
 	@Override
 	public List<EntityAttributeValue> findByEntityId(Long eid) {
-		String sql = QueryBuilder.newInstance().obtainValuesForOneEntity().build();
+		var sql = QueryBuilder.newInstance().obtainValuesForOneEntity().build();
 		log.trace("JdbcEntityRepository.findById[sql=%s]".formatted(sql));
 		return mapRows(
 				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.BIGINT, eid)));
@@ -121,7 +121,7 @@ public class JdbcEntityRepository implements EntityRepository {
 
 	@Override
 	public void delete(Long eid) {
-		String entitySql = "DELETE FROM entity WHERE eid = ?";
+		var entitySql = "DELETE FROM entity WHERE eid = ?";
 		log.trace("JdbcEntityRepository.delete[sql=%s]".formatted(entitySql));
 		jdbcTemplate.update(entitySql, new Object[] { eid });
 
@@ -137,7 +137,7 @@ public class JdbcEntityRepository implements EntityRepository {
 
 	@Override
 	public void deleteAll() {
-		String entitySql = "DELETE FROM entity";
+		var entitySql = "DELETE FROM entity";
 		log.trace("JdbcEntityRepository.delete[sql=%s]".formatted(entitySql));
 		jdbcTemplate.execute(entitySql);
 
@@ -152,7 +152,7 @@ public class JdbcEntityRepository implements EntityRepository {
 
 	@Override
 	public List<EntityAttributeValue> findAllEntitiesByCid(Integer cid) {
-		String sql = QueryBuilder.newInstance().obtainValuesForEntitiesByCid().build();
+		var sql = QueryBuilder.newInstance().obtainValuesForEntitiesByCid().build();
 		log.trace("JdbcEntityRepository.findAllByCid[sql=%s]".formatted(sql));
 		return mapRows(
 				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid)));
@@ -162,7 +162,7 @@ public class JdbcEntityRepository implements EntityRepository {
 	public List<EntityAttributeValue> executeDynamicQuery(Integer cid, DynamicQuery query) {
 		Assert.isTrue(query.areConjunctionsHomogenous(),
 				"Query cannot be executed! All conjunctions must be homogenous!");
-		String sql = QueryBuilder.newInstance().append(query).build();
+		var sql = QueryBuilder.newInstance().append(query).build();
 		log.trace("JdbcEntityRepository.executeDynamicQuery[sql=%s]".formatted(sql));
 		List<SqlParameterValue> values = new ArrayList<>();
 		values.add(new SqlParameterValue(Types.INTEGER, cid));

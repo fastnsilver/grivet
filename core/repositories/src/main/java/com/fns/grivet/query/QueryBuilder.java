@@ -82,12 +82,12 @@ public class QueryBuilder {
 	}
 
 	String obtainEntityAttributeValueJoins(DynamicQuery query) {
-		StringBuffer joins = new StringBuffer();
+		var joins = new StringBuffer();
 		joins.append("INNER JOIN all_entity_values AS ev ON e.eid = ev.eid ");
 		boolean isAndConjuncted = query.containsAndConjunction();
 		if (isAndConjuncted) {
 			int numberOfJoins = query.getConstraints().size();
-			String joinStatement = "INNER JOIN all_entity_values AS ev%d ON ev.eid = ev%d.eid ";
+			var joinStatement = "INNER JOIN all_entity_values AS ev%d ON ev.eid = ev%d.eid ";
 			for (int i = 1; i < numberOfJoins; i++) {
 				joins.append(i == 1 ? joinStatement.formatted(i, i) : joinStatement.formatted(i, i - 1, i));
 			}
@@ -97,10 +97,10 @@ public class QueryBuilder {
 
 	String obtainEntityAttributeValueCriteria(DynamicQuery query) {
 		boolean isAndConjuncted = query.containsAndConjunction();
-		StringBuffer sb = new StringBuffer();
+		var sb = new StringBuffer();
 		List<Constraint> constraints = query.getConstraints();
 		int i = 0;
-		String suffix = "";
+		var suffix = "";
 		String conj = null;
 		for (Constraint c : constraints) {
 			if (i > 0 && isAndConjuncted) {
@@ -117,8 +117,8 @@ public class QueryBuilder {
 			sb.append(" ");
 			i++;
 		}
-		String rawCriteria = sb.toString().trim();
-		String result = rawCriteria;
+		var rawCriteria = sb.toString().trim();
+		var result = rawCriteria;
 		if (rawCriteria.endsWith(Conjunction.AND.getName())) {
 			result = rawCriteria.substring(0, rawCriteria.lastIndexOf(Conjunction.AND.getName())).trim();
 		}
@@ -129,7 +129,7 @@ public class QueryBuilder {
 	}
 
 	private String obtainCriterionFromConstraint(Constraint c, String suffix) {
-		StringBuffer clause = new StringBuffer();
+		var clause = new StringBuffer();
 		clause.append("(ev%s.aid = ?".formatted(suffix));
 		clause.append(" AND ev%s.v ".formatted(suffix));
 		clause.append(c.getOperator().getSymbol());

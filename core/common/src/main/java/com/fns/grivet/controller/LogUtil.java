@@ -29,7 +29,7 @@ import java.util.Arrays;
 class LogUtil {
 
 	static String toLog(JSONObject jsonObject, String... args) {
-		StringBuffer sb = new StringBuffer();
+		var sb = new StringBuffer();
 		if (args != null && args.length > 0) {
 			Arrays.stream(args).forEach(a -> sb.append(a));
 		}

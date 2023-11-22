@@ -16,9 +16,9 @@ public class AttributeRepositoryTest {
 
 	@Test
 	public void testFindByName() {
-		Attribute expected = Attribute.builder().name("eyeColor").build();
+		var expected = Attribute.builder().name("eyeColor").build();
 		repo.save(expected);
-		Attribute actual = repo.findByName("eyeColor");
+		var actual = repo.findByName("eyeColor");
 		Assertions.assertNotNull(actual, "Expected a matching attribute!");
 		Assertions.assertEquals(expected, actual);
 	}

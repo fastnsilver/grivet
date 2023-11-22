@@ -19,13 +19,13 @@ public class NamedQueryRepositoryTest {
 	// representative; a named query will only execute successfully against known
 	// tables/views
 	public void testFindByName() {
-		NamedQuery detached = NamedQuery.builder()
+		var detached = NamedQuery.builder()
 			.name("totalSpendInLastMonth")
 			.type(QueryType.SELECT)
 			.query("SELECT SUM(AMOUNT) FROM EXPENSE WHERE YEAR(TRANSACTION_DATE) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) AND MONTH(TRANSACTION_DATE) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)")
 			.build();
-		NamedQuery expected = repo.save(detached);
-		NamedQuery actual = repo.findByName("totalSpendInLastMonth");
+		var expected = repo.save(detached);
+		var actual = repo.findByName("totalSpendInLastMonth");
 		Assertions.assertNotNull(actual, "Expected a matching NamedQuery!");
 		Assertions.assertEquals(expected, actual);
 	}

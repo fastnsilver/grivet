@@ -37,13 +37,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -56,7 +53,7 @@ import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.repo.NamedQueryRepository;
 import com.fns.grivet.service.NamedQueryService;
 
-@ExtendWith(value = { SpringExtension.class, RestDocumentationExtension.class })
+@ExtendWith(value = { RestDocumentationExtension.class })
 @SpringBootTest(classes = QueryInit.class)
 public class QueryDocumentationTest {
 
@@ -73,8 +70,7 @@ public class QueryDocumentationTest {
 
 	@BeforeEach
 	public void setUp(RestDocumentationContextProvider restDocumentation) {
-		RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint()));
+		var document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
 			.apply(documentationConfiguration(restDocumentation))
 			.alwaysDo(document)
@@ -180,12 +176,12 @@ public class QueryDocumentationTest {
 	}
 
 	private void createNamedQuery(String payload) throws JsonParseException, JsonMappingException, IOException {
-		NamedQueryService svc = context.getBean(NamedQueryService.class);
+		var svc = context.getBean(NamedQueryService.class);
 		svc.create(mapper.readValue(payload(payload), NamedQuery.class));
 	}
 
 	private String payload(String payload) throws IOException {
-		Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
+		var r = resolver.getResource("classpath:%s.json".formatted(payload));
 		return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	}
 

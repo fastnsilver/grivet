@@ -24,13 +24,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -39,7 +36,7 @@ import com.fns.grivet.IngestInit;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-@ExtendWith(value = { SpringExtension.class, RestDocumentationExtension.class })
+@ExtendWith(value = { RestDocumentationExtension.class })
 @SpringBootTest(classes = IngestInit.class)
 public class IngestDocumentationTest {
 
@@ -53,8 +50,7 @@ public class IngestDocumentationTest {
 
 	@BeforeEach
 	public void setUp(RestDocumentationContextProvider restDocumentation) {
-		RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint()));
+		var document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
 			.apply(documentationConfiguration(restDocumentation))
 			.alwaysDo(document)
@@ -117,15 +113,15 @@ public class IngestDocumentationTest {
 
 	private String mutz(String data, Map<String, Object> properties, Set<String> removed)
 			throws JSONException, IOException {
-		String original = payload(data);
-		JSONObject jo = new JSONObject(original);
+		var original = payload(data);
+		var jo = new JSONObject(original);
 		properties.forEach((k, v) -> jo.put(k, v));
 		removed.forEach(k -> jo.remove(k));
 		return jo.toString();
 	}
 
 	private String payload(String data) throws IOException {
-		Resource r = resolver.getResource("classpath:%s.json".formatted(data));
+		var r = resolver.getResource("classpath:%s.json".formatted(data));
 		return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	}
 

@@ -31,9 +31,9 @@ public class DynamicQueryTest {
 
 	@Test
 	public void testConstaintWithNullConjunction() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
+		var request = new MockHttpServletRequest();
 		request.setParameter("c", "flavor|equals|Vanilla");
-		DynamicQuery dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap,
+		var dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap,
 				attributeNameToAttributeIdMap);
 		Assertions.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
 		Assertions.assertEquals("(ev.aid = ? AND ev.v = ?)", qb.obtainEntityAttributeValueCriteria(dq));
@@ -46,9 +46,9 @@ public class DynamicQueryTest {
 
 	@Test
 	public void testConstaintWithBetween() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
+		var request = new MockHttpServletRequest();
 		request.setParameter("constraint", "age|between|35,46");
-		DynamicQuery dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap,
+		var dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap,
 				attributeNameToAttributeIdMap);
 		Assertions.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
 		Assertions.assertEquals("(ev.aid = ? AND ev.v BETWEEN ? AND ?)", qb.obtainEntityAttributeValueCriteria(dq));
@@ -63,9 +63,9 @@ public class DynamicQueryTest {
 
 	@Test
 	public void testConstaintWithIn() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
+		var request = new MockHttpServletRequest();
 		request.setParameter("c", "age|in|35,46,59,76");
-		DynamicQuery dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap,
+		var dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap,
 				attributeNameToAttributeIdMap);
 		Assertions.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
 		Assertions.assertEquals("(ev.aid = ? AND ev.v IN (?,?,?,?))", qb.obtainEntityAttributeValueCriteria(dq));
@@ -84,10 +84,10 @@ public class DynamicQueryTest {
 
 	@Test
 	public void testAndConstraints() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
+		var request = new MockHttpServletRequest();
 		request.setParameter("constraint", "age|equals|35|and");
 		request.setParameter("c", "flavor|startsWith|V");
-		DynamicQuery dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap,
+		var dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap,
 				attributeNameToAttributeIdMap);
 		Assertions.assertEquals(BASE_JOIN + "INNER JOIN all_entity_values AS ev1 ON ev.eid = ev1.eid ",
 				qb.obtainEntityAttributeValueJoins(dq));
@@ -106,10 +106,10 @@ public class DynamicQueryTest {
 
 	@Test
 	public void testOrConstraints() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
+		var request = new MockHttpServletRequest();
 		request.setParameter("constraint", "age|equals|35|or");
 		request.setParameter("c", "flavor|endsWith|a");
-		DynamicQuery dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap,
+		var dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap,
 				attributeNameToAttributeIdMap);
 		Assertions.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
 		Assertions.assertEquals("(ev.aid = ? AND ev.v = ?) OR (ev.aid = ? AND ev.v LIKE ?)",
@@ -127,9 +127,9 @@ public class DynamicQueryTest {
 
 	@Test
 	public void testContainsConstraints() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
+		var request = new MockHttpServletRequest();
 		request.setParameter("c", "flavor|contains|n");
-		DynamicQuery dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap,
+		var dq = new DynamicQuery(request.getParameterMap().entrySet(), attributeToAttributeTypeMap,
 				attributeNameToAttributeIdMap);
 		Assertions.assertEquals(BASE_JOIN, qb.obtainEntityAttributeValueJoins(dq));
 		Assertions.assertEquals("(ev.aid = ? AND ev.v LIKE ?)", qb.obtainEntityAttributeValueCriteria(dq));

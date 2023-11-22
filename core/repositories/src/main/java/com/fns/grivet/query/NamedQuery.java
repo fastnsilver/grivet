@@ -436,40 +436,40 @@ public class NamedQuery implements Auditable<String> {
 			return false;
 		if (this.getVersion() != other.getVersion())
 			return false;
-		final Object this$id = this.getId();
-		final Object other$id = other.getId();
+		final var this$id = this.getId();
+		final var other$id = other.getId();
 		if (this$id == null ? other$id != null : !this$id.equals(other$id))
 			return false;
-		final Object this$createdBy = this.getCreatedBy();
-		final Object other$createdBy = other.getCreatedBy();
+		final var this$createdBy = this.getCreatedBy();
+		final var other$createdBy = other.getCreatedBy();
 		if (this$createdBy == null ? other$createdBy != null : !this$createdBy.equals(other$createdBy))
 			return false;
-		final Object this$updatedBy = this.getUpdatedBy();
-		final Object other$updatedBy = other.getUpdatedBy();
+		final var this$updatedBy = this.getUpdatedBy();
+		final var other$updatedBy = other.getUpdatedBy();
 		if (this$updatedBy == null ? other$updatedBy != null : !this$updatedBy.equals(other$updatedBy))
 			return false;
-		final Object this$createdTime = this.getCreatedTime();
-		final Object other$createdTime = other.getCreatedTime();
+		final var this$createdTime = this.getCreatedTime();
+		final var other$createdTime = other.getCreatedTime();
 		if (this$createdTime == null ? other$createdTime != null : !this$createdTime.equals(other$createdTime))
 			return false;
-		final Object this$updatedTime = this.getUpdatedTime();
-		final Object other$updatedTime = other.getUpdatedTime();
+		final var this$updatedTime = this.getUpdatedTime();
+		final var other$updatedTime = other.getUpdatedTime();
 		if (this$updatedTime == null ? other$updatedTime != null : !this$updatedTime.equals(other$updatedTime))
 			return false;
-		final Object this$name = this.getName();
-		final Object other$name = other.getName();
+		final var this$name = this.getName();
+		final var other$name = other.getName();
 		if (this$name == null ? other$name != null : !this$name.equals(other$name))
 			return false;
-		final Object this$query = this.getQuery();
-		final Object other$query = other.getQuery();
+		final var this$query = this.getQuery();
+		final var other$query = other.getQuery();
 		if (this$query == null ? other$query != null : !this$query.equals(other$query))
 			return false;
 		final Object this$type = this.getType();
 		final Object other$type = other.getType();
 		if (this$type == null ? other$type != null : !this$type.equals(other$type))
 			return false;
-		final Object this$params = this.getParams();
-		final Object other$params = other.getParams();
+		final var this$params = this.getParams();
+		final var other$params = other.getParams();
 		if (this$params == null ? other$params != null : !this$params.equals(other$params))
 			return false;
 		return true;
@@ -485,23 +485,23 @@ public class NamedQuery implements Auditable<String> {
 		int result = 1;
 		final long $version = this.getVersion();
 		result = result * PRIME + (int) ($version >>> 32 ^ $version);
-		final Object $id = this.getId();
+		final var $id = this.getId();
 		result = result * PRIME + ($id == null ? 43 : $id.hashCode());
-		final Object $createdBy = this.getCreatedBy();
+		final var $createdBy = this.getCreatedBy();
 		result = result * PRIME + ($createdBy == null ? 43 : $createdBy.hashCode());
-		final Object $updatedBy = this.getUpdatedBy();
+		final var $updatedBy = this.getUpdatedBy();
 		result = result * PRIME + ($updatedBy == null ? 43 : $updatedBy.hashCode());
-		final Object $createdTime = this.getCreatedTime();
+		final var $createdTime = this.getCreatedTime();
 		result = result * PRIME + ($createdTime == null ? 43 : $createdTime.hashCode());
-		final Object $updatedTime = this.getUpdatedTime();
+		final var $updatedTime = this.getUpdatedTime();
 		result = result * PRIME + ($updatedTime == null ? 43 : $updatedTime.hashCode());
-		final Object $name = this.getName();
+		final var $name = this.getName();
 		result = result * PRIME + ($name == null ? 43 : $name.hashCode());
-		final Object $query = this.getQuery();
+		final var $query = this.getQuery();
 		result = result * PRIME + ($query == null ? 43 : $query.hashCode());
 		final Object $type = this.getType();
 		result = result * PRIME + ($type == null ? 43 : $type.hashCode());
-		final Object $params = this.getParams();
+		final var $params = this.getParams();
 		result = result * PRIME + ($params == null ? 43 : $params.hashCode());
 		return result;
 	}

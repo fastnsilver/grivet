@@ -28,8 +28,8 @@ public class PasswordEncryptor {
 
 	public static void main(String[] args) {
 		if (args != null && args.length == 1) {
-			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			String hashedPassword = passwordEncoder.encode(args[0]);
+			var passwordEncoder = new BCryptPasswordEncoder();
+			var hashedPassword = passwordEncoder.encode(args[0]);
 			System.out.println("Running PasswordEncryptor...\n-- Raw password: %s\n-- Encoded: %s\n".formatted(args[0],
 					hashedPassword));
 		}

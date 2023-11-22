@@ -62,23 +62,23 @@ public class NamedQueryServiceSprocTest {
 
 	@BeforeEach
 	public void setUp() throws IOException {
-		Resource r = resolver.getResource("classpath:TestType.json");
-		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		JSONObject payload = new JSONObject(json);
+		var r = resolver.getResource("classpath:TestType.json");
+		var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+		var payload = new JSONObject(json);
 		classRegistryService.register(payload);
 	}
 
 	@Test
 	public void testSuccessfulNamedQueryExecution() throws IOException {
-		Resource r = resolver.getResource("classpath:TestSprocQuery.json");
-		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+		var r = resolver.getResource("classpath:TestSprocQuery.json");
+		var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+		var namedQuery = objectMapper.readValue(json, NamedQuery.class);
 		namedQueryService.create(namedQuery);
 
 		MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-		Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
+		var tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
 		params.add("createdTime", tomorrow);
-		String result = namedQueryService.get("sproc.getAttributesCreatedBefore", params);
+		var result = namedQueryService.get("sproc.getAttributesCreatedBefore", params);
 		String[] expected = { "bigint", "varchar", "decimal", "datetime", "int", "text", "json", "boolean" };
 		List<String> actual = JsonPath.given(result).getList("NAME");
 		Assertions.assertTrue(actual.size() == 8, "Result should contain 8 attributes");
@@ -89,7 +89,7 @@ public class NamedQueryServiceSprocTest {
 	public void testNamedQueryNotFound() throws IOException {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-			Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
+			var tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
 			params.add("createdTime", tomorrow);
 			namedQueryService.get("sproc.getAttributesCreatedBefore", params);
 		});
@@ -98,9 +98,9 @@ public class NamedQueryServiceSprocTest {
 	@Test
 	public void testNamedQueryNotExecutedBecauseItDidNotContainRequiredParamForExecution() throws IOException {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			Resource r = resolver.getResource("classpath:TestSprocQuery.json");
-			String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-			NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+			var r = resolver.getResource("classpath:TestSprocQuery.json");
+			var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var namedQuery = objectMapper.readValue(json, NamedQuery.class);
 			namedQueryService.create(namedQuery);
 
 			namedQueryService.get("sproc.getAttributesCreatedBefore", null);
@@ -110,13 +110,13 @@ public class NamedQueryServiceSprocTest {
 	@Test
 	public void testNamedQueryNotExecutedBecauseParamSuppliedForExecutionNotCorrectlyNamed() throws IOException {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			Resource r = resolver.getResource("classpath:TestSprocQuery.json");
-			String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-			NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+			var r = resolver.getResource("classpath:TestSprocQuery.json");
+			var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var namedQuery = objectMapper.readValue(json, NamedQuery.class);
 			namedQueryService.create(namedQuery);
 
 			MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-			Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
+			var tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
 			params.add("timeCreated", tomorrow);
 			namedQueryService.get("sproc.getAttributesCreatedBefore", params);
 		});

@@ -66,7 +66,7 @@ public class ClassRegistryService {
 	@Transactional
 	// USE WITH CAUTION! Consider that w/ FK, type and all related data will be destroyed
 	public void deregister(String type) {
-		com.fns.grivet.model.Class c = classRepository.findByName(type);
+		var c = classRepository.findByName(type);
 		if (c != null) {
 			classRepository.delete(c);
 		}
@@ -74,18 +74,15 @@ public class ClassRegistryService {
 
 	@Transactional
 	public String register(JSONObject payload) {
-		String type = payload.getString(TYPE);
-		String description = payload.optString(DESCRIPTION);
-		com.fns.grivet.model.Class persistentClass = classRepository.findByName(type);
+		var type = payload.getString(TYPE);
+		var description = payload.optString(DESCRIPTION);
+		var persistentClass = classRepository.findByName(type);
 		if (persistentClass == null) {
-			LocalDateTime createdTime = LocalDateTime.now();
-			com.fns.grivet.model.Class detachedClass = com.fns.grivet.model.Class.builder()
-				.name(type)
-				.description(description)
-				.build();
+			var createdTime = LocalDateTime.now();
+			var detachedClass = com.fns.grivet.model.Class.builder().name(type).description(description).build();
 			detachedClass.setCreatedTime(createdTime);
 			persistentClass = classRepository.save(detachedClass);
-			JSONObject attributes = payload.getJSONObject(ATTRIBUTES);
+			var attributes = payload.getJSONObject(ATTRIBUTES);
 			Set<String> attributeNames = attributes.keySet();
 			Assert.notEmpty(attributeNames,
 					"[%s] must declare at least one attribute in registration request!".formatted(type));
@@ -97,7 +94,7 @@ public class ClassRegistryService {
 			for (String attributeName : attributeNames) {
 				persistentAttribute = attributeRepository.findByName(attributeName);
 				if (persistentAttribute == null) {
-					Attribute detachedAttribute = Attribute.builder().name(attributeName).build();
+					var detachedAttribute = Attribute.builder().name(attributeName).build();
 					detachedAttribute.setCreatedTime(createdTime);
 					persistentAttribute = attributeRepository.save(detachedAttribute);
 				}
@@ -106,7 +103,7 @@ public class ClassRegistryService {
 						attributeName));
 				attributeType = attributeTypeRepository.findByType(at);
 				Assert.notNull(attributeType, "Attribute type [%s] is not supported!".formatted(at));
-				ClassAttribute detachedClassAttribute = ClassAttribute.builder()
+				var detachedClassAttribute = ClassAttribute.builder()
 					.cid(persistentClass.getId())
 					.aid(persistentAttribute.getId())
 					.tid(attributeType.getId())
@@ -123,15 +120,15 @@ public class ClassRegistryService {
 
 	@Transactional(readOnly = true)
 	public JSONObject get(String type) {
-		com.fns.grivet.model.Class c = classRepository.findByName(type);
+		var c = classRepository.findByName(type);
 		Assert.notNull(c, "Type [%s] is not registered!".formatted(type));
-		JSONObject result = new JSONObject();
+		var result = new JSONObject();
 		result.put("type", type);
-		String description = c.getDescription();
+		var description = c.getDescription();
 		result.put("description", description != null ? description : "");
 		List<ClassAttribute> cas = classAttributeRepository.findByCid(c.getId());
 		Assert.notEmpty(cas, "Type [%s] does not have any attributes registered!".formatted(type));
-		JSONObject attributes = new JSONObject();
+		var attributes = new JSONObject();
 		result.put("attributes", attributes);
 		Attribute a = null;
 		AttributeType at = null;
@@ -147,7 +144,7 @@ public class ClassRegistryService {
 
 	@Transactional(readOnly = true)
 	public JSONArray all() {
-		JSONArray result = new JSONArray();
+		var result = new JSONArray();
 		Iterable<com.fns.grivet.model.Class> iterable = classRepository.findAll();
 		Assert.notNull(iterable, "No types are registered!");
 		StreamSupport.stream(iterable.spliterator(), false).forEach(c -> result.put(get(c.getName())));

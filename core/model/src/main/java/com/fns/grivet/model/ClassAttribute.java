@@ -316,32 +316,32 @@ public class ClassAttribute implements Auditable<String> {
 			return false;
 		if (this.getVersion() != other.getVersion())
 			return false;
-		final Object this$cid = this.getCid();
-		final Object other$cid = other.getCid();
+		final var this$cid = this.getCid();
+		final var other$cid = other.getCid();
 		if (this$cid == null ? other$cid != null : !this$cid.equals(other$cid))
 			return false;
-		final Object this$aid = this.getAid();
-		final Object other$aid = other.getAid();
+		final var this$aid = this.getAid();
+		final var other$aid = other.getAid();
 		if (this$aid == null ? other$aid != null : !this$aid.equals(other$aid))
 			return false;
-		final Object this$tid = this.getTid();
-		final Object other$tid = other.getTid();
+		final var this$tid = this.getTid();
+		final var other$tid = other.getTid();
 		if (this$tid == null ? other$tid != null : !this$tid.equals(other$tid))
 			return false;
-		final Object this$createdBy = this.getCreatedBy();
-		final Object other$createdBy = other.getCreatedBy();
+		final var this$createdBy = this.getCreatedBy();
+		final var other$createdBy = other.getCreatedBy();
 		if (this$createdBy == null ? other$createdBy != null : !this$createdBy.equals(other$createdBy))
 			return false;
-		final Object this$updatedBy = this.getUpdatedBy();
-		final Object other$updatedBy = other.getUpdatedBy();
+		final var this$updatedBy = this.getUpdatedBy();
+		final var other$updatedBy = other.getUpdatedBy();
 		if (this$updatedBy == null ? other$updatedBy != null : !this$updatedBy.equals(other$updatedBy))
 			return false;
-		final Object this$createdTime = this.getCreatedTime();
-		final Object other$createdTime = other.getCreatedTime();
+		final var this$createdTime = this.getCreatedTime();
+		final var other$createdTime = other.getCreatedTime();
 		if (this$createdTime == null ? other$createdTime != null : !this$createdTime.equals(other$createdTime))
 			return false;
-		final Object this$updatedTime = this.getUpdatedTime();
-		final Object other$updatedTime = other.getUpdatedTime();
+		final var this$updatedTime = this.getUpdatedTime();
+		final var other$updatedTime = other.getUpdatedTime();
 		if (this$updatedTime == null ? other$updatedTime != null : !this$updatedTime.equals(other$updatedTime))
 			return false;
 		return true;
@@ -357,19 +357,19 @@ public class ClassAttribute implements Auditable<String> {
 		int result = 1;
 		final long $version = this.getVersion();
 		result = result * PRIME + (int) ($version >>> 32 ^ $version);
-		final Object $cid = this.getCid();
+		final var $cid = this.getCid();
 		result = result * PRIME + ($cid == null ? 43 : $cid.hashCode());
-		final Object $aid = this.getAid();
+		final var $aid = this.getAid();
 		result = result * PRIME + ($aid == null ? 43 : $aid.hashCode());
-		final Object $tid = this.getTid();
+		final var $tid = this.getTid();
 		result = result * PRIME + ($tid == null ? 43 : $tid.hashCode());
-		final Object $createdBy = this.getCreatedBy();
+		final var $createdBy = this.getCreatedBy();
 		result = result * PRIME + ($createdBy == null ? 43 : $createdBy.hashCode());
-		final Object $updatedBy = this.getUpdatedBy();
+		final var $updatedBy = this.getUpdatedBy();
 		result = result * PRIME + ($updatedBy == null ? 43 : $updatedBy.hashCode());
-		final Object $createdTime = this.getCreatedTime();
+		final var $createdTime = this.getCreatedTime();
 		result = result * PRIME + ($createdTime == null ? 43 : $createdTime.hashCode());
-		final Object $updatedTime = this.getUpdatedTime();
+		final var $updatedTime = this.getUpdatedTime();
 		result = result * PRIME + ($updatedTime == null ? 43 : $updatedTime.hashCode());
 		return result;
 	}

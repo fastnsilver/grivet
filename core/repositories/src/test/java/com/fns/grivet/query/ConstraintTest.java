@@ -28,7 +28,7 @@ public class ConstraintTest {
 
 	@Test
 	public void testThatThreePartConstraintDefinitionSucceeds() {
-		Constraint c = new Constraint(new String[] { "foo", "equals", "bar" });
+		var c = new Constraint(new String[] { "foo", "equals", "bar" });
 		Assertions.assertEquals("foo", c.getAttributeName());
 		Assertions.assertEquals(Operator.EQUALS, c.getOperator());
 		Assertions.assertArrayEquals(new String[] { "bar" }, c.getValues());
@@ -44,7 +44,7 @@ public class ConstraintTest {
 
 	@Test
 	public void testThatProperBetweenConstraintDefinitionSucceeds() {
-		Constraint c = new Constraint(new String[] { "foo", "between", "bar,noogie" });
+		var c = new Constraint(new String[] { "foo", "between", "bar,noogie" });
 		Assertions.assertEquals("foo", c.getAttributeName());
 		Assertions.assertEquals(Operator.BETWEEN, c.getOperator());
 		Assertions.assertArrayEquals(new String[] { "bar", "noogie" }, c.getValues());
@@ -53,7 +53,7 @@ public class ConstraintTest {
 
 	@Test
 	public void testThatProperBetweenConstraintDefinitionWithConjunctionSucceeds() {
-		Constraint c = new Constraint(new String[] { "foo", "between", "bar,noogie", "and" });
+		var c = new Constraint(new String[] { "foo", "between", "bar,noogie", "and" });
 		Assertions.assertEquals("foo", c.getAttributeName());
 		Assertions.assertEquals(Operator.BETWEEN, c.getOperator());
 		Assertions.assertArrayEquals(new String[] { "bar", "noogie" }, c.getValues());
@@ -62,7 +62,7 @@ public class ConstraintTest {
 
 	@Test
 	public void testThatConstraintWithProperOrConjunctionSucceeds() {
-		Constraint c = new Constraint(new String[] { "foo", "startsWith", "f", "or" });
+		var c = new Constraint(new String[] { "foo", "startsWith", "f", "or" });
 		Assertions.assertEquals("foo", c.getAttributeName());
 		Assertions.assertEquals(Operator.STARTS_WITH, c.getOperator());
 		Assertions.assertArrayEquals(new String[] { "f" }, c.getValues());

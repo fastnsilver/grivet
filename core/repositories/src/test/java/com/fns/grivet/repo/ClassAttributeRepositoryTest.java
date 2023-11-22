@@ -26,13 +26,13 @@ public class ClassAttributeRepositoryTest {
 	private ClassAttributeRepository classAttributeRepository;
 
 	private ClassAttribute[] seedClassAttributes() {
-		Attribute a1 = attributeRepository.save(Attribute.builder().name("birthday").build());
-		Attribute a2 = attributeRepository.save(Attribute.builder().name("socialSecurityNumber").build());
-		com.fns.grivet.model.Class detached = com.fns.grivet.model.Class.builder()
+		var a1 = attributeRepository.save(Attribute.builder().name("birthday").build());
+		var a2 = attributeRepository.save(Attribute.builder().name("socialSecurityNumber").build());
+		var detached = com.fns.grivet.model.Class.builder()
 			.name("PersonDetails")
 			.description("Sensitive details about an individual")
 			.build();
-		com.fns.grivet.model.Class c1 = classRepository.save(detached);
+		var c1 = classRepository.save(detached);
 		ClassAttribute[] expected = {
 				ClassAttribute.builder().cid(c1.getId()).aid(a1.getId()).tid(AttributeType.ISO_DATE.getId()).build(),
 				ClassAttribute.builder().cid(c1.getId()).aid(a2.getId()).tid(AttributeType.VARCHAR.getId()).build() };
@@ -43,7 +43,7 @@ public class ClassAttributeRepositoryTest {
 
 	@Test
 	public void testFindByCid() {
-		ClassAttribute[] expected = seedClassAttributes();
+		var expected = seedClassAttributes();
 		List<ClassAttribute> actual = classAttributeRepository.findByCid(expected[0].getCid());
 		Assertions.assertNotNull(actual, "Expected a list of class attributes returned!");
 		Assertions.assertTrue(actual.size() == 2);
@@ -52,8 +52,8 @@ public class ClassAttributeRepositoryTest {
 
 	@Test
 	public void testFindByCidAndAid() {
-		ClassAttribute[] expected = seedClassAttributes();
-		ClassAttribute actual = classAttributeRepository.findByCidAndAid(expected[1].getCid(), expected[1].getAid());
+		var expected = seedClassAttributes();
+		var actual = classAttributeRepository.findByCidAndAid(expected[1].getCid(), expected[1].getAid());
 		Assertions.assertNotNull(actual, "Expected a matching class attribute!");
 		Assertions.assertEquals(expected[1], actual);
 	}

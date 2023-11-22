@@ -43,13 +43,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -63,7 +60,7 @@ import com.fns.grivet.service.ClassRegistryService;
 import com.fns.grivet.service.EntityService;
 import com.fns.grivet.service.SchemaService;
 
-@ExtendWith(value = { SpringExtension.class, RestDocumentationExtension.class })
+@ExtendWith(value = { RestDocumentationExtension.class })
 @SpringBootTest(classes = PersistInit.class)
 public class PersistDocumentationTest {
 
@@ -77,8 +74,7 @@ public class PersistDocumentationTest {
 
 	@BeforeEach
 	public void setUp(RestDocumentationContextProvider restDocumentation) {
-		RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint()));
+		var document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
 			.apply(documentationConfiguration(restDocumentation))
 			.alwaysDo(document)
@@ -129,7 +125,7 @@ public class PersistDocumentationTest {
 		try {
 			defineTypes("TestMultipleTypes");
 			createTypes("Course", "CourseData");
-			Long oid = fetchAType("Course");
+			var oid = fetchAType("Course");
 			mockMvc
 				.perform(patch("/type").param("oid", String.valueOf(oid))
 					.contentType(MediaType.APPLICATION_JSON)
@@ -145,7 +141,7 @@ public class PersistDocumentationTest {
 	public void deleteOne() {
 		try {
 			defineType("TestType2");
-			Long oid = createType("TestType2", "TestTypeData2");
+			var oid = createType("TestType2", "TestTypeData2");
 			mockMvc.perform(delete("/type").param("oid", String.valueOf(oid)).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 		}
@@ -175,10 +171,8 @@ public class PersistDocumentationTest {
 		try {
 			defineType("TestType2");
 			createType("TestType2", "TestTypeData2");
-			String createdTimeStart = LocalDateTime.now()
-				.minusMinutes(15)
-				.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-			String createdTimeEnd = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+			var createdTimeStart = LocalDateTime.now().minusMinutes(15).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+			var createdTimeEnd = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 			mockMvc
 				.perform(get("/type/TestType2").param("createdTimeStart", createdTimeStart)
 					.param("createdTimeEnd", createdTimeEnd)
@@ -227,7 +221,7 @@ public class PersistDocumentationTest {
 	public void fetchOne() {
 		try {
 			defineType("TestType2");
-			Long oid = createType("TestType2", "TestTypeData2");
+			var oid = createType("TestType2", "TestTypeData2");
 			mockMvc.perform(get("/type").param("oid", String.valueOf(oid)).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().json(payload("TestTypeData2")));
@@ -238,50 +232,50 @@ public class PersistDocumentationTest {
 	}
 
 	private Long fetchAType(String type) throws JSONException, IOException {
-		ClassRepository classRepo = context.getBean(ClassRepository.class);
-		Integer cid = classRepo.findByName(type).getId();
-		EntityRepository entityRepo = context.getBean(EntityRepository.class);
+		var classRepo = context.getBean(ClassRepository.class);
+		var cid = classRepo.findByName(type).getId();
+		var entityRepo = context.getBean(EntityRepository.class);
 		return entityRepo.findAllEntitiesByCid(cid).iterator().next().getId();
 	}
 
 	private void createTypes(String type, String data) throws JSONException, IOException {
-		EntityService svc = context.getBean(EntityService.class);
-		String json = payload(data);
-		JSONArray array = new JSONArray(json);
+		var svc = context.getBean(EntityService.class);
+		var json = payload(data);
+		var array = new JSONArray(json);
 		array.forEach(o -> svc.create(type, (JSONObject) o));
 	}
 
 	private Long createType(String type, String data) throws JSONException, IOException {
-		EntityService svc = context.getBean(EntityService.class);
+		var svc = context.getBean(EntityService.class);
 		return svc.create(type, new JSONObject(payload(data)));
 	}
 
 	private void defineTypes(String definitions) throws JSONException, IOException {
-		ClassRegistryService svc = context.getBean(ClassRegistryService.class);
-		String json = payload(definitions);
-		JSONArray array = new JSONArray(json);
+		var svc = context.getBean(ClassRegistryService.class);
+		var json = payload(definitions);
+		var array = new JSONArray(json);
 		array.forEach(o -> svc.register((JSONObject) o));
 	}
 
 	private void defineType(String definition) throws JSONException, IOException {
-		ClassRegistryService svc = context.getBean(ClassRegistryService.class);
+		var svc = context.getBean(ClassRegistryService.class);
 		svc.register(new JSONObject(payload(definition)));
 	}
 
 	private void linkSchema(String schemaName) throws IOException {
-		SchemaService svc = context.getBean(SchemaService.class);
-		String schema = payload(schemaName);
+		var svc = context.getBean(SchemaService.class);
+		var schema = payload(schemaName);
 		svc.linkSchema(new JSONObject(schema));
 	}
 
 	private String payload(String payload) throws IOException {
-		Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
+		var r = resolver.getResource("classpath:%s.json".formatted(payload));
 		return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	}
 
 	private String asArray(String data) {
-		JSONArray array = new JSONArray();
-		JSONObject jo = new JSONObject(data);
+		var array = new JSONArray();
+		var jo = new JSONObject(data);
 		array.put(jo);
 		return array.toString();
 	}

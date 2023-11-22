@@ -41,13 +41,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -59,7 +56,7 @@ import com.fns.grivet.repo.ClassRepository;
 import com.fns.grivet.service.ClassRegistryService;
 import com.fns.grivet.service.SchemaService;
 
-@ExtendWith(value = { SpringExtension.class, RestDocumentationExtension.class })
+@ExtendWith(value = { RestDocumentationExtension.class })
 @SpringBootTest(classes = AdminInit.class)
 public class AdminDocumentationTest {
 
@@ -73,8 +70,7 @@ public class AdminDocumentationTest {
 
 	@BeforeEach
 	public void setUp(RestDocumentationContextProvider restDocumentation) {
-		RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint()));
+		var document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
 			.apply(documentationConfiguration(restDocumentation))
 			.alwaysDo(document)
@@ -183,25 +179,25 @@ public class AdminDocumentationTest {
 	}
 
 	private void defineTypes(String definitions) throws JSONException, IOException {
-		ClassRegistryService svc = context.getBean(ClassRegistryService.class);
-		String json = payload(definitions);
-		JSONArray array = new JSONArray(json);
+		var svc = context.getBean(ClassRegistryService.class);
+		var json = payload(definitions);
+		var array = new JSONArray(json);
 		array.forEach(o -> svc.register((JSONObject) o));
 	}
 
 	private void defineType(String definition) throws JSONException, IOException {
-		ClassRegistryService svc = context.getBean(ClassRegistryService.class);
+		var svc = context.getBean(ClassRegistryService.class);
 		svc.register(new JSONObject(payload(definition)));
 	}
 
 	private void linkSchema(String schemaName) throws IOException {
-		SchemaService svc = context.getBean(SchemaService.class);
-		String schema = payload(schemaName);
+		var svc = context.getBean(SchemaService.class);
+		var schema = payload(schemaName);
 		svc.linkSchema(new JSONObject(schema));
 	}
 
 	private String payload(String payload) throws IOException {
-		Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
+		var r = resolver.getResource("classpath:%s.json".formatted(payload));
 		return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 	}
 

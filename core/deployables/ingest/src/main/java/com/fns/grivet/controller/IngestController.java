@@ -85,7 +85,7 @@ public class IngestController {
 				"The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries."
 					.formatted(batchSize, numberOfTypesToCreate));
 		JSONObject payload = null;
-		HttpHeaders headers = new HttpHeaders();
+		var headers = new HttpHeaders();
 		// allow for all JSONObjects within JSONArray to be processed; capture and report
 		// errors during processing
 		for (int i = 0; i < numberOfTypesToCreate; i++) {
@@ -99,7 +99,7 @@ public class IngestController {
 				log.info("Successfully ingested create request for type [{}]", type);
 			}
 			catch (Exception e) {
-				String message = LogUtil.toLog(payload,
+				var message = LogUtil.toLog(payload,
 						"Problems ingesting type! Portion of payload @ index[%d]\n".formatted(i + 1));
 				log.error(message, e);
 				if (numberOfTypesToCreate == 1) {

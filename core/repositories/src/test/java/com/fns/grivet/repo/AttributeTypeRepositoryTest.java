@@ -15,16 +15,16 @@ public class AttributeTypeRepositoryTest {
 
 	@Test
 	public void testFindByType() {
-		AttributeType expected = AttributeType.VARCHAR;
-		AttributeType actual = repo.findByType("varchar");
+		var expected = AttributeType.VARCHAR;
+		var actual = repo.findByType("varchar");
 		Assertions.assertNotNull(actual, "Expected matching attribute type!");
 		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
 	public void testfindById() {
-		AttributeType expected = AttributeType.ISO_INSTANT;
-		AttributeType actual = repo.findById(4);
+		var expected = AttributeType.ISO_INSTANT;
+		var actual = repo.findById(4);
 		Assertions.assertNotNull(actual, "Expected matching attribute type!");
 		Assertions.assertEquals(expected, actual);
 	}

@@ -16,12 +16,12 @@ public class ClassRepositoryTest {
 
 	@Test
 	public void testFindByName() {
-		Class detached = Class.builder()
+		var detached = Class.builder()
 			.name("PersonalDetails")
 			.description("The personal details of an individual.")
 			.build();
-		Class expected = repo.save(detached);
-		Class actual = repo.findByName("PersonalDetails");
+		var expected = repo.save(detached);
+		var actual = repo.findByName("PersonalDetails");
 		Assertions.assertNotNull(actual, "Expected a matching Class!");
 		Assertions.assertEquals(expected, actual);
 	}

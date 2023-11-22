@@ -35,7 +35,7 @@ class GlobalControllerExceptionHandler {
 	@ExceptionHandler({ IOException.class, IllegalArgumentException.class, DateTimeParseException.class,
 			NumberFormatException.class, JSONException.class })
 	protected ResponseEntity<ErrorResponse> badRequest(Exception e, HttpServletRequest hsr) {
-		ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),
+		var er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),
 				Arrays.asList(e.getMessage()));
 		log.error(er.toString());
 		return ResponseEntity.badRequest().body(er);

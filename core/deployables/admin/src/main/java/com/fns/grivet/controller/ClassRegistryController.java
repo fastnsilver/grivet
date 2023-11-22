@@ -64,8 +64,8 @@ public class ClassRegistryController {
 	@PreAuthorize("hasAuthority(\'write:typedef\')")
 	@PostMapping("/definition")
 	public ResponseEntity<?> defineType(@RequestBody JSONObject payload) throws IOException {
-		String type = classRegistryService.register(payload);
-		UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
+		var type = classRegistryService.register(payload);
+		var ucb = UriComponentsBuilder.newInstance();
 		log.info("Type [{}] successfully registered!", type);
 		return ResponseEntity.created(ucb.path("/definition/{type}").buildAndExpand(type).toUri()).build();
 	}
@@ -79,7 +79,7 @@ public class ClassRegistryController {
 					.formatted(batchSize, numberOfTypesToRegister));
 		JSONObject payload = null;
 		String type = null;
-		HttpHeaders headers = new HttpHeaders();
+		var headers = new HttpHeaders();
 		URI location = null;
 		int errorCount = 0;
 		// allow for all JSONObjects within JSONArray to be processed; capture and report
@@ -98,7 +98,7 @@ public class ClassRegistryController {
 				log.info("Type [{}] successfully registered!", type);
 			}
 			catch (Exception e) {
-				String message = LogUtil.toLog(payload,
+				var message = LogUtil.toLog(payload,
 						"Problems registering type! Portion of payload @ index[%d]\n".formatted(i + 1));
 				log.error(message, e);
 				if (numberOfTypesToRegister == 1) {
@@ -122,8 +122,8 @@ public class ClassRegistryController {
 	@PreAuthorize("hasAuthority(\'read:typedef\')")
 	@GetMapping("/definition/{type}")
 	public ResponseEntity<?> getTypeDefinition(@PathVariable("type") String type) {
-		JSONObject payload = classRegistryService.get(type);
-		String message = LogUtil.toLog(payload, "Successfully retrieved type [%s]\n".formatted(type));
+		var payload = classRegistryService.get(type);
+		var message = LogUtil.toLog(payload, "Successfully retrieved type [%s]\n".formatted(type));
 		log.info(message);
 		return ResponseEntity.ok(payload.toString());
 	}

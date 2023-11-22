@@ -80,8 +80,8 @@ public class EntityController {
 	@PreAuthorize("hasAuthority('write:type')")
 	@PostMapping("/type")
 	public ResponseEntity<?> createOne(@RequestHeader("Type") String type, @RequestBody JSONObject json) {
-		Long oid = entityService.create(type, json);
-		URI location = UriComponentsBuilder.newInstance().path("/type").queryParam("oid", oid).build().toUri();
+		var oid = entityService.create(type, json);
+		var location = UriComponentsBuilder.newInstance().path("/type").queryParam("oid", oid).build().toUri();
 		meterRegistry.counter(String.join("store", "create", type)).increment();
 		log.info("Successfully created type [{}]", type);
 		return ResponseEntity.created(location).build();
@@ -97,7 +97,7 @@ public class EntityController {
 					.formatted(batchSize, numberOfTypesToCreate));
 		int errorCount = 0;
 		JSONObject jsonObject = null;
-		HttpHeaders headers = new HttpHeaders();
+		var headers = new HttpHeaders();
 		URI location = null;
 		Long oid = null;
 		// allow for all JSONObjects within JSONArray to be processed; capture and report
@@ -117,7 +117,7 @@ public class EntityController {
 				log.info("Successfully created type [{}]", type);
 			}
 			catch (Exception e) {
-				String message = LogUtil.toLog(jsonObject,
+				var message = LogUtil.toLog(jsonObject,
 						"Problems storing type! Portion of payload @ index[%d]\n".formatted(i + 1));
 				log.error(message, e);
 				if (numberOfTypesToCreate == 1) {
@@ -135,9 +135,9 @@ public class EntityController {
 	@PatchMapping("/type")
 	public ResponseEntity<?> updateOne(@RequestParam(value = "oid", required = true) Long oid,
 			@RequestBody JSONObject json) {
-		String type = entityService.update(oid, json);
-		HttpHeaders headers = new HttpHeaders();
-		URI location = UriComponentsBuilder.newInstance().path("/type").queryParam("oid", oid).build().toUri();
+		var type = entityService.update(oid, json);
+		var headers = new HttpHeaders();
+		var location = UriComponentsBuilder.newInstance().path("/type").queryParam("oid", oid).build().toUri();
 		headers.setLocation(location);
 		meterRegistry.counter(String.join("store", "update", type)).increment();
 		log.info("Successfully updated type [{}]", type);
@@ -148,7 +148,7 @@ public class EntityController {
 	@PreAuthorize("hasAuthority('delete:type')")
 	@DeleteMapping("/type")
 	public ResponseEntity<?> deleteOne(@RequestParam(value = "oid", required = true) Long oid) {
-		String type = entityService.delete(oid);
+		var type = entityService.delete(oid);
 		meterRegistry.counter(String.join("store", "delete", type)).increment();
 		log.info("Successfully delete type [{}]", type);
 		return ResponseEntity.ok().build();

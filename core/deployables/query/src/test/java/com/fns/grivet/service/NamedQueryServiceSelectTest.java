@@ -57,22 +57,22 @@ public class NamedQueryServiceSelectTest {
 
 	@BeforeEach
 	public void setUp() throws IOException {
-		Resource r = resolver.getResource("classpath:TestType.json");
-		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		JSONObject payload = new JSONObject(json);
+		var r = resolver.getResource("classpath:TestType.json");
+		var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+		var payload = new JSONObject(json);
 		classRegistryService.register(payload);
 	}
 
 	@Test
 	public void testCreateThenGetHappyPath() throws IOException {
-		Resource r = resolver.getResource("classpath:TestSelectQuery.json");
-		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+		var r = resolver.getResource("classpath:TestSelectQuery.json");
+		var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+		var namedQuery = objectMapper.readValue(json, NamedQuery.class);
 		namedQueryService.create(namedQuery);
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("createdTime", LocalDateTime.now().plusDays(1).toString());
-		String result = namedQueryService.get("getAttributesCreatedBefore", params);
+		var result = namedQueryService.get("getAttributesCreatedBefore", params);
 		String[] expected = { "bigint", "varchar", "decimal", "datetime", "int", "text", "json", "boolean" };
 		List<String> actual = JsonPath.given(result).getList("name");
 		Assertions.assertTrue(actual.containsAll(Arrays.asList(expected)));
@@ -90,9 +90,9 @@ public class NamedQueryServiceSelectTest {
 	@Test
 	public void testCreateThenGetParamsNotSupplied() throws IOException {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			Resource r = resolver.getResource("classpath:TestSelectQuery.json");
-			String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-			NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+			var r = resolver.getResource("classpath:TestSelectQuery.json");
+			var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var namedQuery = objectMapper.readValue(json, NamedQuery.class);
 			namedQueryService.create(namedQuery);
 
 			namedQueryService.get("getAttributesCreatedBefore", null);
@@ -102,9 +102,9 @@ public class NamedQueryServiceSelectTest {
 	@Test
 	public void testCreateThenGetIncorrectParamsSupplied() throws IOException {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			Resource r = resolver.getResource("classpath:TestSelectQuery.json");
-			String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-			NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+			var r = resolver.getResource("classpath:TestSelectQuery.json");
+			var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var namedQuery = objectMapper.readValue(json, NamedQuery.class);
 			namedQueryService.create(namedQuery);
 
 			MultiValueMap<String, String> params = new LinkedMultiValueMap<>();

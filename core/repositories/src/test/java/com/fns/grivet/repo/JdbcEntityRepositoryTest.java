@@ -49,29 +49,29 @@ public class JdbcEntityRepositoryTest {
 
 	@Test
 	public void testNewId() {
-		Class c = classRepository.save(Class.builder().name("foo").description("Foo type").build());
-		LocalDateTime now = LocalDateTime.now();
-		Long eid = entityRepository.newId(c.getId(), now);
+		var c = classRepository.save(Class.builder().name("foo").description("Foo type").build());
+		var now = LocalDateTime.now();
+		var eid = entityRepository.newId(c.getId(), now);
 		Assertions.assertTrue(eid != null && eid > 0, "Entity should have an identifier!");
 	}
 
 	@Test
 	public void testSaveAndFindEntityById() {
-		Attribute detachedAttribute = Attribute.builder().name("canSpeak").description("Is able to speak?").build();
-		Attribute canSpeak = attributeRepository.save(detachedAttribute);
-		Class c = classRepository.save(Class.builder().name("human").description("A human").build());
+		var detachedAttribute = Attribute.builder().name("canSpeak").description("Is able to speak?").build();
+		var canSpeak = attributeRepository.save(detachedAttribute);
+		var c = classRepository.save(Class.builder().name("human").description("A human").build());
 		classAttributeRepository.save(ClassAttribute.builder()
 			.aid(canSpeak.getId())
 			.cid(c.getId())
 			.tid(AttributeType.BOOLEAN.getId())
 			.build());
-		LocalDateTime now = LocalDateTime.now();
-		Long eid = entityRepository.newId(c.getId(), now);
+		var now = LocalDateTime.now();
+		var eid = entityRepository.newId(c.getId(), now);
 		entityRepository.save(eid, canSpeak, AttributeType.BOOLEAN, true, now);
 
 		List<EntityAttributeValue> eavList = entityRepository.findByEntityId(eid);
 		Assertions.assertTrue(eavList.size() == 1, "List of entity attribute values should contain only one item!");
-		EntityAttributeValue item = eavList.get(0);
+		var item = eavList.get(0);
 		Assertions.assertEquals(now.truncatedTo(ChronoUnit.SECONDS),
 				item.getCreatedTime().truncatedTo(ChronoUnit.SECONDS));
 		Assertions.assertEquals(eid, item.getId());
@@ -81,22 +81,19 @@ public class JdbcEntityRepositoryTest {
 
 	@Test
 	public void testFindByCreatedTime() {
-		Attribute detachedAttribute = Attribute.builder()
-			.name("maxRpm")
-			.description("Maximum rotations per minute.")
-			.build();
-		Attribute maxRpm = attributeRepository.save(detachedAttribute);
-		Class c = classRepository.save(Class.builder().name("engine").description("An engine").build());
+		var detachedAttribute = Attribute.builder().name("maxRpm").description("Maximum rotations per minute.").build();
+		var maxRpm = attributeRepository.save(detachedAttribute);
+		var c = classRepository.save(Class.builder().name("engine").description("An engine").build());
 		classAttributeRepository.save(
 				ClassAttribute.builder().aid(maxRpm.getId()).cid(c.getId()).tid(AttributeType.INTEGER.getId()).build());
-		LocalDateTime now = LocalDateTime.now();
-		Long eid = entityRepository.newId(c.getId(), now);
+		var now = LocalDateTime.now();
+		var eid = entityRepository.newId(c.getId(), now);
 		entityRepository.save(eid, maxRpm, AttributeType.INTEGER, 7500, now);
 
 		List<EntityAttributeValue> eavList = entityRepository.findByCreatedTime(c.getId(),
 				now.minus(1L, ChronoUnit.SECONDS), now.plus(1L, ChronoUnit.SECONDS));
 		Assertions.assertTrue(eavList.size() == 1, "List of entity attribute values should contain only one item!");
-		EntityAttributeValue item = eavList.get(0);
+		var item = eavList.get(0);
 		Assertions.assertEquals(now.truncatedTo(ChronoUnit.SECONDS),
 				item.getCreatedTime().truncatedTo(ChronoUnit.SECONDS));
 		Assertions.assertEquals(eid, item.getId());
@@ -106,35 +103,29 @@ public class JdbcEntityRepositoryTest {
 
 	@Test
 	public void testGetClassIdForEntityId() {
-		Attribute detachedAttribute = Attribute.builder()
-			.name("lotSize")
-			.description("Size of lot in square feet.")
-			.build();
-		Attribute lotSize = attributeRepository.save(detachedAttribute);
-		Class c = classRepository.save(Class.builder().name("home-details").description("Home details").build());
+		var detachedAttribute = Attribute.builder().name("lotSize").description("Size of lot in square feet.").build();
+		var lotSize = attributeRepository.save(detachedAttribute);
+		var c = classRepository.save(Class.builder().name("home-details").description("Home details").build());
 		classAttributeRepository.save(ClassAttribute.builder()
 			.aid(lotSize.getId())
 			.cid(c.getId())
 			.tid(AttributeType.INTEGER.getId())
 			.build());
-		LocalDateTime now = LocalDateTime.now();
-		Long eid = entityRepository.newId(c.getId(), now);
+		var now = LocalDateTime.now();
+		var eid = entityRepository.newId(c.getId(), now);
 		entityRepository.save(eid, lotSize, AttributeType.INTEGER, 2250, now);
 
-		Integer cid = entityRepository.getClassIdForEntityId(eid);
+		var cid = entityRepository.getClassIdForEntityId(eid);
 		Assertions.assertEquals(c.getId(), cid);
 	}
 
 	@Test
 	public void testDelete() {
-		Attribute detachedAttribute1 = Attribute.builder()
-			.name("lotSize")
-			.description("Size of lot in square feet.")
-			.build();
-		Attribute lotSize = attributeRepository.save(detachedAttribute1);
-		Attribute detachedAttribute2 = Attribute.builder().name("bedrooms").description("Number of bedrooms.").build();
-		Attribute bedrooms = attributeRepository.save(detachedAttribute2);
-		Class c = classRepository.save(Class.builder().name("home-details").description("Home details").build());
+		var detachedAttribute1 = Attribute.builder().name("lotSize").description("Size of lot in square feet.").build();
+		var lotSize = attributeRepository.save(detachedAttribute1);
+		var detachedAttribute2 = Attribute.builder().name("bedrooms").description("Number of bedrooms.").build();
+		var bedrooms = attributeRepository.save(detachedAttribute2);
+		var c = classRepository.save(Class.builder().name("home-details").description("Home details").build());
 		classAttributeRepository.save(ClassAttribute.builder()
 			.aid(lotSize.getId())
 			.cid(c.getId())
@@ -145,11 +136,11 @@ public class JdbcEntityRepositoryTest {
 			.cid(c.getId())
 			.tid(AttributeType.INTEGER.getId())
 			.build());
-		LocalDateTime now = LocalDateTime.now();
-		Long eid1 = entityRepository.newId(c.getId(), now);
+		var now = LocalDateTime.now();
+		var eid1 = entityRepository.newId(c.getId(), now);
 		entityRepository.save(eid1, lotSize, AttributeType.INTEGER, 7500, now);
 		entityRepository.save(eid1, bedrooms, AttributeType.INTEGER, 4, now);
-		Long eid2 = entityRepository.newId(c.getId(), now);
+		var eid2 = entityRepository.newId(c.getId(), now);
 		entityRepository.save(eid2, lotSize, AttributeType.INTEGER, 5200, now);
 		entityRepository.save(eid2, bedrooms, AttributeType.INTEGER, 3, now);
 
@@ -166,14 +157,11 @@ public class JdbcEntityRepositoryTest {
 
 	@Test
 	public void testDeleteAll() {
-		Attribute detachedAttribute1 = Attribute.builder()
-			.name("lotSize")
-			.description("Size of lot in square feet.")
-			.build();
-		Attribute lotSize = attributeRepository.save(detachedAttribute1);
-		Attribute detachedAttribute2 = Attribute.builder().name("bedrooms").description("Number of bedrooms.").build();
-		Attribute bedrooms = attributeRepository.save(detachedAttribute2);
-		Class c = classRepository.save(Class.builder().name("home-details").description("Home details").build());
+		var detachedAttribute1 = Attribute.builder().name("lotSize").description("Size of lot in square feet.").build();
+		var lotSize = attributeRepository.save(detachedAttribute1);
+		var detachedAttribute2 = Attribute.builder().name("bedrooms").description("Number of bedrooms.").build();
+		var bedrooms = attributeRepository.save(detachedAttribute2);
+		var c = classRepository.save(Class.builder().name("home-details").description("Home details").build());
 		classAttributeRepository.save(ClassAttribute.builder()
 			.aid(lotSize.getId())
 			.cid(c.getId())
@@ -184,11 +172,11 @@ public class JdbcEntityRepositoryTest {
 			.cid(c.getId())
 			.tid(AttributeType.INTEGER.getId())
 			.build());
-		LocalDateTime now = LocalDateTime.now();
-		Long eid1 = entityRepository.newId(c.getId(), now);
+		var now = LocalDateTime.now();
+		var eid1 = entityRepository.newId(c.getId(), now);
 		entityRepository.save(eid1, lotSize, AttributeType.INTEGER, 7500, now);
 		entityRepository.save(eid1, bedrooms, AttributeType.INTEGER, 4, now);
-		Long eid2 = entityRepository.newId(c.getId(), now);
+		var eid2 = entityRepository.newId(c.getId(), now);
 		entityRepository.save(eid2, lotSize, AttributeType.INTEGER, 5200, now);
 		entityRepository.save(eid2, bedrooms, AttributeType.INTEGER, 3, now);
 
@@ -207,14 +195,11 @@ public class JdbcEntityRepositoryTest {
 
 	@Test
 	public void testFindAllEntitiesByCid() {
-		Attribute detachedAttribute1 = Attribute.builder()
-			.name("orderQuantity")
-			.description("Quantity ordered.")
-			.build();
-		Attribute orderQuantity = attributeRepository.save(detachedAttribute1);
-		Attribute detachedAttribute2 = Attribute.builder().name("productId").description("Product SKU.").build();
-		Attribute productId = attributeRepository.save(detachedAttribute2);
-		Class c = classRepository
+		var detachedAttribute1 = Attribute.builder().name("orderQuantity").description("Quantity ordered.").build();
+		var orderQuantity = attributeRepository.save(detachedAttribute1);
+		var detachedAttribute2 = Attribute.builder().name("productId").description("Product SKU.").build();
+		var productId = attributeRepository.save(detachedAttribute2);
+		var c = classRepository
 			.save(Class.builder().name("order-line-item").description("Order line item details.").build());
 		classAttributeRepository.save(ClassAttribute.builder()
 			.aid(orderQuantity.getId())
@@ -226,11 +211,11 @@ public class JdbcEntityRepositoryTest {
 			.cid(c.getId())
 			.tid(AttributeType.INTEGER.getId())
 			.build());
-		LocalDateTime now = LocalDateTime.now();
-		Long eid1 = entityRepository.newId(c.getId(), now);
+		var now = LocalDateTime.now();
+		var eid1 = entityRepository.newId(c.getId(), now);
 		entityRepository.save(eid1, orderQuantity, AttributeType.INTEGER, 67, now);
 		entityRepository.save(eid1, productId, AttributeType.INTEGER, 123, now);
-		Long eid2 = entityRepository.newId(c.getId(), now);
+		var eid2 = entityRepository.newId(c.getId(), now);
 		entityRepository.save(eid2, orderQuantity, AttributeType.INTEGER, 11, now);
 		entityRepository.save(eid2, productId, AttributeType.INTEGER, 456, now);
 

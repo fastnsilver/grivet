@@ -61,7 +61,7 @@ public class GrivetApiClientIT {
 
 	private String registerTestType() {
 		String json = null;
-		Resource r = resolver.getResource("classpath:TestType.json");
+		var r = resolver.getResource("classpath:TestType.json");
 		try {
 			json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 			given().contentType("application/json")
@@ -91,7 +91,7 @@ public class GrivetApiClientIT {
 
 	private String registerMultipleTypes() {
 		String json = null;
-		Resource r = resolver.getResource("classpath:TestMultipleTypes.json");
+		var r = resolver.getResource("classpath:TestMultipleTypes.json");
 		try {
 			json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 			given().contentType("application/json")
@@ -153,9 +153,9 @@ public class GrivetApiClientIT {
 
 	@Test
 	public void testRegisterTypeBadRequest() {
-		Resource r = resolver.getResource("classpath:BadTestType.json");
+		var r = resolver.getResource("classpath:BadTestType.json");
 		try {
-			String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 			given().contentType("application/json")
 				.request()
 				.body(json)
@@ -172,8 +172,8 @@ public class GrivetApiClientIT {
 
 	@Test
 	public void testGetRegisteredTypeHappyPath() {
-		String json = registerTestType();
-		Response response = given().contentType("application/json")
+		var json = registerTestType();
+		var response = given().contentType("application/json")
 			.request()
 			.then()
 			.expect()
@@ -186,15 +186,15 @@ public class GrivetApiClientIT {
 
 	@Test
 	public void testAllRegisteredTypesHappyPath() {
-		String json = registerTestType();
-		Response response = given().contentType("application/json")
+		var json = registerTestType();
+		var response = given().contentType("application/json")
 			.request()
 			.then()
 			.expect()
 			.statusCode(equalTo(200))
 			.when()
 			.get("/definitions");
-		JSONArray result = new JSONArray(response.body().asString());
+		var result = new JSONArray(response.body().asString());
 		JsonAssert.assertJsonEquals(json, result.get(0).toString());
 		deregisterType();
 	}
@@ -202,9 +202,9 @@ public class GrivetApiClientIT {
 	@Test
 	public void testLinkAndUnlinkJsonSchemaHappyPath() {
 		registerTestType();
-		Resource r = resolver.getResource("classpath:TestTypeSchema.json");
+		var r = resolver.getResource("classpath:TestTypeSchema.json");
 		try {
-			String schema = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var schema = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 			given().contentType("application/json")
 				.request()
 				.body(schema)
@@ -230,9 +230,9 @@ public class GrivetApiClientIT {
 	@Test
 	public void testRegisterAndLinkAndStoreAndGetTypeHappyPath() {
 		registerTestType();
-		Resource r = resolver.getResource("classpath:TestTypeSchema.json");
+		var r = resolver.getResource("classpath:TestTypeSchema.json");
 		try {
-			String schema = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var schema = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 			given().contentType("application/json")
 				.request()
 				.body(schema)
@@ -242,7 +242,7 @@ public class GrivetApiClientIT {
 				.when()
 				.post("/schema");
 			r = resolver.getResource("classpath:TestTypeData.json");
-			String type = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var type = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 			given().contentType("application/json")
 				.request()
 				.header("Type", "TestType")
@@ -254,14 +254,14 @@ public class GrivetApiClientIT {
 				.post("/type");
 
 			// GET (default)
-			Response response = given().contentType("application/json")
+			var response = given().contentType("application/json")
 				.request()
 				.then()
 				.expect()
 				.statusCode(equalTo(200))
 				.when()
 				.get("/type/TestType");
-			JSONArray result = new JSONArray(response.body().asString());
+			var result = new JSONArray(response.body().asString());
 			JsonAssert.assertJsonEquals(type, result.get(0).toString());
 
 			// GET (with equals constraint that is a boolean)
@@ -335,9 +335,9 @@ public class GrivetApiClientIT {
 	@Test
 	public void testRegisterAndStoreMultipleContactsHappyPath() {
 		registerMultipleTypes();
-		Resource r = resolver.getResource("classpath:TestMultipleContactsData.json");
+		var r = resolver.getResource("classpath:TestMultipleContactsData.json");
 		try {
-			String contacts = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var contacts = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 			given().contentType("application/json")
 				.request()
 				.header("Type", "Contact")
@@ -357,13 +357,13 @@ public class GrivetApiClientIT {
 	@Test
 	public void testRegisterAndStoreMultipleCoursesAccepted() {
 		registerMultipleTypes();
-		Resource r = resolver.getResource("classpath:BadCourseData.json");
+		var r = resolver.getResource("classpath:BadCourseData.json");
 		try {
-			String courses = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var courses = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 
 			// link Course schema
 			r = resolver.getResource("classpath:CourseSchema.json");
-			String schema = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var schema = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 			given().contentType("application/json")
 				.request()
 				.body(schema)
@@ -391,9 +391,9 @@ public class GrivetApiClientIT {
 
 	@Test
 	public void testAllRegisteredNamedQueriesHappyPath() {
-		Resource r = resolver.getResource("classpath:TestSelectQuery.json");
+		var r = resolver.getResource("classpath:TestSelectQuery.json");
 		try {
-			String select = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var select = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 			given().contentType("application/json")
 				.request()
 				.body(select)
@@ -402,14 +402,14 @@ public class GrivetApiClientIT {
 				.statusCode(equalTo(204))
 				.when()
 				.post("/query");
-			Response response = given().contentType("application/json")
+			var response = given().contentType("application/json")
 				.request()
 				.then()
 				.expect()
 				.statusCode(equalTo(200))
 				.when()
 				.get("/queries");
-			JSONArray result = new JSONArray(response.body().asString());
+			var result = new JSONArray(response.body().asString());
 			Assertions.assertEquals(1, result.length());
 			given().contentType("application/json")
 				.request()
@@ -427,9 +427,9 @@ public class GrivetApiClientIT {
 	@Test
 	public void testNamedQueryRegistrationAndRetrievalSelectHappyPath() {
 		registerTestType();
-		Resource r = resolver.getResource("classpath:TestSelectQuery3.json");
+		var r = resolver.getResource("classpath:TestSelectQuery3.json");
 		try {
-			String select = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var select = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 			given().contentType("application/json")
 				.request()
 				.body(select)
@@ -438,14 +438,14 @@ public class GrivetApiClientIT {
 				.statusCode(equalTo(201))
 				.when()
 				.post("/query");
-			Response response = given().contentType("application/json")
+			var response = given().contentType("application/json")
 				.request()
 				.then()
 				.expect()
 				.statusCode(equalTo(200))
 				.when()
 				.get("/query/getClassesCreatedToday");
-			JSONArray result = new JSONArray(response.body().asString());
+			var result = new JSONArray(response.body().asString());
 			Assertions.assertEquals(1, result.length());
 			given().contentType("application/json")
 				.request()
@@ -465,9 +465,9 @@ public class GrivetApiClientIT {
 	@Disabled("Cannot test w/ H2")
 	public void testNamedQueryRegistrationAndRetrievalSprocHappyPath() {
 		registerTestType();
-		Resource r = resolver.getResource("classpath:TestSprocQuery.json");
+		var r = resolver.getResource("classpath:TestSprocQuery.json");
 		try {
-			String sproc = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			var sproc = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
 			given().contentType("application/json")
 				.request()
 				.body(sproc)
@@ -476,15 +476,15 @@ public class GrivetApiClientIT {
 				.statusCode(equalTo(204))
 				.when()
 				.post("/query");
-			LocalDateTime now = LocalDateTime.now();
-			Response response = given().contentType("application/json")
+			var now = LocalDateTime.now();
+			var response = given().contentType("application/json")
 				.request()
 				.then()
 				.expect()
 				.statusCode(equalTo(200))
 				.when()
 				.get("/query/sproc.getAttributesCreatedBefore?createdTime=" + now.toString());
-			JSONArray result = new JSONArray(response.body().asString());
+			var result = new JSONArray(response.body().asString());
 			Assertions.assertEquals(7, result.length());
 			given().contentType("application/json")
 				.request()

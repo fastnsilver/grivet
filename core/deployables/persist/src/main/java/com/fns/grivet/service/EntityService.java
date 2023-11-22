@@ -75,7 +75,7 @@ public class EntityService {
 
 	@Transactional
 	public Long create(String type, JSONObject payload) {
-		com.fns.grivet.model.Class c = classRepository.findByName(type);
+		var c = classRepository.findByName(type);
 		Assert.notNull(c, "Type [%s] is not registered!".formatted(type));
 		if (c.isValidatable()) {
 			executeSchemaValidation(type, payload);
@@ -87,8 +87,8 @@ public class EntityService {
 		ClassAttribute ca = null;
 		AttributeType at = null;
 		// entity and entity-attribute-values should be stamped with same date/time
-		LocalDateTime createdTime = LocalDateTime.now();
-		Long eid = entityRepository.newId(c.getId(), createdTime);
+		var createdTime = LocalDateTime.now();
+		var eid = entityRepository.newId(c.getId(), createdTime);
 		// TODO create an expiring cache of attribute names for faster lookups (friendlier
 		// database use)
 		for (String key : keys) {
@@ -106,10 +106,10 @@ public class EntityService {
 
 	@Transactional
 	public String update(Long eid, JSONObject payload) {
-		Integer cid = entityRepository.getClassIdForEntityId(eid);
+		var cid = entityRepository.getClassIdForEntityId(eid);
 		Assert.notNull(cid, "No type registered for entity with oid = [%d]".formatted(eid));
-		com.fns.grivet.model.Class c = classRepository.findById(cid).get();
-		String type = c.getName();
+		var c = classRepository.findById(cid).get();
+		var type = c.getName();
 		if (c.isValidatable()) {
 			executeSchemaValidation(type, payload);
 		}
@@ -121,10 +121,10 @@ public class EntityService {
 
 		// get currently persisted entity's attribute values; make sure the oid
 		// passed actually exists!
-		String currentEntity = findById(eid);
+		var currentEntity = findById(eid);
 
 		// keys (attribute names) of the currently persisted entity
-		JSONObject persistentObject = new JSONObject(currentEntity);
+		var persistentObject = new JSONObject(currentEntity);
 		Set<String> persistentKeys = persistentObject.keySet();
 
 		Object val = null;
@@ -132,7 +132,7 @@ public class EntityService {
 		ClassAttribute ca = null;
 		AttributeType at = null;
 		// entity and entity-attribute-values should be stamped with same date/time
-		LocalDateTime createdTime = LocalDateTime.now();
+		var createdTime = LocalDateTime.now();
 
 		// reconcile detached entity's (payload's) attribute-values
 		// for each persistentKey
@@ -157,10 +157,10 @@ public class EntityService {
 
 	@Transactional
 	public String delete(Long eid) {
-		Integer cid = entityRepository.getClassIdForEntityId(eid);
+		var cid = entityRepository.getClassIdForEntityId(eid);
 		Assert.notNull(cid, "No type registered for entity with oid = [%d]".formatted(eid));
-		com.fns.grivet.model.Class c = classRepository.findById(cid).get();
-		String type = c.getName();
+		var c = classRepository.findById(cid).get();
+		var type = c.getName();
 		entityRepository.delete(eid);
 		return type;
 	}
@@ -168,14 +168,14 @@ public class EntityService {
 	@Transactional(readOnly = true)
 	public String findByCreatedTime(String type, LocalDateTime createdTimeStart, LocalDateTime createdTimeEnd,
 			Map<String, String[]> parameters) throws JsonProcessingException {
-		com.fns.grivet.model.Class c = classRepository.findByName(type);
+		var c = classRepository.findByName(type);
 		Assert.notNull(c, "Type [%s] is not registered!".formatted(type));
 		Map<Integer, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
 		List<Attribute> attributes = Lists.newArrayList(attributeRepository.findAll());
 		Map<String, Integer> attributeNameToAttributeIdMap = attributes.stream()
 			.collect(Collectors.toMap(Attribute::getName, Attribute::getId));
 		Set<Entry<String, String[]>> params = parameters == null ? null : parameters.entrySet();
-		DynamicQuery query = new DynamicQuery(params, attributeToAttributeTypeMap, attributeNameToAttributeIdMap);
+		var query = new DynamicQuery(params, attributeToAttributeTypeMap, attributeNameToAttributeIdMap);
 		List<EntityAttributeValue> rows = null;
 		if (query.hasConstraints()) {
 			rows = entityRepository.executeDynamicQuery(c.getId(), query);
@@ -192,15 +192,15 @@ public class EntityService {
 		if (rows == null) {
 			throw new ResourceNotFoundException("No entity exists with oid =[%d]".formatted(eid));
 		}
-		Integer cid = entityRepository.getClassIdForEntityId(eid);
-		com.fns.grivet.model.Class c = classRepository.findById(cid).get();
+		var cid = entityRepository.getClassIdForEntityId(eid);
+		var c = classRepository.findById(cid).get();
 		Map<Integer, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
 		return mapRows(attributeToAttributeTypeMap, rows).getJSONObject(0).toString();
 	}
 
 	@Transactional(readOnly = true)
 	public String findAllByType(String type) {
-		com.fns.grivet.model.Class c = classRepository.findByName(type);
+		var c = classRepository.findByName(type);
 		Assert.notNull(c, "Type [%s] is not registered!");
 		List<EntityAttributeValue> rows = entityRepository.findAllEntitiesByCid(c.getId());
 		Map<Integer, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
@@ -208,7 +208,7 @@ public class EntityService {
 	}
 
 	protected JSONArray mapRows(Map<Integer, Integer> attributeToAttributeTypeMap, List<EntityAttributeValue> rows) {
-		JSONArray jsonArray = new JSONArray();
+		var jsonArray = new JSONArray();
 		String current = null;
 		String previous = null;
 		JSONObject jsonObject = null;
@@ -218,7 +218,7 @@ public class EntityService {
 				jsonObject = new JSONObject();
 				jsonArray.put(jsonObject);
 			}
-			Integer tid = attributeToAttributeTypeMap.get(row.getAttributeId());
+			var tid = attributeToAttributeTypeMap.get(row.getAttributeId());
 			jsonObject.put(row.getAttributeName(),
 					ValueHelper.getValue(attributeTypeRepository.findById(tid), row.getAttributeValue()));
 			previous = current;
@@ -227,7 +227,7 @@ public class EntityService {
 	}
 
 	private void executeSchemaValidation(String type, JSONObject payload) {
-		ProcessingReport report = schemaValidator.validate(type, payload);
+		var report = schemaValidator.validate(type, payload);
 		if (!report.isSuccess()) {
 			List<Object> errors = new ArrayList<>();
 			report.forEach(pm -> errors.add(pm.asJson()));

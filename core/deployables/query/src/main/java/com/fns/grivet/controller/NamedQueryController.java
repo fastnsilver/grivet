@@ -71,7 +71,7 @@ public class NamedQueryController {
 		}
 		namedQueryService.create(query);
 		log.info("Named Query \n\n{}\n\n successfully registered!", query);
-		UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
+		var ucb = UriComponentsBuilder.newInstance();
 		if (query.getParams().isEmpty()) {
 			result = ResponseEntity.created(ucb.path("/query/{name}").buildAndExpand(query.getName()).toUri()).build();
 		}
@@ -91,7 +91,7 @@ public class NamedQueryController {
 	@PreAuthorize("hasAuthority('list:query')")
 	@GetMapping("/queries")
 	public ResponseEntity<?> listNamedQueries() {
-		JSONArray payload = namedQueryService.all();
+		var payload = namedQueryService.all();
 		return ResponseEntity.ok(payload.toString());
 	}
 

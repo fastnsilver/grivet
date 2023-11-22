@@ -43,7 +43,7 @@ public class PersistenceService {
 				Assert.notNull(message.getHeaders(), "No message headers!");
 				Assert.notNull(message.getPayload(), "Message must have non-null payload!");
 
-				Op op = Op.fromValue(message.getHeaders().get("op", String.class));
+				var op = Op.fromValue(message.getHeaders().get("op", String.class));
 				Assert.notNull(op, "Message header must contain an op code!");
 
 				String type = null;

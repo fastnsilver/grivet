@@ -17,7 +17,7 @@ public class SchemaValidationExceptionHandler {
 
 	@ExceptionHandler({ SchemaValidationException.class })
 	protected ResponseEntity<ErrorResponse> invalid(SchemaValidationException e, HttpServletRequest hsr) {
-		ErrorResponse er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),
+		var er = new ErrorResponse(hsr.getMethod(), hsr.getRequestURI(), hsr.getQueryString(),
 				e.getProcessingFailures());
 		log.error(er.toString());
 		return ResponseEntity.unprocessableEntity().body(er);
