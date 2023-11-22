@@ -34,13 +34,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
 import com.fns.grivet.StandaloneInit;
 
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import net.javacrumbs.jsonunit.JsonAssert;
 
 @SpringBootTest(classes = StandaloneInit.class, webEnvironment = WebEnvironment.RANDOM_PORT)

@@ -16,7 +16,7 @@
 package com.fns.grivet.query;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
@@ -51,11 +51,11 @@ public enum Operator {
 	}
 
 	public static Operator fromValue(String value) {
-		List<Operator> ops = Arrays.stream(Operator.values())
+		LinkedList<Operator> ops = Arrays.stream(Operator.values())
 			.filter(o -> o.getName().equalsIgnoreCase(value))
-			.collect(Collectors.toList());
+			.collect(Collectors.toCollection(LinkedList::new));
 		Assert.notEmpty(ops, "Invalid Operator [%s]".formatted(value));
-		return ops.get(0);
+		return ops.getFirst();
 	}
 
 }

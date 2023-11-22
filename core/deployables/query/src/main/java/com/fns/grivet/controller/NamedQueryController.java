@@ -16,7 +16,6 @@
 package com.fns.grivet.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -66,8 +65,8 @@ public class NamedQueryController {
 		if (!query.getParams().isEmpty()) {
 			query.getParams()
 				.keySet()
-				.forEach(k -> Assert.isTrue(query.getQuery().contains(String.format(":%s", k)),
-						String.format("Query must contain named parameter [%s]", k)));
+				.forEach(k -> Assert.isTrue(query.getQuery().contains(":%s".formatted(k)),
+						"Query must contain named parameter [%s]".formatted(k)));
 		}
 		namedQueryService.create(query);
 		log.info("Named Query \n\n{}\n\n successfully registered!", query);

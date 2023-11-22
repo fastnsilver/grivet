@@ -16,7 +16,7 @@
 package com.fns.grivet.query;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
@@ -58,11 +58,11 @@ public enum Conjunction {
 	 * {@link Conjunction#name}
 	 */
 	public static Conjunction fromValue(String name) {
-		List<Conjunction> conj = Arrays.stream(Conjunction.values())
+		LinkedList<Conjunction> conj = Arrays.stream(Conjunction.values())
 			.filter(o -> o.getName().equalsIgnoreCase(name))
-			.collect(Collectors.toList());
+			.collect(Collectors.toCollection(LinkedList::new));
 		Assert.notEmpty(conj, "Invalid Conjunction [%s]".formatted(name));
-		return conj.get(0);
+		return conj.getFirst();
 	}
 
 }

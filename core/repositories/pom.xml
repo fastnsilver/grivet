@@ -16,68 +16,73 @@
 	<inceptionYear>2016</inceptionYear>
 	<url>https://github.com/fastnsilver/grivet</url>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.fns</groupId>
-			<artifactId>grivet-model</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fns</groupId>
-			<artifactId>grivet-test-resources</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>com.fns</groupId>
+            <artifactId>grivet-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fns</groupId>
+            <artifactId>grivet-test-resources</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-		<!-- JSON -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-json-org</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>json</artifactId>
-					<groupId>org.apache.geronimo.bundles</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+        <!-- JSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-json-org</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>json</artifactId>
+                    <groupId>org.apache.geronimo.bundles</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-		<!-- Spring Data JPA -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-rest</artifactId>
-			<scope>provided</scope>
-		</dependency>
+        <!-- Spring Data JPA -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-		<!-- Connection Pooling -->
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <!-- Connection Pooling -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-		<!-- Flyway -->
-		<!-- @see https://documentation.red-gate.com/fd/mysql-184127601.html -->
-		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-mysql</artifactId>
-		</dependency>
+        <!-- Flyway -->
+        <!-- @see https://documentation.red-gate.com/fd/mysql-184127601.html -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
 		<!-- JDBC Drivers -->
 		<dependency>

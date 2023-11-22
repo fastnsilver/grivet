@@ -15,7 +15,6 @@
  */
 package com.fns.grivet.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fns.grivet.repo.ClassRepository;
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
@@ -54,8 +53,7 @@ class SchemaValidator {
 			final JsonSchema schema = factory.getJsonSchema(schemaAsJsonNode);
 			var instance = objectMapper.readTree(payload.toString());
 			Assert.notNull(schema, "Schema not found for type [%s]!".formatted(type));
-			Assert.notNull(instance,
-					String.format("Problem generating JsonNode for payload\n\n%s!", payload.toString()));
+			Assert.notNull(instance, "Problem generating JsonNode for payload\n\n%s!".formatted(payload.toString()));
 			return schema.validate(instance);
 		}
 		catch (ProcessingException | IOException e) {

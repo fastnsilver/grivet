@@ -75,7 +75,7 @@ public class JdbcEntityRepository implements EntityRepository {
 	public void save(Long eid, Attribute attribute, AttributeType attributeType, Object rawValue,
 			LocalDateTime createdTime) {
 		Assert.isTrue(rawValue != null,
-				String.format("Attempt to persist value failed! %s's value must not be null!", attribute.getName()));
+				"Attempt to persist value failed! %s's value must not be null!".formatted(attribute.getName()));
 		var value = ValueHelper.toValue(attributeType, rawValue);
 		var createdBy = getCurrentUsername();
 		String[] columns = { "eid", "aid", "val", "created_time" };

@@ -16,35 +16,40 @@
 	<inceptionYear>2016</inceptionYear>
 	<url>https://github.com/fastnsilver/grivet</url>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.fns</groupId>
-			<artifactId>grivet-common</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fns</groupId>
-			<artifactId>grivet-repositories</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
+    <dependencies>
+        <dependency>
+            <groupId>com.fns</groupId>
+            <artifactId>grivet-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fns</groupId>
+            <artifactId>grivet-repositories</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.fns</groupId>
             <artifactId>grivet-test-resources</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
 
-		<!-- Spring Boot -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-tomcat</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+        <!-- Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <scope>provided</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-undertow</artifactId>

@@ -16,7 +16,6 @@
 package com.fns.grivet.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Encrypts a raw password for use with {@code BCryptPasswordEncoder}

@@ -73,7 +73,7 @@
     <properties>
         <!-- General -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
         <javadoc.sourcepath>${project.basedir}/src/main/java</javadoc.sourcepath>
 
         <!-- Third-party library versions -->

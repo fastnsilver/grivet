@@ -43,7 +43,6 @@ import com.fns.grivet.repo.AttributeTypeRepository;
 import com.fns.grivet.repo.ClassAttributeRepository;
 import com.fns.grivet.repo.ClassRepository;
 import com.fns.grivet.repo.EntityRepository;
-import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.google.common.collect.Lists;
 
 @Service
@@ -213,7 +212,7 @@ public class EntityService {
 		String previous = null;
 		JSONObject jsonObject = null;
 		for (EntityAttributeValue row : rows) {
-			current = String.format("%s>%d", row.getCreatedTime().toString(), row.getId());
+			current = "%s>%d".formatted(row.getCreatedTime().toString(), row.getId());
 			if (!current.equals(previous)) {
 				jsonObject = new JSONObject();
 				jsonArray.put(jsonObject);

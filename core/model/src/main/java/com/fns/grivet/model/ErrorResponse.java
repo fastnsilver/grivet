@@ -45,9 +45,8 @@ public class ErrorResponse {
 
 	@JsonIgnore
 	public String toString() {
-		return String.format(
-				"ErrorResponse: { \"method\": \"%s\", \"uri\": \"%s\", \"query\": \"%s\", \"errors\": \"%s\" }", method,
-				uri, query, errors);
+		return "ErrorResponse: { \"method\": \"%s\", \"uri\": \"%s\", \"query\": \"%s\", \"errors\": \"%s\" }"
+			.formatted(method, uri, query, errors);
 	}
 
 }

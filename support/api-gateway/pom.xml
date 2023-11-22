@@ -22,6 +22,11 @@
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>io.pivotal.cfenv</groupId>
             <artifactId>java-cfenv-boot</artifactId>
             <version>${java-cfenv-boot.version}</version>

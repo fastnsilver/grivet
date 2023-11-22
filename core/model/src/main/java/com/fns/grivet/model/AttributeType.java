@@ -17,7 +17,7 @@ package com.fns.grivet.model;
 
 import java.sql.Types;
 import java.util.Arrays;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
@@ -90,11 +90,11 @@ public enum AttributeType {
 	 * {@link AttributeType#id}
 	 */
 	public static AttributeType fromId(Integer id) {
-		List<AttributeType> attributeTypes = Arrays.stream(AttributeType.values())
+		LinkedList<AttributeType> attributeTypes = Arrays.stream(AttributeType.values())
 			.filter(o -> o.getId() == id)
-			.collect(Collectors.toList());
+			.collect(Collectors.toCollection(LinkedList::new));
 		Assert.notEmpty(attributeTypes, "Invalid AttributeType [%s]".formatted(id));
-		return attributeTypes.get(0);
+		return attributeTypes.getFirst();
 	}
 
 	/**
@@ -105,11 +105,11 @@ public enum AttributeType {
 	 * {@link AttributeType#type}
 	 */
 	public static int toSqlType(String type) {
-		List<AttributeType> attributeTypes = Arrays.stream(AttributeType.values())
+		LinkedList<AttributeType> attributeTypes = Arrays.stream(AttributeType.values())
 			.filter(o -> o.getType().equalsIgnoreCase(type))
-			.collect(Collectors.toList());
+			.collect(Collectors.toCollection(LinkedList::new));
 		Assert.notEmpty(attributeTypes, "Invalid type [%s]".formatted(type));
-		return attributeTypes.get(0).getSqlType();
+		return attributeTypes.getFirst().getSqlType();
 	}
 
 }
