@@ -11,24 +11,24 @@ import com.fns.grivet.model.Class;
 @SpringBootTest
 public class ClassRepositoryTest {
 
-    @Autowired
-    private ClassRepository repo;
+	@Autowired
+	private ClassRepository repo;
 
-    @Test
-    public void testFindByName() {
-        Class detached = 
-                Class.builder()
-                    .name("PersonalDetails")
-                    .description("The personal details of an individual.").build();
-        Class expected = repo.save(detached);
-        Class actual = repo.findByName("PersonalDetails");
-        Assertions.assertNotNull(actual, "Expected a matching Class!");
-        Assertions.assertEquals(expected, actual);
-    }
+	@Test
+	public void testFindByName() {
+		Class detached = Class.builder()
+			.name("PersonalDetails")
+			.description("The personal details of an individual.")
+			.build();
+		Class expected = repo.save(detached);
+		Class actual = repo.findByName("PersonalDetails");
+		Assertions.assertNotNull(actual, "Expected a matching Class!");
+		Assertions.assertEquals(expected, actual);
+	}
 
-    @AfterEach
-    public void tearDown() {
-        repo.deleteAll();
-    }
+	@AfterEach
+	public void tearDown() {
+		repo.deleteAll();
+	}
 
 }

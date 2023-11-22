@@ -9,5 +9,6 @@ import com.fns.grivet.query.NamedQuery;
 @RepositoryRestResource(collectionResourceRel = "namedQueries", path = "namedQueries")
 public interface NamedQueryRepository extends JpaRepository<NamedQuery, Integer> {
 
-    public NamedQuery findByName(@Param("name") String name);
+	public NamedQuery findByName(@Param("name") String name);
+
 }

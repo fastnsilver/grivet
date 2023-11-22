@@ -35,15 +35,15 @@ import org.springframework.util.StringUtils;
 
 import com.fns.grivet.model.AttributeType;
 
-
 public class DynamicQuery {
 
 	private final List<Constraint> constraints = new ArrayList<>();
+
 	private final Map<Integer, Integer> attributeToAttributeTypeMap;
+
 	private final Map<String, Integer> attributeNameToAttributeIdMap;
 
-	public DynamicQuery(Set<Entry<String, String[]>> requestParams,
-			Map<Integer, Integer> attributeToAttributeTypeMap,
+	public DynamicQuery(Set<Entry<String, String[]>> requestParams, Map<Integer, Integer> attributeToAttributeTypeMap,
 			Map<String, Integer> attributeNameToAttributeIdMap) {
 		String k = null;
 		String[] v = null;
@@ -52,7 +52,7 @@ public class DynamicQuery {
 				k = requestParam.getKey();
 				v = requestParam.getValue();
 				if (isConstraintKey(k)) {
-					for (String cs: v) {
+					for (String cs : v) {
 						if (isConstraintValue(cs)) {
 							constraints.add(new Constraint(cs.split("\\|")));
 						}
@@ -73,18 +73,18 @@ public class DynamicQuery {
 	}
 
 	public boolean containsAndConjunction() {
-		return constraints
-				.stream()
-				.filter(c -> Objects.equals(c.getConjunction(), Conjunction.AND))
-				.collect(Collectors.toList()).size() >= 1;
+		return constraints.stream()
+			.filter(c -> Objects.equals(c.getConjunction(), Conjunction.AND))
+			.collect(Collectors.toList())
+			.size() >= 1;
 	}
 
 	public boolean areConjunctionsHomogenous() {
 		boolean result = true;
-		if (constraints.size() >=1) {
+		if (constraints.size() >= 1) {
 			Conjunction current = null;
 			Conjunction prior = null;
-			for (Constraint c: constraints) {
+			for (Constraint c : constraints) {
 				current = c.getConjunction();
 				if (current != null && prior != null && !current.equals(prior)) {
 					result = false;
@@ -102,24 +102,32 @@ public class DynamicQuery {
 		Integer attributeTypeId = null;
 		AttributeType at = null;
 		String attributeName = null;
-		for (Constraint c: constraints) {
+		for (Constraint c : constraints) {
 			attributeName = c.getAttributeName();
-			Assert.isTrue(attributeName !=null && !attributeName.isEmpty(), "Attribute name must not be null or empty!");
+			Assert.isTrue(attributeName != null && !attributeName.isEmpty(),
+					"Attribute name must not be null or empty!");
 			attributeId = attributeNameToAttributeIdMap.get(c.getAttributeName());
-			Assert.notNull(attributeId, "Invalid query constraint! No attribute identifier found for [%s]".formatted(attributeName));
+			Assert.notNull(attributeId,
+					"Invalid query constraint! No attribute identifier found for [%s]".formatted(attributeName));
 			paramValues.add(new SqlParameterValue(Types.INTEGER, attributeId));
 			attributeTypeId = attributeToAttributeTypeMap.get(attributeId);
-			Assert.notNull(attributeTypeId, "Invalid query constraint! No attribute type identifier found for attribute name [%s]".formatted(attributeName));
+			Assert.notNull(attributeTypeId,
+					"Invalid query constraint! No attribute type identifier found for attribute name [%s]"
+						.formatted(attributeName));
 			at = AttributeType.fromId(attributeTypeId);
-			Assert.notNull(at, "Invalid query constraint! No matching attribute type found for attribute type identifier [%d]".formatted(attributeTypeId));
+			Assert.notNull(at,
+					"Invalid query constraint! No matching attribute type found for attribute type identifier [%d]"
+						.formatted(attributeTypeId));
 			if (c.getOperator().equals(Operator.BETWEEN)) {
 				paramValues.add(getSqlParameterValue(at, c.getOperator(), c.getValues()[0]));
 				paramValues.add(getSqlParameterValue(at, c.getOperator(), c.getValues()[1]));
-			} else if (c.getOperator().equals(Operator.IN)) {
-				for (String value: c.getValues()) {
+			}
+			else if (c.getOperator().equals(Operator.IN)) {
+				for (String value : c.getValues()) {
 					paramValues.add(getSqlParameterValue(at, c.getOperator(), value));
 				}
-			} else {
+			}
+			else {
 				paramValues.add(getSqlParameterValue(at, c.getOperator(), c.getValues()[0]));
 			}
 		}
@@ -136,7 +144,7 @@ public class DynamicQuery {
 
 	private boolean isConstraintValue(String value) {
 		boolean result = false;
-		if (value != null && StringUtils.countOccurrencesOf(value,"|") >= 2) {
+		if (value != null && StringUtils.countOccurrencesOf(value, "|") >= 2) {
 			result = true;
 		}
 		return result;
@@ -145,37 +153,37 @@ public class DynamicQuery {
 	protected SqlParameterValue getSqlParameterValue(AttributeType at, Operator op, String value) {
 		SqlParameterValue result = null;
 		switch (at) {
-		case BIG_INTEGER:
-			result = new SqlParameterValue(at.getSqlType(), Long.valueOf(value));
-			break;
-		case ISO_DATE:
-			result = new SqlParameterValue(at.getSqlType(), java.sql.Date.valueOf(LocalDate.parse(value)));
-			break;
-		case ISO_DATETIME:
-			result = new SqlParameterValue(at.getSqlType(), Timestamp.valueOf(LocalDateTime.parse(value)));
-			break;
-		case ISO_INSTANT:
-			result = new SqlParameterValue(at.getSqlType(), Timestamp.from(Instant.parse(value)));
-			break;
-		case DECIMAL:
-			result = new SqlParameterValue(at.getSqlType(), Double.valueOf(value));
-			break;
-		case INTEGER:
-			result = new SqlParameterValue(at.getSqlType(), Integer.valueOf(value));
-			break;
-		case VARCHAR:
-			result = new SqlParameterValue(at.getSqlType(), getWildcardedValue(op, value));
-			break;
-		case TEXT:
-			result = new SqlParameterValue(at.getSqlType(), getWildcardedValue(op, value));
-			break;
-		case JSON_BLOB:
-			result = new SqlParameterValue(at.getSqlType(), getWildcardedValue(op, value));
-			break;
-		case BOOLEAN:
-			int val = Boolean.parseBoolean(value) ? 1 : 0;
-			result = new SqlParameterValue(at.getSqlType(), val);
-			break;
+			case BIG_INTEGER:
+				result = new SqlParameterValue(at.getSqlType(), Long.valueOf(value));
+				break;
+			case ISO_DATE:
+				result = new SqlParameterValue(at.getSqlType(), java.sql.Date.valueOf(LocalDate.parse(value)));
+				break;
+			case ISO_DATETIME:
+				result = new SqlParameterValue(at.getSqlType(), Timestamp.valueOf(LocalDateTime.parse(value)));
+				break;
+			case ISO_INSTANT:
+				result = new SqlParameterValue(at.getSqlType(), Timestamp.from(Instant.parse(value)));
+				break;
+			case DECIMAL:
+				result = new SqlParameterValue(at.getSqlType(), Double.valueOf(value));
+				break;
+			case INTEGER:
+				result = new SqlParameterValue(at.getSqlType(), Integer.valueOf(value));
+				break;
+			case VARCHAR:
+				result = new SqlParameterValue(at.getSqlType(), getWildcardedValue(op, value));
+				break;
+			case TEXT:
+				result = new SqlParameterValue(at.getSqlType(), getWildcardedValue(op, value));
+				break;
+			case JSON_BLOB:
+				result = new SqlParameterValue(at.getSqlType(), getWildcardedValue(op, value));
+				break;
+			case BOOLEAN:
+				int val = Boolean.parseBoolean(value) ? 1 : 0;
+				result = new SqlParameterValue(at.getSqlType(), val);
+				break;
 		}
 		return result;
 	}
@@ -183,18 +191,18 @@ public class DynamicQuery {
 	protected String getWildcardedValue(Operator op, String value) {
 		String result = null;
 		switch (op) {
-		case STARTS_WITH:
-			result = "%s%s".formatted(value, "%");
-			break;
-		case ENDS_WITH:
-			result = "%s%s".formatted("%", value);
-			break;
-		case CONTAINS:
-			result = "%s%s%s".formatted("%", value, "%");
-			break;
-		default:
-			result = value;
-			break;
+			case STARTS_WITH:
+				result = "%s%s".formatted(value, "%");
+				break;
+			case ENDS_WITH:
+				result = "%s%s".formatted("%", value);
+				break;
+			case CONTAINS:
+				result = "%s%s%s".formatted("%", value, "%");
+				break;
+			default:
+				result = value;
+				break;
 		}
 		return result;
 	}

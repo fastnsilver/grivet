@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -20,25 +20,25 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 /**
- * Creates a message from a {@code JSONObject}
- * and optionally supplied {@code String[]} arguments suitable for logging.
+ * Creates a message from a {@code JSONObject} and optionally supplied {@code String[]}
+ * arguments suitable for logging.
  *
  * @author Chris Phillipson
  *
  */
 class LogUtil {
 
-    static String toLog(JSONObject jsonObject, String... args) {
-        StringBuffer sb = new StringBuffer();
-        if (args != null && args.length > 0) {
-            Arrays.stream(args).forEach(a -> sb.append(a));
-        }
-        if (jsonObject != null) {
-            sb.append("--\n");
-            sb.append(jsonObject.toString());
-            sb.append("--\n");
-        }
-        return sb.toString();
-    }
+	static String toLog(JSONObject jsonObject, String... args) {
+		StringBuffer sb = new StringBuffer();
+		if (args != null && args.length > 0) {
+			Arrays.stream(args).forEach(a -> sb.append(a));
+		}
+		if (jsonObject != null) {
+			sb.append("--\n");
+			sb.append(jsonObject.toString());
+			sb.append("--\n");
+		}
+		return sb.toString();
+	}
 
 }

@@ -5,5 +5,6 @@ import org.springframework.messaging.Message;
 
 public interface Ingester {
 
-    void ingest(Message<JSONObject> message);
+	void ingest(Message<JSONObject> message);
+
 }

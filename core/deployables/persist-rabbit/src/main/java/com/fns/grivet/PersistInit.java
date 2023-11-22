@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -30,8 +30,8 @@ import org.springframework.context.annotation.Profile;
 @EnableDiscoveryClient
 public class PersistInit {
 
-    public static void main(String[] args) {
-        SpringApplication.run(PersistInit.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(PersistInit.class, args);
+	}
 
 }

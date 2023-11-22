@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -21,51 +21,48 @@ import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
 
-
 /**
  * A logical operator used to combine two or more query conditions.
+ *
  * @see Constraint
- * 
  * @author Chris Phillipson
  */
 public enum Conjunction {
 
-    AND("AND"),
-    OR("OR");
-    
-    /** A logical operator name. */
-    private String name;
-    
-    /**
-     * Instantiates a new conjunction.
-     *
-     * @param name
-     *            the logical operator name
-     */
-    Conjunction(String name) {
-        this.name = name;
-    }
-    
-    /**
-     * Gets the logical operator name.
-     *
-     * @return the logical operator name
-     */
-    public String getName() {
-        return name;
-    }
-    
-    /**
-     * From name.
-     *
-     * @param name
-     *            a logical operator name
-     * @return the conjunction
-     * @throws IllegalArgumentException when name does not match any internal {@link Conjunction#name}
-     */
-    public static Conjunction fromValue(String name) {
-        List<Conjunction> conj = Arrays.stream(Conjunction.values()).filter(o -> o.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
-        Assert.notEmpty(conj, "Invalid Conjunction [%s]".formatted(name));
-        return conj.get(0);
-    }
+	AND("AND"), OR("OR");
+
+	/** A logical operator name. */
+	private String name;
+
+	/**
+	 * Instantiates a new conjunction.
+	 * @param name the logical operator name
+	 */
+	Conjunction(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Gets the logical operator name.
+	 * @return the logical operator name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * From name.
+	 * @param name a logical operator name
+	 * @return the conjunction
+	 * @throws IllegalArgumentException when name does not match any internal
+	 * {@link Conjunction#name}
+	 */
+	public static Conjunction fromValue(String name) {
+		List<Conjunction> conj = Arrays.stream(Conjunction.values())
+			.filter(o -> o.getName().equalsIgnoreCase(name))
+			.collect(Collectors.toList());
+		Assert.notEmpty(conj, "Invalid Conjunction [%s]".formatted(name));
+		return conj.get(0);
+	}
+
 }

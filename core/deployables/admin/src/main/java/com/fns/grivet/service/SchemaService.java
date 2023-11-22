@@ -30,8 +30,11 @@ import com.fns.grivet.repo.ClassRepository;
 public class SchemaService {
 
 	private static final String ID = "id";
+
 	private static final String SCHEMA = "$schema";
+
 	private static final String TYPE = "type";
+
 	private static final String PROPERTIES = "properties";
 
 	private final ClassRepository classRepository;
@@ -47,10 +50,8 @@ public class SchemaService {
 		String type = payload.optString(TYPE);
 		String id = payload.optString(ID);
 		String props = payload.optString(PROPERTIES);
-		if ("http://json-schema.org/draft-04/schema#".equals(schema)
-				&& "object".equals(type)
-				&& StringUtils.isNotBlank(id)
-				&& StringUtils.isNotBlank(props)) {
+		if ("http://json-schema.org/draft-04/schema#".equals(schema) && "object".equals(type)
+				&& StringUtils.isNotBlank(id) && StringUtils.isNotBlank(props)) {
 			result = true;
 		}
 		return result;

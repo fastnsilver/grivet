@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -60,160 +60,149 @@ import com.fns.grivet.service.ClassRegistryService;
 import com.fns.grivet.service.SchemaService;
 
 @ExtendWith(value = { SpringExtension.class, RestDocumentationExtension.class })
-@SpringBootTest(classes=AdminInit.class)
+@SpringBootTest(classes = AdminInit.class)
 public class AdminDocumentationTest {
 
-    @Autowired
-    private ResourceLoader resolver;
+	@Autowired
+	private ResourceLoader resolver;
 
-    @Autowired
-    private WebApplicationContext context;
+	@Autowired
+	private WebApplicationContext context;
 
-    private MockMvc mockMvc;
+	private MockMvc mockMvc;
 
-    @BeforeEach
-    public void setUp(RestDocumentationContextProvider restDocumentation) {
-        RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                .apply(documentationConfiguration(restDocumentation))
-                .alwaysDo(document)
-                .build();
-    }
+	@BeforeEach
+	public void setUp(RestDocumentationContextProvider restDocumentation) {
+		RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()));
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
+			.apply(documentationConfiguration(restDocumentation))
+			.alwaysDo(document)
+			.build();
+	}
 
-    @AfterEach
-    public void tearDown() {
-        context.getBean(ClassAttributeRepository.class).deleteAll();
-        context.getBean(ClassRepository.class).deleteAll();
-        context.getBean(AttributeRepository.class).deleteAll();
-    }
+	@AfterEach
+	public void tearDown() {
+		context.getBean(ClassAttributeRepository.class).deleteAll();
+		context.getBean(ClassRepository.class).deleteAll();
+		context.getBean(AttributeRepository.class).deleteAll();
+	}
 
-    @Test
-    public void defineType() {
-        try {
-            mockMvc.perform(
-                    post("/definition")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(payload("TestType"))
-                    )
-                    .andExpect(status().isCreated())
-                    .andExpect(header().string("Location", "/definition/TestType"));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void defineType() {
+		try {
+			mockMvc.perform(post("/definition").contentType(MediaType.APPLICATION_JSON).content(payload("TestType")))
+				.andExpect(status().isCreated())
+				.andExpect(header().string("Location", "/definition/TestType"));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void defineTypes() {
-        try {
-            mockMvc.perform(
-                    post("/definitions")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(payload("TestMultipleTypes"))
-                        )
-                        .andExpect(status().isCreated())
-                    .andExpect(header().string("Location[1]", "/definition/Contact"))
-                    .andExpect(header().string("Location[2]", "/definition/Course"));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void defineTypes() {
+		try {
+			mockMvc
+				.perform(post("/definitions").contentType(MediaType.APPLICATION_JSON)
+					.content(payload("TestMultipleTypes")))
+				.andExpect(status().isCreated())
+				.andExpect(header().string("Location[1]", "/definition/Contact"))
+				.andExpect(header().string("Location[2]", "/definition/Course"));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void undefineType() {
-        try {
-            defineType("TestType");
-            mockMvc.perform(
-                    delete("/definition/TestType")
-                        .contentType(MediaType.APPLICATION_JSON)
-                    )
-                    .andExpect(status().isNoContent());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void undefineType() {
+		try {
+			defineType("TestType");
+			mockMvc.perform(delete("/definition/TestType").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNoContent());
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void getTypeDefinition() {
-        try {
-            defineType("TestType");
-            mockMvc.perform(
-                    get("/definition/TestType")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    )
-            .andExpect(status().isOk())
-            .andExpect(content().json(payload("TestType")));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void getTypeDefinition() {
+		try {
+			defineType("TestType");
+			mockMvc.perform(get("/definition/TestType").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().json(payload("TestType")));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void allTypeDefinitions() {
-        try {
-            defineTypes("TestMultipleTypes");
-            mockMvc.perform(
-                    get("/definitions")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    )
-            .andExpect(status().isOk())
-            .andExpect(content().json(payload("TestMultipleTypes")));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void allTypeDefinitions() {
+		try {
+			defineTypes("TestMultipleTypes");
+			mockMvc.perform(get("/definitions").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().json(payload("TestMultipleTypes")));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void linkSchema() {
-        try {
-            defineType("TestType");
-            mockMvc.perform(
-                        post("/schema")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(payload("TestTypeSchema"))
-                    )
-                    .andExpect(status().isOk())
-                    .andExpect(content().string("JSON Schema for type [TestType] linked!  Store requests for this type will be validated henceforth!"));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void linkSchema() {
+		try {
+			defineType("TestType");
+			mockMvc.perform(post("/schema").contentType(MediaType.APPLICATION_JSON).content(payload("TestTypeSchema")))
+				.andExpect(status().isOk())
+				.andExpect(content().string(
+						"JSON Schema for type [TestType] linked!  Store requests for this type will be validated henceforth!"));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void unlinkSchema() {
-        try {
-            defineType("TestType");
-            linkSchema("TestTypeSchema");
-            mockMvc.perform(
-                        delete("/schema/TestType")
-                            .contentType(MediaType.APPLICATION_JSON)
-                    )
-                    .andExpect(status().isOk())
-                    .andExpect(content().string("JSON Schema for type [TestType] unlinked!  Store requests for this type will no longer be validated!"));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void unlinkSchema() {
+		try {
+			defineType("TestType");
+			linkSchema("TestTypeSchema");
+			mockMvc.perform(delete("/schema/TestType").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().string(
+						"JSON Schema for type [TestType] unlinked!  Store requests for this type will no longer be validated!"));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    private void defineTypes(String definitions) throws JSONException, IOException  {
-        ClassRegistryService svc = context.getBean(ClassRegistryService.class);
-        String json = payload(definitions);
-        JSONArray array = new JSONArray(json);
-        array.forEach(o -> svc.register((JSONObject) o));
-    }
+	private void defineTypes(String definitions) throws JSONException, IOException {
+		ClassRegistryService svc = context.getBean(ClassRegistryService.class);
+		String json = payload(definitions);
+		JSONArray array = new JSONArray(json);
+		array.forEach(o -> svc.register((JSONObject) o));
+	}
 
-    private void defineType(String definition) throws JSONException, IOException {
-        ClassRegistryService svc = context.getBean(ClassRegistryService.class);
-        svc.register(new JSONObject(payload(definition)));
-    }
+	private void defineType(String definition) throws JSONException, IOException {
+		ClassRegistryService svc = context.getBean(ClassRegistryService.class);
+		svc.register(new JSONObject(payload(definition)));
+	}
 
-    private void linkSchema(String schemaName) throws IOException {
-        SchemaService svc = context.getBean(SchemaService.class);
-        String schema = payload(schemaName);
-        svc.linkSchema(new JSONObject(schema));
-    }
+	private void linkSchema(String schemaName) throws IOException {
+		SchemaService svc = context.getBean(SchemaService.class);
+		String schema = payload(schemaName);
+		svc.linkSchema(new JSONObject(schema));
+	}
 
-    private String payload(String payload) throws IOException{
-        Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
-        return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-    }
+	private String payload(String payload) throws IOException {
+		Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
+		return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+	}
+
 }

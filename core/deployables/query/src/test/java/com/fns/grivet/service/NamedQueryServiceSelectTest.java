@@ -80,37 +80,37 @@ public class NamedQueryServiceSelectTest {
 
 	@Test
 	public void testGetQueryNotFound() throws IOException {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  {
-        	    MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        		params.add("createdTime", LocalDateTime.now().plusDays(1).toString());
-        		namedQueryService.get("getAttributesCreatedBefore", params);
-	    });
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+			params.add("createdTime", LocalDateTime.now().plusDays(1).toString());
+			namedQueryService.get("getAttributesCreatedBefore", params);
+		});
 	}
 
 	@Test
 	public void testCreateThenGetParamsNotSupplied() throws IOException {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  {
-        	    Resource r = resolver.getResource("classpath:TestSelectQuery.json");
-        		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-        		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
-        		namedQueryService.create(namedQuery);
-        
-        		namedQueryService.get("getAttributesCreatedBefore", null);
-	    });
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Resource r = resolver.getResource("classpath:TestSelectQuery.json");
+			String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+			namedQueryService.create(namedQuery);
+
+			namedQueryService.get("getAttributesCreatedBefore", null);
+		});
 	}
 
 	@Test
 	public void testCreateThenGetIncorrectParamsSupplied() throws IOException {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  {
-        	    Resource r = resolver.getResource("classpath:TestSelectQuery.json");
-        		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-        		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
-        		namedQueryService.create(namedQuery);
-        
-        		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        		params.add("timedCreated", LocalDateTime.now().plusDays(1).toString());
-        		namedQueryService.get("getAttributesCreatedBefore", params);
-	    });
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Resource r = resolver.getResource("classpath:TestSelectQuery.json");
+			String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+			namedQueryService.create(namedQuery);
+
+			MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+			params.add("timedCreated", LocalDateTime.now().plusDays(1).toString());
+			namedQueryService.get("getAttributesCreatedBefore", params);
+		});
 	}
 
 	@AfterEach
@@ -118,4 +118,5 @@ public class NamedQueryServiceSelectTest {
 		classRegistryService.deregister("TestType");
 		namedQueryService.delete("getAttributesCreatedBefore");
 	}
+
 }

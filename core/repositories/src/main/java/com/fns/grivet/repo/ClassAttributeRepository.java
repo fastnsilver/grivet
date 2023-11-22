@@ -11,6 +11,8 @@ import com.fns.grivet.model.ClassAttribute;
 @RepositoryRestResource(collectionResourceRel = "classAttributes", path = "classAttributes")
 public interface ClassAttributeRepository extends JpaRepository<ClassAttribute, Integer> {
 
-    public List<ClassAttribute> findByCid(@Param("cid") Integer cid);
-    public ClassAttribute findByCidAndAid(@Param("cid") Integer cid, @Param("aid") Integer aid);
+	public List<ClassAttribute> findByCid(@Param("cid") Integer cid);
+
+	public ClassAttribute findByCidAndAid(@Param("cid") Integer cid, @Param("aid") Integer aid);
+
 }

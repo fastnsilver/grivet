@@ -14,19 +14,23 @@ import com.okta.spring.boot.oauth.Okta;
 @Configuration
 public class WebSecurityConfig {
 
-    @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	@Bean
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests()
-                // allow anonymous access to the root page
-                .requestMatchers("/").permitAll()
-                // all other requests
-                .anyRequest().authenticated()
-                .and()
-                .oauth2ResourceServer().jwt(); // replace .jwt() with .opaqueToken() for Opaque Token case
+		http.authorizeRequests()
+			// allow anonymous access to the root page
+			.requestMatchers("/")
+			.permitAll()
+			// all other requests
+			.anyRequest()
+			.authenticated()
+			.and()
+			.oauth2ResourceServer()
+			.jwt(); // replace .jwt() with .opaqueToken() for Opaque Token case
 
-        // Send a 401 message to the browser (w/o this, you'll see a blank page)
-        Okta.configureResourceServer401ResponseBody(http);
-        return http.build();
-    }
+		// Send a 401 message to the browser (w/o this, you'll see a blank page)
+		Okta.configureResourceServer401ResponseBody(http);
+		return http.build();
+	}
+
 }

@@ -115,12 +115,16 @@ public class OperatorTest {
 
 	@Test
 	public void testThatFromValueThrowsExceptionWhenNullNameProvided() {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  { Operator.fromValue(null); } );
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Operator.fromValue(null);
+		});
 	}
 
 	@Test
 	public void testFromValueThrowsExceptionWhenUnknownNameProvided() {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  { Operator.fromValue("foo"); } );
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Operator.fromValue("foo");
+		});
 	}
 
 }

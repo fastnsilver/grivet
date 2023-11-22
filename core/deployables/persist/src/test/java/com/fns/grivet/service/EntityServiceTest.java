@@ -80,7 +80,8 @@ public class EntityServiceTest {
 
 		entityService.create("TestType2", payload);
 
-		String result = entityService.findByCreatedTime("TestType2", LocalDateTime.now().minusSeconds(3), LocalDateTime.now(), null);
+		String result = entityService.findByCreatedTime("TestType2", LocalDateTime.now().minusSeconds(3),
+				LocalDateTime.now(), null);
 		JSONArray resultAsJsonArray = new JSONArray(result);
 		JsonAssert.assertJsonEquals(payload, resultAsJsonArray.get(0));
 	}
@@ -103,7 +104,8 @@ public class EntityServiceTest {
 
 		entityService.create("TestType", payload);
 
-		String result = entityService.findByCreatedTime("TestType", LocalDateTime.now().minusSeconds(3), LocalDateTime.now(), null);
+		String result = entityService.findByCreatedTime("TestType", LocalDateTime.now().minusSeconds(3),
+				LocalDateTime.now(), null);
 		JSONArray resultAsJsonArray = new JSONArray(result);
 		JsonAssert.assertJsonEquals(payload.toString(), resultAsJsonArray.get(0).toString());
 
@@ -114,18 +116,18 @@ public class EntityServiceTest {
 
 	@Test
 	public void testTypeNotRegistered() throws IOException {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  {
-        	    JSONObject payload = new JSONObject();
-        		entityService.create("TestType", payload);
-	    });
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			JSONObject payload = new JSONObject();
+			entityService.create("TestType", payload);
+		});
 	}
 
 	@Test
 	public void testTypePayloadIsNull() throws IOException {
-	    Assertions.assertThrows(NullPointerException.class, () ->  {
-	        registerType("TestType");
-	        entityService.create("TestType", null);
-	    });
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			registerType("TestType");
+			entityService.create("TestType", null);
+		});
 	}
 
 	@AfterEach

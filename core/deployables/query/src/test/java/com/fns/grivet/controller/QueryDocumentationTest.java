@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -60,153 +60,133 @@ import com.fns.grivet.service.NamedQueryService;
 @SpringBootTest(classes = QueryInit.class)
 public class QueryDocumentationTest {
 
-    @Autowired
-    private ResourceLoader resolver;
+	@Autowired
+	private ResourceLoader resolver;
 
-    @Autowired
-    private WebApplicationContext context;
+	@Autowired
+	private WebApplicationContext context;
 
-    @Autowired
-    private ObjectMapper mapper;
+	@Autowired
+	private ObjectMapper mapper;
 
-    private MockMvc mockMvc;
+	private MockMvc mockMvc;
 
-    @BeforeEach
-    public void setUp(RestDocumentationContextProvider restDocumentation) {
-        RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                .apply(documentationConfiguration(restDocumentation))
-                .alwaysDo(document)
-                .build();
-    }
+	@BeforeEach
+	public void setUp(RestDocumentationContextProvider restDocumentation) {
+		RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()));
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
+			.apply(documentationConfiguration(restDocumentation))
+			.alwaysDo(document)
+			.build();
+	}
 
-    @AfterEach
-    public void tearDown() {
-        context.getBean(NamedQueryRepository.class).deleteAll();
-    }
+	@AfterEach
+	public void tearDown() {
+		context.getBean(NamedQueryRepository.class).deleteAll();
+	}
 
-    @Test
-    public void createNamedQueryAsSproc() {
-        try {
-            mockMvc.perform(
-                    post("/query")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(payload("TestSprocQuery"))
-                    )
-                    .andExpect(status().isNoContent());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void createNamedQueryAsSproc() {
+		try {
+			mockMvc.perform(post("/query").contentType(MediaType.APPLICATION_JSON).content(payload("TestSprocQuery")))
+				.andExpect(status().isNoContent());
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void createNamedQueryAsSelect() {
-        try {
-            mockMvc.perform(
-                    post("/query")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(payload("TestSelectQuery"))
-                    )
-                    .andExpect(status().isNoContent());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void createNamedQueryAsSelect() {
+		try {
+			mockMvc.perform(post("/query").contentType(MediaType.APPLICATION_JSON).content(payload("TestSelectQuery")))
+				.andExpect(status().isNoContent());
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void createNamedQueryAsSelectWithNoParams() {
-        try {
-            mockMvc.perform(
-                    post("/query")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(payload("TestSelectQuery2"))
-                    )
-                    .andExpect(status().isCreated())
-                    .andExpect(header().string("Location", "/query/getAttributesCreatedToday"));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void createNamedQueryAsSelectWithNoParams() {
+		try {
+			mockMvc.perform(post("/query").contentType(MediaType.APPLICATION_JSON).content(payload("TestSelectQuery2")))
+				.andExpect(status().isCreated())
+				.andExpect(header().string("Location", "/query/getAttributesCreatedToday"));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void createNamedQueryAsSelectWithQueryType() {
-        try {
-            mockMvc.perform(
-                    post("/query")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(payload("TestSelectQuery3"))
-                    )
-                    .andExpect(status().isCreated())
-                    .andExpect(header().string("Location", "/query/getClassesCreatedToday"));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void createNamedQueryAsSelectWithQueryType() {
+		try {
+			mockMvc.perform(post("/query").contentType(MediaType.APPLICATION_JSON).content(payload("TestSelectQuery3")))
+				.andExpect(status().isCreated())
+				.andExpect(header().string("Location", "/query/getClassesCreatedToday"));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void createNamedQueryAsSprocWithQueryType() {
-        try {
-            mockMvc.perform(
-                    post("/query")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(payload("TestSprocQuery2"))
-                    )
-                    .andExpect(status().isNoContent());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void createNamedQueryAsSprocWithQueryType() {
+		try {
+			mockMvc.perform(post("/query").contentType(MediaType.APPLICATION_JSON).content(payload("TestSprocQuery2")))
+				.andExpect(status().isNoContent());
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void executeNamedQueryNoParams() {
-        try {
-            createNamedQuery("TestSelectQuery2");
-            mockMvc.perform(
-                    get("/query/getAttributesCreatedToday")
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isOk());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void executeNamedQueryNoParams() {
+		try {
+			createNamedQuery("TestSelectQuery2");
+			mockMvc.perform(get("/query/getAttributesCreatedToday").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void listNamedQueries() {
-        try {
-            createNamedQuery("TestSelectQuery");
-            createNamedQuery("TestSelectQuery2");
-            mockMvc.perform(
-                    get("/queries")
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isOk());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void listNamedQueries() {
+		try {
+			createNamedQuery("TestSelectQuery");
+			createNamedQuery("TestSelectQuery2");
+			mockMvc.perform(get("/queries").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void deleteNamedQuery() {
-        try {
-            createNamedQuery("TestSelectQuery");
-            mockMvc.perform(
-                    delete("/query/TestSelectQuery")
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isNoContent());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void deleteNamedQuery() {
+		try {
+			createNamedQuery("TestSelectQuery");
+			mockMvc.perform(delete("/query/TestSelectQuery").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNoContent());
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    private void createNamedQuery(String payload) throws JsonParseException, JsonMappingException, IOException {
-        NamedQueryService svc = context.getBean(NamedQueryService.class);
-        svc.create(mapper.readValue(payload(payload), NamedQuery.class));
-    }
+	private void createNamedQuery(String payload) throws JsonParseException, JsonMappingException, IOException {
+		NamedQueryService svc = context.getBean(NamedQueryService.class);
+		svc.create(mapper.readValue(payload(payload), NamedQuery.class));
+	}
 
-    private String payload(String payload) throws IOException{
-        Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
-        return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-    }
+	private String payload(String payload) throws IOException {
+		Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
+		return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+	}
+
 }

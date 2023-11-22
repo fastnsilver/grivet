@@ -7,17 +7,23 @@ public class ConstraintTest {
 
 	@Test
 	public void testThatConstraintThrowsExceptionWhenNull() {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  { new Constraint(null); } );
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			new Constraint(null);
+		});
 	}
 
 	@Test
 	public void testThatConstraintThrowsExceptionWhenEmpty() {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  { new Constraint(new String[] {}); } );
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			new Constraint(new String[] {});
+		});
 	}
 
 	@Test
 	public void testThatLessThan3PartConstraintThrowsException() {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  { new Constraint(new String[] { "foo", "equals" }); } );
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			new Constraint(new String[] { "foo", "equals" });
+		});
 	}
 
 	@Test
@@ -31,7 +37,9 @@ public class ConstraintTest {
 
 	@Test
 	public void testThatImproperBetweenConstraintDefinitionFails() {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  { new Constraint(new String[] { "foo", "between", "bar" }); } );
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			new Constraint(new String[] { "foo", "between", "bar" });
+		});
 	}
 
 	@Test
@@ -60,4 +68,5 @@ public class ConstraintTest {
 		Assertions.assertArrayEquals(new String[] { "f" }, c.getValues());
 		Assertions.assertEquals(Conjunction.OR, c.getConjunction());
 	}
+
 }

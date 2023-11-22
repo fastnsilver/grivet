@@ -9,5 +9,6 @@ import com.fns.grivet.model.Class;
 @RepositoryRestResource(collectionResourceRel = "classes", path = "classes")
 public interface ClassRepository extends JpaRepository<Class, Integer> {
 
-    public Class findByName(@Param("name") String name);
+	public Class findByName(@Param("name") String name);
+
 }

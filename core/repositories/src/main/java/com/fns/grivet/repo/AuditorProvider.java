@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -27,43 +27,42 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.util.Assert;
 
-
 public class AuditorProvider implements AuditorAware<String> {
 
-    public User getCurrentUser() {
-        User result = null;
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
-            result = (User) authentication.getPrincipal();
-        }
-        return result;
-    }
+	public User getCurrentUser() {
+		User result = null;
+		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
+			result = (User) authentication.getPrincipal();
+		}
+		return result;
+	}
 
-    @Override
-    public Optional<String> getCurrentAuditor() {
-        return Optional.ofNullable(SecurityContextHolder.getContext())
-                .map(SecurityContext::getAuthentication)
-                .filter(Authentication::isAuthenticated)
-                .map(Authentication::getPrincipal)
-                .map(User.class::cast)
-                .map(u -> u.getUsername());
-    }
+	@Override
+	public Optional<String> getCurrentAuditor() {
+		return Optional.ofNullable(SecurityContextHolder.getContext())
+			.map(SecurityContext::getAuthentication)
+			.filter(Authentication::isAuthenticated)
+			.map(Authentication::getPrincipal)
+			.map(User.class::cast)
+			.map(u -> u.getUsername());
+	}
 
-    /**
-     * Configures the Spring Security {@link SecurityContext} to be authenticated as the user with the given username and
-     * password as well as the given granted authorities.
-     *
-     * @param username must not be {@literal null} or empty.
-     * @param password must not be {@literal null} or empty.
-     * @param roles
-     */
-    public static void runAs(String username, String password, String... roles) {
+	/**
+	 * Configures the Spring Security {@link SecurityContext} to be authenticated as the
+	 * user with the given username and password as well as the given granted authorities.
+	 * @param username must not be {@literal null} or empty.
+	 * @param password must not be {@literal null} or empty.
+	 * @param roles
+	 */
+	public static void runAs(String username, String password, String... roles) {
 
-        Assert.notNull(username, "Username must not be null!");
-        Assert.notNull(password, "Password must not be null!");
+		Assert.notNull(username, "Username must not be null!");
+		Assert.notNull(password, "Password must not be null!");
 
-        SecurityContextHolder.getContext().setAuthentication(
-            new UsernamePasswordAuthenticationToken(username, password, AuthorityUtils.createAuthorityList(roles)));
-    }
+		SecurityContextHolder.getContext()
+			.setAuthentication(new UsernamePasswordAuthenticationToken(username, password,
+					AuthorityUtils.createAuthorityList(roles)));
+	}
 
 }

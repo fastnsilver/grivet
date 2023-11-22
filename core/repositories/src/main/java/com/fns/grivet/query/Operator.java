@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -21,46 +21,41 @@ import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
 
-
 /**
  * Type-safe enumerator for comparison and logic based operators.
- * 
+ *
  * @author Chris Phillipson
  */
 public enum Operator {
 
-    STARTS_WITH("startsWith", "LIKE"),
-    ENDS_WITH("endsWith", "LIKE"),
-    CONTAINS("contains", "LIKE"),
-    EQUALS("equals", "="),
-    NOT_EQUAL_TO("notEqualTo", "<>"),
-    GREATER_THAN("greaterThan", ">"),
-    LESS_THAN("lessThan", "<"),
-    GREATER_THAN_OR_EQUAL_TO("greaterThanOrEqualTo", ">="),
-    LESS_THAN_OR_EQUAL_TO("lessThanOrEqualTo", "<="),
-    BETWEEN("between", "BETWEEN"),
-    IN("in", "IN");
-    
-    private String name;
-    private String symbol;
-    
-    Operator(String name, String symbol) {
-        this.name = name;
-        this.symbol = symbol;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public String getSymbol() {
-        return symbol;
-    }
-    
-    public static Operator fromValue(String value) {
-        List<Operator> ops = Arrays.stream(Operator.values()).filter(o -> o.getName().equalsIgnoreCase(value)).collect(Collectors.toList());
-        Assert.notEmpty(ops, "Invalid Operator [%s]".formatted(value));
-        return ops.get(0);
-    }
-    
+	STARTS_WITH("startsWith", "LIKE"), ENDS_WITH("endsWith", "LIKE"), CONTAINS("contains", "LIKE"),
+	EQUALS("equals", "="), NOT_EQUAL_TO("notEqualTo", "<>"), GREATER_THAN("greaterThan", ">"),
+	LESS_THAN("lessThan", "<"), GREATER_THAN_OR_EQUAL_TO("greaterThanOrEqualTo", ">="),
+	LESS_THAN_OR_EQUAL_TO("lessThanOrEqualTo", "<="), BETWEEN("between", "BETWEEN"), IN("in", "IN");
+
+	private String name;
+
+	private String symbol;
+
+	Operator(String name, String symbol) {
+		this.name = name;
+		this.symbol = symbol;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getSymbol() {
+		return symbol;
+	}
+
+	public static Operator fromValue(String value) {
+		List<Operator> ops = Arrays.stream(Operator.values())
+			.filter(o -> o.getName().equalsIgnoreCase(value))
+			.collect(Collectors.toList());
+		Assert.notEmpty(ops, "Invalid Operator [%s]".formatted(value));
+		return ops.get(0);
+	}
+
 }

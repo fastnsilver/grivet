@@ -25,7 +25,9 @@ import de.codecentric.boot.admin.server.config.EnableAdminServer;
 @EnableAdminServer
 @EnableDiscoveryClient
 public class App {
-    public static void main(String[] args) {
-        SpringApplication.run(App.class, args);
-    }
+
+	public static void main(String[] args) {
+		SpringApplication.run(App.class, args);
+	}
+
 }

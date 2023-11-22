@@ -21,61 +21,73 @@ import org.springframework.util.Assert;
 
 public class Constraint {
 
-    private final String attributeName;
-    private final Operator operator;
-    private final Conjunction conjunction;
-    private final String[] values;
+	private final String attributeName;
 
-    // c=<attributeName>|<operator>|<value>|<conjunction>
-    public Constraint(String[] constraintParts) {
-        Assert.notEmpty(constraintParts, "Constraint parts must not be null or empty!");
-        Assert.isTrue(constraintParts.length >= 3, "Must have 3 or more constraint parts!");
-        attributeName = constraintParts[0];
-        operator = Operator.fromValue(constraintParts[1]);
-        values = constraintParts[2].split("\\s*,\\s*");
-        if (operator.equals(Operator.BETWEEN)) {
-            Assert.isTrue(values.length == 2, "Operator [between] requires two values!");
-        }
-        if (constraintParts.length == 4) {
-            if (constraintParts[3] == null) {
-                conjunction = null;
-            } else {
-                conjunction = Conjunction.fromValue(constraintParts[3]);
-            }
-        } else {
-            conjunction = null;
-        }
-    }
+	private final Operator operator;
 
-    public String getAttributeName() {
-        return attributeName;
-    }
+	private final Conjunction conjunction;
 
-    public Operator getOperator() {
-        return operator;
-    }
+	private final String[] values;
 
-    public Conjunction getConjunction() {
-        return conjunction;
-    }
+	// c=<attributeName>|<operator>|<value>|<conjunction>
+	public Constraint(String[] constraintParts) {
+		Assert.notEmpty(constraintParts, "Constraint parts must not be null or empty!");
+		Assert.isTrue(constraintParts.length >= 3, "Must have 3 or more constraint parts!");
+		attributeName = constraintParts[0];
+		operator = Operator.fromValue(constraintParts[1]);
+		values = constraintParts[2].split("\\s*,\\s*");
+		if (operator.equals(Operator.BETWEEN)) {
+			Assert.isTrue(values.length == 2, "Operator [between] requires two values!");
+		}
+		if (constraintParts.length == 4) {
+			if (constraintParts[3] == null) {
+				conjunction = null;
+			}
+			else {
+				conjunction = Conjunction.fromValue(constraintParts[3]);
+			}
+		}
+		else {
+			conjunction = null;
+		}
+	}
 
-    public String[] getValues() {
-        return values;
-    }
+	public String getAttributeName() {
+		return attributeName;
+	}
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(attributeName).append(operator).append(conjunction).append(values).toHashCode();
-    }
+	public Operator getOperator() {
+		return operator;
+	}
 
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Constraint)) {
-            return false;
-        }
-        Constraint that = (Constraint) object;
-        return new EqualsBuilder().append(this.attributeName, that.attributeName).append(this.operator, that.operator)
-                .append(this.conjunction, that.conjunction).append(this.values, that.values).isEquals();
-    }
+	public Conjunction getConjunction() {
+		return conjunction;
+	}
+
+	public String[] getValues() {
+		return values;
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(attributeName)
+			.append(operator)
+			.append(conjunction)
+			.append(values)
+			.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof Constraint)) {
+			return false;
+		}
+		Constraint that = (Constraint) object;
+		return new EqualsBuilder().append(this.attributeName, that.attributeName)
+			.append(this.operator, that.operator)
+			.append(this.conjunction, that.conjunction)
+			.append(this.values, that.values)
+			.isEquals();
+	}
 
 }

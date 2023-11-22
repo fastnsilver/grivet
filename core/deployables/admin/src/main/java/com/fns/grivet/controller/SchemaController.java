@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fns.grivet.service.SchemaService;
 
-
 /**
  * Provides end-points for linking and unlinking JSON Schema to pre-registered types
  *
@@ -41,37 +40,36 @@ import com.fns.grivet.service.SchemaService;
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class SchemaController {
 
-    org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(SchemaController.class);
+	org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(SchemaController.class);
 
-    private final SchemaService schemaService;
+	private final SchemaService schemaService;
 
-    @Autowired
-    public SchemaController(SchemaService schemaService) {
-        this.schemaService = schemaService;
-    }
+	@Autowired
+	public SchemaController(SchemaService schemaService) {
+		this.schemaService = schemaService;
+	}
 
+	@PreAuthorize("hasAuthority('write:schema')")
+	@PostMapping("/schema")
+	public ResponseEntity<?> linkSchema(@RequestBody JSONObject payload) throws IOException {
+		if (!schemaService.isJsonSchema(payload)) {
+			return ResponseEntity.unprocessableEntity().build();
+		}
+		String id = schemaService.linkSchema(payload).getName();
+		String message = "JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!"
+			.formatted(id);
+		log.info(message);
+		return ResponseEntity.ok(message);
+	}
 
-    @PreAuthorize("hasAuthority('write:schema')")
-    @PostMapping("/schema")
-    public ResponseEntity<?> linkSchema(@RequestBody JSONObject payload) throws IOException {
-        if (!schemaService.isJsonSchema(payload)) {
-            return ResponseEntity.unprocessableEntity().build();
-        }
-        String id = schemaService.linkSchema(payload).getName();
-        String message =
-                "JSON Schema for type [%s] linked!  Store requests for this type will be validated henceforth!".formatted(id);
-        log.info(message);
-        return ResponseEntity.ok(message);
-    }
-
-    @PreAuthorize("hasAuthority('delete:schema')")
-    @DeleteMapping("/schema/{type}")
-    public ResponseEntity<?> unlinkSchema(
-            @PathVariable("type") String type) {
-        schemaService.unlinkSchema(type);
-        String message = "JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!".formatted(type);
-        log.info(message);
-        return ResponseEntity.ok(message);
-    }
+	@PreAuthorize("hasAuthority('delete:schema')")
+	@DeleteMapping("/schema/{type}")
+	public ResponseEntity<?> unlinkSchema(@PathVariable("type") String type) {
+		schemaService.unlinkSchema(type);
+		String message = "JSON Schema for type [%s] unlinked!  Store requests for this type will no longer be validated!"
+			.formatted(type);
+		log.info(message);
+		return ResponseEntity.ok(message);
+	}
 
 }

@@ -24,8 +24,11 @@ import org.springframework.util.StringUtils;
 public class QueryBuilder {
 
 	private StringBuffer select = new StringBuffer();
+
 	private StringBuffer from = new StringBuffer();
+
 	private StringBuffer where = new StringBuffer();
+
 	private StringBuffer orderBy = new StringBuffer();
 
 	private QueryBuilder() {
@@ -37,7 +40,8 @@ public class QueryBuilder {
 	}
 
 	private void constructBaseFindStatement() {
-		select.append("SELECT eva.eid AS eid, eva.aid AS attribute_id, a.name AS attribute_name, eva.v AS attribute_value, eva.created_time AS created_time, eva.created_by AS created_by ");
+		select.append(
+				"SELECT eva.eid AS eid, eva.aid AS attribute_id, a.name AS attribute_name, eva.v AS attribute_value, eva.created_time AS created_time, eva.created_by AS created_by ");
 		from.append("FROM all_entity_values AS eva, attribute AS a ");
 		where.append("WHERE eva.eid = ANY (");
 	}
@@ -98,14 +102,15 @@ public class QueryBuilder {
 		int i = 0;
 		String suffix = "";
 		String conj = null;
-		for (Constraint c: constraints) {
+		for (Constraint c : constraints) {
 			if (i > 0 && isAndConjuncted) {
 				suffix = String.valueOf(i);
 			}
 			sb.append(obtainCriterionFromConstraint(c, suffix));
 			if (c.getConjunction() != null) {
 				conj = c.getConjunction().getName();
-			} else {
+			}
+			else {
 				conj = Conjunction.OR.getName(); // default
 			}
 			sb.append(conj);
@@ -133,13 +138,15 @@ public class QueryBuilder {
 			clause.append("?");
 			clause.append(" AND ");
 			clause.append("?");
-		} else if (c.getOperator().equals(Operator.IN)) {
+		}
+		else if (c.getOperator().equals(Operator.IN)) {
 			clause.append("(");
 			List<String> params = new ArrayList<>();
 			Arrays.stream(c.getValues()).forEach(v -> params.add("?"));
 			clause.append(StringUtils.collectionToCommaDelimitedString(params));
 			clause.append(")");
-		} else {
+		}
+		else {
 			clause.append("?");
 		}
 		clause.append(") ");
@@ -159,4 +166,5 @@ public class QueryBuilder {
 	public String build() {
 		return "%s %s %s %s".formatted(select.toString(), from.toString(), where.toString(), orderBy.toString());
 	}
+
 }

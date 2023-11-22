@@ -87,39 +87,39 @@ public class NamedQueryServiceSprocTest {
 
 	@Test
 	public void testNamedQueryNotFound() throws IOException {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  {
-	        MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-	        Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
-	        params.add("createdTime", tomorrow);
-	        namedQueryService.get("sproc.getAttributesCreatedBefore", params);
-	    });
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
+			Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
+			params.add("createdTime", tomorrow);
+			namedQueryService.get("sproc.getAttributesCreatedBefore", params);
+		});
 	}
 
 	@Test
 	public void testNamedQueryNotExecutedBecauseItDidNotContainRequiredParamForExecution() throws IOException {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  {
-        	    Resource r = resolver.getResource("classpath:TestSprocQuery.json");
-        		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-        		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
-        		namedQueryService.create(namedQuery);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Resource r = resolver.getResource("classpath:TestSprocQuery.json");
+			String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+			namedQueryService.create(namedQuery);
 
-        		namedQueryService.get("sproc.getAttributesCreatedBefore", null);
-	    });
+			namedQueryService.get("sproc.getAttributesCreatedBefore", null);
+		});
 	}
 
 	@Test
 	public void testNamedQueryNotExecutedBecauseParamSuppliedForExecutionNotCorrectlyNamed() throws IOException {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  {
-        	    Resource r = resolver.getResource("classpath:TestSprocQuery.json");
-        		String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-        		NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
-        		namedQueryService.create(namedQuery);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Resource r = resolver.getResource("classpath:TestSprocQuery.json");
+			String json = IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+			NamedQuery namedQuery = objectMapper.readValue(json, NamedQuery.class);
+			namedQueryService.create(namedQuery);
 
-        		MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-        		Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
-        		params.add("timeCreated", tomorrow);
-        		namedQueryService.get("sproc.getAttributesCreatedBefore", params);
-	    });
+			MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
+			Timestamp tomorrow = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
+			params.add("timeCreated", tomorrow);
+			namedQueryService.get("sproc.getAttributesCreatedBefore", params);
+		});
 	}
 
 	@AfterEach
@@ -127,4 +127,5 @@ public class NamedQueryServiceSprocTest {
 		classRegistryService.deregister("TestType");
 		namedQueryService.delete("sproc.getAttributesCreatedBefore");
 	}
+
 }

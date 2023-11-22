@@ -40,7 +40,6 @@ import com.fns.grivet.service.Ingester;
 
 import io.micrometer.core.instrument.MeterRegistry;
 
-
 /**
  * Ingestion end-points
  *
@@ -57,6 +56,7 @@ public class IngestController {
 	private int batchSize;
 
 	private final Ingester ingestService;
+
 	private final MeterRegistry meterRegistry;
 
 	@Autowired
@@ -67,34 +67,40 @@ public class IngestController {
 
 	@PreAuthorize("hasAuthority('write:type')")
 	@PostMapping("/type")
-	public ResponseEntity<?> ingestCreateTypeRequest(@RequestHeader("Type") String type, @RequestBody JSONObject payload) {
-	    ingestService
-				.ingest(MessageBuilder.withPayload(payload).setHeader("type", type).setHeader("op", Op.CREATE.name()).build());
-	    meterRegistry.counter(String.join("ingest", "create", type)).increment();
+	public ResponseEntity<?> ingestCreateTypeRequest(@RequestHeader("Type") String type,
+			@RequestBody JSONObject payload) {
+		ingestService.ingest(
+				MessageBuilder.withPayload(payload).setHeader("type", type).setHeader("op", Op.CREATE.name()).build());
+		meterRegistry.counter(String.join("ingest", "create", type)).increment();
 		log.info("Successfully ingested create request for type [{}]", type);
 		return ResponseEntity.accepted().build();
 	}
 
 	@PreAuthorize("hasAuthority('write:type')")
 	@PostMapping("/types")
-	public ResponseEntity<?> ingestCreateTypesRequest(@RequestHeader("Type") String type, @RequestBody JSONArray array) {
+	public ResponseEntity<?> ingestCreateTypesRequest(@RequestHeader("Type") String type,
+			@RequestBody JSONArray array) {
 		int numberOfTypesToCreate = array.length();
 		Assert.isTrue(numberOfTypesToCreate <= batchSize,
-                        "The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries.".formatted(
-                        batchSize, numberOfTypesToCreate));
+				"The total number of entries in a request must not exceed %d! Your ingest request contained [%d] entries."
+					.formatted(batchSize, numberOfTypesToCreate));
 		JSONObject payload = null;
 		HttpHeaders headers = new HttpHeaders();
-		// allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
+		// allow for all JSONObjects within JSONArray to be processed; capture and report
+		// errors during processing
 		for (int i = 0; i < numberOfTypesToCreate; i++) {
 			try {
 				payload = array.getJSONObject(i);
-				ingestService.ingest(MessageBuilder.withPayload(payload).setHeader("type", type)
-						.setHeader("op", Op.CREATE.name()).build());
+				ingestService.ingest(MessageBuilder.withPayload(payload)
+					.setHeader("type", type)
+					.setHeader("op", Op.CREATE.name())
+					.build());
 				meterRegistry.counter(String.join("ingest", "create", type)).increment();
 				log.info("Successfully ingested create request for type [{}]", type);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				String message = LogUtil.toLog(payload,
-                        "Problems ingesting type! Portion of payload @ index[%d]\n".formatted(i + 1));
+						"Problems ingesting type! Portion of payload @ index[%d]\n".formatted(i + 1));
 				log.error(message, e);
 				if (numberOfTypesToCreate == 1) {
 					throw e;
@@ -107,10 +113,10 @@ public class IngestController {
 
 	@PreAuthorize("hasAuthority('write:type')")
 	@PatchMapping("/type")
-	public ResponseEntity<?> ingestUpdateTypeRequest(
-		@RequestParam(value = "oid", required = true) Long oid,
-		@RequestBody JSONObject payload) {
-		ingestService.ingest(MessageBuilder.withPayload(payload).setHeader("oid", oid).setHeader("op", Op.UPDATE.name()).build());
+	public ResponseEntity<?> ingestUpdateTypeRequest(@RequestParam(value = "oid", required = true) Long oid,
+			@RequestBody JSONObject payload) {
+		ingestService.ingest(
+				MessageBuilder.withPayload(payload).setHeader("oid", oid).setHeader("op", Op.UPDATE.name()).build());
 		meterRegistry.counter(String.join("ingest", "update")).increment();
 		log.info("Successfully ingested update request for type w/ oid = [{}]", oid);
 		return ResponseEntity.accepted().build();
@@ -118,9 +124,11 @@ public class IngestController {
 
 	@PreAuthorize("hasAuthority('delete:type')")
 	@DeleteMapping(value = "/type")
-	public ResponseEntity<?> ingestDeleteTypeRequest(
-		@RequestParam(value = "oid", required = true) Long oid) {
-		ingestService.ingest(MessageBuilder.withPayload(new JSONObject()).setHeader("oid", oid).setHeader("op", Op.DELETE.name()).build());
+	public ResponseEntity<?> ingestDeleteTypeRequest(@RequestParam(value = "oid", required = true) Long oid) {
+		ingestService.ingest(MessageBuilder.withPayload(new JSONObject())
+			.setHeader("oid", oid)
+			.setHeader("op", Op.DELETE.name())
+			.build());
 		meterRegistry.counter(String.join("ingest", "delete")).increment();
 		log.info("Successfully ingested delete request for type w/ oid = [{}]", oid);
 		return ResponseEntity.accepted().build();

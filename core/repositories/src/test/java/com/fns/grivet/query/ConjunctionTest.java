@@ -28,12 +28,16 @@ public class ConjunctionTest {
 
 	@Test
 	public void testThatFromValueThrowsExceptionWhenNull() {
-		Assertions.assertThrows(IllegalArgumentException.class, () ->  { Conjunction.fromValue(null); } );
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Conjunction.fromValue(null);
+		});
 	}
 
 	@Test
 	public void testThatFromValueThrowsExceptionWhenUnknown() {
-	    Assertions.assertThrows(IllegalArgumentException.class, () ->  { Conjunction.fromValue("foo"); } );
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Conjunction.fromValue("foo");
+		});
 	}
 
 }

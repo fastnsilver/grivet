@@ -49,81 +49,89 @@ import com.fns.grivet.service.ClassRegistryService;
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ClassRegistryController {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ClassRegistryController.class);
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ClassRegistryController.class);
 
-    @Value("${grivet.register.batch-size:100}")
-    private int batchSize;
-    private final ClassRegistryService classRegistryService;
+	@Value("${grivet.register.batch-size:100}")
+	private int batchSize;
 
-    @Autowired
-    public ClassRegistryController(ClassRegistryService classRegistryService) {
-        this.classRegistryService = classRegistryService;
-    }
+	private final ClassRegistryService classRegistryService;
 
-    @PreAuthorize("hasAuthority(\'write:typedef\')")
-    @PostMapping("/definition")
-    public ResponseEntity<?> defineType(@RequestBody JSONObject payload) throws IOException {
-        String type = classRegistryService.register(payload);
-        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
-        log.info("Type [{}] successfully registered!", type);
-        return ResponseEntity.created(ucb.path("/definition/{type}").buildAndExpand(type).toUri()).build();
-    }
+	@Autowired
+	public ClassRegistryController(ClassRegistryService classRegistryService) {
+		this.classRegistryService = classRegistryService;
+	}
 
-    @PreAuthorize("hasAuthority(\'write:typedef\')")
-    @PostMapping("/definitions")
-    public ResponseEntity<?> defineTypes(@RequestBody JSONArray array) throws IOException, JSONException {
-        int numberOfTypesToRegister = array.length();
-        Assert.isTrue(numberOfTypesToRegister <= batchSize, "The total number of entries in a type registration request must not exceed %d! Your registration request contained [%d] entries.".formatted(batchSize, numberOfTypesToRegister));
-        JSONObject payload = null;
-        String type = null;
-        HttpHeaders headers = new HttpHeaders();
-        URI location = null;
-        int errorCount = 0;
-        // allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
-        for (int i = 0; i < numberOfTypesToRegister; i++) {
-            try {
-                payload = array.getJSONObject(i);
-                type = classRegistryService.register(payload);
-                location = UriComponentsBuilder.newInstance().path("/definition/{type}").buildAndExpand(type).toUri();
-                if (numberOfTypesToRegister == 1) {
-                    headers.setLocation(location);
-                } else {
-                    headers.set("Location[%s]".formatted(String.valueOf(i + 1)), location.toASCIIString());
-                }
-                log.info("Type [{}] successfully registered!", type);
-            } catch (Exception e) {
-                String message = LogUtil.toLog(payload, "Problems registering type! Portion of payload @ index[%d]\n".formatted(i + 1));
-                log.error(message, e);
-                if (numberOfTypesToRegister == 1) {
-                    throw e;
-                }
-                headers.set("Error[%s]".formatted(String.valueOf(i + 1)), e.getMessage());
-                errorCount++;
-            }
-        }
-        return new ResponseEntity<>(headers, ((errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED));
-    }
+	@PreAuthorize("hasAuthority(\'write:typedef\')")
+	@PostMapping("/definition")
+	public ResponseEntity<?> defineType(@RequestBody JSONObject payload) throws IOException {
+		String type = classRegistryService.register(payload);
+		UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
+		log.info("Type [{}] successfully registered!", type);
+		return ResponseEntity.created(ucb.path("/definition/{type}").buildAndExpand(type).toUri()).build();
+	}
 
-    @PreAuthorize("hasAuthority(\'delete:typedef\')")
-    @DeleteMapping("/definition/{type}")
-    public ResponseEntity<?> undefineType(@PathVariable("type") String type) {
-        classRegistryService.deregister(type);
-        log.info("Type [{}] successfully deregistered!", type);
-        return ResponseEntity.noContent().build();
-    }
+	@PreAuthorize("hasAuthority(\'write:typedef\')")
+	@PostMapping("/definitions")
+	public ResponseEntity<?> defineTypes(@RequestBody JSONArray array) throws IOException, JSONException {
+		int numberOfTypesToRegister = array.length();
+		Assert.isTrue(numberOfTypesToRegister <= batchSize,
+				"The total number of entries in a type registration request must not exceed %d! Your registration request contained [%d] entries."
+					.formatted(batchSize, numberOfTypesToRegister));
+		JSONObject payload = null;
+		String type = null;
+		HttpHeaders headers = new HttpHeaders();
+		URI location = null;
+		int errorCount = 0;
+		// allow for all JSONObjects within JSONArray to be processed; capture and report
+		// errors during processing
+		for (int i = 0; i < numberOfTypesToRegister; i++) {
+			try {
+				payload = array.getJSONObject(i);
+				type = classRegistryService.register(payload);
+				location = UriComponentsBuilder.newInstance().path("/definition/{type}").buildAndExpand(type).toUri();
+				if (numberOfTypesToRegister == 1) {
+					headers.setLocation(location);
+				}
+				else {
+					headers.set("Location[%s]".formatted(String.valueOf(i + 1)), location.toASCIIString());
+				}
+				log.info("Type [{}] successfully registered!", type);
+			}
+			catch (Exception e) {
+				String message = LogUtil.toLog(payload,
+						"Problems registering type! Portion of payload @ index[%d]\n".formatted(i + 1));
+				log.error(message, e);
+				if (numberOfTypesToRegister == 1) {
+					throw e;
+				}
+				headers.set("Error[%s]".formatted(String.valueOf(i + 1)), e.getMessage());
+				errorCount++;
+			}
+		}
+		return new ResponseEntity<>(headers, ((errorCount == 0) ? HttpStatus.CREATED : HttpStatus.ACCEPTED));
+	}
 
-    @PreAuthorize("hasAuthority(\'read:typedef\')")
-    @GetMapping("/definition/{type}")
-    public ResponseEntity<?> getTypeDefinition(@PathVariable("type") String type) {
-        JSONObject payload = classRegistryService.get(type);
-        String message = LogUtil.toLog(payload, "Successfully retrieved type [%s]\n".formatted(type));
-        log.info(message);
-        return ResponseEntity.ok(payload.toString());
-    }
+	@PreAuthorize("hasAuthority(\'delete:typedef\')")
+	@DeleteMapping("/definition/{type}")
+	public ResponseEntity<?> undefineType(@PathVariable("type") String type) {
+		classRegistryService.deregister(type);
+		log.info("Type [{}] successfully deregistered!", type);
+		return ResponseEntity.noContent().build();
+	}
 
-    @PreAuthorize("hasAuthority(\'read:typedef\')")
-    @GetMapping("/definitions")
-    public ResponseEntity<?> getAllTypeDefinitions() {
-        return ResponseEntity.ok(classRegistryService.all().toString());
-    }
+	@PreAuthorize("hasAuthority(\'read:typedef\')")
+	@GetMapping("/definition/{type}")
+	public ResponseEntity<?> getTypeDefinition(@PathVariable("type") String type) {
+		JSONObject payload = classRegistryService.get(type);
+		String message = LogUtil.toLog(payload, "Successfully retrieved type [%s]\n".formatted(type));
+		log.info(message);
+		return ResponseEntity.ok(payload.toString());
+	}
+
+	@PreAuthorize("hasAuthority(\'read:typedef\')")
+	@GetMapping("/definitions")
+	public ResponseEntity<?> getAllTypeDefinitions() {
+		return ResponseEntity.ok(classRegistryService.all().toString());
+	}
+
 }

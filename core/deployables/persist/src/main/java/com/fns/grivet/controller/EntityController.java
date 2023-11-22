@@ -51,7 +51,6 @@ import com.fns.grivet.service.EntityService;
 
 import io.micrometer.core.instrument.MeterRegistry;
 
-
 /**
  * Provides end-points for type storage and retrieval
  *
@@ -94,15 +93,15 @@ public class EntityController {
 	public ResponseEntity<?> createMultiple(@RequestHeader("Type") String type, @RequestBody JSONArray json) {
 		int numberOfTypesToCreate = json.length();
 		Assert.isTrue(numberOfTypesToCreate <= batchSize,
-            "The total number of entries in a request must not exceed %d! Your store request contained [%d] entries.".formatted(
-            batchSize, numberOfTypesToCreate)
-		);
+				"The total number of entries in a request must not exceed %d! Your store request contained [%d] entries."
+					.formatted(batchSize, numberOfTypesToCreate));
 		int errorCount = 0;
 		JSONObject jsonObject = null;
 		HttpHeaders headers = new HttpHeaders();
 		URI location = null;
 		Long oid = null;
-		// allow for all JSONObjects within JSONArray to be processed; capture and report errors during processing
+		// allow for all JSONObjects within JSONArray to be processed; capture and report
+		// errors during processing
 		for (int i = 0; i < numberOfTypesToCreate; i++) {
 			try {
 				jsonObject = json.getJSONObject(i);
@@ -110,13 +109,16 @@ public class EntityController {
 				location = UriComponentsBuilder.newInstance().path("/type").queryParam("oid", oid).build().toUri();
 				if (numberOfTypesToCreate == 1) {
 					headers.setLocation(location);
-				} else {
+				}
+				else {
 					headers.set("Location[%s]".formatted(String.valueOf(i + 1)), location.toASCIIString());
 				}
 				meterRegistry.counter(String.join("store", "create", type)).increment();
 				log.info("Successfully created type [{}]", type);
-			} catch (Exception e) {
-				String message = LogUtil.toLog(jsonObject, "Problems storing type! Portion of payload @ index[%d]\n".formatted(i + 1));
+			}
+			catch (Exception e) {
+				String message = LogUtil.toLog(jsonObject,
+						"Problems storing type! Portion of payload @ index[%d]\n".formatted(i + 1));
 				log.error(message, e);
 				if (numberOfTypesToCreate == 1) {
 					throw e;
@@ -131,8 +133,7 @@ public class EntityController {
 	@Profile("!pipeline")
 	@PreAuthorize("hasAuthority('write:type')")
 	@PatchMapping("/type")
-	public ResponseEntity<?> updateOne(
-			@RequestParam(value = "oid", required = true) Long oid,
+	public ResponseEntity<?> updateOne(@RequestParam(value = "oid", required = true) Long oid,
 			@RequestBody JSONObject json) {
 		String type = entityService.update(oid, json);
 		HttpHeaders headers = new HttpHeaders();
@@ -146,8 +147,7 @@ public class EntityController {
 	@Profile("!pipeline")
 	@PreAuthorize("hasAuthority('delete:type')")
 	@DeleteMapping("/type")
-	public ResponseEntity<?> deleteOne(
-			@RequestParam(value = "oid", required = true) Long oid) {
+	public ResponseEntity<?> deleteOne(@RequestParam(value = "oid", required = true) Long oid) {
 		String type = entityService.delete(oid);
 		meterRegistry.counter(String.join("store", "delete", type)).increment();
 		log.info("Successfully delete type [{}]", type);
@@ -157,24 +157,27 @@ public class EntityController {
 	@PreAuthorize("hasAuthority('read:type')")
 	@GetMapping("/type/{type}")
 	public ResponseEntity<?> fetch(@PathVariable("type") String type,
-			@RequestParam(value = "createdTimeStart", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeStart,
-			@RequestParam(value = "createdTimeEnd", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeEnd,
-			@RequestParam(value = "noAudit", defaultValue = "false") boolean noAudit,
-			HttpServletRequest request) throws JsonProcessingException {
+			@RequestParam(value = "createdTimeStart", required = false) @DateTimeFormat(
+					iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeStart,
+			@RequestParam(value = "createdTimeEnd",
+					required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeEnd,
+			@RequestParam(value = "noAudit", defaultValue = "false") boolean noAudit, HttpServletRequest request)
+			throws JsonProcessingException {
 		LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7) : createdTimeStart;
 		LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : createdTimeEnd;
-		Assert.isTrue(ChronoUnit.SECONDS.between(start, end) >= 0, "Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");
+		Assert.isTrue(ChronoUnit.SECONDS.between(start, end) >= 0,
+				"Store request constraint createdTimeStart must be earlier or equal to createdTimeEnd!");
 		if (noAudit) {
-		    return ResponseEntity.ok(entityService.findAllByType(type));
-		} else {
-		    return ResponseEntity.ok(entityService.findByCreatedTime(type, start, end, request.getParameterMap()));
+			return ResponseEntity.ok(entityService.findAllByType(type));
+		}
+		else {
+			return ResponseEntity.ok(entityService.findByCreatedTime(type, start, end, request.getParameterMap()));
 		}
 	}
 
 	@PreAuthorize("hasAuthority('read:type')")
 	@GetMapping("/type")
-	public ResponseEntity<?> fetchOne(
-			@RequestParam(value = "oid", required = true) Long oid) {
+	public ResponseEntity<?> fetchOne(@RequestParam(value = "oid", required = true) Long oid) {
 		return ResponseEntity.ok(entityService.findById(oid));
 	}
 

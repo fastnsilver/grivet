@@ -17,7 +17,6 @@ import com.fns.grivet.model.Op;
 
 import io.micrometer.core.instrument.MeterRegistry;
 
-
 @Service
 @Profile("pipeline")
 public class PersistenceService {
@@ -25,6 +24,7 @@ public class PersistenceService {
 	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PersistenceService.class);
 
 	private final EntityService entityService;
+
 	private final MeterRegistry meterRegistry;
 
 	@Autowired
@@ -72,17 +72,21 @@ public class PersistenceService {
 						log.info("Successfully deleted type [{}]", type);
 						break;
 					default:
-						throw new MessageRejectedException(message, "Bad payload! Invalid op [%s].".formatted(op.name()));
+						throw new MessageRejectedException(message,
+								"Bad payload! Invalid op [%s].".formatted(op.name()));
 				}
 
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				log.error("Problem processing message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
 						message.getPayload().toString(), e);
 				result = MessageBuilder.fromMessage(message)
-							.setHeader("processed", false)
-							.setHeader("exception", e.getMessage()).build();
+					.setHeader("processed", false)
+					.setHeader("exception", e.getMessage())
+					.build();
 				throw new MessageHandlingException(result, "Could not process message!");
 			}
 		};
 	}
+
 }

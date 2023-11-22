@@ -48,7 +48,6 @@ import com.fns.grivet.query.DynamicQuery;
 import com.fns.grivet.query.QueryBuilder;
 import com.google.common.collect.ImmutableMap;
 
-
 @Repository
 public class JdbcEntityRepository implements EntityRepository {
 
@@ -56,7 +55,7 @@ public class JdbcEntityRepository implements EntityRepository {
 
 	private final JdbcTemplate jdbcTemplate;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	private AuditorProvider auditorProvider;
 
 	@Autowired
@@ -64,18 +63,19 @@ public class JdbcEntityRepository implements EntityRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-
 	@Override
 	public Long newId(Integer cid, LocalDateTime createdTime) {
 		return Long.valueOf(String.valueOf(new SimpleJdbcInsert(jdbcTemplate).withTableName("entity")
-				.usingGeneratedKeyColumns("eid").usingColumns("cid", "created_time").executeAndReturnKey(
-						ImmutableMap.of("cid", cid, "created_time", Timestamp.valueOf(createdTime)))));
+			.usingGeneratedKeyColumns("eid")
+			.usingColumns("cid", "created_time")
+			.executeAndReturnKey(ImmutableMap.of("cid", cid, "created_time", Timestamp.valueOf(createdTime)))));
 	}
 
 	@Override
 	public void save(Long eid, Attribute attribute, AttributeType attributeType, Object rawValue,
 			LocalDateTime createdTime) {
-		Assert.isTrue(rawValue != null, String.format("Attempt to persist value failed! %s's value must not be null!", attribute.getName()));
+		Assert.isTrue(rawValue != null,
+				String.format("Attempt to persist value failed! %s's value must not be null!", attribute.getName()));
 		Object value = ValueHelper.toValue(attributeType, rawValue);
 		String createdBy = getCurrentUsername();
 		String[] columns = { "eid", "aid", "val", "created_time" };
@@ -89,7 +89,8 @@ public class JdbcEntityRepository implements EntityRepository {
 			keyValuePairs = keyValuePairsWithCreatedBy;
 		}
 		new SimpleJdbcInsert(jdbcTemplate).withTableName(String.join("_", "entityav", attributeType.getType()))
-		.usingColumns(columns).execute(keyValuePairs);
+			.usingColumns(columns)
+			.execute(keyValuePairs);
 	}
 
 	@Override
@@ -97,9 +98,10 @@ public class JdbcEntityRepository implements EntityRepository {
 			LocalDateTime createdTimeEnd) {
 		String sql = QueryBuilder.newInstance().appendCreatedTimeRange().build();
 		log.trace("JdbcEntityRepository.findByCreatedTime[sql=%s]".formatted(sql));
-		return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid),
-				new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeStart)),
-				new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeEnd))));
+		return mapRows(
+				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.INTEGER, cid),
+						new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeStart)),
+						new SqlParameterValue(Types.TIMESTAMP, Timestamp.valueOf(createdTimeEnd))));
 	}
 
 	@Override
@@ -114,8 +116,7 @@ public class JdbcEntityRepository implements EntityRepository {
 		String sql = QueryBuilder.newInstance().obtainValuesForOneEntity().build();
 		log.trace("JdbcEntityRepository.findById[sql=%s]".formatted(sql));
 		return mapRows(
-				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(),
-						new SqlParameterValue(Types.BIGINT, eid)));
+				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), new SqlParameterValue(Types.BIGINT, eid)));
 	}
 
 	@Override
@@ -124,11 +125,10 @@ public class JdbcEntityRepository implements EntityRepository {
 		log.trace("JdbcEntityRepository.delete[sql=%s]".formatted(entitySql));
 		jdbcTemplate.update(entitySql, new Object[] { eid });
 
-		Collection<String> eavSql =
-				Stream.of(AttributeType.values())
-						.collect(Collectors.toMap(k -> k.getType(),
-								v -> "DELETE FROM entityav_%s WHERE eid = ?".formatted(v.getType())))
-							.values();
+		Collection<String> eavSql = Stream.of(AttributeType.values())
+			.collect(Collectors.toMap(k -> k.getType(),
+					v -> "DELETE FROM entityav_%s WHERE eid = ?".formatted(v.getType())))
+			.values();
 		for (String sql : eavSql) {
 			log.trace("JdbcEntityRepository.delete[sql=%s]".formatted(sql));
 			jdbcTemplate.update(sql, new Object[] { eid });
@@ -137,19 +137,17 @@ public class JdbcEntityRepository implements EntityRepository {
 
 	@Override
 	public void deleteAll() {
-	    String entitySql = "DELETE FROM entity";
-        log.trace("JdbcEntityRepository.delete[sql=%s]".formatted(entitySql));
-        jdbcTemplate.execute(entitySql);
+		String entitySql = "DELETE FROM entity";
+		log.trace("JdbcEntityRepository.delete[sql=%s]".formatted(entitySql));
+		jdbcTemplate.execute(entitySql);
 
-        Collection<String> eavSql =
-                Stream.of(AttributeType.values())
-                        .collect(Collectors.toMap(k -> k.getType(),
-                                v -> "DELETE FROM entityav_%s".formatted(v.getType())))
-                            .values();
-        for (String sql : eavSql) {
-            log.trace("JdbcEntityRepository.delete[sql=%s]".formatted(sql));
-            jdbcTemplate.execute(sql);
-        }
+		Collection<String> eavSql = Stream.of(AttributeType.values())
+			.collect(Collectors.toMap(k -> k.getType(), v -> "DELETE FROM entityav_%s".formatted(v.getType())))
+			.values();
+		for (String sql : eavSql) {
+			log.trace("JdbcEntityRepository.delete[sql=%s]".formatted(sql));
+			jdbcTemplate.execute(sql);
+		}
 	}
 
 	@Override
@@ -162,27 +160,25 @@ public class JdbcEntityRepository implements EntityRepository {
 
 	@Override
 	public List<EntityAttributeValue> executeDynamicQuery(Integer cid, DynamicQuery query) {
-		Assert.isTrue(query.areConjunctionsHomogenous(), "Query cannot be executed! All conjunctions must be homogenous!");
+		Assert.isTrue(query.areConjunctionsHomogenous(),
+				"Query cannot be executed! All conjunctions must be homogenous!");
 		String sql = QueryBuilder.newInstance().append(query).build();
 		log.trace("JdbcEntityRepository.executeDynamicQuery[sql=%s]".formatted(sql));
 		List<SqlParameterValue> values = new ArrayList<>();
 		values.add(new SqlParameterValue(Types.INTEGER, cid));
 		values.addAll(Arrays.asList(query.asSqlParameterValues()));
-		return mapRows(jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), values.toArray(new Object[values.size()])));
+		return mapRows(
+				jdbcTemplate.query(sql, new SqlRowSetResultSetExtractor(), values.toArray(new Object[values.size()])));
 	}
 
 	private List<EntityAttributeValue> mapRows(SqlRowSet rowSet) {
 		List<EntityAttributeValue> result = new ArrayList<>();
 		EntityAttributeValue eav = null;
 		if (rowSet != null) {
-			while(rowSet.next()) {
-				eav = EntityAttributeValue.of(
-				        rowSet.getLong("eid"),
-				        rowSet.getInt("attribute_id"),
-				        rowSet.getString("attribute_name"),
-                        rowSet.getObject("attribute_value"),
-				        rowSet.getTimestamp("created_time").toLocalDateTime(),
-				        getCurrentUsername());
+			while (rowSet.next()) {
+				eav = EntityAttributeValue.of(rowSet.getLong("eid"), rowSet.getInt("attribute_id"),
+						rowSet.getString("attribute_name"), rowSet.getObject("attribute_value"),
+						rowSet.getTimestamp("created_time").toLocalDateTime(), getCurrentUsername());
 				result.add(eav);
 			}
 		}
@@ -191,12 +187,12 @@ public class JdbcEntityRepository implements EntityRepository {
 	}
 
 	private String getCurrentUsername() {
-	    String username = null;
-	    User principal = auditorProvider == null ? null : auditorProvider.getCurrentUser();
-	    if (principal != null) {
-	        username = principal.getUsername();
-	    }
-	    return username;
+		String username = null;
+		User principal = auditorProvider == null ? null : auditorProvider.getCurrentUser();
+		if (principal != null) {
+			username = principal.getUsername();
+		}
+		return username;
 	}
 
 	private static class EAVComparator implements Comparator<EntityAttributeValue> {

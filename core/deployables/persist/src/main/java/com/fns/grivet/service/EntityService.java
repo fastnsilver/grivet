@@ -46,15 +46,19 @@ import com.fns.grivet.repo.EntityRepository;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.google.common.collect.Lists;
 
-
 @Service
 public class EntityService {
 
 	private final ClassRepository classRepository;
+
 	private final ClassAttributeRepository classAttributeRepository;
+
 	private final AttributeRepository attributeRepository;
+
 	private final AttributeTypeRepository attributeTypeRepository;
+
 	private final EntityRepository entityRepository;
+
 	private final SchemaValidator schemaValidator;
 
 	@Autowired
@@ -85,8 +89,9 @@ public class EntityService {
 		// entity and entity-attribute-values should be stamped with same date/time
 		LocalDateTime createdTime = LocalDateTime.now();
 		Long eid = entityRepository.newId(c.getId(), createdTime);
-		// TODO create an expiring cache of attribute names for faster lookups (friendlier database use)
-		for (String key: keys) {
+		// TODO create an expiring cache of attribute names for faster lookups (friendlier
+		// database use)
+		for (String key : keys) {
 			val = payload.get(key);
 			a = attributeRepository.findByName(key);
 			Assert.notNull(a, "Attribute [%s] is not registered!".formatted(key));
@@ -103,7 +108,7 @@ public class EntityService {
 	public String update(Long eid, JSONObject payload) {
 		Integer cid = entityRepository.getClassIdForEntityId(eid);
 		Assert.notNull(cid, "No type registered for entity with oid = [%d]".formatted(eid));
-        com.fns.grivet.model.Class c = classRepository.findById(cid).get();
+		com.fns.grivet.model.Class c = classRepository.findById(cid).get();
 		String type = c.getName();
 		if (c.isValidatable()) {
 			executeSchemaValidation(type, payload);
@@ -112,7 +117,7 @@ public class EntityService {
 		// be at least one to update!
 		Set<String> detachedKeys = payload.keySet();
 		Assert.notEmpty(detachedKeys,
-                "Type [%s] must declare at least one attribute in update request!".formatted(type));
+				"Type [%s] must declare at least one attribute in update request!".formatted(type));
 
 		// get currently persisted entity's attribute values; make sure the oid
 		// passed actually exists!
@@ -154,39 +159,41 @@ public class EntityService {
 	public String delete(Long eid) {
 		Integer cid = entityRepository.getClassIdForEntityId(eid);
 		Assert.notNull(cid, "No type registered for entity with oid = [%d]".formatted(eid));
-        com.fns.grivet.model.Class c = classRepository.findById(cid).get();
+		com.fns.grivet.model.Class c = classRepository.findById(cid).get();
 		String type = c.getName();
 		entityRepository.delete(eid);
 		return type;
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public String findByCreatedTime(String type, LocalDateTime createdTimeStart, LocalDateTime createdTimeEnd,
 			Map<String, String[]> parameters) throws JsonProcessingException {
 		com.fns.grivet.model.Class c = classRepository.findByName(type);
 		Assert.notNull(c, "Type [%s] is not registered!".formatted(type));
 		Map<Integer, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
 		List<Attribute> attributes = Lists.newArrayList(attributeRepository.findAll());
-		Map<String, Integer> attributeNameToAttributeIdMap = attributes.stream().collect(Collectors.toMap(Attribute::getName, Attribute::getId));
+		Map<String, Integer> attributeNameToAttributeIdMap = attributes.stream()
+			.collect(Collectors.toMap(Attribute::getName, Attribute::getId));
 		Set<Entry<String, String[]>> params = parameters == null ? null : parameters.entrySet();
 		DynamicQuery query = new DynamicQuery(params, attributeToAttributeTypeMap, attributeNameToAttributeIdMap);
 		List<EntityAttributeValue> rows = null;
 		if (query.hasConstraints()) {
 			rows = entityRepository.executeDynamicQuery(c.getId(), query);
-		} else {
+		}
+		else {
 			rows = entityRepository.findByCreatedTime(c.getId(), createdTimeStart, createdTimeEnd);
 		}
 		return mapRows(attributeToAttributeTypeMap, rows).toString();
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public String findById(Long eid) {
 		List<EntityAttributeValue> rows = entityRepository.findByEntityId(eid);
 		if (rows == null) {
 			throw new ResourceNotFoundException("No entity exists with oid =[%d]".formatted(eid));
 		}
 		Integer cid = entityRepository.getClassIdForEntityId(eid);
-        com.fns.grivet.model.Class c = classRepository.findById(cid).get();
+		com.fns.grivet.model.Class c = classRepository.findById(cid).get();
 		Map<Integer, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
 		return mapRows(attributeToAttributeTypeMap, rows).getJSONObject(0).toString();
 	}
@@ -205,14 +212,15 @@ public class EntityService {
 		String current = null;
 		String previous = null;
 		JSONObject jsonObject = null;
-		for (EntityAttributeValue row: rows) {
+		for (EntityAttributeValue row : rows) {
 			current = String.format("%s>%d", row.getCreatedTime().toString(), row.getId());
 			if (!current.equals(previous)) {
 				jsonObject = new JSONObject();
 				jsonArray.put(jsonObject);
 			}
 			Integer tid = attributeToAttributeTypeMap.get(row.getAttributeId());
-			jsonObject.put(row.getAttributeName(), ValueHelper.getValue(attributeTypeRepository.findById(tid), row.getAttributeValue()));
+			jsonObject.put(row.getAttributeName(),
+					ValueHelper.getValue(attributeTypeRepository.findById(tid), row.getAttributeValue()));
 			previous = current;
 		}
 		return jsonArray;
@@ -231,4 +239,5 @@ public class EntityService {
 		List<ClassAttribute> cas = classAttributeRepository.findByCid(c.getId());
 		return cas.stream().collect(Collectors.toMap(ClassAttribute::getAid, ClassAttribute::getTid));
 	}
+
 }

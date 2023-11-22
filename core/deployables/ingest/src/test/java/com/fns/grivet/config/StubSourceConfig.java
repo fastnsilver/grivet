@@ -9,8 +9,9 @@ import com.fns.grivet.service.Ingester;
 @Configuration
 public class StubSourceConfig {
 
-    @Bean
-    public Ingester ingestService() {
-        return new IngestStub();
-    }
+	@Bean
+	public Ingester ingestService() {
+		return new IngestStub();
+	}
+
 }

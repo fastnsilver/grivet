@@ -9,8 +9,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JsonConfig {
 
-    @Bean
-    public Module orgJsonModule() {
-        return new JsonOrgModule();
-    }
+	@Bean
+	public Module orgJsonModule() {
+		return new JsonOrgModule();
+	}
+
 }

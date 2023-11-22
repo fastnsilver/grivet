@@ -67,235 +67,223 @@ import com.fns.grivet.service.SchemaService;
 @SpringBootTest(classes = PersistInit.class)
 public class PersistDocumentationTest {
 
-    @Autowired
-    private ResourceLoader resolver;
+	@Autowired
+	private ResourceLoader resolver;
 
-    @Autowired
-    private WebApplicationContext context;
+	@Autowired
+	private WebApplicationContext context;
 
-    private MockMvc mockMvc;
+	private MockMvc mockMvc;
 
-    @BeforeEach
-    public void setUp(RestDocumentationContextProvider restDocumentation) {
-        RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()));
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                .apply(documentationConfiguration(restDocumentation))
-                .alwaysDo(document)
-                .build();
-    }
+	@BeforeEach
+	public void setUp(RestDocumentationContextProvider restDocumentation) {
+		RestDocumentationResultHandler document = document("{method-name}", preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()));
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
+			.apply(documentationConfiguration(restDocumentation))
+			.alwaysDo(document)
+			.build();
+	}
 
-    @AfterEach
-    public void tearDown() {
-        context.getBean(EntityRepository.class).deleteAll();
-        context.getBean(ClassAttributeRepository.class).deleteAll();
-        context.getBean(ClassRepository.class).deleteAll();
-        context.getBean(AttributeRepository.class).deleteAll();
-    }
+	@AfterEach
+	public void tearDown() {
+		context.getBean(EntityRepository.class).deleteAll();
+		context.getBean(ClassAttributeRepository.class).deleteAll();
+		context.getBean(ClassRepository.class).deleteAll();
+		context.getBean(AttributeRepository.class).deleteAll();
+	}
 
-    @Test
-    public void createOne() {
-        try {
-            defineTypes("TestMultipleTypes");
-            linkSchema("CourseSchema");
-            mockMvc.perform(
-                    post("/type")
-                            .header("Type", "Course")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(payload("CourseCreateData"))
-                    )
-            .andExpect(status().isCreated());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void createOne() {
+		try {
+			defineTypes("TestMultipleTypes");
+			linkSchema("CourseSchema");
+			mockMvc
+				.perform(post("/type").header("Type", "Course")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(payload("CourseCreateData")))
+				.andExpect(status().isCreated());
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void createMultiple() {
-        try {
-            defineTypes("TestMultipleTypes");
-            mockMvc.perform(
-                    post("/types")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .header("Type", "Contact")
-                            .content(payload("TestMultipleContactsData"))
-                    )
-            .andExpect(status().isCreated());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void createMultiple() {
+		try {
+			defineTypes("TestMultipleTypes");
+			mockMvc
+				.perform(post("/types").contentType(MediaType.APPLICATION_JSON)
+					.header("Type", "Contact")
+					.content(payload("TestMultipleContactsData")))
+				.andExpect(status().isCreated());
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void updateOne() {
-        try {
-            defineTypes("TestMultipleTypes");
-            createTypes("Course", "CourseData");
-            Long oid = fetchAType("Course");
-            mockMvc.perform(
-                    patch("/type")
-                            .param("oid", String.valueOf(oid))
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(payload("CourseUpdateData"))
-                    )
-            .andExpect(status().isOk());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void updateOne() {
+		try {
+			defineTypes("TestMultipleTypes");
+			createTypes("Course", "CourseData");
+			Long oid = fetchAType("Course");
+			mockMvc
+				.perform(patch("/type").param("oid", String.valueOf(oid))
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(payload("CourseUpdateData")))
+				.andExpect(status().isOk());
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void deleteOne() {
-        try {
-            defineType("TestType2");
-            Long oid = createType("TestType2", "TestTypeData2");
-            mockMvc.perform(
-                    delete("/type")
-                            .param("oid", String.valueOf(oid))
-                            .contentType(MediaType.APPLICATION_JSON)
-                    )
-            .andExpect(status().isOk());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void deleteOne() {
+		try {
+			defineType("TestType2");
+			Long oid = createType("TestType2", "TestTypeData2");
+			mockMvc.perform(delete("/type").param("oid", String.valueOf(oid)).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    // GET (with default constraints)
-    public void fetchWithDefaults() {
-        try {
-            defineType("TestType2");
-            createType("TestType2", "TestTypeData2");
-            mockMvc.perform(
-                    get("/type/TestType2")
-                            .contentType(MediaType.APPLICATION_JSON)
-                    )
-            .andExpect(status().isOk())
-            .andExpect(content().json(asArray(payload("TestTypeData2"))));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	// GET (with default constraints)
+	public void fetchWithDefaults() {
+		try {
+			defineType("TestType2");
+			createType("TestType2", "TestTypeData2");
+			mockMvc.perform(get("/type/TestType2").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().json(asArray(payload("TestTypeData2"))));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    // GET (bounded by createdTimeStart and createdTimeEnd)
-    public void fetchByTimeRange() {
-        try {
-            defineType("TestType2");
-            createType("TestType2", "TestTypeData2");
-            String createdTimeStart = LocalDateTime.now().minusMinutes(15).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-            String createdTimeEnd = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-            mockMvc.perform(
-                    get("/type/TestType2")
-                            .param("createdTimeStart", createdTimeStart)
-                            .param("createdTimeEnd", createdTimeEnd)
-                            .contentType(MediaType.APPLICATION_JSON)
-                    )
-            .andExpect(status().isOk())
-            .andExpect(content().json(asArray(payload("TestTypeData2"))));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	// GET (bounded by createdTimeStart and createdTimeEnd)
+	public void fetchByTimeRange() {
+		try {
+			defineType("TestType2");
+			createType("TestType2", "TestTypeData2");
+			String createdTimeStart = LocalDateTime.now()
+				.minusMinutes(15)
+				.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+			String createdTimeEnd = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+			mockMvc
+				.perform(get("/type/TestType2").param("createdTimeStart", createdTimeStart)
+					.param("createdTimeEnd", createdTimeEnd)
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().json(asArray(payload("TestTypeData2"))));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    // GET (with startsWith constraint)
-    public void fetchWithConstraints() {
-        try {
-            defineType("TestType2");
-            createType("TestType2", "TestTypeData2");
-            mockMvc.perform(
-                    get("/type/TestType2")
-                            .param("c", "first-name|startsWith|J")
-                            .contentType(MediaType.APPLICATION_JSON)
-                    )
-            .andExpect(status().isOk())
-            .andExpect(content().json(asArray(payload("TestTypeData2"))));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	// GET (with startsWith constraint)
+	public void fetchWithConstraints() {
+		try {
+			defineType("TestType2");
+			createType("TestType2", "TestTypeData2");
+			mockMvc
+				.perform(get("/type/TestType2").param("c", "first-name|startsWith|J")
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().json(asArray(payload("TestTypeData2"))));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    // GET (with noAudit flag set to true)
-    public void fetchWithNoAudit() {
-        try {
-            defineTypes("TestMultipleTypes");
-            createTypes("Course", "CourseData");
-            mockMvc.perform(
-                    get("/type/Course")
-                            .param("noAudit", "true")
-                            .contentType(MediaType.APPLICATION_JSON)
-                    )
-            .andExpect(status().isOk())
-            .andExpect(content().json(payload("CourseData")));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	// GET (with noAudit flag set to true)
+	public void fetchWithNoAudit() {
+		try {
+			defineTypes("TestMultipleTypes");
+			createTypes("Course", "CourseData");
+			mockMvc.perform(get("/type/Course").param("noAudit", "true").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().json(payload("CourseData")));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    @Test
-    public void fetchOne() {
-        try {
-            defineType("TestType2");
-            Long oid = createType("TestType2", "TestTypeData2");
-            mockMvc.perform(
-                    get("/type")
-                            .param("oid", String.valueOf(oid))
-                            .contentType(MediaType.APPLICATION_JSON)
-                    )
-            .andExpect(status().isOk())
-            .andExpect(content().json(payload("TestTypeData2")));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
+	@Test
+	public void fetchOne() {
+		try {
+			defineType("TestType2");
+			Long oid = createType("TestType2", "TestTypeData2");
+			mockMvc.perform(get("/type").param("oid", String.valueOf(oid)).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().json(payload("TestTypeData2")));
+		}
+		catch (Exception e) {
+			fail(e.getMessage());
+		}
+	}
 
-    private Long fetchAType(String type) throws JSONException, IOException {
-        ClassRepository classRepo = context.getBean(ClassRepository.class);
-        Integer cid = classRepo.findByName(type).getId();
-        EntityRepository entityRepo = context.getBean(EntityRepository.class);
-        return entityRepo.findAllEntitiesByCid(cid).iterator().next().getId();
-    }
+	private Long fetchAType(String type) throws JSONException, IOException {
+		ClassRepository classRepo = context.getBean(ClassRepository.class);
+		Integer cid = classRepo.findByName(type).getId();
+		EntityRepository entityRepo = context.getBean(EntityRepository.class);
+		return entityRepo.findAllEntitiesByCid(cid).iterator().next().getId();
+	}
 
 	private void createTypes(String type, String data) throws JSONException, IOException {
-	    EntityService svc = context.getBean(EntityService.class);
-	    String json = payload(data);
-	    JSONArray array = new JSONArray(json);
-        array.forEach(o -> svc.create(type, (JSONObject) o));
+		EntityService svc = context.getBean(EntityService.class);
+		String json = payload(data);
+		JSONArray array = new JSONArray(json);
+		array.forEach(o -> svc.create(type, (JSONObject) o));
 	}
 
 	private Long createType(String type, String data) throws JSONException, IOException {
-	    EntityService svc = context.getBean(EntityService.class);
-	    return svc.create(type, new JSONObject(payload(data)));
+		EntityService svc = context.getBean(EntityService.class);
+		return svc.create(type, new JSONObject(payload(data)));
 	}
 
-	private void defineTypes(String definitions) throws JSONException, IOException  {
-        ClassRegistryService svc = context.getBean(ClassRegistryService.class);
-        String json = payload(definitions);
-        JSONArray array = new JSONArray(json);
-        array.forEach(o -> svc.register((JSONObject) o));
-    }
+	private void defineTypes(String definitions) throws JSONException, IOException {
+		ClassRegistryService svc = context.getBean(ClassRegistryService.class);
+		String json = payload(definitions);
+		JSONArray array = new JSONArray(json);
+		array.forEach(o -> svc.register((JSONObject) o));
+	}
 
-    private void defineType(String definition) throws JSONException, IOException {
-        ClassRegistryService svc = context.getBean(ClassRegistryService.class);
-        svc.register(new JSONObject(payload(definition)));
-    }
+	private void defineType(String definition) throws JSONException, IOException {
+		ClassRegistryService svc = context.getBean(ClassRegistryService.class);
+		svc.register(new JSONObject(payload(definition)));
+	}
 
-    private void linkSchema(String schemaName) throws IOException {
-        SchemaService svc = context.getBean(SchemaService.class);
-        String schema = payload(schemaName);
-        svc.linkSchema(new JSONObject(schema));
-    }
+	private void linkSchema(String schemaName) throws IOException {
+		SchemaService svc = context.getBean(SchemaService.class);
+		String schema = payload(schemaName);
+		svc.linkSchema(new JSONObject(schema));
+	}
 
-    private String payload(String payload) throws IOException{
-        Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
-        return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
-    }
+	private String payload(String payload) throws IOException {
+		Resource r = resolver.getResource("classpath:%s.json".formatted(payload));
+		return IOUtils.toString(r.getInputStream(), Charset.defaultCharset());
+	}
 
-    private String asArray(String data) {
-        JSONArray array = new JSONArray();
-        JSONObject jo = new JSONObject(data);
-        array.put(jo);
-        return array.toString();
-    }
+	private String asArray(String data) {
+		JSONArray array = new JSONArray();
+		JSONObject jo = new JSONObject(data);
+		array.put(jo);
+		return array.toString();
+	}
+
 }

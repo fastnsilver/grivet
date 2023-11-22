@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -44,146 +44,153 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.repo.NamedQueryRepository;
 
-
 @Service
 public class NamedQueryService {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(NamedQueryService.class);
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(NamedQueryService.class);
 
-    private final NamedQueryRepository namedQueryRepository;
-    private final JdbcTemplate jdbcTemplate;
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final ObjectMapper mapper;
+	private final NamedQueryRepository namedQueryRepository;
 
-    @Autowired
-    public NamedQueryService(NamedQueryRepository namedQueryRepository, JdbcTemplate jdbcTemplate, ObjectMapper mapper) {
-        this.namedQueryRepository = namedQueryRepository;
-        this.jdbcTemplate = jdbcTemplate;
-        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
-        this.mapper = mapper;
-    }
+	private final JdbcTemplate jdbcTemplate;
 
-    @Transactional
-    public void create(NamedQuery namedQuery) {
-        namedQueryRepository.save(namedQuery);
-    }
+	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @Transactional(readOnly=true)
-    public String get(String name, MultiValueMap<String, ?> parameters) {
-        NamedQuery namedQuery = namedQueryRepository.findByName(name);
-        Assert.notNull(namedQuery, "No query found that matches name [%s]!".formatted(name));
-        MapSqlParameterSource parameterSource = namedQuery.asParameterSource(parameters);
-        String sql = namedQuery.getQuery();
-        Map<String, String> sqlParams = namedQuery.getParams();
-        SqlRowSet rowSet = null;
-        if (parameterSource != null) {
-            // check that all params were supplied...
-            Set<String> queryParamKeys = sqlParams.keySet();
-            Set<String> parametersKeys = parameters.keySet();
-            Assert.isTrue(parametersKeys.containsAll(queryParamKeys), "Query cannot be executed! Missing query parameters!");
-            switch (namedQuery.getType()) {
-                case SELECT:
-                    rowSet = namedParameterJdbcTemplate.queryForRowSet(sql, parameterSource);
-                    break;
-                case SPROC:
-                    String sproc = getProcedure(sql, queryParamKeys);
-                    CallableStatementCreatorFactory factory = new CallableStatementCreatorFactory(sproc, namedQuery.asSqlParameters(parameters));
-                    CallableStatementCreator csc = factory.newCallableStatementCreator(parameterSource.getValues());
-                    rowSet = callSproc(csc);
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            Assert.isTrue(sqlParams.isEmpty(), "Query cannot be executed! Query expects parameters!");
-            // ignore any supplied request params
-            switch (namedQuery.getType()) {
-                case SELECT:
-                    rowSet = namedParameterJdbcTemplate.getJdbcOperations().query(sql, new SqlRowSetResultSetExtractor());
-                    break;
-                case SPROC:
-                    String sproc = getProcedure(sql, null);
-                    CallableStatementCreatorFactory factory = new CallableStatementCreatorFactory(sproc, namedQuery.asSqlParameters(parameters));
-                    CallableStatementCreator csc = factory.newCallableStatementCreator((Map<String, ?>) null);
-                    rowSet = callSproc(csc);
-                    break;
-                default:
-                    break;
-            }
-        }
-        return mapRows(rowSet);
-    }
+	private final ObjectMapper mapper;
 
+	@Autowired
+	public NamedQueryService(NamedQueryRepository namedQueryRepository, JdbcTemplate jdbcTemplate,
+			ObjectMapper mapper) {
+		this.namedQueryRepository = namedQueryRepository;
+		this.jdbcTemplate = jdbcTemplate;
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+		this.mapper = mapper;
+	}
 
-    @Transactional
-    public void delete(String name) {
-        NamedQuery nq = namedQueryRepository.findByName(name);
-        if (nq != null) {
-            namedQueryRepository.delete(nq);
-        }
-    }
+	@Transactional
+	public void create(NamedQuery namedQuery) {
+		namedQueryRepository.save(namedQuery);
+	}
 
-    protected SqlRowSet callSproc(CallableStatementCreator csc) {
-       return jdbcTemplate.execute(csc, new CallableStatementCallback<SqlRowSet>() {
+	@Transactional(readOnly = true)
+	public String get(String name, MultiValueMap<String, ?> parameters) {
+		NamedQuery namedQuery = namedQueryRepository.findByName(name);
+		Assert.notNull(namedQuery, "No query found that matches name [%s]!".formatted(name));
+		MapSqlParameterSource parameterSource = namedQuery.asParameterSource(parameters);
+		String sql = namedQuery.getQuery();
+		Map<String, String> sqlParams = namedQuery.getParams();
+		SqlRowSet rowSet = null;
+		if (parameterSource != null) {
+			// check that all params were supplied...
+			Set<String> queryParamKeys = sqlParams.keySet();
+			Set<String> parametersKeys = parameters.keySet();
+			Assert.isTrue(parametersKeys.containsAll(queryParamKeys),
+					"Query cannot be executed! Missing query parameters!");
+			switch (namedQuery.getType()) {
+				case SELECT:
+					rowSet = namedParameterJdbcTemplate.queryForRowSet(sql, parameterSource);
+					break;
+				case SPROC:
+					String sproc = getProcedure(sql, queryParamKeys);
+					CallableStatementCreatorFactory factory = new CallableStatementCreatorFactory(sproc,
+							namedQuery.asSqlParameters(parameters));
+					CallableStatementCreator csc = factory.newCallableStatementCreator(parameterSource.getValues());
+					rowSet = callSproc(csc);
+					break;
+				default:
+					break;
+			}
+		}
+		else {
+			Assert.isTrue(sqlParams.isEmpty(), "Query cannot be executed! Query expects parameters!");
+			// ignore any supplied request params
+			switch (namedQuery.getType()) {
+				case SELECT:
+					rowSet = namedParameterJdbcTemplate.getJdbcOperations()
+						.query(sql, new SqlRowSetResultSetExtractor());
+					break;
+				case SPROC:
+					String sproc = getProcedure(sql, null);
+					CallableStatementCreatorFactory factory = new CallableStatementCreatorFactory(sproc,
+							namedQuery.asSqlParameters(parameters));
+					CallableStatementCreator csc = factory.newCallableStatementCreator((Map<String, ?>) null);
+					rowSet = callSproc(csc);
+					break;
+				default:
+					break;
+			}
+		}
+		return mapRows(rowSet);
+	}
 
-            @Override
-            public SqlRowSet doInCallableStatement(CallableStatement cs)
-                    throws SQLException, DataAccessException {
-                log.debug("Stored procedure to be executed: " + cs.toString());
-                return new SqlRowSetResultSetExtractor().extractData(cs.executeQuery());
-            }
+	@Transactional
+	public void delete(String name) {
+		NamedQuery nq = namedQueryRepository.findByName(name);
+		if (nq != null) {
+			namedQueryRepository.delete(nq);
+		}
+	}
 
-        });
-    }
+	protected SqlRowSet callSproc(CallableStatementCreator csc) {
+		return jdbcTemplate.execute(csc, new CallableStatementCallback<SqlRowSet>() {
 
-    protected String mapRows(SqlRowSet rowSet) {
-        JSONArray jsonArray = new JSONArray();
-        if (rowSet != null) {
-            String[] columnNames = rowSet.getMetaData().getColumnNames();
-            JSONObject jsonObject = null;
-            while(rowSet.next()) {
-                jsonObject = new JSONObject();
-                for (String columnName: columnNames) {
-                    jsonObject.put(columnName, rowSet.getObject(columnName));
-                }
-                jsonArray.put(jsonObject);
-            }
-        }
-        return jsonArray.toString();
-    }
+			@Override
+			public SqlRowSet doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException {
+				log.debug("Stored procedure to be executed: " + cs.toString());
+				return new SqlRowSetResultSetExtractor().extractData(cs.executeQuery());
+			}
 
-    private String getProcedure(String sql, Set<String> queryParamKeys) {
-        if (!CollectionUtils.isEmpty(queryParamKeys)) {
-            for (String k: queryParamKeys) {
-               sql =  sql.replace(":" + k, "?");
-            }
-        }
-        if (!sql.startsWith("{")) {
-            sql = "%s%s".formatted("{", sql);
-        }
-        if (!sql.endsWith("}")) {
-            sql = "%s%s".formatted(sql, "}");
-        }
-        return sql;
-    }
+		});
+	}
 
-    @Transactional(readOnly=true)
-    public JSONArray all() {
-        JSONArray result = new JSONArray();
-        Iterable<NamedQuery> iterable = namedQueryRepository.findAll();
-        Assert.notNull(iterable, "No named queries are registered!");
-        Iterator<NamedQuery> it = iterable.iterator();
-        NamedQuery nq = null;
-        JSONObject jo = null;
-        JsonNode jn = null;
-        while(it.hasNext()) {
-           nq = it.next();
-           jn = mapper.valueToTree(nq);
-           jo = new JSONObject(jn.toString());
-           jo.remove("id");
-           jo.remove("createdTime");
-           result.put(jo);
-        }
-        return result;
-    }
+	protected String mapRows(SqlRowSet rowSet) {
+		JSONArray jsonArray = new JSONArray();
+		if (rowSet != null) {
+			String[] columnNames = rowSet.getMetaData().getColumnNames();
+			JSONObject jsonObject = null;
+			while (rowSet.next()) {
+				jsonObject = new JSONObject();
+				for (String columnName : columnNames) {
+					jsonObject.put(columnName, rowSet.getObject(columnName));
+				}
+				jsonArray.put(jsonObject);
+			}
+		}
+		return jsonArray.toString();
+	}
+
+	private String getProcedure(String sql, Set<String> queryParamKeys) {
+		if (!CollectionUtils.isEmpty(queryParamKeys)) {
+			for (String k : queryParamKeys) {
+				sql = sql.replace(":" + k, "?");
+			}
+		}
+		if (!sql.startsWith("{")) {
+			sql = "%s%s".formatted("{", sql);
+		}
+		if (!sql.endsWith("}")) {
+			sql = "%s%s".formatted(sql, "}");
+		}
+		return sql;
+	}
+
+	@Transactional(readOnly = true)
+	public JSONArray all() {
+		JSONArray result = new JSONArray();
+		Iterable<NamedQuery> iterable = namedQueryRepository.findAll();
+		Assert.notNull(iterable, "No named queries are registered!");
+		Iterator<NamedQuery> it = iterable.iterator();
+		NamedQuery nq = null;
+		JSONObject jo = null;
+		JsonNode jn = null;
+		while (it.hasNext()) {
+			nq = it.next();
+			jn = mapper.valueToTree(nq);
+			jo = new JSONObject(jn.toString());
+			jo.remove("id");
+			jo.remove("createdTime");
+			result.put(jo);
+		}
+		return result;
+	}
+
 }

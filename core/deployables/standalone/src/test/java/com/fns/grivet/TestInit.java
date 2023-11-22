@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -20,14 +20,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Bootstraps the application
- * 
+ *
  * @author Chris Phillipson
  */
 @SpringBootApplication
 public class TestInit {
-    
-    public static void main(String[] args) {
-        SpringApplication.run(TestInit.class, args);
-    }
+
+	public static void main(String[] args) {
+		SpringApplication.run(TestInit.class, args);
+	}
 
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -37,7 +37,6 @@ import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.query.QueryType;
 import com.fns.grivet.service.NamedQueryService;
 
-
 /**
  * Provides end-points for registration, verification and execution of named queries
  *
@@ -47,70 +46,70 @@ import com.fns.grivet.service.NamedQueryService;
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class NamedQueryController {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(NamedQueryController.class);
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(NamedQueryController.class);
 
-    private final NamedQueryService namedQueryService;
+	private final NamedQueryService namedQueryService;
 
-    @Autowired
-    public NamedQueryController(NamedQueryService namedQueryService) {
-        this.namedQueryService = namedQueryService;
-    }
+	@Autowired
+	public NamedQueryController(NamedQueryService namedQueryService) {
+		this.namedQueryService = namedQueryService;
+	}
 
-    @PreAuthorize("hasAuthority('write:query')")
-    @PostMapping("/query")
-    public ResponseEntity<?> createNamedQuery(
-            @RequestBody NamedQuery query) {
-        ResponseEntity<?> result = ResponseEntity.unprocessableEntity().build();
-        Assert.isTrue(StringUtils.isNotBlank(query.getName()), "Query name must not be null, empty or blank.");
-        Assert.notNull(query.getQuery(), "Query string must not be null!");
-        Assert.isTrue(isSupportedQuery(query), "Query must start with either CALL or SELECT");
-        // check for named parameters; but only if they exist
-        if (!query.getParams().isEmpty()) {
-            query.getParams().keySet()
-                .forEach(k -> Assert.isTrue(query.getQuery().contains(String.format(":%s", k)), String.format("Query must contain named parameter [%s]", k)));
-        }
-        namedQueryService.create(query);
-        log.info("Named Query \n\n{}\n\n successfully registered!", query);
-        UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
-        if (query.getParams().isEmpty()) {
-            result = ResponseEntity.created(ucb.path("/query/{name}").buildAndExpand(query.getName()).toUri())
-                    .build();
-        } else {
-            result = ResponseEntity.noContent().build();
-        }
-        return result;
-    }
+	@PreAuthorize("hasAuthority('write:query')")
+	@PostMapping("/query")
+	public ResponseEntity<?> createNamedQuery(@RequestBody NamedQuery query) {
+		ResponseEntity<?> result = ResponseEntity.unprocessableEntity().build();
+		Assert.isTrue(StringUtils.isNotBlank(query.getName()), "Query name must not be null, empty or blank.");
+		Assert.notNull(query.getQuery(), "Query string must not be null!");
+		Assert.isTrue(isSupportedQuery(query), "Query must start with either CALL or SELECT");
+		// check for named parameters; but only if they exist
+		if (!query.getParams().isEmpty()) {
+			query.getParams()
+				.keySet()
+				.forEach(k -> Assert.isTrue(query.getQuery().contains(String.format(":%s", k)),
+						String.format("Query must contain named parameter [%s]", k)));
+		}
+		namedQueryService.create(query);
+		log.info("Named Query \n\n{}\n\n successfully registered!", query);
+		UriComponentsBuilder ucb = UriComponentsBuilder.newInstance();
+		if (query.getParams().isEmpty()) {
+			result = ResponseEntity.created(ucb.path("/query/{name}").buildAndExpand(query.getName()).toUri()).build();
+		}
+		else {
+			result = ResponseEntity.noContent().build();
+		}
+		return result;
+	}
 
-    @PreAuthorize("hasAuthority('execute:query')")
-    @GetMapping("/query/{name}")
-    public ResponseEntity<?> executeNamedQuery(
-            @PathVariable("name") String name,
-            @RequestParam MultiValueMap<String, ?> parameters) {
-        return ResponseEntity.ok(namedQueryService.get(name, parameters));
-    }
+	@PreAuthorize("hasAuthority('execute:query')")
+	@GetMapping("/query/{name}")
+	public ResponseEntity<?> executeNamedQuery(@PathVariable("name") String name,
+			@RequestParam MultiValueMap<String, ?> parameters) {
+		return ResponseEntity.ok(namedQueryService.get(name, parameters));
+	}
 
-    @PreAuthorize("hasAuthority('list:query')")
-    @GetMapping("/queries")
-    public ResponseEntity<?> listNamedQueries() {
-        JSONArray payload = namedQueryService.all();
-        return ResponseEntity.ok(payload.toString());
-    }
+	@PreAuthorize("hasAuthority('list:query')")
+	@GetMapping("/queries")
+	public ResponseEntity<?> listNamedQueries() {
+		JSONArray payload = namedQueryService.all();
+		return ResponseEntity.ok(payload.toString());
+	}
 
-    @PreAuthorize("hasAuthority('delete:query')")
-    @DeleteMapping(value = "/query/{name}")
-    public ResponseEntity<?> deleteNamedQuery(
-            @PathVariable("name") String name) {
-        namedQueryService.delete(name);
-        log.info("Query with name [{}] successfully deleted!", name);
-        return ResponseEntity.noContent().build();
-    }
+	@PreAuthorize("hasAuthority('delete:query')")
+	@DeleteMapping(value = "/query/{name}")
+	public ResponseEntity<?> deleteNamedQuery(@PathVariable("name") String name) {
+		namedQueryService.delete(name);
+		log.info("Query with name [{}] successfully deleted!", name);
+		return ResponseEntity.noContent().build();
+	}
 
-    private boolean isSupportedQuery(NamedQuery query) {
-        boolean result = false;
-        if ((query.getQuery().toUpperCase().startsWith("SELECT") && query.getType().equals(QueryType.SELECT)) 
-                || (query.getQuery().toUpperCase().startsWith("CALL") && query.getType().equals(QueryType.SPROC))) {
-            result = true;
-        }
-        return result;
-    }
+	private boolean isSupportedQuery(NamedQuery query) {
+		boolean result = false;
+		if ((query.getQuery().toUpperCase().startsWith("SELECT") && query.getType().equals(QueryType.SELECT))
+				|| (query.getQuery().toUpperCase().startsWith("CALL") && query.getType().equals(QueryType.SPROC))) {
+			result = true;
+		}
+		return result;
+	}
+
 }

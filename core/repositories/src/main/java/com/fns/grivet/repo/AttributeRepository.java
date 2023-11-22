@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -24,6 +24,6 @@ import com.fns.grivet.model.Attribute;
 @RepositoryRestResource(collectionResourceRel = "attributes", path = "attributes")
 public interface AttributeRepository extends JpaRepository<Attribute, Integer> {
 
-    public Attribute findByName(@Param("name") String name);
+	public Attribute findByName(@Param("name") String name);
 
 }

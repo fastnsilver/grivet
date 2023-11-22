@@ -26,17 +26,17 @@ import com.fns.grivet.model.Op;
 @Profile("!pipeline")
 public class IngestStub implements Ingester {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(IngestStub.class);
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(IngestStub.class);
 
-    @Override
-    public void ingest(Message<JSONObject> message) {
-        Assert.notNull(message.getHeaders(), "No message headers!");
-        if (message.getHeaders().get("op").equals(Op.CREATE.name())) {
-            Assert.hasText(message.getHeaders().get("type", String.class), "Type must not be null or empty!");
-        }
-        Assert.notNull(message.getPayload(), "Message must have non-null payload!");
-        log.info("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
-        message.getPayload().toString());
-    }
+	@Override
+	public void ingest(Message<JSONObject> message) {
+		Assert.notNull(message.getHeaders(), "No message headers!");
+		if (message.getHeaders().get("op").equals(Op.CREATE.name())) {
+			Assert.hasText(message.getHeaders().get("type", String.class), "Type must not be null or empty!");
+		}
+		Assert.notNull(message.getPayload(), "Message must have non-null payload!");
+		log.info("Received message.  Headers - {}.  Payload - {}", message.getHeaders().toString(),
+				message.getPayload().toString());
+	}
 
 }

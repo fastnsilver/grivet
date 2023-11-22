@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -20,18 +20,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Encrypts a raw password for use with {@code BCryptPasswordEncoder}
+ *
  * @author Chris Phillipson
  *
  */
 public class PasswordEncryptor {
 
-    public static void main(String[] args) {
-        if (args != null && args.length == 1) {
-            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String hashedPassword = passwordEncoder.encode(args[0]);
-            System.out.println("Running PasswordEncryptor...\n-- Raw password: %s\n-- Encoded: %s\n".formatted(args[0], hashedPassword));
-        } else {
-            System.err.println("Please provide a password to be encoded!");
-        }
-    }
+	public static void main(String[] args) {
+		if (args != null && args.length == 1) {
+			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			String hashedPassword = passwordEncoder.encode(args[0]);
+			System.out.println("Running PasswordEncryptor...\n-- Raw password: %s\n-- Encoded: %s\n".formatted(args[0],
+					hashedPassword));
+		}
+		else {
+			System.err.println("Please provide a password to be encoded!");
+		}
+	}
+
 }

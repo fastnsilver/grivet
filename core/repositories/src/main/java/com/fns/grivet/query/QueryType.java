@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 - Chris Phillipson
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  *
@@ -16,14 +16,16 @@
 package com.fns.grivet.query;
 
 /**
- * Type-safe enumeration for query types: 
- * <ol><li>SELECT: a SQL {@code SELECT} statement</li><li>SPROC: a Stored Procedure with a return value (or values)</li></ol>
+ * Type-safe enumeration for query types:
+ * <ol>
+ * <li>SELECT: a SQL {@code SELECT} statement</li>
+ * <li>SPROC: a Stored Procedure with a return value (or values)</li>
+ * </ol>
  *
  * @author Chris Phillipson
  */
 public enum QueryType {
 
-    SELECT,
-    SPROC
+	SELECT, SPROC
 
 }
