@@ -78,6 +78,7 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 1.1.0
 
+- [x] Java 21 baseline
 - [x] [Delombok](https://github.com/fastnsilver/grivet/issues/151) source code
   - Remove annotations
   - Remove back-flipping in Maven POMs
