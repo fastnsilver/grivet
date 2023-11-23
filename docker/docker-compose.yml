@@ -114,6 +114,7 @@ services:
       - SPRING_CLOUD_CONFIG_SERVER_GIT_USERNAME=fastnsilver
       - SPRING_CLOUD_CONFIG_SERVER_GIT_PASSWORD=
       - SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT-LABEL=main
+      - SPRING_CLOUD_COMPATIBILITY-VERIFIER_ENABLED=false
 
   ### EUREKA, DISCOVERY
   discovery-service:
@@ -127,6 +128,7 @@ services:
       - JAVA_OPTS=-Xmx2g -XX:+UseG1GC -XX:+UseStringDeduplication
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-discovery-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
+      - SPRING_CLOUD_COMPATIBILITY-VERIFIER_ENABLED=false
 
   ## SPRING BOOT SERVICE ADMINISTRATION
   springboot-admin:
@@ -141,6 +143,7 @@ services:
       - SPRING_APPLICATION_NAME=grivet-microservices-console
       - SPRING_PROFILES_ACTIVE=docker,insecure
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
+      - SPRING_CLOUD_COMPATIBILITY-VERIFIER_ENABLED=false
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx1g -XX:+UseG1GC -XX:+UseStringDeduplication
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-microservices-console

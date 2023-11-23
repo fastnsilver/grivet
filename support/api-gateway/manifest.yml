@@ -10,6 +10,8 @@ applications:
     SPRING_APPLICATION_NAME: grivet-api-gateway
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
     SPRING_PROFILES_ACTIVE: cloud,insecure,pipeline
+    SPRING_THREADS_VIRTUAL_ENABLED: true
+    SPRING_CLOUD_COMPATIBILITY-VERIFIER_ENABLED: false
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 21.+ } }'
   services:
   - grivet-pipeline-config

@@ -14,6 +14,7 @@ applications:
     SPRING_CLOUD_STREAM_BINDINGS_STORE-IN-0_DESTINATION: types-topic
     SPRING_CLOUD_STREAM_BINDINGS_STORE-IN-0_BINDER: rabbit
     SPRING_THREADS_VIRTUAL_ENABLED: true
+    SPRING_CLOUD_COMPATIBILITY-VERIFIER_ENABLED: false
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 21.+ } }'
   services:
   - grivet-pipeline-config
