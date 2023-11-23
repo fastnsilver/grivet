@@ -55,6 +55,7 @@ services:
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zk
       - SPRING_CLOUD_STREAM_BINDINGS_MESSAGE-OUT-0_DESTINATION=types-topic
+      - SPRING_THREADS_VIRTUAL_ENABLED=true
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-ingest-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
 
@@ -80,6 +81,7 @@ services:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
+      - SPRING_THREADS_VIRTUAL_ENABLED=true
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-admin-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
 
@@ -111,6 +113,7 @@ services:
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZKNODES=zk
       - SPRING_CLOUD_STREAM_BINDINGS_STORE-IN-0_DESTINATION=types-topic
+      - SPRING_THREADS_VIRTUAL_ENABLED=true
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-persistence-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
 
@@ -133,6 +136,7 @@ services:
       # If you want to change these values, then you'll also need to update key-value pairs in mysql/db.env
       - SPRING_DATASOURCE_USERNAME=dbadmin
       - SPRING_DATASOURCE_PASSWORD=thunderb0lt!
+      - SPRING_THREADS_VIRTUAL_ENABLED=true
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888

@@ -47,5 +47,6 @@ services:
       # If you want to change these values, then you'll also need to update key-value pairs in mysql/db.env
       - SPRING_DATASOURCE_USERNAME=dbadmin
       - SPRING_DATASOURCE_PASSWORD=thunderb0lt!
+      - SPRING_THREADS_VIRTUAL_ENABLED=true
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-standalone-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317

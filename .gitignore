@@ -179,4 +179,8 @@ fabric.properties
 .dockerize
 
 # VSCode
+.vscode/
 .history/
+
+# Helm
+charts
