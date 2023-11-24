@@ -17,6 +17,7 @@ services:
     environment:
       - SPRING_APPLICATION_NAME=grivet-api-gateway
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
+      - SPRING_CLOUD_COMPATIBILITY-VERIFIER_ENABLED=false
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-api-gateway

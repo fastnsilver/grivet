@@ -41,7 +41,6 @@ logging:
     org.flyway: WARN
     org.hibernate: WARN
     org.springframework: WARN
-    com.zaxxer.hikari: WARN
     com.fns.grivet: TRACE
 
 management:
@@ -77,7 +76,7 @@ spring:
       dateFormatFn: TO_CHAR(val, 'YYYY-MM-DD')
       dateTimeFormatFn: TO_CHAR(val, 'YYYY-MM-DD"T"HH24:MI:SS')
       instantFormatFn: TO_CHAR(val, 'YYYY-MM-DD"T"HH24:MI:SS')
-      castedColumnType: TEXT
+      castedColumnType: LONGVARCHAR
       dateTimeColumnType: DATETIME
       textColumnType: VARCHAR(4000)
       longTextColumnType: VARCHAR(8000)

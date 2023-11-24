@@ -20,7 +20,7 @@ This is a [Spring Boot](http://projects.spring.io/spring-boot/) application.
 > If you have installed `Docker for Mac` or `Docker for Windows` installed, create a file in project root named `.local`
 
 ```
-$ mvn clean install
+$ mvn clean install -Dspring.cloud.compatibility-verifier.enabled=false
 ```
 
 

@@ -78,6 +78,7 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 1.1.0
 
+- [x] Upgrade to Spring Boot 3.2.0
 - [x] Java 21 baseline
 - [x] [Delombok](https://github.com/fastnsilver/grivet/issues/151) source code
   - Remove annotations
@@ -87,6 +88,7 @@ This project will remain humble in its design and has no aspirations to match th
 
 ## 1.2.0
 
+- [ ] Switch out usage of JdbcTemplate for JdbcClient
 - [ ] Add cache provider (e.g., Redis)
 
 ## 1.3.0

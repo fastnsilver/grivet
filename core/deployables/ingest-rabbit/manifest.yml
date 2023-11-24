@@ -12,7 +12,9 @@ applications:
     SPRING_PROFILES_ACTIVE: cloud,insecure,pipeline
     SPRING_CLOUD_STREAM_BINDINGS_MESSAGE-OUT-0_DESTINATION: types-topic
     SPRING_CLOUD_STREAM_BINDINGS_MESSAGE-OUT-0_BINDER: rabbit
-    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
+    SPRING_THREADS_VIRTUAL_ENABLED: true
+    SPRING_CLOUD_COMPATIBILITY-VERIFIER_ENABLED: false
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 21.+ } }'
   services:
   - grivet-pipeline-config
   - grivet-discovery-service

@@ -66,6 +66,8 @@ services:
       - SPRING_RABBITMQ_PORT=5672
       - SPRING_RABBITMQ_USERNAME=admin
       - SPRING_RABBITMQ_PASSWORD=Admin@123
+      - SPRING_THREADS_VIRTUAL_ENABLED=true
+      - SPRING_CLOUD_COMPATIBILITY-VERIFIER_ENABLED=false
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-ingest-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
 
@@ -91,6 +93,8 @@ services:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx256m -XX:+UseG1GC -XX:+UseStringDeduplication
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
+      - SPRING_CLOUD_COMPATIBILITY-VERIFIER_ENABLED=false
+      - SPRING_THREADS_VIRTUAL_ENABLED=true
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-admin-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
 
@@ -124,6 +128,8 @@ services:
       - SPRING_RABBITMQ_PORT=5672
       - SPRING_RABBITMQ_USERNAME=admin
       - SPRING_RABBITMQ_PASSWORD=Admin@123
+      - SPRING_THREADS_VIRTUAL_ENABLED=true
+      - SPRING_CLOUD_COMPATIBILITY-VERIFIER_ENABLED=false
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-persistence-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
 
@@ -149,6 +155,8 @@ services:
       - DOCKER_IP=$DOCKER_IP
       - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -XX:+UseStringDeduplication
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
+      - SPRING_THREADS_VIRTUAL_ENABLED=true
+      - SPRING_CLOUD_COMPATIBILITY-VERIFIER_ENABLED=false
       - OTEL_RESOURCE_ATTRIBUTES=service.name=grivet-query-service
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://signoz:4317
 
