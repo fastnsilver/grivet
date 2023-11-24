@@ -80,20 +80,20 @@
         <commons-lang3.version>3.13.0</commons-lang3.version>
         <commons-io.version>2.15.0</commons-io.version>
         <guava.version>32.1.3-jre</guava.version>
-        <flyway.version>10.0.1</flyway.version>
+        <flyway.version>10.1.0</flyway.version>
         <h2.version>2.2.224</h2.version>
-        <hibernate.version>6.4.0.CR1</hibernate.version>
+        <hibernate.version>6.4.0.Final</hibernate.version>
         <httpclient5.version>5.2.1</httpclient5.version>
         <jackson.version>2.16.0</jackson.version>
-        <jakarta-annotation-api.version>3.0.0-M1</jakarta-annotation-api.version>
-        <jakarta.persistence-api.version>3.2.0-B02</jakarta.persistence-api.version>
-        <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
+        <jakarta-annotation.version>3.0.0-M1</jakarta-annotation.version>
+        <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
+        <jakarta-validation.version>3.0.2</jakarta-validation.version>
         <java-cfenv-boot.version>3.1.2</java-cfenv-boot.version>
         <json-unit.version>3.2.2</json-unit.version>
         <json.version>20231013</json.version>
         <json-schema-validator.version>2.2.14</json-schema-validator.version>
-        <junit.jupiter.version>5.10.1</junit.jupiter.version>
-        <junit.platform.version>1.10.1</junit.platform.version>
+        <junit-jupiter.version>5.10.1</junit-jupiter.version>
+        <junit-platform.version>1.10.1</junit-platform.version>
         <logstash-logback-encoder.version>7.4</logstash-logback-encoder.version>
         <micrometer.version>1.11.5</micrometer.version>
         <mysql.version>8.0.22</mysql.version> <!-- @see https://bugs.mysql.com/bug.php?id=110285 -->
@@ -102,7 +102,7 @@
         <scala.version>2.13.2</scala.version>
         <slf4j.version>2.0.9</slf4j.version>
         <snakeyaml.version>2.2</snakeyaml.version>
-        <spring-boot-admin.version>3.1.7</spring-boot-admin.version>
+        <spring-boot-admin.version>3.1.8</spring-boot-admin.version>
         <spring-restdocs.version>3.0.0</spring-restdocs.version>
         <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
 
@@ -116,16 +116,16 @@
         <maven-changes-plugin.version>2.12.1</maven-changes-plugin.version>
         <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <maven-failsafe-plugin.version>3.2.1</maven-failsafe-plugin.version>
+        <maven-failsafe-plugin.version>3.2.2</maven-failsafe-plugin.version>
         <maven-javadoc-plugin.version>3.6.0</maven-javadoc-plugin.version>
         <maven-jxr-plugin.version>3.3.1</maven-jxr-plugin.version>
-        <maven-plugin-plugin.version>3.10.1</maven-plugin-plugin.version>
+        <maven-plugin-plugin.version>3.10.2</maven-plugin-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-scm-provider-jgit.version>2.0.1</maven-scm-provider-jgit.version>
         <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
         <maven-scm-publish-plugin.version>3.2.1</maven-scm-publish-plugin.version>
-        <maven-surefire-plugin.version>3.2.1</maven-surefire-plugin.version>
-        <maven-surefire-report-plugin.version>3.2.1</maven-surefire-report-plugin.version>
+        <maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
+        <maven-surefire-report-plugin.version>3.2.2</maven-surefire-report-plugin.version>
         <plan-maven-plugin.version>1.2</plan-maven-plugin.version>
         <properties-maven-plugin.version>1.2.1</properties-maven-plugin.version>
         <reflow-velocity-tools.version>2.0.0</reflow-velocity-tools.version>

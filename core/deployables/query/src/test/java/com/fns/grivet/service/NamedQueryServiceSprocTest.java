@@ -27,7 +27,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,7 +43,6 @@ import io.restassured.path.json.JsonPath;
 
 @ActiveProfiles(value = { "hsqldb", "insecure" })
 @SpringBootTest(classes = QueryInit.class)
-@Disabled("See https://github.com/flyway/flyway/issues/3782")
 public class NamedQueryServiceSprocTest {
 
 	@Autowired
