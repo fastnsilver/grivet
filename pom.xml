@@ -86,7 +86,7 @@
         <httpclient5.version>5.2.2</httpclient5.version>
         <jackson.version>2.16.0</jackson.version>
         <jakarta-annotation.version>3.0.0-M1</jakarta-annotation.version>
-        <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
+        <jakarta-persistence.version>3.2.0</jakarta-persistence.version>
         <jakarta-validation.version>3.0.2</jakarta-validation.version>
         <java-cfenv-boot.version>3.1.2</java-cfenv-boot.version>
         <json-unit.version>3.2.2</json-unit.version>
