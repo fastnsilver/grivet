@@ -46,7 +46,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import tools.jackson.core.JacksonException;
 import com.fns.grivet.service.EntityService;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -162,7 +162,7 @@ public class EntityController {
 			@RequestParam(value = "createdTimeEnd",
 					required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTimeEnd,
 			@RequestParam(value = "noAudit", defaultValue = "false") boolean noAudit, HttpServletRequest request)
-			throws JsonProcessingException {
+			throws JacksonException {
 		LocalDateTime start = createdTimeStart == null ? LocalDateTime.now().minusDays(7) : createdTimeStart;
 		LocalDateTime end = createdTimeEnd == null ? LocalDateTime.now() : createdTimeEnd;
 		Assert.isTrue(ChronoUnit.SECONDS.between(start, end) >= 0,
