@@ -45,9 +45,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.fns.grivet.QueryInit;
 import com.fns.grivet.query.NamedQuery;
 import com.fns.grivet.repo.NamedQueryRepository;
@@ -175,7 +174,7 @@ public class QueryDocumentationTest {
 		}
 	}
 
-	private void createNamedQuery(String payload) throws JsonParseException, JsonMappingException, IOException {
+	private void createNamedQuery(String payload) throws JacksonException, IOException {
 		var svc = context.getBean(NamedQueryService.class);
 		svc.create(mapper.readValue(payload(payload), NamedQuery.class));
 	}

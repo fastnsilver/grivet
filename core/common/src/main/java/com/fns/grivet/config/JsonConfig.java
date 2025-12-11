@@ -1,7 +1,7 @@
 package com.fns.grivet.config;
 
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
+import tools.jackson.databind.JacksonModule;
+import tools.jackson.datatype.jsonorg.JsonOrgModule;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class JsonConfig {
 
 	@Bean
-	public Module orgJsonModule() {
+	public JacksonModule orgJsonModule() {
 		return new JsonOrgModule();
 	}
 

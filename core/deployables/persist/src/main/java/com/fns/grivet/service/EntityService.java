@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import tools.jackson.core.JacksonException;
 import com.fns.grivet.model.Attribute;
 import com.fns.grivet.model.AttributeType;
 import com.fns.grivet.model.ClassAttribute;
@@ -166,7 +166,7 @@ public class EntityService {
 
 	@Transactional(readOnly = true)
 	public String findByCreatedTime(String type, LocalDateTime createdTimeStart, LocalDateTime createdTimeEnd,
-			Map<String, String[]> parameters) throws JsonProcessingException {
+			Map<String, String[]> parameters) throws JacksonException {
 		var c = classRepository.findByName(type);
 		Assert.notNull(c, "Type [%s] is not registered!".formatted(type));
 		Map<Integer, Integer> attributeToAttributeTypeMap = generateAttributeToAttributeTypeMap(c);
